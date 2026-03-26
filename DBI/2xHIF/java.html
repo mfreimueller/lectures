@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Working with Databases Using Java - 2EHIF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <!-- Theme: solarized (high contrast color scheme) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/solarized.css">
+
+    <style>
+        .reveal h1 {
+            font-size: 2em;
+        }
+
+        @media print {
+            body.print .reveal .slides section {
+                min-height: 100vh !important;
+                height: 100vh !important;
+                margin: 0 !important;
+                top: 0 !important;
+            }
+
+            .reveal .slides section {
+                border: none !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: TITLE SLIDE -->
+            <section data-background-transition="fade">
+                <h1 style="font-size: 2.5em; margin-bottom: 0.3em;">Working with Databases Using Java</h1>
+                <p class="fragment" style="font-size: 1.4em; color: #87C4A0; margin-top: 0.5em;">Connecting Programming and Data Storage</p>
+                
+                <hr style="border-color: #D0F0E0; width: 30%; margin: 2em auto;">
+                
+                <p class="fragment" style="font-size: 1.1em; color: #87C4A0;">Presenter: Michael Freimüller</p>
+                <p class="fragment" style="font-size: 1.1em; color: #D3A625;">Class: 2EHIF</p>
+                <p class="fragment" style="font-size: 1.1em; color: #E07B5F;">Date: March 26, 2026</p>
+                
+                <!-- TEACHER NOTE: Sie können Titel und Metadaten hier anpassen -->
+            </section>
+
+            <!-- SLIDE 2: INTRODUCTION/HOOK -->
+            <section data-background-transition="fade">
+                <h1>Why Combine Databases and Programming?</h1>
+                
+                <div style="display: flex; justify-content: space-around; margin-top: 2em;">
+                    <div style="width: 45%; text-align: left;">
+                        <p style="font-size: 0.9em;"><strong>Without Databases:</strong></p>
+                        <ul style="font-size: 0.8em;">
+                            <li>Data stored in memory only</li>
+                            <li>Loses everything on program end</li>
+                            <li>No data persistence between users</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="width: 45%; text-align: left;">
+                        <p style="font-size: 0.9em;"><strong>With Databases:</strong></p>
+                        <ul style="font-size: 0.8em;">
+                            <li>Data persists after program ends</li>
+                            <li>Multiple users can access data</li>
+                            <li>Reliable and organized storage</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- TEACHER NOTE: Visual description: Show a simple diagram with Java application on left, database icon on right, arrows showing connection -->
+            </section>
+
+            <!-- SLIDE 3: LEARNING OBJECTIVES -->
+            <section data-background-transition="fade">
+                <h1>Learning Objectives</h1>
+                
+                <div style="margin-top: 2em;">
+                    <p class="fragment" style="font-size: 0.95em; margin-bottom: 1em;"><strong>After this lesson, you will be able to:</strong></p>
+                    
+                    <ol style="font-size: 0.85em; line-height: 1.6;">
+                        <li class="fragment">Connect Java applications to MSSQL and MariaDB databases</li>
+                        <li class="fragment">Write both regular and prepared SQL statements in Java</li>
+                        <li class="fragment">Understand when to use each type of statement</li>
+                        <li class="fragment">Explain what SQL injection is and how to prevent it</li>
+                        <li class="fragment">Apply secure database practices in your own projects</li>
+                    </ol>
+                </div>
+                
+                <!-- TEACHER NOTE: Ensure students understand these objectives before proceeding -->
+            </section>
+
+            <!-- SLIDE 4: DATABASE CONNECTION OVERVIEW -->
+            <section data-background-transition="fade">
+                <h1>Database Connection Overview</h1>
+                
+                <p style="font-size: 0.9em; margin-top: 2em;">To connect Java to a database, we need:</p>
+                
+                <div style="display: flex; justify-content: space-around; margin-top: 2em;">
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Step 1: JDBC Driver</h3>
+                        <p style="font-size: 0.75em;">Add the database driver to your project (Maven/Gradle or manual JAR)</p>
+                    </div>
+                    
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Step 2: Connection String</h3>
+                        <p style="font-size: 0.75em;">Specify database type, host, port, and name</p>
+                    </div>
+                    
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Step 3: Credentials</h3>
+                        <p style="font-size: 0.75em;">Username and password for authentication</p>
+                    </div>
+                    
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Step 4: Connection Object</h3>
+                        <p style="font-size: 0.75em;">Establish the actual connection using DriverManager</p>
+                    </div>
+                </div>
+                
+                <!-- TEACHER NOTE: Visual description: Flowchart showing Driver -> Connection String -> Credentials -> Connection Object -->
+            </section>
+
+            <!-- SLIDE 5: MSSQL CONNECTION EXAMPLE -->
+            <section data-background-transition="fade">
+                <h1>MSSQL Database Connection</h1>
+                
+                <p style="font-size: 0.8em; margin-bottom: 1em;">Maven Dependency (pom.xml):</p>
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>
+&lt;dependency&gt;
+    &lt;groupId&gt;com.microsoft.sqlserver&lt;/groupId&gt;
+    &lt;artifactId&gt;mssql-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;12.4.2.jre11&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+                <p style="font-size: 0.8em; margin-top: 1em;">Java Connection Code:</p>
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>String url = "jdbc:mssql://localhost:1433/master";
+String user = "sa";
+String password = "your_password";
+
+Connection connection = DriverManager.getConnection(url, user, password);</code></pre>
+
+                <!-- TEACHER NOTE: Remind students about environment variables for passwords in real applications -->
+            </section>
+
+            <!-- SLIDE 6: MARIADB CONNECTION EXAMPLE -->
+            <section data-background-transition="fade">
+                <h1>MariaDB Database Connection</h1>
+                
+                <p style="font-size: 0.8em; margin-bottom: 1em;">Maven Dependency (pom.xml):</p>
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>&lt;dependency&gt;
+    &lt;groupId&gt;org.mariadb.jdbc&lt;/groupId&gt;
+    &lt;artifactId&gt;mariadb-java-client&lt;/artifactId&gt;
+    &lt;version&gt;3.1.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+                <p style="font-size: 0.8em; margin-top: 1em;">Java Connection Code:</p>
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>String url = "jdbc:mariadb://localhost:3306/mydb";
+String user = "root";
+String password = "your_password";
+
+Connection connection = DriverManager.getConnection(url, user, password);</code></pre>
+
+                <!-- TEACHER NOTE: Compare the two connection strings - different ports (1433 vs 3306) and drivers -->
+            </section>
+
+            <!-- SLIDE 7: REGULAR SQL STATEMENTS -->
+            <section data-background-transition="fade">
+                <h1>Regular SQL Statements</h1>
+                
+                <p style="font-size: 0.85em; margin-bottom: 1em;">Use <code>Statement</code> for simple, non-dynamic queries:</p>
+                
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>// Create a Statement object
+Statement stmt = connection.createStatement();
+
+// Execute a SELECT query
+String sql = "SELECT * FROM students WHERE id = 1";
+ResultSet rs = stmt.executeQuery(sql);
+
+// Process results 
+while(rs.next()) {
+    String name = rs.getString("name");
+    int age = rs.getInt("age");
+    System.out.println(name + ", Age: " + age);
+}</code></pre>
+
+                <!-- TEACHER NOTE: Emphasize that Statement is NOT safe for user input -->
+            </section>
+
+            <!-- SLIDE 8: PREPARED STATEMENTS - WHAT & WHY -->
+            <section data-background-transition="fade">
+                <h1>Prepared Statements</h1>
+                
+                <p style="font-size: 0.85em; margin-bottom: 1em;"><strong>What are they?</strong></p>
+                <ul style="font-size: 0.75em;">
+                    <li class="fragment">Pre-compiled SQL queries with placeholders (?)</li>
+                    <li class="fragment">Parameters are safely inserted by the database driver</li>
+                    <li class="fragment">Cannot be manipulated by malicious input</li>
+                </ul>
+
+                <p style="font-size: 0.85em; margin-top: 2em;"><strong>Why use them?</strong></p>
+                <ol style="font-size: 0.75em;">
+                    <li class="fragment">Security (prevents SQL injection)</li>
+                    <li class="fragment">Better performance for repeated queries</li>
+                    <li class="fragment">Cleaner code when handling user input</li>
+                </ol>
+
+                <!-- TEACHER NOTE: This is a critical security concept - emphasize strongly -->
+            </section>
+
+            <!-- SLIDE 9: WHEN TO USE EACH TYPE -->
+            <section data-background-transition="fade">
+                <h1>When to Use Each Type</h1>
+                
+                <div style="display: flex; justify-content: space-around; margin-top: 2em;">
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Use Statement When:</h3>
+                        <ul style="font-size: 0.75em;">
+                            <li class="fragment">Query is fixed and hardcoded</li>
+                            <li class="fragment">No user input involved</li>
+                            <li class="fragment">Simple administrative queries</li>
+                        </ul>
+                    </div>
+
+                    <div style="width: 48%;">
+                        <h3 style="font-size: 0.9em;">Use PreparedStatement When:</h3>
+                        <ul style="font-size: 0.75em;">
+                            <li class="fragment">Query contains user input</li>
+                            <li class="fragment">Form submissions or API calls</li>
+                            <li class="fragment">Any dynamic WHERE clauses</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TEACHER NOTE: Create a decision tree exercise for students -->
+            </section>
+
+            <!-- SLIDE 10: SQL INJECTION EXPLAINED -->
+            <section data-background-transition="fade">
+                <h1>SQL Injection Attack</h1>
+                
+                <p style="font-size: 0.8em; margin-bottom: 1em;"><strong>Vulnerable Code (DO NOT USE):</strong></p>
+                <pre><code class="java" style="font-size: 0.65em;" data-trim data-noescape>String userInput = "' OR '1'='1";
+String sql = "SELECT * FROM users WHERE username = '" + userInput + "'";
+// Result: SELECT * FROM users WHERE username = '' OR '1'='1' --</code></pre>
+
+                <p style="font-size: 0.75em; color: #E07B5F; margin-top: 2em;"><strong>What happens?</strong></p>
+                <ul style="font-size: 0.7em;">
+                    <li class="fragment">The query returns ALL users</li>
+                    <li class="fragment">Authentication can be bypassed completely</li>
+                    <li class="fragment">Attacker can delete or modify data</li>
+                </ul>
+
+                <!-- TEACHER NOTE: This is why prepared statements are mandatory for user input -->
+            </section>
+
+            <!-- SLIDE 11: CODE COMPARISON (REGULAR VS PREPARED) -->
+            <section data-background-transition="fade">
+                <h1>Vulnerable vs Secure Code</h1>
+                
+                <div style="display: flex; justify-content: space-around;">
+                    <div style="width: 48%;">
+                        <p style="font-size: 0.7em; color: #E07B5F;"><strong>DANGEROUS (Statement):</strong></p>
+                        <pre><code class="java" style="font-size: 0.6em;" data-trim data-noescape>String name = userInput;
+String sql = "SELECT * FROM users WHERE name = '" + name + "'";
+stmt.executeQuery(sql);</code></pre>
+                    </div>
+
+                    <div style="width: 48%;">
+                        <p style="font-size: 0.7em; color: #D3A625;"><strong>SECURE (PreparedStatement):</strong></p>
+                        <pre><code class="java" style="font-size: 0.6em;" data-trim data-noescape>String name = userInput;
+String sql = "SELECT * FROM users WHERE name = ?";
+PreparedStatement ps = connection.prepareStatement(sql);
+ps.setString(1, name);
+ps.executeQuery();</code></pre>
+                    </div>
+                </div>
+
+                <!-- TEACHER NOTE: Highlight the placeholder (?) and setParameter() method -->
+            </section>
+
+            <!-- SLIDE 12: SYNTAX BREAKDOWN FOR JAVA DATABASE WORK -->
+            <section data-background-transition="fade">
+                <h1>Syntax Breakdown</h1>
+                
+                <p style="font-size: 0.8em; margin-bottom: 1em;">Complete example structure:</p>
+                
+                <pre><code class="java" style="font-size: 0.65em;" data-trim data-noescape>// 1. Establish connection
+Connection conn = DriverManager.getConnection(url, user, pass);
+
+// 2. Create PreparedStatement
+String sql = "INSERT INTO students (name, age) VALUES (?, ?)";
+PreparedStatement ps = conn.prepareStatement(sql);
+
+// 3. Set parameters (indices start at 1!)
+ps.setString(1, "John Doe");
+ps.setInt(2, 17);
+
+// 4. Execute
+int rowsAffected = ps.executeUpdate();
+System.out.println(rowsAffected + " row(s) inserted");</code></pre>
+
+                <!-- TEACHER NOTE: Remind about try-with-resources for automatic cleanup -->
+            </section>
+
+            <!-- SLIDE 13: COMPLETE EXAMPLE WITH ERROR HANDLING -->
+            <section data-background-transition="fade">
+                <h1>Complete Example with Error Handling</h1>
+                
+                <pre><code class="java" style="font-size: 0.65em;" data-trim data-noescape>try (Connection conn = DriverManager.getConnection(url, user, pass);
+     PreparedStatement ps = conn.prepareStatement(
+         "SELECT * FROM students WHERE id = ?")) {
+
+    ps.setInt(1, userId);
+    
+    try (ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            String name = rs.getString("name");
+            int age = rs.getInt("age");
+            System.out.println(name + ": " + age);
+        }
+    }
+} catch (SQLException e) {
+    System.err.println("Database error: " + e.getMessage());
+}</code></pre>
+
+                <!-- TEACHER NOTE: Explain try-with-resources automatically closes connections -->
+            </section>
+
+            <!-- SLIDE 14: STUDENT EXERCISE -->
+            <section data-background-transition="fade">
+                <h1>Student Exercise</h1>
+                
+                <p style="font-size: 0.9em; margin-bottom: 2em;"><strong>Create a Java program that:</strong></p>
+
+                <ol style="font-size: 0.8em;">
+                    <li class="fragment">Connects to SchulDb</li>
+                    <li class="fragment">Inserts yourself as a student (assume 2EHIF as class)</li>
+                    <li class="fragment">... use the proper statement type for this</li>
+                    <li class="fragment">Queries all students from 2EHIF and displays them</li>
+                    <li class="fragment">Searches for a teacher by name using prepared statements</li>
+                </ol>
+
+                <!-- TEACHER NOTE: Give students 15-20 minutes to complete this exercise -->
+            </section>
+
+            <!-- SLIDE 15: EXERCISE SOLUTION TEMPLATE -->
+            <section data-background-transition="fade">
+                <h1>Solution Template</h1>
+                
+                <pre><code class="java" style="font-size: 0.6em;" data-trim data-noescape>// Connect to database
+Connection conn = DriverManager.getConnection(
+    "jdbc:mssql://localhost:3306/SchulDb", 
+    "sa", 
+    "password");
+
+// Insert with PreparedStatement
+String insertSql = "INSERT INTO Schueler (S_Vorname, S_Nachname, S_Klasse) VALUES (?, ?, ?)";
+PreparedStatement ps = conn.prepareStatement(insertSql);</code></pre>
+
+                <!-- TEACHER NOTE: Students should complete this template during exercise -->
+            </section>
+
+            <!-- SLIDE 16: SUMMARY / KEY TAKEAWAYS -->
+            <section data-background-transition="fade">
+                <h1>Summary - Key Takeaways</h1>
+                
+                <ul style="font-size: 0.85em; line-height: 1.7;">
+                    <li class="fragment" style="margin-bottom: 0.5em;"><strong>JDBC Driver:</strong> Required to connect Java to any database (MSSQL, MariaDB, PostgreSQL, etc.)</li>
+                    
+                    <li class="fragment" style="margin-bottom: 0.5em;"><strong>Connection String:</strong> Format is jdbc:[database_type]://host:port/database_name</li>
+                    
+                    <li class="fragment" style="margin-bottom: 0.5em;"><strong>Statement vs PreparedStatement:</strong> Use PreparedStatement for ALL user input!</li>
+                    
+                    <li class="fragment" style="margin-bottom: 0.5em;"><strong>SQL Injection:</strong> A serious security vulnerability that can be completely prevented with prepared statements</li>
+                    
+                    <li class="fragment"><strong>Error Handling:</strong> Always use try-with-resources to properly close database connections</li>
+                </ul>
+
+                <!-- TEACHER NOTE: Review each takeaway before moving to assessment -->
+            </section>
+
+            <!-- SLIDE 17: ASSESSMENT / Q&A -->
+            <section data-background-transition="fade">
+                <h1>Assessment Questions</h1>
+                
+                <div style="font-size: 0.8em; line-height: 2;">
+                    <p style="margin-bottom: 1em;"><strong>Question 1:</strong></p>
+                    <p>What is the main security advantage of PreparedStatement over Statement?</p>
+
+                    <div class="fragment" style="background-color: #87C4A0; color: #fff; padding: 1em; margin-top: 0.5em;">
+                        <p style="font-size: 0.7em;"><strong>Answer:</strong> It prevents SQL injection by treating user input as data, not executable code</p>
+                    </div>
+
+                    <hr style="border-color: #D0F0E0; margin-top: 2em;">
+
+                    <p style="margin-bottom: 1em;"><strong>Question 2:</strong></p>
+                    <p>Why should you use try-with-resources when working with database connections?</p>
+
+                    <div class="fragment" style="background-color: #E07B5F; color: #fff; padding: 1em; margin-top: 0.5em;">
+                        <p style="font-size: 0.7em;"><strong>Answer:</strong> It automatically closes connections and prevents resource leaks</p>
+                    </div>
+                </div>
+
+                <!-- TEACHER NOTE: Use these for quick quiz or discussion -->
+            </section>
+
+            <!-- SLIDE 18: THANK YOU / CONTACT -->
+            <section data-background-transition="fade">
+                <h1 style="font-size: 2em;">Thank You!</h1>
+                
+                <hr style="border-color: #D0F0E0; width: 50%; margin: 2em auto;">
+                
+                <p class="fragment" style="font-size: 1.3em;">Questions?</p>
+                
+                <!-- TEACHER NOTE: Prepare for Q&A session -->
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            
+            // Theme configuration - solarized has built-in high contrast colors
+            theme: 'solarized',
+            
+            // Additional configurations for better readability
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0,
+
+            // print config
+            pdfSeparateFragments: false
+        });
+    </script>
+</body>
+</html>
