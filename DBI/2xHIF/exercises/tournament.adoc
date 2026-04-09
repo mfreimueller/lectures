@@ -1,0 +1,173 @@
+# E-Sports Tournament Management Platform SQL ÜBUNGSSET
+
+== Einfach
+
+=== Frage 1
+
+**Aufgabenstellung:**
+Zeige alle Spiele, die noch aktiv unterstützt werden (i.e. die in der Datenbank eingetragen sind).
+Gib den Titel des Spiels, das Jahr der Veröffentlichung und das Genre an. Sortiere die Ergebnisse nach dem Erscheinungsjahr absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- game_title: ? (Der vollständige Titel des Spiels)
+- release_year: ? (Das Jahr, in dem das Spiel veröffentlicht wurde)
+- genre: ? (Die Kategorie/Genre des Spiels)
+
+---
+
+=== Frage 2
+
+**Aufgabenstellung:**
+Liste alle aktiven Teams zusammen mit ihrem Heimatland und dem Gründungsjahr auf.
+Zeige nur Teams aus den Niederlanden, UK, Deutschland oder der Ukraine. Sortiere nach Teamname alphabetisch.
+
+**Erwartete Ausgabe-Spalten:**
+
+- team_name: ? (Der Name des E-Sports Teams)
+- country: ? (Das Heimatland/Region des Teams)
+- founded_year: ? (Das Jahr, in dem das Team gegründet wurde)
+
+---
+
+=== Frage 3
+
+**Aufgabenstellung:**
+Zeige alle Spieler mit ihrem Gamertag, ihrer Nationalität und ihrer Spielrolle.
+Gib nur die aktiven Spieler aus (also solche, die aktuell keinem Team angehört haben oder noch aktiv sind). Sortiere nach Nachnamen.
+
+**Erwartete Ausgabe-Spalten:**
+
+- gamertag: ? (Der In-Game Spitzname des Spielers)
+- nationality: ? (Die Nationalität des Spielers)
+- role: ? (Die Position/Rolle, die der Spieler im Team einnimmt)
+
+---
+
+=== Frage 4
+
+**Aufgabenstellung:**
+Zeige alle abgeschlossenen Turniere mit ihrem Namen, dem zugehörigen Spiel und der Gesamtpreissumme in US-Dollar.
+Sortiere nach Preissumme absteigend (höchster Preis zuerst).
+
+**Erwartete Ausgabe-Spalten:**
+
+- tournament_name: ? (Der Name des Turniers)
+- game_title: ? (Das Spiel, für das das Turnier veranstaltet wurde)
+- prize_pool_usd: ? (Die Gesamtpreissumme in US-Dollar)
+
+---
+
+== Mittelschwer
+
+=== Frage 5
+
+**Aufgabenstellung:**
+Für jedes Team, das an mindestens einem abgeschlossenen Turnier teilgenommen hat, zeige den Teamnamen, die Anzahl der Turniere,
+in denen es gespielt hat, und die Gesamtzahl aller Siege dieses Teams. Sortiere nach Anzahl der Siege absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- team_name: ? (Der Name des E-Sports Teams)
+- tournaments_participated: ? (Die Anzahl der abgeschlossenen Turniere, an denen das Team teilgenommen hat)
+- total_wins: ? (Die Gesamtzahl aller Siege in allen Turnieren)
+
+---
+
+=== Frage 6
+
+**Aufgabenstellung:**
+Berechne für jede Spielrolle das durchschnittliche Alter der Spieler.
+Zeige nur Rollen, bei denen mindestens 2 Spieler diese Rolle gespielt haben. Gib die Rolle und den Durchschnitt an, sortiert nach Durchschnitten absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- player_role: ? (Die Spielrolle des Spielers)
+- average_age: ? (Das durchschnittliche Alter für Spieler dieser Rolle)
+
+---
+
+=== Frage 7
+
+**Aufgabenstellung:**
+Für jedes Sponsor-Unternehmen, das mindestens ein Team finanziell unterstützt, zeige die Firma, ihre Branche
+und den Gesamtwert aller Verträge in US-Dollar. Zeige nur Unternehmen mit einem Gesamtvertragswert über 500.000 USD. Sortiere nach Wert absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- company_name: ? (Der Name des Sponsor-Unternehmens)
+- industry_category: ? (Die Branche/Kategorie des Unternehmens)
+- total_contract_value_usd: ? (Der Gesamtwert aller Verträge in US-Dollar)
+
+---
+
+=== Frage 8
+
+**Aufgabenstellung:**
+Berechne für jedes Land, das Teams stellt, die Gesamtzahl der aktiven Spieler und das Durchschnittsalter dieser Spieler.
+Gib nur Länder mit mindestens 3 aktiven Spielern aus. Sortiere nach Anzahl der Spieler absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- country: ? (Das Heimatland)
+- active_player_count: ? (Die Gesamtzahl der aktiven Spieler aus diesem Land)
+- average_age: ? (Das Durchschnittsalter aller aktiven Spieler aus dem Land in Jahren)
+
+---
+
+== Schwierigkeit: Viel Spaß!
+
+=== Frage 9
+
+**Aufgabenstellung:**
+Finde alle Teams, die an mindestens einem Turnier teilgenommen haben UND deren durchschnittliche Kill-Death-Ratio (Kills + Assists / Deaths)
+über alle gespielten Matches hinweg besser ist als der Durchschnitt aller Teams. Zeige den Teamnamen, die Anzahl gespielter Matches und die durchschnittliche K/D-Ratio.
+Sortiere nach K/D-Ratio absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- team_name: ? (Der Name des E-Sports Teams)
+- matches_played: ? (Die Gesamtzahl der gespielten Matches)
+- average_kd_ratio: ? (Die durchschnittliche Kill-to-Death-Ratio über alle Matches)
+
+---
+
+=== Frage 10
+
+**Aufgabenstellung:**
+Zeige die Top 3 Teams mit der höchsten KDA-Ratio (Kills + Assists / Deaths) (_Hinweis:_ Nutze hier immer die SUM-Funktion, statt AVG),
+die mindestens in 2 Matches aktiv waren. Gib den Gamertag, die Rolle und die berechnete KDA-Ratio an. Sortiere nach KDA absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- gamertag: ? (Der In-Game Spitzname des Spielers)
+- role: ? (Die Position/Rolle des Spielers)
+- kda_ratio: ? (Die Kill-Death-Assist-Ratio berechnet als (Kills + Assists) / Deaths)
+
+---
+
+=== Frage 11
+
+**Aufgabenstellung:**
+Finde alle Turniere, bei denen die Gesamtzahl der Zuschauerstunden höher ist als der Durchschnitt aller abgeschlossenen Matches.
+Zeige den Turnier-Namen, das Spiel und die Gesamtzahl Zuschauerstunden. Sortiere nach Zuschauerstunden absteigend.
+
+**Erwartete Ausgabe-Spalten:**
+
+- tournament_name: ? (Der Name des Turniers)
+- game_title: ? (Das Spiel für dieses Turnier)
+- total_hours_watched: ? (Die Gesamtzahl der Zuschauerstunden aller Matches im Turnier)
+
+---
+
+=== Frage 12
+
+**Aufgabenstellung:**
+Identifiziere alle Spieler, die in einem Land geboren wurden, das weniger als 5 aktive Spieler insgesamt hat.
+Zeige den Spielernamen, seine Rolle und sein Heimatland (*Hinweis*: Hier würde sich eine Subquery anbieten). Sortiere nach Nachnamen.
+
+**Erwartete Ausgabe-Spalten:**
+
+- player_name: ? (Der vollständige Name des Spielers)
+- role: ? (Die Position/Rolle des Spielers)
+- nationality: ? (Das Heimatland des Spielers)
