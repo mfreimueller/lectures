@@ -1,0 +1,228 @@
+= Debian Hands-On
+
+****
+Alle Aufgaben müssen *dokumentiert* werden in einem Word-Dokument:
+
+[quote]
+--
+* **Screenshots** von jedem wichtigen Schritt
+* **Ausgeschriebene Antworten** auf alle Fragen (nicht nur "ja/nein")
+* **Kommentare**, was du beobachtet hast und welche Fehler aufgetreten sind
+--
+
+****
+
+== Systemupdate durchführen
+
+=== Aufgabe A: Update ausführen
+
+Führe im Terminal folgenden Befehl aus und beobachte den Prozess genau:
+
+[source,bash]
+----
+sudo apt update && sudo apt upgrade -y
+----
+
+*Warte bis der Vorgang abgeschlossen ist.*
+
+=== Frage 1: Was ist betroffen?
+
+****
+Beantworte schriftlich:
+
+* Wie viele Pakete wurden aktualisiert?
+* Welche Paketkategorien sind dabei (z.B. Sicherheit, Kernel, Anwendungen)?
+* Was passiert bei einem Update überhaupt?
+****
+
+== Screenshots erforderlich:
+
+* Terminal mit dem Befehl `sudo apt update && sudo apt upgrade -y`
+* Ausgabe der Aktualisierung (wenn möglich: Scrollbar zeigt Fortschritt)
+
+---
+
+== Differenz verstehen: `apt update` vs. `apt upgrade`
+
+****
+Erkläre schriftlich den Unterschied zwischen diesen beiden Befehlen:
+
+* `sudo apt update` - Was macht dieser Befehl?
+* `sudo apt upgrade` - Was macht dieser Befehl?
+* Warum müssen beide nacheinander ausgeführt werden?
+****
+
+== Screenshots erforderlich:
+
+* Ausgabe von `apt --version`
+* Kurze Erklärung im Word-Dokument mit eigenen Worten
+
+---
+
+== Software installieren
+
+=== Aufgabe A: Chromium nativ installieren
+
+Installiere Chromium über die offizielle Debian-Quelle. Finde heraus, wie du es *nativ* installieren kannst.
+
+=== Frage 2: Chrome Installation
+
+****
+* Welcher Befehl wurde verwendet?
+* Wie startest du Chrome nach der Installation?
+****
+
+=== Aufgabe B: Firefox via Flatpak installieren
+
+[source,bash]
+----
+sudo apt install flatpak -y
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.mozilla.firefox -y
+----
+
+=== Frage 3: Flatpak vs. nativ
+
+****
+* Welche Vorteile hat Flatpak gegenüber der nativen Installation?
+****
+
+== Screenshots erforderlich:
+
+* Chromium-Installation im Terminal
+* Flatpak-Installation im Terminal
+
+---
+
+== Benutzer anlegen (ohne Admin-Rechte)
+
+=== Aufgabe A: Neuen Benutzer erstellen
+
+[source,bash]
+----
+sudo adduser infi
+----
+
+Wähle ein Passwort und fülle die Informationen aus (oder drücke Enter für Standard).
+
+=== Aufgabe B: Benutzer testen
+
+1. Logge dich mit dem neuen Benutzer `infi` aus deinem Hauptkonto aus
+2. Melde dich mit `infi` an
+3. Versuche im Terminal: `sudo apt update`
+
+=== Frage 4: Rechte-Test
+
+****
+Beantworte schriftlich:
+
+* Was passiert, wenn du `sudo apt update` als normaler Benutzer versuchst?
+* Welche Fehlermeldung erhältst du?
+* Warum funktioniert es nicht?
+* Wie würdest du dem neuen Benutzer Admin-Rechte geben?
+****
+
+== Screenshots erforderlich:
+
+* Befehl `sudo adduser infi` im Terminal
+* Login-Bildschirm mit neuem Benutzer sichtbar
+* Fehlermeldung bei `sudo apt update` als normaler Benutzer
+* Ausloggen aus dem neuen Benutzerkonto
+
+---
+
+== Prozesse anzeigen
+
+=== Aufgabe A: Im Terminal
+
+[source,bash]
+----
+# Alle laufenden Prozesse anzeigen
+ps aux
+
+# Alternative mit Prozessbaum
+pstree -p
+
+# Oder mit top (verlasse mit q)
+top
+----
+
+=== Frage 5: Prozess-Analyse
+
+****
+* Wie viele Prozesse laufen insgesamt?
+* Welcher Benutzer hat die meisten Prozesse gestartet?
+* Was ist der `PID` und wofür steht diese Abkürzung?
+* Welche CPU-Auslastung zeigt dein System aktuell an? (aus `top`)
+****
+
+=== Aufgabe B: Mit GUI-Tool
+
+Öffne den *Systemmonitor* oder ein ähnliches Tool über das Menü.
+
+== Screenshots erforderlich:
+
+* Terminal mit `ps aux` Ausgabe
+* Systemmonitor/Prozess-Explorer geöffnet
+* Vergleich der beiden Darstellungen (was siehst du wo?)
+
+---
+
+== Terminal-Befehle ausprobieren
+
+=== Aufgabe A: Grundlegende Befehle
+
+Führe nacheinander folgende Befehle aus und beobachte die Ausgabe:
+
+[source,bash]
+----
+pwd          # Wo befinde ich mich?
+whoami       # Wer bin ich gerade?
+ls           # Was ist in diesem Verzeichnis?
+ls -la       # Was ist in diesem Verzeichnis? (alle Dateien, Details)
+cd Downloads/   # Wechsle in das Downloads-Verzeichnis
+pwd          # Wo bin ich jetzt?
+----
+
+=== Frage 6: Befehle verstehen
+
+****
+Beantworte schriftlich zu jedem Befehl:
+
+* `pwd` - Was bedeutet diese Abkürzung und was zeigt sie an?
+* `whoami` - Warum ist das nützlich?
+* Unterschied zwischen `ls` und `ls -la`: Was wird zusätzlich angezeigt? (mindestens 3 Punkte)
+* Nach dem Befehl `cd Downloads/`: Wie heißt der vollständige Pfad jetzt?
+****
+
+== Screenshots erforderlich:
+
+* Jede Ausgabe der oben genannten Befehle einzeln dokumentieren
+* Vergleich von `ls` vs. `ls -la` nebeneinander im Word-Dokument
+
+---
+
+== Systeminformationen auslesen
+
+=== Aufgabe A: RAM-Anzeige
+
+****
+Finde heraus, wie viel RAM deine VM hat durch einen Linux-Befehl.
+
+Hinweis: Befehle zu versuchen könnten sein: `free -h`, `cat /proc/meminfo`, `lsmem`
+****
+
+=== Frage 7: Speicheranalyse
+
+****
+Beantworte schriftlich:
+
+* Welchen Befehl hast du verwendet, um den RAM auszugeben?
+* Wie viel RAM hat deine VM insgesamt? (in GB und MB angeben)
+* Wie viel ist davon aktuell belegt? (aus `free -h` ablesen)
+* Was bedeuten die Spalten "total", "used" und "available"?
+****
+
+== Screenshots erforderlich:
+
+* Ausgabe des RAM-Befehls im Terminal

@@ -2,10 +2,10 @@
 
 ## Learning Objectives
 By the end of this lecture, students will be able to:
-- [ ] Identify at least four different types of media license models (proprietary, open source, Creative Commons, public domain)
-- [ ] Explain when each license type is appropriate for use in professional contexts
-- [ ] Evaluate media content to determine its licensing restrictions before use
-- [ ] Apply proper attribution requirements according to specific license terms
+- Identify at least four different types of media license models (proprietary, open source, Creative Commons, public domain)
+- Explain when each license type is appropriate for use in professional contexts
+- Evaluate media content to determine its licensing restrictions before use
+- Apply proper attribution requirements according to specific license terms
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lecture, students will be able to:
 **Example/Case Study**: 
 Show the 2014 case of a small business fined €5,000+ for using copyrighted stock photos without licenses. Discuss how this could affect any student starting their own business after graduation.
 
-[https://www.wko.at/ktn/service/urheberrecht-und-urheberrechtsverletzung]
+https://www.wko.at/ktn/service/urheberrecht-und-urheberrechtsverletzung
 
 ---
 
@@ -60,6 +60,9 @@ Show the 2014 case of a small business fined €5,000+ for using copyrighted sto
 
 **Example/Case Study**: 
 Compare two images from Wikimedia Commons (CC BY) vs. a Shutterstock image (proprietary). Show how attribution looks different for each. Discuss when an HTL student might choose one over another based on project requirements and budget.
+
+
+https://choosealicense.com/
 
 ---
 

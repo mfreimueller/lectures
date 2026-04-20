@@ -8,10 +8,10 @@
 
 ## Learning Objectives
 By the end of this lecture, students will be able to:
-- [ ] Identify at least three major societal implications of emerging technologies (automation/AI, social media/privacy, environmental impact)
-- [ ] Articulate both positive and negative consequences of new technology in professional contexts
-- [ ] Begin thinking critically about their role as future technology developers and ethical decision-makers
-- [ ] Engage constructively with diverse perspectives on technology's societal impact
+- Identify at least three major societal implications of emerging technologies (automation/AI, social media/privacy, environmental impact)
+- Articulate both positive and negative consequences of new technology in professional contexts
+- Begin thinking critically about their role as future technology developers and ethical decision-makers
+- Engage constructively with diverse perspectives on technology's societal impact
 
 ---
 
