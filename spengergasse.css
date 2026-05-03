@@ -54,6 +54,10 @@ li.unmarked {
     list-style-type: none !important;
 }
 
+.italic {
+    font-style: italic;
+}
+
 /*********************************************
  * REVEAL.JS CORE OVERRIDES
  *********************************************/
