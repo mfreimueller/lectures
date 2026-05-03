@@ -35,9 +35,9 @@
     /* ============================================
      * LOGO CONFIGURATION - CUSTOMIZE THESE PATHS
      * ============================================ */
-    --logo-path-light: url('spengergasse_logo_300.png');
+    --logo-path-light: url('https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png');
     /* Logo for dark backgrounds */
-    --logo-path-dark: url('spengergasse_logo_300.png');
+    --logo-path-dark: url('https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png');
     /* Logo for light backgrounds */
     --logo-width: 180px;
     --logo-height: auto;
