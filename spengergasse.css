@@ -1,0 +1,644 @@
+/* 
+ * HTL Spengergasse Custom Theme for reveal.js
+ * Based on the school's identity as Austria's technical education institution
+ */
+
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+:root {
+    /* Primary Colors - Austrian Red/White inspired */
+    --spenger-red: #D32F2F;
+    --spenger-red-dark: #B71C1C;
+    --spenger-red-light: #EF5350;
+    
+    /* Secondary/Accent Colors */
+    --spenger-blue: #1976D2;
+    --spenger-blue-dark: #0D47A1;
+    
+    /* Neutral Colors */
+    --spenger-gray-dark: #212121;
+    --spenger-gray-medium: #616161;
+    --spenger-gray-light: #BDBDBD;
+    --spenger-white: #FFFFFF;
+    --spenger-offwhite: #FAFAFA;
+    
+    /* Typography */
+    --spenger-font-primary: 'Sommet Regular', 'Helvetica Neue', Arial, sans-serif;
+    --spenger-font-heading: 'Sommet Fett' 'Arial Black', 'Impact', sans-serif;
+    
+    /* ============================================
+     * LOGO CONFIGURATION - CUSTOMIZE THESE PATHS
+     * ============================================ */
+    --logo-path-light: 'images/logo-spengergasse-white.png';  /* Logo for dark backgrounds */
+    --logo-path-dark: 'images/logo-spengergasse-color.png';   /* Logo for light backgrounds */
+    --logo-width: 120px;
+    --logo-height: auto;
+}
+
+/*********************************************
+ * REVEAL.JS CORE OVERRIDES
+ *********************************************/
+.reveal {
+    font-family: var(--spenger-font-primary);
+    color: var(--spenger-gray-dark);
+    background-color: var(--spenger-offwhite);
+    
+    /* Optional: Add logo as watermark background */
+    /* Uncomment the line below to add a subtle logo watermark */
+    /* background-image: url(var(--logo-path-light)); */
+    /* background-blend-mode: overlay; */
+    /* opacity: 0.05; */
+}
+
+/*********************************************
+ * TITLE SLIDE STYLES WITH LOGO
+ *********************************************/
+.reveal .title-slide {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Logo positioned at top of title slide */
+.reveal .title-slide::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    width: var(--logo-width);
+    height: auto;
+    background-image: url(var(--logo-path-light));
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.reveal .title-slide {
+    background: linear-gradient(135deg, 
+        var(--spenger-red) 0%, 
+        var(--spenger-red-dark) 100%);
+}
+
+.reveal .title-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.1) 2px,
+            rgba(255, 255, 255, 0.1) 4px
+        );
+}
+
+.reveal .title-slide h1 {
+    color: var(--spenger-white);
+    font-size: 3em;
+    text-shadow: none;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.7);
+    padding-bottom: 20px;
+}
+
+.reveal .title-slide h2 {
+    color: var(--spenger-white);
+    font-size: 1.8em;
+    opacity: 0.9;
+}
+
+.reveal .title-slide p.author,
+.reveal .title-slide p.institution {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2em;
+    margin-top: 30px;
+}
+
+/*********************************************
+ * HEADINGS STYLES WITH LOGO ACCENTS
+ *********************************************/
+.reveal h1 {
+    color: var(--spenger-red-dark);
+    text-transform: none;
+    border-left: 6px solid var(--spenger-red);
+    padding-left: 20px;
+    margin-bottom: 30px;
+    
+    /* Optional: Add logo icon before heading */
+    /* display: flex; align-items: center; */
+}
+
+.reveal h1::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(var(--logo-path-dark));
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 15px;
+}
+
+.reveal h2 {
+    color: var(--spenger-blue-dark);
+    font-weight: bold;
+    text-transform: none;
+    border-bottom: 2px solid var(--spenger-gray-light);
+    padding-bottom: 15px;
+    margin-top: 40px;
+}
+
+.reveal h3 {
+    color: var(--spenger-red);
+    font-weight: bold;
+    text-transform: none;
+    border-left: 4px solid var(--spenger-blue);
+    padding-left: 15px;
+    margin-top: 30px;
+}
+
+.reveal h4 {
+    color: var(--spenger-gray-dark);
+    font-weight: bold;
+    text-transform: none;
+    border-left: 3px solid var(--spenger-red-light);
+    padding-left: 12px;
+    margin-top: 25px;
+}
+
+/*********************************************
+ * TEXT STYLES
+ *********************************************/
+.reveal p,
+.reveal li {
+    color: var(--spenger-gray-dark);
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+.reveal strong {
+    color: var(--spenger-red-dark);
+    font-weight: bold;
+}
+
+.reveal em {
+    color: var(--spenger-blue-dark);
+    font-style: italic;
+}
+
+.reveal a {
+    color: var(--spenger-blue);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.reveal a:hover {
+    color: var(--spenger-red);
+    text-decoration: underline;
+}
+
+/*********************************************
+ * CODE BLOCKS
+ *********************************************/
+.reveal pre {
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reveal code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background-color: #2D2D2D;
+    color: var(--spenger-white);
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.reveal pre code {
+    display: block;
+    padding: 20px;
+    overflow-x: auto;
+    font-size: 0.8em !important;
+}
+
+/*********************************************
+ * LISTS STYLES WITH LOGO BULLETS
+ *********************************************/
+.reveal ul,
+.reveal ol {
+    border-left: 3px solid var(--spenger-red);
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.reveal li::before {
+    color: var(--spenger-blue) !important;
+    font-weight: bold;
+    
+    /* Optional: Replace bullet with logo */
+    /* content: '' !important; */
+    /* background-image: url(var(--logo-path-dark)) !important; */
+    /* width: 12px; height: 12px; display: inline-block; */
+}
+
+/*********************************************
+ * IMAGES & FIGURES WITH LOGO CAPTIONS
+ *********************************************/
+.reveal figure {
+    background-color: var(--spenger-white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.reveal figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.reveal figcaption {
+    color: var(--spenger-gray-medium);
+    font-size: 0.7em;
+    margin-top: 15px;
+    text-align: center;
+    font-style: italic;
+    
+    /* Optional: Add logo before caption */
+    /* display: flex; align-items: center; justify-content: center; gap: 10px; */
+}
+
+.reveal figcaption::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url(var(--logo-path-dark));
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    /* Uncomment to show logo */
+    /* display: block; */
+}
+
+/*********************************************
+ * TABLES STYLES
+ *********************************************/
+.reveal table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: var(--spenger-white);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.reveal th {
+    background-color: var(--spenger-red-dark);
+    color: var(--spenger-white);
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 3px solid var(--spenger-gray-light);
+}
+
+.reveal td {
+    padding: 10px;
+    border-bottom: 1px solid var(--spenger-gray-light);
+    color: var(--spenger-gray-dark);
+}
+
+.reveal tr:nth-child(even) {
+    background-color: rgba(25, 118, 210, 0.05);
+}
+
+/*********************************************
+ * BLOCKQUOTES WITH LOGO ACCENTS
+ *********************************************/
+.reveal blockquote {
+    border-left: 6px solid var(--spenger-red);
+    margin: 30px auto;
+    padding: 20px 30px;
+    background-color: rgba(211, 47, 47, 0.05);
+    border-radius: 8px;
+    
+    /* Optional: Add logo icon */
+    /* position: relative; padding-left: 60px; */
+}
+
+.reveal blockquote::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-image: url(var(--logo-path-dark));
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    /* Uncomment to show logo */
+    /* display: block; */
+}
+
+.reveal blockquote p {
+    font-size: 1em !important;
+    font-style: italic;
+    color: var(--spenger-gray-dark);
+}
+
+.reveal blockquote cite {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.7em;
+    color: var(--spenger-blue);
+    font-style: normal;
+}
+
+/*********************************************
+ * NOTES & HINTS WITH LOGO INDICATORS
+ *********************************************/
+.reveal .notes {
+    background-color: rgba(25, 118, 210, 0.1);
+    border-left: 4px solid var(--spenger-blue);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.reveal .hint {
+    background-color: rgba(211, 47, 47, 0.1);
+    border-left: 4px solid var(--spenger-red);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+/*********************************************
+ * FOOTER WITH LOGO (UPDATED)
+ *********************************************/
+.reveal .footer {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reveal .footer .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.reveal .footer .school-logo {
+    width: var(--logo-width);
+    height: auto;
+    object-fit: contain;
+    
+    /* Use the dark version of logo for light footer */
+    background-image: url(var(--logo-path-dark));
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.reveal .footer .school-name {
+    font-weight: bold;
+    color: var(--spenger-red-dark);
+    font-size: 0.8em;
+}
+
+.reveal .footer .slide-number {
+    background-color: var(--spenger-blue);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.reveal .footer .date {
+    color: var(--spenger-gray-medium);
+    font-size: 0.8em;
+}
+
+/*********************************************
+ * HEADER WITH LOGO (NEW SECTION)
+ *********************************************/
+.reveal .header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reveal .header .logo-container {
+    width: var(--logo-width);
+    height: auto;
+    
+    /* Use light version for dark header background */
+    background-image: url(var(--logo-path-light));
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.reveal .header .school-name {
+    font-weight: bold;
+    color: var(--spenger-red-dark);
+    font-size: 0.9em;
+}
+
+/*********************************************
+ * HIGHLIGHT BOXES WITH LOGO ICONS
+ *********************************************/
+.reveal .highlight-box {
+    background-color: rgba(211, 47, 47, 0.1);
+    border-left: 6px solid var(--spenger-red);
+    padding: 25px;
+    margin: 30px auto;
+    border-radius: 8px;
+    
+    /* Optional: Add logo icon */
+    /* position: relative; padding-left: 70px; */
+}
+
+.reveal .highlight-box::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 25px;
+    width: 40px;
+    height: 40px;
+    background-image: url(var(--logo-path-dark));
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    /* Uncomment to show logo */
+    /* display: block; */
+}
+
+.reveal .important {
+    color: var(--spenger-red-dark) !important;
+    font-weight: bold !important;
+}
+
+.reveal .success {
+    color: #2E7D32 !important;
+}
+
+.reveal .warning {
+    color: #F57C00 !important;
+}
+
+/*********************************************
+ * NAVIGATION ARROWS WITH LOGO THEME
+ *********************************************/
+.reveal .controls button::after {
+    background-color: var(--spenger-red);
+}
+
+.reveal .progress bar {
+    background-color: var(--spenger-blue);
+}
+
+/*********************************************
+ * PRINT STYLES
+ *********************************************/
+@media print {
+    .reveal .title-slide {
+        background: linear-gradient(135deg, 
+            var(--spenger-red) 0%, 
+            var(--spenger-red-dark) 100%);
+    }
+    
+    /* Include logo in printed output */
+    .reveal .footer::before {
+        content: '';
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: var(--logo-width);
+        height: auto;
+        background-image: url(var(--logo-path-dark));
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .reveal h1,
+    .reveal h2,
+    .reveal h3 {
+        color: black !important;
+    }
+}
+
+/*********************************************
+ * RESPONSIVE DESIGN
+ *********************************************/
+@media (max-width: 768px) {
+    :root {
+        --spenger-font-size-base: 0.8em;
+        --logo-width: 80px; /* Smaller logo on mobile */
+    }
+    
+    .reveal h1 {
+        font-size: 2em !important;
+    }
+    
+    .reveal h2 {
+        font-size: 1.5em !important;
+    }
+    
+    .reveal p,
+    .reveal li {
+        font-size: var(--spenger-font-size-base) !important;
+    }
+    
+    /* Hide footer on small screens */
+    .reveal .footer {
+        display: none;
+    }
+}
+
+/*********************************************
+ * DARK MODE SUPPORT (Optional)
+ *********************************************/
+@media (prefers-color-scheme: dark) {
+    :root {
+        --spenger-gray-dark: #E0E0E0;
+        --spenger-offwhite: #121212;
+        --spenger-white: #1E1E1E;
+        --spenger-red-light: #FF5252;
+    }
+    
+    .reveal {
+        background-color: var(--spenger-offwhite);
+        color: var(--spenger-gray-dark);
+    }
+    
+    .reveal h1,
+    .reveal h2,
+    .reveal h3,
+    .reveal h4,
+    .reveal p {
+        color: var(--spenger-gray-dark) !important;
+    }
+    
+    /* Use light logo on dark backgrounds */
+    :root {
+        --logo-path-light: 'images/logo-spengergasse-white.png';
+        --logo-path-dark: 'images/logo-spengergasse-color.png';
+    }
+}
+
+/*********************************************
+ * HTL SPIRIT - CUSTOM ANIMATIONS
+ *********************************************/
+@keyframes spenger-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal .spenger-animate {
+    animation: spenger-fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes spenger-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.reveal .spenger-pulse {
+    animation: spenger-pulse 2s ease-in-out infinite;
+}
+
+@keyframes spenger-slide-logo {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.reveal .logo-animate-in {
+    animation: spenger-slide-logo 0.8s ease-out forwards;
+}
