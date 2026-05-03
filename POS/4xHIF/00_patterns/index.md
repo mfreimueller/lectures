@@ -14,7 +14,8 @@ Increase the students awareness for well thought through patterns in software en
 
 ### Introduction
 
-Intro-Question: **What is good code?** - Collect ideas.
+Intro-Question: **What is good code?**
+_Collect ideas._
 
 Suggestions:
 - readable
@@ -22,10 +23,11 @@ Suggestions:
 - extensible
 - simple
 
-**Is this always achievable in real-world scenarios? And do you think that writing good code is easy?** - Think about deadline, moving target, budget pressure etc.
+**Is this always achievable in real-world scenarios? And do you think that writing good code is easy?**
+_Think about deadline, moving target, budget pressure etc._
 
 In OO world: **SOLID** principles (if lesson is 50 minutes: briefly touch, otherwise dive into it slightly deeper):
-- **Single responsibility principle**: each class should have one responsibility (responsibility = _reason to change_)
+- **Single responsibility principle**: each class should have one responsibility (responsibility = reason to change)
     - suppose a class printing reports: reasons to change are:
         1. content of report could change
         2. format of report could change
@@ -64,13 +66,11 @@ What are problem categories we encountered this year?
 
 For more, see: https://martinfowler.com/articles/enterprisePatterns.html
 
-### Think-Pair-Share
+**Think about patterns you encountered this year via Think-Pair-Share.**
 
-**Think about patterns you encountered this year.**
+_Collect the results on the blackboard as a mind-map._
 
-Collect the results on the blackboard as a mind-map.
-
-Show and pass around both books.
+_Show and pass around both books._
 
 #### Some ideas...
 
@@ -94,7 +94,7 @@ Show and pass around both books.
     - Layer Supertype
         - A superclass in a layer holding methods/fields relevant to all layer classes (think: AbstractEntity)
 
-**Group them by _design patterns_ and _architectural patterns_**.
+**Group them by design patterns and architectural patterns**.
 
 Is **Layered Architecture** (Domain, Persistance, Service, Presentation) a pattern? ... yes, it is an architectural pattern.
 
@@ -127,21 +127,19 @@ Question: when thinking about writing software, which categories for different p
 
 ### Group Task
 
-Showcase the dummy project for the strategy pattern. Ask them for their gut feeling about issues with this solution. Then ask them to read up on the strategy pattern.
+_Showcase the dummy project for the strategy pattern. Ask them for their gut feeling about issues with this solution. Then ask them to read up on the strategy pattern._
 
 ```
 Get together in teams of 2-3 and fork the project on GitHub classrooms.
 
 Look over the code and try to refactor it, by applying the principles and patterns we discussed today.
 
-Focus on controllers first. The DatabaseInitializer is meant as an addition, if there is too much time left.
-
 Do 5 minute blocks of driver and reviewer.
 
 At the end I pick 1-3 teams via wheel-spinning and let them show their solutions via MS Teams on the beamer.
 ```
 
-Teams should be able to answer:
+_Teams should be able to answer:_
 - which issues did you spot?
 - why was X an issue to you?
 - how did you solve it?

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Patterns Lesson - HTL Spengergasse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title Page -->
+            <section class="center title-slide" data-auto-animate>
+                <h1>Patterns Lesson</h1>
+                <p class="institution">POS1 - 4EHIF</p>
+            </section>
+
+            <!-- Slide 3: Think-Pair-Share Activity -->
+            <section data-auto-animate>
+                <h2>Think-Pair-Share Activity</h2>
+                <div class="highlight-box">
+                    <p><strong>Think-Pair-Share</strong> is an instructional strategy where students:</p>
+                    <ol>
+                        <li class="fragment"><strong>Think</strong> individually about a question</li>
+                        <li class="fragment"><strong>Pair up</strong> to discuss their ideas with a partner</li>
+                        <li class="fragment"><strong>Share</strong> with the larger group</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 4: Introduction - What is Good Code? -->
+            <section class="center" data-auto-animate>
+                <div class="highlight-box">
+                    <h3 class="centered">What is good code?</h3>
+                </div>
+            </section>
+
+            <!-- Slide 5: Metrics of Good Code -->
+            <section data-auto-animate>
+                <h2>A Suggestion...</h2>
+                <ul>
+                    <li><strong>Readable</strong></li>
+                    <li><strong>Maintainable</strong></li>
+                    <li><strong>Extensible</strong></li>
+                    <li><strong>Simple</strong></li>
+                </ul>
+            </section>
+
+            <!-- Slide 6: Real-World Considerations -->
+            <section data-auto-animate>
+                <h2>Real-World Considerations</h2>
+                <ul>
+                    <li class="fragment">Deadline</li>
+                    <li class="fragment">Moving target</li>
+                    <li class="fragment">Budget pressure considerations</li>
+                </ul>
+                <h3 class="fragment">How to produce good code?</h3>
+            </section>
+
+            <!-- Slide 7: SOLID Principles -->
+            <section data-auto-animate>
+                <h2>SOLID Principles</h2>
+                
+                <ul style="font-size: 1.5em;">
+                    <li class="fragment"><strong style="font-size: 1.2em;">S</strong>ingle Responsibility Principle</li>
+                    <li class="fragment"><strong style="font-size: 1.2em;">O</strong>pen-Closed Principle</li>
+                    <li class="fragment"><strong style="font-size: 1.2em;">L</strong>iskov Substitution Principle</li>
+                    <li class="fragment"><strong style="font-size: 1.2em;">I</strong>nterface Segregation Principle</li>
+                    <li class="fragment"><strong style="font-size: 1.2em;">D</strong>ependency Inversion Principle</li>
+                </ul>
+            </section>
+
+            <section data-auto-animate>
+                <h2>Single Responsibility Principle</h2>
+                
+                <p><em>Each class should have one responsibility</em></p>
+                <ul>
+                    <li class="fragment">responsibility = reason to change</li>
+                    <li class="fragment">Suppose a class printing reports</li>
+                    <li class="fragment">Reasons to change:</li>
+                    <ol>
+                        <li class="fragment">Content of report could change</li>
+                        <li class="fragment">Format of report could change</li>
+                    </ol>
+                    <li class="fragment"><strong>2 reasons = 2 responsibilities → split in two classes</strong></li>
+                </ul>
+            </section>
+
+            <section data-auto-animate>
+                <h2>Open-Closed Principle</h2>
+                <p><em>Classes should be open for extension but closed for modification</em></p>
+                <ul>
+                    <li class="fragment">Historically: classes in libraries, when changed, require many programs to change</li>
+                    <li class="fragment">Openness to extension prevents this - simply make class parent</li>
+                </ul>
+            </section>
+
+            <section data-auto-animate>
+                <h2>Dependency Inversion Principle</h2>
+                <p><em>Depend upon abstractions, not concretes</em></p>
+                <ul>
+                    <li class="fragment">Depending on interfaces (abstractions) not implementations</li>
+                    <li class="fragment">Example: Repositories in our projects:</li>
+                    <ul>
+                        <li class="fragment">Unit testing</li>
+                        <li class="fragment">Mocking</li>
+                    </ul>
+                </ul>
+            </section>
+
+            <!-- Slide 8: Transition to Patterns -->
+            <section data-auto-animate>
+                <h2>Proposal for a solution</h2>
+                <div class="highlight-box">
+                    <p><strong>Think about the typical essay structure:</strong></p>
+                    <p class="centered fragment">Introduction - Main part - Conclusion</p>
+                    <br>
+                    <p class="fragment"><strong>What could be a name for this 'structure'?</strong></p>
+                </div>
+                <h2 class="fragment" style="text-align: center; color: var(--spenger-red-dark);">Pattern!</h2>
+            </section>
+
+            <!-- Slide 9: What is a Pattern? -->
+            <section data-auto-animate>
+                <h2>What is a Pattern?</h2>
+                
+                <blockquote class="fragment">
+                    "A pattern describes the core of a solution to a problem you encounter over and over again."
+                </blockquote>
+
+                <p class="fragment">Design patterns give programmers <strong>a way to talk about problems and solutions without talking about code</strong>.
+            </section>
+
+            <section class="center" data-auto-animate>
+                <div class="highlight-box">
+                    <h3>Which patterns have you encountered this year?</h3>
+                </div>
+            </section>
+
+            <!-- Slide 10: Problem Categories -->
+            <section data-auto-animate>
+                <h2>Problem Categories</h2>
+                <ul>
+                    <li><strong>Design problems</strong></li>
+                    <li><strong>Architecture problems</strong></li>
+                    <li><a href="https://martinfowler.com/articles/enterprisePatterns.html">See here for more</a></li>
+                </ul>
+            </section>
+
+            <!-- Slide 11: Pattern Categories Overview -->
+            <section data-auto-animate>
+                <h2>Design Pattern Categories</h2>
+
+                <h3 class="fragment">Creational Patterns</h3>
+                <ul class="fragment">
+                    <li>Abstract instantiation processes</li>
+                    <li>Help make system independent of how its objects are created, composed and represented</li>
+                </ul>
+
+                <h3 class="fragment">Structural Patterns</h3>
+                <ul class="fragment">
+                    <li>How classes and objects are composed to form larger structures</li>
+                </ul>
+
+                <h3 class="fragment">Behavioral Patterns</h3>
+                <ul class="fragment">
+                    <li>Concerned with algorithms and the assignment of responsibility between objects</li>
+                </ul>
+            </section>
+
+            <!-- Slide 12: Design Patterns We'll Focus On -->
+            <section data-auto-animate>
+                <h2>Design Patterns We'll Focus On</h2>
+                <ol style="font-size: 0.9em;">
+                    <li><strong>Builder</strong> pattern</li>
+                    <li><strong>Repository</strong> pattern</li>
+                    <li><strong>Façade</strong> pattern</li>
+                    <li><strong>Strategy</strong> pattern</li>
+                </ol>
+            </section>
+
+            <!-- Slide 13: Builder Pattern -->
+            <section data-auto-animate>
+                <h2>Builder Pattern</h2>
+                <p class="fragment"><strong>Purpose:</strong> Creational pattern that abstracts instantiation processes</p>
+
+                <div class="highlight-box">
+                    <pre class="fragment"><code class="language-javascript">class User {
+  constructor() {}
+  setName(name) { this.name = name; return this; }
+  setEmail(email) { this.email = email; return this; }
+  build() { return new User(this); }
+}
+
+const user = new User()
+    .setName("John")
+    .setEmail("john@example.com")
+    .build();</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 14: Repository Pattern -->
+            <section data-auto-animate>
+                <h2>Repository Pattern</h2>
+                <p class="fragment"><strong>Purpose:</strong> Architectural pattern for data access abstraction</p>
+
+                <div class="highlight-box">
+                    <pre class="fragment"><code class="language-typescript">interface UserRepository {
+  findById(id);
+  save(user);
+}
+
+class UserService {
+  constructor(private repository: UserRepository) {}
+  getUser(id) { return this.repository.findById(id); }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 15: Façade Pattern -->
+            <section data-auto-animate>
+                <h2>Façade Pattern</h2>
+                <p class="fragment"><strong>Purpose:</strong> Provides a unified interface to a set of interfaces in a subsystem</p>
+
+                <div class="highlight-box">
+                    <pre class="fragment"><code class="language-typescript">class OrderFacade {
+  constructor(
+    private orderRepo, 
+    private logger, 
+    private paymentService
+  ) {}
+  
+  createOrder(orderData) {
+    const order = this.orderRepo.create(orderData);
+    this.logger.log("Order created");
+    return order;
+  }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 16: Strategy Pattern -->
+            <section data-auto-animate>
+                <h2>Strategy Pattern</h2>
+                <p class="fragment"><strong>Purpose:</strong> Behavioral pattern for defining interchangeable algorithms</p>
+
+                <div class="highlight-box">
+                    <pre class="fragment"><code class="language-typescript">class PaymentStrategy {
+  pay(amount) {}
+}
+
+class CreditCardPayment extends PaymentStrategy {
+  pay(amount) { /* credit card logic */ }
+}
+
+class PayPalPayment extends PaymentStrategy {
+  pay(amount) { /* paypal logic */ }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 17: Group Task -->
+            <section data-auto-animate>
+                <h2>Group Task</h2>
+                
+                <div class="highlight-box">
+                    <p><strong>Refactoring Of vibe coded Project</strong></p>
+                    
+                    <ul style="margin-top: 20px;">
+                        <li><strong>Teams of 2-3</strong></li>
+                        <li><strong>Refactoring of vibe coded project</strong></li>
+                        <li><strong>Project source:</strong> GitHub classroom</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 18: Team Discussion Questions -->
+            <section data-auto-animate>
+                <h2>Team Discussion Questions</h2>
+                
+                <div class="highlight-box">
+                    <ol style="margin-top: 20px;">
+                        <li><strong>Which issues did you spot?</strong></li>
+                        <li><strong>Why was X an issue to you?</strong></li>
+                        <li><strong>How did you solve it?</strong></li>
+                        <li><strong>Are there any downsides to your solution?</strong></li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 19: Anti-Patterns Overview -->
+            <section data-auto-animate>
+                <h2>Anti-Patterns Overview</h2>
+                
+                <p>If there are software patterns, are there also anti-patterns?</p>
+                
+                <div class="highlight-box">
+                    <h3 class="fragment">
+                        <a href="https://dev.to/yogini16/anti-patterns-that-every-developer-should-know-4nph" target="_blank">
+                            Yes!
+                        </a>
+                    </h3>
+                </div>
+            </section>
+
+            <!-- Slide 20: Conclusion - Reflection on Patterns -->
+            <section data-auto-animate>
+                <h2>Reflection on Patterns</h2>
+                
+                <div class="highlight-box">
+                    <h3 class="fragment">What is the benefit of patterns?</h3>
+                </div>
+                <div class="highlight-box">
+                    <h3 class="fragment">Could there be too much pattern-usage?</h3>
+                </div>
+            </section>
+
+            <!-- Slide 21: YAGNI Principle -->
+            <section data-auto-animate>
+                <h2>YAGNI Principle</h2>
+                
+                <p class="fragment"><strong>You Aren't Gonna Need It</strong></p>
+                <p class="fragment"><em>principle from Extreme Programming (XP)</em></p>
+                
+                <div class="highlight-box">
+                    <p class="fragment"><strong>Functionality should only be added when necessary, not when anticipated:</strong></p>
+                    
+                    <ul style="margin-top: 20px;">
+                        <li class="fragment">Prevent over-engineering</li>
+                        <li class="fragment">Reduce code bloat</li>
+                        <li class="fragment">Save development time by focusing strictly on current requirements rather than future, speculative needs</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center" data-auto-animate>
+                <h2 class="centered">Thank you!</h2>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+    </script>
+</body>
+</html>
