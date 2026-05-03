@@ -8,32 +8,50 @@
  *********************************************/
 :root {
     /* Primary Colors - Austrian Red/White inspired */
-    --spenger-red: #D32F2F;
-    --spenger-red-dark: #B71C1C;
-    --spenger-red-light: #EF5350;
-    
+    --spenger-red: #000;
+    /* #D32F2F; */
+    --spenger-red-dark: #000;
+    /* #B71C1C; */
+    --spenger-red-light: #000;
+    /* #EF5350; */
+
     /* Secondary/Accent Colors */
-    --spenger-blue: #1976D2;
-    --spenger-blue-dark: #0D47A1;
-    
+    --spenger-blue: #000;
+    /* #1976D2; */
+    --spenger-blue-dark: #000;
+    /* #0D47A1; */
+
     /* Neutral Colors */
     --spenger-gray-dark: #212121;
     --spenger-gray-medium: #616161;
     --spenger-gray-light: #BDBDBD;
     --spenger-white: #FFFFFF;
     --spenger-offwhite: #FAFAFA;
-    
+
     /* Typography */
     --spenger-font-primary: 'Sommet Regular', 'Helvetica Neue', Arial, sans-serif;
     --spenger-font-heading: 'Sommet Fett' 'Arial Black', 'Impact', sans-serif;
-    
+
     /* ============================================
      * LOGO CONFIGURATION - CUSTOMIZE THESE PATHS
      * ============================================ */
-    --logo-path-light: 'images/logo-spengergasse-white.png';  /* Logo for dark backgrounds */
-    --logo-path-dark: 'images/logo-spengergasse-color.png';   /* Logo for light backgrounds */
-    --logo-width: 120px;
+    --logo-path-light: url('spengergasse_logo_300.png');
+    /* Logo for dark backgrounds */
+    --logo-path-dark: url('spengergasse_logo_300.png');
+    /* Logo for light backgrounds */
+    --logo-width: 180px;
     --logo-height: auto;
+}
+
+/*********************************************
+ * CUSTOM CLASSES
+ *********************************************/
+.centered {
+    text-align: center;
+}
+
+li.unmarked {
+    list-style-type: none !important;
 }
 
 /*********************************************
@@ -43,12 +61,43 @@
     font-family: var(--spenger-font-primary);
     color: var(--spenger-gray-dark);
     background-color: var(--spenger-offwhite);
-    
+
     /* Optional: Add logo as watermark background */
     /* Uncomment the line below to add a subtle logo watermark */
     /* background-image: url(var(--logo-path-light)); */
     /* background-blend-mode: overlay; */
     /* opacity: 0.05; */
+}
+
+.reveal .slides {
+    text-align: left !important;
+}
+
+/*********************************************
+ * SLIDE STYLES WITH LOGO
+ *********************************************/
+.reveal {
+    position: relative;
+}
+
+/* Logo positioned at top of slide */
+.reveal::after {
+    content: '';
+    position: absolute;
+
+    bottom: 0px;
+    left: 20px;
+
+    width: var(--logo-width);
+    height: 120px;
+
+    background-image: var(--logo-path-light);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    pointer-events: none;
+    z-index: 10;
 }
 
 /*********************************************
@@ -57,25 +106,7 @@
 .reveal .title-slide {
     position: relative;
     overflow: hidden;
-}
-
-/* Logo positioned at top of title slide */
-.reveal .title-slide::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    width: var(--logo-width);
-    height: auto;
-    background-image: url(var(--logo-path-light));
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.reveal .title-slide {
-    background: linear-gradient(135deg, 
-        var(--spenger-red) 0%, 
-        var(--spenger-red-dark) 100%);
+    text-align: center;
 }
 
 .reveal .title-slide::before {
@@ -85,34 +116,32 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
-        repeating-linear-gradient(
-            45deg,
+    background-image:
+        repeating-linear-gradient(45deg,
             transparent,
             transparent 2px,
-            rgba(255, 255, 255, 0.1) 2px,
-            rgba(255, 255, 255, 0.1) 4px
-        );
+            rgba(254, 252, 255, 0.1) 2px,
+            rgba(254, 252, 255, 0.1) 4px);
 }
 
 .reveal .title-slide h1 {
-    color: var(--spenger-white);
-    font-size: 3em;
+    color: var(--spenger-red);
+    font-size: 4em;
     text-shadow: none;
-    border-bottom: 4px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 4px solid rgba(0, 0, 0, 0.7);
     padding-bottom: 20px;
 }
 
 .reveal .title-slide h2 {
-    color: var(--spenger-white);
-    font-size: 1.8em;
+    color: var(--spenger-red);
+    font-size: 2.5em;
     opacity: 0.9;
 }
 
 .reveal .title-slide p.author,
 .reveal .title-slide p.institution {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2em;
+    color: rgba(0, 0, 0, 0.9);
+    font-size: 2em;
     margin-top: 30px;
 }
 
@@ -125,7 +154,7 @@
     border-left: 6px solid var(--spenger-red);
     padding-left: 20px;
     margin-bottom: 30px;
-    
+
     /* Optional: Add logo icon before heading */
     /* display: flex; align-items: center; */
 }
@@ -134,7 +163,6 @@
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(var(--logo-path-dark));
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 15px;
@@ -147,22 +175,22 @@
     border-bottom: 2px solid var(--spenger-gray-light);
     padding-bottom: 15px;
     margin-top: 40px;
+    font-size: 3em;
 }
 
 .reveal h3 {
     color: var(--spenger-red);
     font-weight: bold;
     text-transform: none;
-    border-left: 4px solid var(--spenger-blue);
     padding-left: 15px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
+    font-size: 2.5em;
 }
 
 .reveal h4 {
     color: var(--spenger-gray-dark);
     font-weight: bold;
     text-transform: none;
-    border-left: 3px solid var(--spenger-red-light);
     padding-left: 12px;
     margin-top: 25px;
 }
@@ -173,8 +201,9 @@
 .reveal p,
 .reveal li {
     color: var(--spenger-gray-dark);
-    font-size: 0.9em;
+    font-size: 2.1em;
     line-height: 1.6;
+    /*list-style-type: none;*/
 }
 
 .reveal strong {
@@ -188,8 +217,6 @@
 }
 
 .reveal a {
-    color: var(--spenger-blue);
-    text-decoration: none;
     transition: all 0.3s ease;
 }
 
@@ -209,8 +236,8 @@
 
 .reveal code {
     font-family: 'Consolas', 'Monaco', monospace;
-    background-color: #2D2D2D;
-    color: var(--spenger-white);
+    background-color: #FEFCFF;
+    color: var(--spenger-red);
     padding: 3px 6px;
     border-radius: 4px;
 }
@@ -219,7 +246,7 @@
     display: block;
     padding: 20px;
     overflow-x: auto;
-    font-size: 0.8em !important;
+    font-size: 1.5em !important;
 }
 
 /*********************************************
@@ -227,7 +254,6 @@
  *********************************************/
 .reveal ul,
 .reveal ol {
-    border-left: 3px solid var(--spenger-red);
     padding-left: 25px;
     margin-bottom: 20px;
 }
@@ -235,11 +261,6 @@
 .reveal li::before {
     color: var(--spenger-blue) !important;
     font-weight: bold;
-    
-    /* Optional: Replace bullet with logo */
-    /* content: '' !important; */
-    /* background-image: url(var(--logo-path-dark)) !important; */
-    /* width: 12px; height: 12px; display: inline-block; */
 }
 
 /*********************************************
@@ -264,7 +285,7 @@
     margin-top: 15px;
     text-align: center;
     font-style: italic;
-    
+
     /* Optional: Add logo before caption */
     /* display: flex; align-items: center; justify-content: center; gap: 10px; */
 }
@@ -273,12 +294,8 @@
     content: '';
     width: 20px;
     height: 20px;
-    background-image: url(var(--logo-path-dark));
     background-size: contain;
     background-repeat: no-repeat;
-    
-    /* Uncomment to show logo */
-    /* display: block; */
 }
 
 /*********************************************
@@ -320,7 +337,8 @@
     padding: 20px 30px;
     background-color: rgba(211, 47, 47, 0.05);
     border-radius: 8px;
-    
+    font-size: 2em;
+
     /* Optional: Add logo icon */
     /* position: relative; padding-left: 60px; */
 }
@@ -333,12 +351,8 @@
     transform: translateY(-50%);
     width: 24px;
     height: 24px;
-    background-image: url(var(--logo-path-dark));
     background-size: contain;
     background-repeat: no-repeat;
-    
-    /* Uncomment to show logo */
-    /* display: block; */
 }
 
 .reveal blockquote p {
@@ -399,11 +413,6 @@
     width: var(--logo-width);
     height: auto;
     object-fit: contain;
-    
-    /* Use the dark version of logo for light footer */
-    background-image: url(var(--logo-path-dark));
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 .reveal .footer .school-name {
@@ -442,11 +451,6 @@
 .reveal .header .logo-container {
     width: var(--logo-width);
     height: auto;
-    
-    /* Use light version for dark header background */
-    background-image: url(var(--logo-path-light));
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 .reveal .header .school-name {
@@ -464,7 +468,7 @@
     padding: 25px;
     margin: 30px auto;
     border-radius: 8px;
-    
+
     /* Optional: Add logo icon */
     /* position: relative; padding-left: 70px; */
 }
@@ -476,12 +480,10 @@
     top: 25px;
     width: 40px;
     height: 40px;
-    background-image: url(var(--logo-path-dark));
-    background-size: contain;
-    background-repeat: no-repeat;
-    
-    /* Uncomment to show logo */
-    /* display: block; */
+}
+
+.reveal .highlight-box h3 {
+    font-size: 3em;
 }
 
 .reveal .important {
@@ -513,11 +515,11 @@
  *********************************************/
 @media print {
     .reveal .title-slide {
-        background: linear-gradient(135deg, 
-            var(--spenger-red) 0%, 
-            var(--spenger-red-dark) 100%);
+        background: linear-gradient(135deg,
+                var(--spenger-red) 0%,
+                var(--spenger-red-dark) 100%);
     }
-    
+
     /* Include logo in printed output */
     .reveal .footer::before {
         content: '';
@@ -526,11 +528,8 @@
         left: 20px;
         width: var(--logo-width);
         height: auto;
-        background-image: url(var(--logo-path-dark));
-        background-size: contain;
-        background-repeat: no-repeat;
     }
-    
+
     .reveal h1,
     .reveal h2,
     .reveal h3 {
@@ -544,56 +543,26 @@
 @media (max-width: 768px) {
     :root {
         --spenger-font-size-base: 0.8em;
-        --logo-width: 80px; /* Smaller logo on mobile */
+        --logo-width: 80px;
+        /* Smaller logo on mobile */
     }
-    
+
     .reveal h1 {
         font-size: 2em !important;
     }
-    
+
     .reveal h2 {
         font-size: 1.5em !important;
     }
-    
+
     .reveal p,
     .reveal li {
         font-size: var(--spenger-font-size-base) !important;
     }
-    
+
     /* Hide footer on small screens */
     .reveal .footer {
         display: none;
-    }
-}
-
-/*********************************************
- * DARK MODE SUPPORT (Optional)
- *********************************************/
-@media (prefers-color-scheme: dark) {
-    :root {
-        --spenger-gray-dark: #E0E0E0;
-        --spenger-offwhite: #121212;
-        --spenger-white: #1E1E1E;
-        --spenger-red-light: #FF5252;
-    }
-    
-    .reveal {
-        background-color: var(--spenger-offwhite);
-        color: var(--spenger-gray-dark);
-    }
-    
-    .reveal h1,
-    .reveal h2,
-    .reveal h3,
-    .reveal h4,
-    .reveal p {
-        color: var(--spenger-gray-dark) !important;
-    }
-    
-    /* Use light logo on dark backgrounds */
-    :root {
-        --logo-path-light: 'images/logo-spengergasse-white.png';
-        --logo-path-dark: 'images/logo-spengergasse-color.png';
     }
 }
 
@@ -605,6 +574,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -616,9 +586,12 @@
 }
 
 @keyframes spenger-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.7;
     }
@@ -633,6 +606,7 @@
         transform: translateX(-100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
