@@ -42,8 +42,7 @@
                 <p class="fragment" style="font-size: 1.1em; color: #87C4A0;">Presenter: Michael Freimüller</p>
                 <p class="fragment" style="font-size: 1.1em; color: #D3A625;">Class: 2EHIF</p>
                 <p class="fragment" style="font-size: 1.1em; color: #E07B5F;">Date: March 26, 2026</p>
-                
-                <!-- TEACHER NOTE: Sie können Titel und Metadaten hier anpassen -->
+            
             </section>
 
             <!-- SLIDE 2: INTRODUCTION/HOOK -->
@@ -69,8 +68,6 @@
                         </ul>
                     </div>
                 </div>
-                
-                <!-- TEACHER NOTE: Visual description: Show a simple diagram with Java application on left, database icon on right, arrows showing connection -->
             </section>
 
             <!-- SLIDE 3: LEARNING OBJECTIVES -->
@@ -88,8 +85,6 @@
                         <li class="fragment">Apply secure database practices in your own projects</li>
                     </ol>
                 </div>
-                
-                <!-- TEACHER NOTE: Ensure students understand these objectives before proceeding -->
             </section>
 
             <!-- SLIDE 4: DATABASE CONNECTION OVERVIEW -->
@@ -120,7 +115,6 @@
                     </div>
                 </div>
                 
-                <!-- TEACHER NOTE: Visual description: Flowchart showing Driver -> Connection String -> Credentials -> Connection Object -->
             </section>
 
             <!-- SLIDE 5: MSSQL CONNECTION EXAMPLE -->
@@ -132,17 +126,17 @@
 &lt;dependency&gt;
     &lt;groupId&gt;com.microsoft.sqlserver&lt;/groupId&gt;
     &lt;artifactId&gt;mssql-jdbc&lt;/artifactId&gt;
-    &lt;version&gt;12.4.2.jre11&lt;/version&gt;
+    &lt;version&gt;13.4.0.jre11&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 
                 <p style="font-size: 0.8em; margin-top: 1em;">Java Connection Code:</p>
-                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>String url = "jdbc:mssql://localhost:1433/master";
+                <pre><code class="java" style="font-size: 0.7em;" data-trim data-noescape>String url = "jdbc:sqlserver://localhost:1433;databaseName=SchulDb;trustServerCertificate=true";
 String user = "sa";
 String password = "your_password";
 
 Connection connection = DriverManager.getConnection(url, user, password);</code></pre>
 
-                <!-- TEACHER NOTE: Remind students about environment variables for passwords in real applications -->
             </section>
 
             <!-- SLIDE 6: MARIADB CONNECTION EXAMPLE -->
@@ -154,6 +148,7 @@ Connection connection = DriverManager.getConnection(url, user, password);</code>
     &lt;groupId&gt;org.mariadb.jdbc&lt;/groupId&gt;
     &lt;artifactId&gt;mariadb-java-client&lt;/artifactId&gt;
     &lt;version&gt;3.1.4&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 
                 <p style="font-size: 0.8em; margin-top: 1em;">Java Connection Code:</p>
@@ -163,7 +158,6 @@ String password = "your_password";
 
 Connection connection = DriverManager.getConnection(url, user, password);</code></pre>
 
-                <!-- TEACHER NOTE: Compare the two connection strings - different ports (1433 vs 3306) and drivers -->
             </section>
 
             <!-- SLIDE 7: REGULAR SQL STATEMENTS -->
@@ -185,8 +179,6 @@ while(rs.next()) {
     int age = rs.getInt("age");
     System.out.println(name + ", Age: " + age);
 }</code></pre>
-
-                <!-- TEACHER NOTE: Emphasize that Statement is NOT safe for user input -->
             </section>
 
             <!-- SLIDE 8: PREPARED STATEMENTS - WHAT & WHY -->
@@ -206,8 +198,6 @@ while(rs.next()) {
                     <li class="fragment">Better performance for repeated queries</li>
                     <li class="fragment">Cleaner code when handling user input</li>
                 </ol>
-
-                <!-- TEACHER NOTE: This is a critical security concept - emphasize strongly -->
             </section>
 
             <!-- SLIDE 9: WHEN TO USE EACH TYPE -->
@@ -233,8 +223,6 @@ while(rs.next()) {
                         </ul>
                     </div>
                 </div>
-
-                <!-- TEACHER NOTE: Create a decision tree exercise for students -->
             </section>
 
             <!-- SLIDE 10: SQL INJECTION EXPLAINED -->
@@ -252,8 +240,6 @@ String sql = "SELECT * FROM users WHERE username = '" + userInput + "'";
                     <li class="fragment">Authentication can be bypassed completely</li>
                     <li class="fragment">Attacker can delete or modify data</li>
                 </ul>
-
-                <!-- TEACHER NOTE: This is why prepared statements are mandatory for user input -->
             </section>
 
             <!-- SLIDE 11: CODE COMPARISON (REGULAR VS PREPARED) -->
@@ -277,8 +263,6 @@ ps.setString(1, name);
 ps.executeQuery();</code></pre>
                     </div>
                 </div>
-
-                <!-- TEACHER NOTE: Highlight the placeholder (?) and setParameter() method -->
             </section>
 
             <!-- SLIDE 12: SYNTAX BREAKDOWN FOR JAVA DATABASE WORK -->
@@ -301,8 +285,6 @@ ps.setInt(2, 17);
 // 4. Execute
 int rowsAffected = ps.executeUpdate();
 System.out.println(rowsAffected + " row(s) inserted");</code></pre>
-
-                <!-- TEACHER NOTE: Remind about try-with-resources for automatic cleanup -->
             </section>
 
             <!-- SLIDE 13: COMPLETE EXAMPLE WITH ERROR HANDLING -->
@@ -325,8 +307,6 @@ System.out.println(rowsAffected + " row(s) inserted");</code></pre>
 } catch (SQLException e) {
     System.err.println("Database error: " + e.getMessage());
 }</code></pre>
-
-                <!-- TEACHER NOTE: Explain try-with-resources automatically closes connections -->
             </section>
 
             <!-- SLIDE 14: STUDENT EXERCISE -->
@@ -342,8 +322,6 @@ System.out.println(rowsAffected + " row(s) inserted");</code></pre>
                     <li class="fragment">Queries all students from 2EHIF and displays them</li>
                     <li class="fragment">Searches for a teacher by name using prepared statements</li>
                 </ol>
-
-                <!-- TEACHER NOTE: Give students 15-20 minutes to complete this exercise -->
             </section>
 
             <!-- SLIDE 15: EXERCISE SOLUTION TEMPLATE -->
@@ -359,8 +337,6 @@ Connection conn = DriverManager.getConnection(
 // Insert with PreparedStatement
 String insertSql = "INSERT INTO Schueler (S_Vorname, S_Nachname, S_Klasse) VALUES (?, ?, ?)";
 PreparedStatement ps = conn.prepareStatement(insertSql);</code></pre>
-
-                <!-- TEACHER NOTE: Students should complete this template during exercise -->
             </section>
 
             <!-- SLIDE 16: SUMMARY / KEY TAKEAWAYS -->
@@ -378,8 +354,6 @@ PreparedStatement ps = conn.prepareStatement(insertSql);</code></pre>
                     
                     <li class="fragment"><strong>Error Handling:</strong> Always use try-with-resources to properly close database connections</li>
                 </ul>
-
-                <!-- TEACHER NOTE: Review each takeaway before moving to assessment -->
             </section>
 
             <!-- SLIDE 17: ASSESSMENT / Q&A -->
@@ -403,8 +377,6 @@ PreparedStatement ps = conn.prepareStatement(insertSql);</code></pre>
                         <p style="font-size: 0.7em;"><strong>Answer:</strong> It automatically closes connections and prevents resource leaks</p>
                     </div>
                 </div>
-
-                <!-- TEACHER NOTE: Use these for quick quiz or discussion -->
             </section>
 
             <!-- SLIDE 18: THANK YOU / CONTACT -->
@@ -414,8 +386,6 @@ PreparedStatement ps = conn.prepareStatement(insertSql);</code></pre>
                 <hr style="border-color: #D0F0E0; width: 50%; margin: 2em auto;">
                 
                 <p class="fragment" style="font-size: 1.3em;">Questions?</p>
-                
-                <!-- TEACHER NOTE: Prepare for Q&A session -->
             </section>
 
         </div>
