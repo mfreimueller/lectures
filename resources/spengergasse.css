@@ -312,7 +312,6 @@ li.unmarked {
     border-left: 6px solid var(--spenger-red);
     margin: 30px auto;
     padding: 20px 30px;
-    background-color: rgba(211, 47, 47, 0.05);
     border-radius: 8px;
     font-size: 2em;
 
