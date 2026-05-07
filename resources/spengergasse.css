@@ -78,33 +78,6 @@ li.unmarked {
 }
 
 /*********************************************
- * SLIDE STYLES WITH LOGO
- *********************************************/
-.reveal {
-    position: relative;
-}
-
-/* Logo positioned at top of slide */
-.reveal::after {
-    content: '';
-    position: absolute;
-
-    bottom: 0px;
-    left: 20px;
-
-    width: var(--logo-width);
-    height: 120px;
-
-    background-image: var(--logo-path-light);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    pointer-events: none;
-    z-index: 10;
-}
-
-/*********************************************
  * TITLE SLIDE STYLES WITH LOGO
  *********************************************/
 .reveal .title-slide {
