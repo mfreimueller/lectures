@@ -349,14 +349,12 @@ li.unmarked {
  * NOTES & HINTS WITH LOGO INDICATORS
  *********************************************/
 .reveal .notes {
-    background-color: rgba(25, 118, 210, 0.1);
     border-left: 4px solid var(--spenger-blue);
     padding: 15px;
     margin-top: 20px;
 }
 
 .reveal .hint {
-    background-color: rgba(211, 47, 47, 0.1);
     border-left: 4px solid var(--spenger-red);
     padding: 15px;
     margin-top: 20px;
