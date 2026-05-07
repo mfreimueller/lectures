@@ -439,7 +439,6 @@ li.unmarked {
  * HIGHLIGHT BOXES WITH LOGO ICONS
  *********************************************/
 .reveal .highlight-box {
-    background-color: rgba(211, 47, 47, 0.1);
     border-left: 6px solid var(--spenger-red);
     padding: 25px;
     margin: 30px auto;
