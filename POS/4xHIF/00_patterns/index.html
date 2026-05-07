@@ -14,7 +14,7 @@
 
             <!-- Slide 1: Title Page -->
             <section class="center title-slide" data-auto-animate>
-                <h1>Patterns Lesson</h1>
+                <h1>SOLID; Patterns</h1>
                 <p class="institution">POS1 - 4EHIF</p>
             </section>
 
@@ -357,6 +357,25 @@ class PayPalPayment extends PaymentStrategy {
             transition: 'slide',
             backgroundTransition: 'fade',
             plugins: [RevealHighlight]
+        });
+
+        // Add footer with slide information
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            
+            // Create custom footer if not present in CSS
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" 
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                        <span class="school-name">HTL Spengergasse</span>
+                    </div>
+                    <span class="date">SOLID; Patterns</span>
+                </div>
+            `;
+            
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
         });
     </script>
 </body>
