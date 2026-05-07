@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woche 4 - Verzweigung | HTL Spengergasse</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    
+    <!-- Spengergasse Custom Theme -->
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titelfolie -->
+            <section data-background-color="#FAFAFA" class="title-slide">
+                <h1>Woche 4</h1>
+                <h2>Verzweigung - Vertiefung & Anwendung</h2>
+                <p class="author">HTL Spengergasse</p>
+                <p class="institution">1xHIF</p>
+            </section>
+
+            <!-- SLIDE 2: Lernziele -->
+            <section>
+                <h2>Lernziele für diese Woche</h2>
+                <ul>
+                    <li class="fragment"><strong>Verschachtelte if-else-Anweisungen</strong> korrekt implementieren</li>
+                    <li class="fragment"><strong>Logische Operatoren</strong> (&&, ||, !) in Verzweigungen anwenden</li>
+                    <li class="fragment">Praktische Anwendungsfälle von Verzweigungen selbstständig lösen</li>
+                    <li class="fragment"><strong>Fehlerquellen</strong> bei verschachtelten Verzweigungen erkennen und vermeiden</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 3: Wiederholung if-Anweisungen -->
+            <section>
+                <h2>Wiederholung: if-Anweisungen (Woche 3)</h2>
+                
+                <div class="highlight-box">
+                    <p>Syntax einer einfachen if-Bedingung:</p>
+                    <pre><code>if (bedingung) {
+    // Code wird ausgeführt, wenn Bedingung wahr ist
+}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Wiederholung: if-Anweisungen (Woche 3)</h2>
+
+                <h3>Beispiel: Altersprüfung</h3>
+                <pre><code>int alter = 18;
+
+if (alter >= 18) {
+    System.out.println("Zugang erlaubt");
+}</code></pre>
+            </section>
+
+            <!-- SLIDE 4: Verschachtelte Verzweigungen -->
+            <section>
+                <h2>Verschachtelte Verzweigungen</h2>
+                
+                <p class="fragment">Eine if-Bedingung kann selbst wieder eine weitere if-Abfrage enthalten:</p>
+                
+                <pre class="fragment"><code>if (alter >= 18) {
+    System.out.println("Erwachsen");
+    
+    if (kreditkarteVorhanden) {
+        System.out.println("Kauf möglich");
+    } else {
+        System.out.println("Nur Barzahlung");
+    }
+} else {
+    System.out.println"Minderjährig");
+}</code></pre>
+            </section>
+
+            <!-- SLIDE 5: if-else-if-Kaskade -->
+            <section>
+                <h2>if-else-if-Kaskaden</h2>
+                
+                <p>Mehrere Bedingungen nacheinander prüfen:</p>
+                
+                <pre class="fragment"><code>if (note >= 90) {
+    System.out.println("Sehr gut");
+} else if (note >= 80) {
+    System.out.println("Gut");
+} else if (note >= 70) {
+    System.out.println("Befriedigend");
+} else if (note >= 60) {
+    System.out.println("Genügend");
+} else {
+    System.out.println("Nicht genügend");
+}</code></pre>
+
+                <div class="fragment hint">
+                    <strong>Hinweis:</strong> Die Bedingungen werden von oben nach unten abgearbeitet. 
+                    Sobald eine Bedingung wahr ist, wird der zugehörige Block ausgeführt und die restlichen Bedingungen übersprungen.
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Logische Operatoren - Überblick -->
+            <section>
+                <h2>Logische Operatoren</h2>
+                
+                <p class="fragment"><strong>&& (UND)</strong>: Beide Bedingungen müssen wahr sein</p>
+                <pre class="fragment"><code>alter >= 18 && passwortRichtig</code></pre>
+
+                <p class="fragment" style="margin-top: 30px;"><strong>|| (ODER)</strong>: Mindestens eine Bedingung muss wahr sein</p>
+                <pre class="fragment"><code>alter >= 6 || alter >= 12</code></pre>
+            </section>
+
+            <section>
+                <h2>Logische Operatoren</h2>
+                <p class="fragment" style="margin-top: 30px;"><strong>! (NICHT)</strong>: Bedingung umkehren</p>
+                <pre class="fragment"><code>!(alter < 18) // bedeutet: alter >= 18</code></pre>
+            </section>
+
+            <!-- SLIDE 7: Logische Operatoren - Praxis -->
+            <section>
+                <h2>Praxisbeispiel: Login-System</h2>
+                
+                <p class="fragment">Zwei Bedingungen müssen gleichzeitig erfüllt sein:</p>
+                
+                <pre class="fragment"><code>String benutzername = "admin";
+String passwort = "1234";
+
+if (benutzername.equals("admin") && 
+    passwort.equals("1234")) {
+    System.out.println("Zugriff gewährt");
+} else {
+    System.out.println("Zugriff verweigert");
+}</code></pre>
+            </section>
+
+            <!-- SLIDE 8: Interaktive Übung - Denken Sie nach -->
+            <section>
+                <h2>Betrachtet folgenden Code</h2>
+                
+                <div class="highlight-box">
+                    <pre><code>int punkte = 75;
+boolean quizBestanden = true;
+
+if (punkte >= 50 && quizBestanden) {
+    System.out.println("Kurs bestanden");
+} else if (punkte >= 50 || !quizBestanden) {
+    System.out.println("Teilbestanden");
+} else {
+    System.out.println("Nicht bestanden");
+}</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>Betrachtet folgenden Code</h2>
+                <p><strong>Fragen zum Nachdenken:</strong></p>
+                <ul>
+                    <li>Welcher Output wird ausgegeben?</li>
+                    <li>Warum wird die erste oder zweite Bedingung getroffen?</li>
+                    <li>Was passiert, wenn quizBestanden auf false gesetzt wird?</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 9: Häufige Fehlerquellen -->
+            <section>
+                <h2>Häufige Fehlerquellen</h2>
+                
+                <div class="warning">
+                    <p class="fragment"><strong>Fehler 1:</strong> = statt == verwenden</p>
+                    <pre class="fragment"><code>// FALSCH: if (x = 5) { ... }</code></pre>
+                    <pre class="fragment"><code>// RICHTIG: if (x == 5) { ... }</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>Häufige Fehlerquellen</h2>
+                <div class="warning" style="margin-top: 30px;">
+                    <p class="fragment"><strong>Fehler 2:</strong> Blöcke {} vergessen</p>
+                    <pre class="fragment"><code>// FALSCH:
+if (x > 5)
+    System.out.println("x > 5");
+    System.out.println("Immer");</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>Häufige Fehlerquellen</h2>
+                <div class="warning" style="margin-top: 30px;">
+                    <p class="fragment"><strong>Fehler 3:</strong> Logische Operatoren falsch kombiniert</p>
+                    <pre class="fragment"><code>// FALSCH: if (alter > 18 || && passwort) { ... }</code></pre>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Übung 1 - Notenberechnung -->
+            <section>
+                <h2>Übung 1: Notenberechnung</h2>
+                
+                <p><strong>Aufgabe:</strong></p>
+                <ul>
+                    <li>Erstelle ein Programm, das eine Bewertung (0-100) als Eingabe erhält</li>
+                    <li>Die entsprechende Schulnote wird ausgegeben</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übung 1: Notenberechnung</h2>
+                <div class="highlight-box">
+                    <p><strong>Anforderungen:</strong></p>
+                    <pre><code>90-100 = "Sehr gut"
+80-89  = "Gut"
+70-79  = "Befriedigend"
+60-69  = "Genügend"
+0-59   = "Nicht genügend"</code></pre>
+                </div>
+
+                <p class="fragment" style="margin-top: 30px;"><em>Vorwissen: Vergleichsoperatoren, if-Anweisungen</em></p>
+            </section>
+
+            <!-- SLIDE 11: Übung 2 - Login-System -->
+            <section>
+                <h2>Übung 2: Login-System (einfache Version)</h2>
+                
+                <p><strong>Aufgabe:</strong></p>
+                <ul>
+                    <li>Benutzername und Passwort abfragen</li>
+                    <li>Richtige Eingabe: "Zugriff gewährt"</li>
+                    <li>Falsche Eingabe: "Zugriff verweigert"</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übung 2: Login-System (einfache Version)</h2>
+
+                <p style="margin-top: 30px;"><strong>Vorgaben:</strong></p>
+                <pre><code>Benutzername: "admin"
+Passwort: "1234"</code></pre>
+
+                <p class="fragment" style="margin-top: 30px;">
+                    <em>Tipp: Verwende den logischen Operator && um beide Bedingungen zu verknüpfen</em>
+                </p>
+            </section>
+
+            <!-- SLIDE 12: Übung 3 - Taschenrechner -->
+            <section>
+                <h2>Übung 3: Kleiner Taschenrechner</h2>
+                
+                <p><strong>Aufgabe:</strong></p>
+                <ul>
+                    <li>Benutzer wählt Rechenoperation (+, -, *, /)</li>
+                    <li>Zwei Zahlen eingeben lassen</li>
+                    <li>Ergebnis berechnen und ausgeben</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übung 3: Kleiner Taschenrechner</h2>
+
+                <p style="margin-top: 30px;"><strong>Anforderungen:</strong></p>
+                <pre><code>1 = Addition (+)
+2 = Subtraktion (-)
+3 = Multiplikation (*)
+4 = Division (/)</code></pre>
+
+                <div class="hint" style="margin-top: 30px;">
+                    <strong>Hinweis:</strong> Divisionen durch 0 dürfen nicht erlaubt sein!
+                </div>
+            </section>
+
+            <!-- SLIDE 13: Übung 4 - Altersfreigabe -->
+            <section>
+                <h2>Übung 4: Altersfreigabe</h2>
+                
+                <p><strong>Szenario:</strong></p>
+                <ul>
+                    <li>Film hat FSK-Einstufung</li>
+                    <li>Programm prüft Alter des Zuschauers</li>
+                    <li>FSK-16: mind. 18-jährige Begleitung erforderlich</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übung 4: Altersfreigabe</h2>
+                <div class="highlight-box">
+                    <p><strong>Anforderungen:</strong></p>
+                    <pre><code>FSK 6: Ab 6 Jahren allein möglich
+FSK 12: Ab 12 Jahren allein möglich
+FSK 16: Ab 16 oder mit mind. 18-jähriger Begleitung
+FSK 18: Nur ab 18 Jahren</code></pre>
+                </div>
+
+                <p class="fragment" style="margin-top: 30px;">
+                    <em>Dies erfordert verschachtelte Verzweigungen und logische Operatoren!</em>
+                </p>
+            </section>
+
+            <!-- SLIDE 14: Zusammenfassung -->
+            <section>
+                <h2>Zusammenfassung</h2>
+                
+                <ul>
+                    <li class="fragment">Verschachtelte if-else-Anweisungen ermöglichen komplexe Entscheidungsstrukturen</li>
+                    <li class="fragment"><strong>&& (UND)</strong>: Beide Bedingungen müssen wahr sein</li>
+                    <li class="fragment"><strong>|| (ODER)</strong>: Mindestens eine Bedingung muss wahr sein</li>
+                    <li class="fragment"><strong>! (NICHT)</strong>: Kehrt den Wahrheitswert um</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box" style="margin-top: 30px;">
+                    <p><strong>Achtung bei mehreren if-else Bedingungen:</strong></p>
+                    <pre><code>if (bedingung1) { ... }
+else if (bedingung2) { ... }
+else { ... }</code></pre>
+                </div>
+
+                <p class="fragment" style="margin-top: 30px;">
+                    <em>Jede Bedingung wird nur geprüft, wenn vorherige Bedingungen falsch waren!</em>
+                </p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+    
+    <script>
+        // Initialize reveal.js with Spengergasse theme configuration
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            center: false,
+            rtl: false,
+            progress: true,
+            controls: true,
+            
+            // Custom theme settings
+            backgroundTransition: 'fade'
+        });
+
+        // Add footer with slide information
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            
+            // Create custom footer if not present in CSS
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" 
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                        <span class="school-name">HTL Spengergasse</span>
+                    </div>
+                    <span class="date">Woche 4 - Verzweigung</span>
+                </div>
+            `;
+            
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>
