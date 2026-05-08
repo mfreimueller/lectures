@@ -74,11 +74,20 @@ _Show and pass around both books._
 
 #### Some ideas...
 
-- Design patterns
+- Creational Patterns
     - Factory
     - Builder/SuperBuilder
+    - Singleton
+- Structural Patterns
     - Façade
+    - Flyweight
+- Behavioral Patterns
     - Command
+    - Iterator
+    - Strategy
+    - Chain of Responsibility
+    - Observer
+    - Visitor
 
 - Architectural patterns
     - Repository

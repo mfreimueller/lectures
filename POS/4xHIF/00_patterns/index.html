@@ -14,7 +14,7 @@
 
             <!-- Slide 1: Title Page -->
             <section class="center title-slide">
-                <h1>SOLID; Patterns</h1>
+                <h1>Patterns</h1>
                 <p class="institution">POS1 - 4EHIF</p>
             </section>
 
@@ -246,6 +246,7 @@ class UserService {
             <section>
                 <h2>Façade Pattern</h2>
                 <p class="fragment"><strong>Purpose:</strong> Provides a unified interface to a set of interfaces in a subsystem</p>
+                <p class="fragment">Example: Services (in principle)</p>
 
                 <pre class="fragment"><code class="language-typescript">class OrderService {
   OrderService(
@@ -255,7 +256,7 @@ class UserService {
   ) {}
   
   Order createOrder(CreateOrderCmd cmd) {
-    val order = orderRepo.create(/* ... */);
+    var order = orderRepo.create(/* ... */);
     this.logger.log("Order created");
     return order;
   }
@@ -267,16 +268,16 @@ class UserService {
                 <h2>Strategy Pattern</h2>
                 <p class="fragment"><strong>Purpose:</strong> Behavioral pattern for defining interchangeable algorithms</p>
 
-                <pre class="fragment"><code class="language-typescript">class PaymentStrategy {
-  pay(amount) {}
+                <pre class="fragment"><code class="language-typescript">interface PaymentStrategy {
+  void pay(Long amount);
 }
 
-class CreditCardPayment extends PaymentStrategy {
-  pay(amount) { /* credit card logic */ }
+class CreditCardPayment implements PaymentStrategy {
+  void pay(Long amount) { /* credit card logic */ }
 }
 
-class PayPalPayment extends PaymentStrategy {
-  pay(amount) { /* paypal logic */ }
+class PayPalPayment implements PaymentStrategy {
+  void pay(Long amount) { /* paypal logic */ }
 }</code></pre>
             </section>
 
@@ -390,7 +391,7 @@ class PayPalPayment extends PaymentStrategy {
                         <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" 
                              alt="HTL Spengergasse Logo" class="school-logo">
                     </div>
-                    <span class="date">SOLID; Patterns</span>
+                    <span class="date">Patterns</span>
                 </div>
             `;
             
