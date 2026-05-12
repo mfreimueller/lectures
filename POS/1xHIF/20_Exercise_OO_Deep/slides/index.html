@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>20 - Ubung OO Deep</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>20 - Ubung OO Deep</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Referenzen und Assoziationen</h2>
+<div class="highlight-box fragment">
+<h3>Objekte als Attribute</h3>
+<pre><code class="language-java">
+public class Person {
+    private String name;
+    private Adresse adresse; // Assoziation
+}
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<h3>Kettenzugriff</h3>
+<pre><code class="language-java">
+person.getAdresse().getOrt();
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<h3>null-Prufung</h3>
+<pre><code class="language-java">
+if (person.getAdresse() != null) { ... }
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Katas Ubersicht</h2>
+<div class="highlight-box fragment">
+<h3>K1: Bibliothek mit mehreren Buchern</h3>
+<p>Array von Buch-Referenzen, Bucher hinzufugen/auflisten</p>
+</div>
+<div class="highlight-box fragment">
+<h3>K2: Uhr mit tick()</h3>
+<p>Stunden und Minuten, tick() erhoht die Zeit um 1 Minute</p>
+</div>
+<div class="highlight-box fragment">
+<h3>K3: Schuler und Klasse</h3>
+<p>Notenverwaltung mit Array von Schulern</p>
+</div>
+</section>
+
+<section>
+<h2>Dungeon Escape: Gegenstande</h2>
+<div class="highlight-box fragment">
+<h3>Neue Klasse: Gegenstand</h3>
+<pre><code class="language-java">
+public class Gegenstand {
+    private String name;
+    private int gewicht;
+
+    public String benutze() {
+        return "Du benutzt " + name + ".";
+    }
+}
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<h3>Inventar im Spieler</h3>
+<pre><code class="language-java">
+public class Spieler {
+    private Gegenstand[] inventar;
+    private int anzahlGegenstaende;
+    // ...
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Selbstandige Arbeit</h2>
+<div class="highlight-box">
+<ul>
+<li>Arbeite an den Katas (K1, K2, K3)</li>
+<li>Erweitere dein Dungeon Escape um Gegenstande und Inventar</li>
+<li>Fragen? Einfach melden!</li>
+<li>Ziel: Mindestens zwei Katas + Dungeon Escape-Beginn schaffen</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">20 - Ubung OO Deep</span></div>');});
+</script>
+</body>
+</html>

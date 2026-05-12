@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>08 - String-Methoden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide"><h1>08 - String-Methoden</h1><p class="institution">POS1 - 1AHIF</p></section>
+
+<section><h2>Wiederholung</h2>
+<p>Was ist eine Methode? Wozu Parameter und Rueckgabe?</p>
+<p class="fragment">Beispiel: Wie ruft man int max(int a, int b) auf?</p>
+</section>
+
+<section><h2>Strings in Java</h2>
+<p>Ein String ist eine <strong>Klasse</strong> (kein primitiver Datentyp).</p>
+<p>Strings haben <strong>Methoden</strong>, die man aufrufen kann.</p>
+</section>
+
+<section><h2>length() und equals()</h2>
+<pre><code class="language-java">String name = "Anna";
+int laenge = name.length();      // 4
+
+String pw = "geheim";
+if (pw.equals("geheim")) {
+    System.out.println("Passwort korrekt!");
+}
+
+// NICHT: if (pw == "geheim") - Fehler!
+// == vergleicht Referenzen, nicht den Inhalt!</code></pre>
+</section>
+
+<section><h2>charAt()</h2>
+<pre><code class="language-java">String text = "Java";
+char erster = text.charAt(0);   // 'J'
+char zweiter = text.charAt(1);  // 'a'
+char dritter = text.charAt(2);  // 'v'
+char vierter = text.charAt(3);  // 'a'
+
+// charAt(laenge - 1) = letztes Zeichen
+char letzter = text.charAt(text.length() - 1);  // 'a'</code></pre>
+</section>
+
+<section><h2>startsWith() und endsWith()</h2>
+<pre><code class="language-java">String datei = "Program.java";
+
+boolean istJava = datei.endsWith(".java");        // true
+boolean istClass = datei.endsWith(".class");      // false
+boolean startetMit = datei.startsWith("Prog");    // true
+
+String url = "https://schule.at";
+boolean istHttps = url.startsWith("https");       // true</code></pre>
+</section>
+
+<section><h2>Weitere nuetzliche Methoden</h2>
+<pre><code class="language-java">String s = "  Hallo Welt!  ";
+
+s.toLowerCase();    // "  hallo welt!  "
+s.toUpperCase();    // "  HALLO WELT!  "
+s.trim();           // "Hallo Welt!" (entfernt Leerzeichen aussen)
+s.contains("Welt"); // true
+s.indexOf("Welt");  // 7 (Position)
+s.substring(7);     // "Welt!"
+s.substring(2, 7);  // "llo W"</code></pre>
+</section>
+
+<section><h2>Kata 1: Woerter zaehlen</h2>
+<pre><code class="language-java">String satz = "Heute ist ein schoener Tag";
+int woerter = 1;
+
+for (int i = 0; i < satz.length(); i++) {
+    if (satz.charAt(i) == ' ') {
+        woerter++;
+    }
+}
+
+System.out.println("Woerter: " + woerter);  // 5</code></pre>
+</section>
+
+<section><h2>Kata 3: Caesar-Verschluesselung</h2>
+<pre><code class="language-java">String text = "HALLO";
+int verschiebung = 3;
+String verschluesselt = "";
+
+for (int i = 0; i < text.length(); i++) {
+    char c = text.charAt(i);
+    c = (char) (c + verschiebung);
+    verschluesselt += c;
+}
+
+System.out.println(verschluesselt);  // KDOOR</code></pre>
+</section>
+
+<section><h2>Dungeon Escape: Befehlsparsing</h2>
+<pre><code class="language-java">String befehl = "norden";
+
+if (befehl.equals("norden")) {
+    System.out.println("Du gehst nach Norden.");
+} else if (befehl.equals("angreifen")) {
+    System.out.println("Du greifst an!");
+} else if (befehl.startsWith("gehe")) {
+    System.out.println("Bewegung...");
+} else {
+    System.out.println("Unbekannter Befehl.");
+}</code></pre>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li>length(), equals(), charAt()</li>
+<li>startsWith(), endsWith()</li>
+<li>toLowerCase(), toUpperCase(), trim()</li>
+<li>contains(), indexOf(), substring()</li>
+<li>Befehlsparsing mit String-Methoden</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Konvertierung (String zu Zahl)</h3></div></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">08 - String-Methoden</span></div>');});
+</script>
+</body>
+</html>

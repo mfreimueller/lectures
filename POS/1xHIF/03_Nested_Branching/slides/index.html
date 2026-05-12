@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>03 - Logische Operatoren und geschachtelte Verzweigungen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>03 - Logische Operatoren und geschachtelte Verzweigungen</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung</h2>
+<p>Was ist der Unterschied zwischen = und ==?</p>
+<p class="fragment">= weist zu, == vergleicht.</p>
+<p class="fragment">Was gibt if (x > 5) bei x = 7 aus?</p>
+<p class="fragment">true - der Code im if-Block wird ausgefuehrt.</p>
+</section>
+
+<section>
+<h2>Logische Operatoren</h2>
+<table>
+<tr><th>Operator</th><th>Bedeutung</th><th>Beispiel</th></tr>
+<tr class="fragment"><td>&&</td><td>und (AND)</td><td>a > 0 && a < 10</td></tr>
+<tr class="fragment"><td>||</td><td>oder (OR)</td><td>a == 0 || b == 0</td></tr>
+<tr class="fragment"><td>!</td><td>nicht (NOT)</td><td>!(a == 0)</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Wahrheitstabelle && (AND)</h2>
+<table>
+<tr><th>A</th><th>B</th><th>A && B</th></tr>
+<tr class="fragment"><td>true</td><td>true</td><td><strong>true</strong></td></tr>
+<tr class="fragment"><td>true</td><td>false</td><td><strong>false</strong></td></tr>
+<tr class="fragment"><td>false</td><td>true</td><td><strong>false</strong></td></tr>
+<tr class="fragment"><td>false</td><td>false</td><td><strong>false</strong></td></tr>
+</table>
+<p class="fragment">Nur wenn beide true sind, ist das Ergebnis true.</p>
+</section>
+
+<section>
+<h2>Wahrheitstabelle || (OR)</h2>
+<table>
+<tr><th>A</th><th>B</th><th>A || B</th></tr>
+<tr class="fragment"><td>true</td><td>true</td><td><strong>true</strong></td></tr>
+<tr class="fragment"><td>true</td><td>false</td><td><strong>true</strong></td></tr>
+<tr class="fragment"><td>false</td><td>true</td><td><strong>true</strong></td></tr>
+<tr class="fragment"><td>false</td><td>false</td><td><strong>false</strong></td></tr>
+</table>
+<p class="fragment">Wenn mindestens einer true ist, ist das Ergebnis true.</p>
+</section>
+
+<section>
+<h2>Geschachtelte ifs</h2>
+<p>Ein if innerhalb eines anderen if:</p>
+<pre><code class="language-java">if (hatSchluessel) {
+    if (codeRichtig) {
+        System.out.println("Tuer geoeffnet!");
+    }
+}</code></pre>
+<p class="fragment">Erst die aeussere, dann die innere Bedingung pruefen.</p>
+</section>
+
+<section>
+<h2>Geschachtelt vs. &&</h2>
+<pre><code class="language-java">// Geschachtelt
+if (hatSchluessel) {
+    if (codeRichtig) {
+        System.out.println("Tuer geoeffnet!");
+    }
+}
+
+// Gleichwertig mit &&
+if (hatSchluessel && codeRichtig) {
+    System.out.println("Tuer geoeffnet!");
+}</code></pre>
+</section>
+
+<section>
+<h2>Kurzschluss-Evaluierung (Short-circuit)</h2>
+<pre><code class="language-java">if (x != 0 && 10 / x > 2) {  // Sicher, wenn x = 0
+    // ...
+}
+
+// Bei &&: Wenn erste Bedingung false,
+// wird die zweite NICHT mehr ausgewertet.</code></pre>
+<p class="fragment">Das verhindert Fehler (z.B. Division durch Null).</p>
+</section>
+
+<section>
+<h2>Beispiel 1: Passwort-Check</h2>
+<pre><code class="language-java">String pw = "geheim123";
+boolean langGenug = pw.length() >= 8;
+boolean hatZiffer = false;
+
+// Pruefe auf Ziffer (vereinfacht)
+if (langGenug && pw.contains("1")) {
+    System.out.println("Passwort ist gueltig!");
+} else {
+    System.out.println("Passwort zu schwach.");
+}</code></pre>
+</section>
+
+<section>
+<h2>Beispiel 2: Stein-Schere-Papier</h2>
+<pre><code class="language-java">int spieler = 0;  // 0 = Stein
+int gegner = 2;   // 2 = Papier
+
+// Papier wickelt Stein ein
+if (spieler == gegner) {
+    System.out.println("Unentschieden!");
+} else if ((spieler == 0 && gegner == 2) ||  // Stein vs. Schere?
+           (spieler == 1 && gegner == 0) ||  // Schere vs. Papier?
+           (spieler == 2 && gegner == 1)) {  // Papier vs. Stein?
+    System.out.println("Spieler gewinnt!");
+} else {
+    System.out.println("Gegner gewinnt!");
+}</code></pre>
+</section>
+
+<section>
+<h2>Beispiel 3: Dreieckstyp</h2>
+<pre><code class="language-java">int a = 5, b = 5, c = 5;
+
+if (a == b && b == c) {
+    System.out.println("Gleichseitig");
+} else if (a == b || b == c || a == c) {
+    System.out.println("Gleichschenklig");
+} else {
+    System.out.println("Allgemein");
+}</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape: Verschlossene Tuer</h2>
+<p>Der Spieler findet eine Tuer mit einem magischen Schloss.</p>
+<pre><code class="language-java">boolean hatSchluessel = true;
+int code = 2462;
+int eingabeCode = 2462;
+
+if (hatSchluessel && code == eingabeCode) {
+    System.out.println("Die Tuer schwingt auf!");
+} else {
+    System.out.println("Die Tuer bleibt verschlossen.");
+}</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape - Aufgabe</h2>
+<ul>
+<li class="fragment">Boolean: hatSchluessel, kenntZauber</li>
+<li class="fragment">Tuer oeffnet sich nur wenn beide Bedingungen erfuellt sind</li>
+<li class="fragment">Verwende && fuer die Kombination</li>
+<li class="fragment">Tipp: mit ! (NOT) Bedingungen umkehren</li>
+</ul>
+</section>
+
+<section>
+<h2>Was wir heute gelernt haben</h2>
+<ul>
+<li class="fragment">Logische Operatoren: && (und), || (oder), ! (nicht)</li>
+<li class="fragment">Wahrheitstabellen</li>
+<li class="fragment">Geschachtelte ifs vs. &&</li>
+<li class="fragment">Short-circuit Evaluierung</li>
+<li class="fragment">Komplexe Bedingungen formulieren</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box"><h3 class="centered">Naechste Woche: for-Schleife</h3></div>
+<p>Wiederholungen automatisieren!</p>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">03 - Logische Operatoren</span></div>');});
+</script>
+</body>
+</html>

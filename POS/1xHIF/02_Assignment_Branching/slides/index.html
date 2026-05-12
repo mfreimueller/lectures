@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>02 - Zuweisung und Verzweigung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title Page -->
+            <section class="center title-slide">
+                <h1>02 - Zuweisung und Verzweigung</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Wiederholung -->
+            <section>
+                <h2>Wiederholung: Letzte Woche</h2>
+                <ol>
+                    <li class="fragment">Welchen Wert hat `7 / 2` in Java?</li>
+                    <li class="fragment">Was macht der Modulo-Operator (%)?</li>
+                    <li class="fragment">Welche Datentypen kennt ihr?</li>
+                </ol>
+            </section>
+
+            <!-- Slide 3: Zuweisung -->
+            <section>
+                <h2>Zuweisung</h2>
+                <pre><code class="language-java">int x;        // Deklaration
+x = 5;        // Zuweisung: Variable = Wert
+int y = 10;   // Deklaration + Initialisierung
+
+x = x + 3;    // x ist jetzt 8
+x = y;        // x ist jetzt 10 (Kopieren)</code></pre>
+                <ul>
+                    <li class="fragment">Rechts vom = steht der Wert/Ausdruck</li>
+                    <li class="fragment">Links vom = steht die Variable, die den Wert erhaelt</li>
+                    <li class="fragment">Der alte Wert wird ueberschrieben</li>
+                </ul>
+            </section>
+
+            <!-- Slide 4: a = a + 1 -->
+            <section>
+                <h2>Variable erhoehen</h2>
+                <pre><code class="language-java">int zaehler = 0;
+
+zaehler = zaehler + 1;   // zaehler ist 1
+zaehler = zaehler + 1;   // zaehler ist 2</code></pre>
+                <p class="fragment">Dieses Muster kommt sehr haeufig vor!</p>
+                <div class="fragment highlight-box">
+                    <p><strong>Kurzformen:</strong></p>
+                    <pre><code class="language-java">zaehler += 1;    // gleiche Wirkung wie zaehler = zaehler + 1
+zaehler++;       // noch kuerzer!</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 5: Zusammengesetzte Zuweisungen -->
+            <section>
+                <h2>Zusammengesetzte Zuweisungen</h2>
+                <pre><code class="language-java">int x = 10;
+
+x += 5;    // x = x + 5  -> 15
+x -= 3;    // x = x - 3  -> 12
+x *= 2;    // x = x * 2  -> 24
+x /= 4;    // x = x / 4  -> 6
+x %= 3;    // x = x % 3  -> 0</code></pre>
+                <p class="fragment">Gilt auch fuer double:</p>
+                <pre class="fragment"><code class="language-java">double preis = 10.0;
+preis *= 1.2;    // +20% -> 12.0</code></pre>
+            </section>
+
+            <!-- Slide 6: Vergleichsoperatoren -->
+            <section>
+                <h2>Vergleichsoperatoren</h2>
+                <table>
+                    <tr><th>Operator</th><th>Bedeutung</th></tr>
+                    <tr class="fragment"><td>==</td><td>gleich</td></tr>
+                    <tr class="fragment"><td>!=</td><td>ungleich</td></tr>
+                    <tr class="fragment"><td>&lt;</td><td>kleiner</td></tr>
+                    <tr class="fragment"><td>&gt;</td><td>groesser</td></tr>
+                    <tr class="fragment"><td>&lt;=</td><td>kleiner oder gleich</td></tr>
+                    <tr class="fragment"><td>&gt;=</td><td>groesser oder gleich</td></tr>
+                </table>
+            </section>
+
+            <!-- Slide 7: Ergebnis ist boolean -->
+            <section>
+                <h2>Ergebnis ist ein boolean</h2>
+                <pre><code class="language-java">int alter = 17;
+
+boolean volljaehrig = alter >= 18;   // false
+boolean ist17 = alter == 17;         // true
+boolean ungleich = alter != 18;      // true</code></pre>
+                <p class="fragment">Ein Vergleich <strong>ergibt immer true oder false</strong>.</p>
+                <p class="fragment">Dieses Ergebnis kann man in einer boolean-Variable speichern oder direkt in if verwenden.</p>
+            </section>
+
+            <!-- Slide 8: = vs. == -->
+            <section>
+                <h2>Achtung! = vs. ==</h2>
+                <div class="highlight-box">
+                    <p><strong>= ist Zuweisung, == ist Vergleich</strong></p>
+                </div>
+                <pre><code class="language-java">int x = 5;         // Zuweisung (korrekt)
+
+// if (x = 5) {   // Fehler! = ist keine Bedingung!
+// }
+
+if (x == 5) {      // Vergleich (korrekt)
+    System.out.println("x ist 5");
+}</code></pre>
+                <p class="fragment">Der Compiler meldet einen Fehler bei `if (x = 5)` - das ist gut so!</p>
+            </section>
+
+            <!-- Slide 9: if-Anweisung -->
+            <section>
+                <h2>if-Anweisung</h2>
+                <pre><code class="language-java">if (bedingung) {
+    // Code der ausgefuehrt wird, wenn bedingung true ist
+}</code></pre>
+                <p class="fragment">Die <strong>Bedingung</strong> ist ein boolean-Ausdruck.</p>
+                <pre class="fragment"><code class="language-java">int temperatur = 35;
+
+if (temperatur > 30) {
+    System.out.println("Es ist heiss!");
+}</code></pre>
+            </section>
+
+            <!-- Slide 10: if-else -->
+            <section>
+                <h2>if-else</h2>
+                <pre><code class="language-java">if (bedingung) {
+    // Code fuer true
+} else {
+    // Code fuer false
+}</code></pre>
+                <pre class="fragment"><code class="language-java">int alter = 16;
+
+if (alter >= 18) {
+    System.out.println("Volljaehrig");
+} else {
+    System.out.println("Minderjaehrig");
+}</code></pre>
+            </section>
+
+            <!-- Slide 11: Beispiel Temperatur -->
+            <section>
+                <h2>Beispiel: Temperatur</h2>
+                <pre><code class="language-java">int temperatur = 35;
+
+if (temperatur > 30) {
+    System.out.println("Es ist heiss - schwimmen gehen!");
+} else {
+    System.out.println("Angenehme Temperatur.");
+}</code></pre>
+                <p class="fragment">Was passiert bei temperatur = 25?</p>
+                <p class="fragment">Die else-Zweig wird ausgefuehrt.</p>
+            </section>
+
+            <!-- Slide 12: Zusammenhaengende Befehle -->
+            <section>
+                <h2>Mehrere Befehle in if/else</h2>
+                <pre><code class="language-java">if (x > 0) {
+    y = 1;
+    z = 2;
+    System.out.println("x ist positiv");
+} else {
+    y = -1;
+    z = -2;
+    System.out.println("x ist negativ oder null");
+}</code></pre>
+                <p class="fragment">Die geschweiften Klammern { } fassen mehrere Befehle zusammen.</p>
+                <p class="fragment"><strong>Wichtig:</strong> Auch bei einem Befehl immer { } verwenden!</p>
+            </section>
+
+            <!-- Slide 13: else if -->
+            <section>
+                <h2>else if - Mehrere Bedingungen</h2>
+                <pre><code class="language-java">if (bedingung1) {
+    // Wenn bedingung1 true
+} else if (bedingung2) {
+    // Wenn bedingung1 false UND bedingung2 true
+} else {
+    // Wenn beide false
+}</code></pre>
+                <p class="fragment">Es koennen beliebig viele else-if-Zweige sein.</p>
+                <p class="fragment">Der erste true-Zweig wird ausgefuehrt, der Rest uebersprungen.</p>
+            </section>
+
+            <!-- Slide 14: else if Beispiel -->
+            <section>
+                <h2>Beispiel: Notenspiegel</h2>
+                <pre><code class="language-java">int punkte = 85;
+
+if (punkte >= 90) {
+    System.out.println("Note 1");
+} else if (punkte >= 78) {
+    System.out.println("Note 2");
+} else if (punkte >= 65) {
+    System.out.println("Note 3");
+} else if (punkte >= 51) {
+    System.out.println("Note 4");
+} else {
+    System.out.println("Note 5");
+}</code></pre>
+            </section>
+
+            <!-- Slide 15: Live-Coding Beispiel 1 -->
+            <section>
+                <h2>Live-Coding: Gerade/Ungerade</h2>
+                <pre><code class="language-java">int zahl = 42;
+
+if (zahl % 2 == 0) {
+    System.out.println(zahl + " ist gerade.");
+} else {
+    System.out.println(zahl + " ist ungerade.");
+}</code></pre>
+                <p class="fragment">Ausgabe: <code>42 ist gerade.</code></p>
+            </section>
+
+            <!-- Slide 16: Live-Coding Beispiel 2 -->
+            <section>
+                <h2>Live-Coding: Notenspiegel</h2>
+                <pre><code class="language-java">int punkte = 73;
+String note;
+
+if (punkte >= 90) {
+    note = "Sehr gut";
+} else if (punkte >= 78) {
+    note = "Gut";
+} else if (punkte >= 65) {
+    note = "Befriedigend";
+} else if (punkte >= 51) {
+    note = "Genuegend";
+} else {
+    note = "Nicht genuegend";
+}
+
+System.out.println(punkte + " Punkte: " + note);</code></pre>
+            </section>
+
+            <!-- Slide 17: Live-Coding Beispiel 3 -->
+            <section>
+                <h2>Live-Coding: Schaltjahr</h2>
+                <pre><code class="language-java">int jahr = 2024;
+boolean istSchaltjahr;
+
+istSchaltjahr = (jahr % 400 == 0) ||
+                (jahr % 4 == 0 && jahr % 100 != 0);
+
+if (istSchaltjahr) {
+    System.out.println(jahr + " ist ein Schaltjahr.");
+} else {
+    System.out.println(jahr + " ist kein Schaltjahr.");
+}</code></pre>
+                <p class="fragment">Ausgabe: <code>2024 ist ein Schaltjahr.</code></p>
+            </section>
+
+            <!-- Slide 18: Dungeon Escape -->
+            <section>
+                <h2>Dungeon Escape: Tuer-Entscheidung</h2>
+                <p>Der Spieler steht vor zwei Tueren.</p>
+                <pre class="fragment"><code class="language-java">int wahl = 1;  // 1 = linke Tuer, 2 = rechte Tuer
+
+if (wahl == 1) {
+    System.out.println("Du betrittst den Schatzraum!");
+} else {
+    System.out.println("Ein Gegner greift an!");
+}</code></pre>
+            </section>
+
+            <!-- Slide 19: Dungeon Aufgabe -->
+            <section>
+                <h2>Dungeon Escape - Aufgabe der Woche</h2>
+                <ul>
+                    <li class="fragment">Lege eine Variable fuer die Tuerwahl an (1 oder 2)</li>
+                    <li class="fragment">Mit if/else den gewaehlten Raum bestimmen</li>
+                    <li class="fragment">Unterschiedliche Ausgabe je nach Wahl</li>
+                    <li class="fragment"><strong>Erweiterung:</strong> HP veraendern bei Schatz (+10) oder Gegner (-20)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 20: Zusammenfassung -->
+            <section>
+                <h2>Was wir heute gelernt haben</h2>
+                <ul>
+                    <li class="fragment">Zuweisungen vertieft (+=, -=, *=, ++)</li>
+                    <li class="fragment">Vergleichsoperatoren: ==, !=, <, >, <=, >=</li>
+                    <li class="fragment">if, if-else, else if</li>
+                    <li class="fragment">Unterschied = (Zuweisung) vs. == (Vergleich)</li>
+                    <li class="fragment">Bedingungen steuern den Programmfluss</li>
+                </ul>
+            </section>
+
+            <!-- Slide 21: Ausblick -->
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Naechste Woche: Logische Operatoren</h3>
+                </div>
+                <p class="fragment">Verknuepfen von Bedingungen mit &&, ||, !</p>
+                <p class="fragment">"Wenn der Spieler einen Schlussel HAT UND die Tuer links ist..."</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">02 - Zuweisung und Verzweigung</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

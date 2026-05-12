@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>21 - Buffer / OO-Wiederholung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>21 - Buffer / OO-Wiederholung</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>OO-Grundlagen: Wiederholung</h2>
+<div class="highlight-box fragment">
+<h3>Klasse = Bauplan</h3>
+<pre><code class="language-java">
+public class Auto {
+    private String marke;   // Attribut
+    private int baujahr;
+
+    public Auto(String marke, int baujahr) { // Konstruktor
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+
+    public void hupen() {   // Methode
+        System.out.println("Hupe!");
+    }
+}
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Objekt = Instanz einer Klasse: <code>Auto a = new Auto("BMW", 2020);</code></p>
+</div>
+</section>
+
+<section>
+<h2>Assoziationen: Objekte als Attribute</h2>
+<div class="highlight-box fragment">
+<h3>hat-ein-Beziehung</h3>
+<pre><code class="language-java">
+public class Person {
+    private Adresse adresse; // Person HAT EINE Adresse
+
+    public String getOrt() {
+        if (adresse != null) {
+            return adresse.getOrt();
+        }
+        return "Unbekannt";
+    }
+}
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<ul>
+<li>Objekte werden als Referenz ubergeben</li>
+<li><code>null</code> prufen vor dem Zugriff</li>
+<li>Kettenzugriff: <code>person.getAdresse().getOrt()</code></li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Heutiger Ablauf</h2>
+<div class="highlight-box fragment">
+<h3>1. OO-Quiz (Kata 1)</h3>
+<p>Multiple-Choice Fragen zu OO-Grundlagen - ohne Computer</p>
+</div>
+<div class="highlight-box fragment">
+<h3>2. Game of Life Zelle (Kata 2)</h3>
+<p>Eine Zelle als Klasse modellieren</p>
+</div>
+<div class="highlight-box fragment">
+<h3>3. Dungeon Escape</h3>
+<p>Wegenetz aufbauen und testen</p>
+</div>
+<div class="highlight-box fragment">
+<p>Bei Fragen: Einfach melden! Diese Woche ist zum Aufholen und Vertiefen da.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">21 - Buffer / OO-Wiederholung</span></div>');});
+</script>
+</body>
+</html>

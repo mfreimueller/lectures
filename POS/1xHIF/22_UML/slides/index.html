@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>22 - UML-Klassendiagramme</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>22 - UML-Klassendiagramme</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: OO-Grundlagen</h2>
+<div class="highlight-box fragment">
+<h3>Die vier Saulen der OO</h3>
+<ul>
+<li><strong>Kapselung:</strong> private Attribute, public Methoden</li>
+<li><strong>Vererbung:</strong> Klasse erbt von einer anderen</li>
+<li><strong>Polymorphie:</strong> Gleiche Schnittstelle, unterschiedliche Implementierung</li>
+<li><strong>Abstraktion:</strong> Komplexitat verstecken</li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Auto {
+    private String marke;
+    public void hupen() { System.out.println("Hupe!"); }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Was ist UML?</h2>
+<div class="highlight-box fragment">
+<h3>UML = Unified Modeling Language</h3>
+<ul>
+<li>Grafische Sprache zur Modellierung von Software</li>
+<li>Wichtigstes Diagramm: Klassendiagramm</li>
+<li>Zeigt Klassen, Attribute, Methoden und Beziehungen</li>
+<li>Hilft beim Planen und Dokumentieren von Code</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Klassendiagramm: Aufbau</h2>
+<pre class="fragment"><code>
++---------------------+
+| Auto                |  &lt;- Klassenname (fett)
++---------------------+
+| - marke: String     |  &lt;- Attribute
+| - baujahr: int      |
++---------------------+
+| + Auto(m,s,b)       |  &lt;- Konstruktor
+| + hupen(): void     |  &lt;- Methoden
+| + getMarke(): String|
++---------------------+
+</code></pre>
+</section>
+
+<section>
+<h2>Sichtbarkeiten in UML</h2>
+<div class="highlight-box fragment">
+<h3>+ public</h3>
+<p>Zugriff von uberall: <code>+ getMarke(): String</code></p>
+</div>
+<div class="highlight-box fragment">
+<h3>- private</h3>
+<p>Zugriff nur innerhalb der Klasse: <code>- marke: String</code></p>
+</div>
+<div class="highlight-box fragment">
+<h3># protected</h3>
+<p>Zugriff in Klasse + Unterklassen: <code># version: int</code></p>
+</div>
+</section>
+
+<section>
+<h2>Datentypen in UML</h2>
+<div class="highlight-box fragment">
+<p>Nach dem Doppelpunkt kommt der Datentyp:</p>
+<pre><code>
++---------------------+
+| Person              |
++---------------------+
+| - name: String      |
+| - alter: int        |
+| - groesse: double   |
++---------------------+
+| + getAlter(): int   |
++---------------------+
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Ruckgabetyp einer Methode steht ebenfalls nach Doppelpunkt.</p>
+</div>
+</section>
+
+<section>
+<h2>Assoziationen</h2>
+<div class="highlight-box fragment">
+<h3>Linie = Beziehung zwischen Klassen</h3>
+<pre><code>
++--------+          +----------+
+| Person |----------| Adresse  |
++--------+   hat    +----------+
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<h3>Assoziation lesen</h3>
+<ul>
+<li>Person HAT EINE Adresse</li>
+<li>Im Code: Person hat Attribut vom Typ Adresse</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Multiplizitaten</h2>
+<div class="highlight-box fragment">
+<p>Geben an, wie viele Objekte in Beziehung stehen:</p>
+<pre><code>
++--------+ 1      0..* +----------+
+| Kunde  |------------| Bestellung|
++--------+  hat       +----------+
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<ul>
+<li><code>1</code> = genau eines</li>
+<li><code>0..*</code> = null bis viele</li>
+<li><code>1..*</code> = mindestens eines</li>
+<li><code>0..1</code> = optional (null oder eins)</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Live-Coding: UML -> Code</h2>
+<div class="highlight-box fragment">
+<p>Gegeben ist ein UML-Diagramm:</p>
+<pre><code>
++---------------------+
+| Buch                |
++---------------------+
+| - titel: String     |
+| - autor: String     |
++---------------------+
+| + Buch(t,a)         |
+| + getTitel(): String|
+| + toString(): String|
++---------------------+
+</code></pre>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Buch {
+    private String titel;
+    private String autor;
+
+    public Buch(String titel, String autor) {
+        this.titel = titel;
+        this.autor = autor;
+    }
+
+    public String getTitel() { return titel; }
+
+    @Override
+    public String toString() {
+        return titel + " von " + autor;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Code -> UML</h2>
+<div class="highlight-box fragment">
+<p>Aus Java-Code ein UML-Diagramm zeichnen:</p>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Motor {
+    private int leistung;
+    public Motor(int leistung) { ... }
+    public int getLeistung() { ... }
+}
+
+public class Auto {
+    private String marke;
+    private Motor motor;
+    public Auto(String m, Motor mot) { ... }
+    public void starten() { ... }
+}
+</code></pre>
+<pre class="fragment"><code>
++--------+ 1      1 +-------+
+|  Auto  |----------| Motor |
++--------+  hat     +-------+
+</code></pre>
+</section>
+
+<section>
+<h2>Beispiel: Auto und Motor</h2>
+<div class="highlight-box fragment">
+<h3>UML-Diagramm</h3>
+<pre><code>
++--------+ 1      1 +--------+
+|  Auto  |----------| Motor  |
++--------+          +--------+
+| - marke|          | - ps   |
+| - motor|          +--------+
++--------+          | + Motor|
+| + Auto |          | + getPs|
+| + start|          +--------+
++--------+
+</code></pre>
+</div>
+<pre class="fragment"><code class="language-java">
+Auto a = new Auto("BMW", new Motor(150));
+a.starten(); // Der Motor mit 150 PS lauft.
+</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape als UML</h2>
+<div class="highlight-box fragment">
+<pre><code>
++--------+  aktuellerRaum +------+
+| Spieler|--------------->| Raum |
++--------+   1        1   +------+
+| - name |                | - nr |
++--------+                +------+
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<ul>
+<li>Welche Klassen hast du bereits?</li>
+<li>Welche Beziehungen gibt es?</li>
+<li>Zeichne das vollstandige UML-Diagramm deines Dungeon Escape!</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Gegner-Klasse aus UML implementieren</h2>
+<div class="highlight-box fragment">
+<pre><code>
++---------------------+
+| Gegner              |
++---------------------+
+| - name: String      |
+| - hp: int           |
+| - schaden: int      |
++---------------------+
+| + Gegner(n,h,s)     |
+| + angreifen(): String|
+| + getHp(): int      |
+| + setHp(int): void  |
++---------------------+
+</code></pre>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Gegner {
+    private String name;
+    private int hp;
+    private int schaden;
+
+    public Gegner(String name, int hp, int schaden) {
+        this.name = name;
+        this.hp = hp;
+        this.schaden = schaden;
+    }
+
+    public String angreifen() {
+        return name + " greift an und verursacht " + schaden + " Schaden!";
+    }
+
+    public int getHp() { return hp; }
+    public void setHp(int hp) { this.hp = hp; }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape Aufgabe</h2>
+<div class="highlight-box fragment">
+<ul>
+<li>Zeichne das vollstandige UML-Diagramm deines Dungeon Escape (textuell)</li>
+<li>Implementiere die Klasse Gegner aus dem UML-Diagramm</li>
+<li>Fuge in 2-3 Raumen einen Gegner hinzu</li>
+<li>Wenn der Spieler einen Raum betritt, in dem ein Gegner ist, greift der Gegner an</li>
+<li>Der Spieler verliert HP (Lebenspunkte)</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Zusammenfassung</h2>
+<div class="highlight-box">
+<ul>
+<li>UML-Klassendiagramme visualisieren die Struktur von OO-Programmen</li>
+<li>Klasse: Kasten mit Name, Attribute, Methoden</li>
+<li>Sichtbarkeiten: + (public), - (private)</li>
+<li>Assoziationen: Linien zwischen Klassen (mit Multiplizitaten)</li>
+<li>UML kann in Code ubersetzt werden, und Code kann in UML dargestellt werden</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick: Arrays</h2>
+<div class="highlight-box fragment">
+<p>Nachster Thema: Arrays - Sammlungen gleichartiger Elemente</p>
+<ul>
+<li>Deklaration und Initialisierung</li>
+<li>Index-Zugriff</li>
+<li>for-Schleife uber Arrays</li>
+<li>Arrays als Parameter und Ruckgabewert</li>
+<li>Dungeon Escape: Raum[] statt Einzel-Attributen</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">22 - UML-Klassendiagramme</span></div>');});
+</script>
+</body>
+</html>

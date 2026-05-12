@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>29 - JavaDoc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>29 - JavaDoc</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Zufallszahlen</h2>
+<p>Math.random() und die Random-Klasse</p>
+<pre><code class="language-java">Random rand = new Random();
+int wuerfel = rand.nextInt(6) + 1;
+System.out.println("Gewuerfelt: " + wuerfel);
+</code></pre>
+</section>
+
+<section>
+<h2>Was ist JavaDoc?</h2>
+<ul>
+<li class="fragment">Dokumentation aus speziellen Kommentaren im Code</li>
+<li class="fragment">Wird zu HTML-Seiten verarbeitet</li>
+<li class="fragment">Ermoeglicht professionelle API-Dokumentation</li>
+<li class="fragment">Beispiel: java.lang.String-Dokumentation von Oracle</li>
+</ul>
+</section>
+
+<section>
+<h2>Syntax: Kommentararten</h2>
+<table>
+<tr><th>Art</th><th>Syntax</th><th>Verwendung</th></tr>
+<tr><td>Einzeiler</td><td><code>// text</code></td><td>Kurze Notizen</td></tr>
+<tr><td>Block</td><td><code>/* text */</code></td><td>Mehrzeilige Notizen</td></tr>
+<tr><td>JavaDoc</td><td><code>/** text */</code></td><td>Dokumentation</td></tr>
+</table>
+</section>
+
+<section>
+<h2>JavaDoc-Tags</h2>
+<table>
+<tr><th>Tag</th><th>Verwendung</th></tr>
+<tr><td>@param</td><td>Beschreibt einen Methodenparameter</td></tr>
+<tr><td>@return</td><td>Beschreibt den Rueckgabewert</td></tr>
+<tr><td>@author</td><td>Autor der Klasse</td></tr>
+<tr><td>@version</td><td>Versionsnummer</td></tr>
+<tr><td>@see</td><td>Verweis auf andere Klassen/Methoden</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Klassen-JavaDoc</h2>
+<p>Wird oberhalb der Klasse geschrieben:</p>
+<pre><code class="language-java">/**
+ * Diese Klasse repraesentiert ein Bankkonto.
+ *
+ * @author Max Mustermann
+ * @version 1.0
+ */
+class Bankkonto {
+    ...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Methoden-JavaDoc</h2>
+<p>Wird oberhalb der Methode geschrieben:</p>
+<pre><code class="language-java">/**
+ * Zahlt einen Betrag auf das Konto ein.
+ *
+ * @param betrag Der einzuzahlende Betrag
+ */
+public void einzahlen(double betrag) {
+    kontostand += betrag;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Live-Coding: Bankkonto dokumentieren</h2>
+<p>Eine Klasse Bankkonto mit JavaDoc versehen:</p>
+<pre><code class="language-java">/**
+ * Bankkonto mit Ein- und Auszahlungen.
+ * @author Max Mustermann
+ * @version 1.0
+ */
+class Bankkonto {
+    private double kontostand;
+
+    /**
+     * Zahlt einen Betrag ein.
+     * @param betrag Einzahlungsbetrag
+     */
+    public void einzahlen(double betrag) {
+        kontostand += betrag;
+    }
+
+    /**
+     * Gibt den Kontostand zurueck.
+     * @return aktueller Kontostand
+     */
+    public double getKontostand() {
+        return kontostand;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>HTML-Generierung</h2>
+<p>IntelliJ: Tools -&gt; Generate JavaDoc</p>
+<p>Oder Kommandozeile:</p>
+<pre><code class="language-bash">javadoc -d doc *.java
+</code></pre>
+</section>
+
+<section>
+<h2>JavaDoc im Browser</h2>
+<p>Nach der Generierung:</p>
+<ul>
+<li class="fragment">Oeffne den <code>doc/</code>-Ordner</li>
+<li class="fragment">Oeffne <code>index.html</code></li>
+<li class="fragment">Uebersichtliche Darstellung aller Klassen und Methoden</li>
+</ul>
+</section>
+
+<section>
+<h2>Gute vs. schlechte JavaDoc</h2>
+<div class="fragment">
+<p><strong>Schlecht:</strong></p>
+<pre><code class="language-java">/** @param x die Zahl x */
+void methode(int x) { ... }
+</code></pre>
+</div>
+<div class="fragment">
+<p><strong>Gut:</strong></p>
+<pre><code class="language-java">/**
+ * Berechnet die Fakultaet einer Zahl.
+ * @param n Die Zahl, deren Fakultaet berechnet wird (n &gt;= 0)
+ * @return Die Fakultaet von n (n!)
+ */
+void methode(int n) { ... }
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Dungeon Escape: JavaDoc</h2>
+<p>Dokumentiere deine Dungeon Escape Klassen:</p>
+<ul>
+<li>Spieler-Klasse mit @author</li>
+<li>Gegner-Klasse mit @param und @return</li>
+<li>Alle Methoden dokumentieren</li>
+</ul>
+</section>
+
+<section>
+<h2>Dungeon Escape Aufgabe</h2>
+<p>Generiere die HTML-Dokumentation fuer dein Dungeon Escape Spiel.</p>
+<p>Ueberpruefe die Ergebnisse im Browser.</p>
+</section>
+
+<section>
+<h2>Zusammenfassung & Ausblick</h2>
+<ul>
+<li>JavaDoc = Dokumentation aus Kommentaren</li>
+<li>Tags: @param, @return, @author, @version</li>
+<li>HTML-Generierung mit javadoc oder IntelliJ</li>
+<li>Naechste Woche: Ubung - Alles integrieren</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">29 - JavaDoc</span></div>');});
+</script>
+</body>
+</html>

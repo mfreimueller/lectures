@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>19 - Referenzen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>19 - Referenzen</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Kapselung</h2>
+<div class="highlight-box fragment">
+<h3>private / public</h3>
+<ul>
+<li><code>private</code> Attribute: Zugriff nur innerhalb der Klasse</li>
+<li><code>public</code> Methoden: Zugriff von aussen</li>
+</ul>
+</div>
+<div class="highlight-box fragment">
+<h3>Getter und Setter</h3>
+<ul>
+<li>Getter: <code>public int getAlter() { ... }</code></li>
+<li>Setter: <code>public void setAlter(int alter) { ... }</code></li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Auto {
+    private String marke;
+    private int baujahr;
+
+    public String getMarke() { return marke; }
+    public void setMarke(String marke) { this.marke = marke; }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Primitive vs. Referenz-Typen</h2>
+<div class="highlight-box fragment">
+<h3>Primitive Typen</h3>
+<ul>
+<li><code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code></li>
+<li>Speichern direkt den Wert</li>
+<li>Keine Methodenaufrufe moeglich</li>
+</ul>
+</div>
+<div class="highlight-box fragment">
+<h3>Referenz-Typen</h3>
+<ul>
+<li><code>String</code>, <code>Auto</code>, <code>Person</code>, ...</li>
+<li>Speichern eine Referenz (Adresse) auf das Objekt</li>
+<li>Methodenaufrufe moeglich: <code>person.getName()</code></li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+int zahl = 42;           // primitiv
+String text = "Hallo";   // Referenz
+Auto meinAuto = new Auto("BMW"); // Referenz
+</code></pre>
+</section>
+
+<section>
+<h2>Speichermodell: Stack vs. Heap</h2>
+<div class="highlight-box fragment">
+<h3>Stack (Stapelspeicher)</h3>
+<ul>
+<li>Lokale Variablen (primitiv)</li>
+<li>Referenzen auf Heap-Objekte</li>
+<li>Kurzlebig, Methodenaufruf-Ebene</li>
+</ul>
+</div>
+<div class="highlight-box fragment">
+<h3>Heap (Haldenspeicher)</h3>
+<ul>
+<li>Objekte (Instanzen von Klassen)</li>
+<li>Attributwerte</li>
+<li>Lebt bis zur Garbage Collection</li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+int a = 10;          // a auf dem Stack, Wert 10
+Auto b = new Auto(); // b auf Stack (Referenz),
+                      // Auto-Objekt auf dem Heap
+</code></pre>
+</section>
+
+<section>
+<h2>Zwei Variablen, ein Objekt</h2>
+<pre class="fragment"><code class="language-java">
+Person p1 = new Person("Anna");
+Person p2 = p1;  // p2 zeigt auf DASSELBE Objekt
+
+p2.setName("Maria");
+System.out.println(p1.getName()); // "Maria"
+</code></pre>
+<div class="highlight-box fragment">
+<p>Zwei Referenzen koennen auf dasselbe Objekt zeigen. Aenderungen uber eine Referenz sind auch uber die andere sichtbar.</p>
+</div>
+<pre class="fragment"><code class="language-java">
+// Anders bei primitiven Typen:
+int x = 5;
+int y = x;
+y = 10;
+System.out.println(x); // 5 (unabhaengig!)
+</code></pre>
+</section>
+
+<section>
+<h2>null - keine Referenz</h2>
+<div class="highlight-box fragment">
+<ul>
+<li><code>null</code> bedeutet: Die Variable zeigt auf kein Objekt</li>
+<li>Eine nicht initialisierte Objektvariable hat den Wert <code>null</code></li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+Person person = null;
+System.out.println(person.getName());
+// NullPointerException!
+</code></pre>
+<div class="highlight-box fragment">
+<p>Vor dem Methodenaufruf prufen, ob die Referenz <code>null</code> ist.</p>
+</div>
+<pre class="fragment"><code class="language-java">
+if (person != null) {
+    System.out.println(person.getName());
+} else {
+    System.out.println("Keine Person vorhanden");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Objekte als Attribute</h2>
+<div class="highlight-box fragment">
+<p>Eine Klasse kann Objekte einer anderen Klasse als Attribut enthalten.</p>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Person {
+    private String name;
+    private Adresse adresse;  // Objekt als Attribut
+}
+</code></pre>
+<pre class="fragment"><code class="language-java">
+public class Adresse {
+    private String strasse;
+    private String plz;
+    private String ort;
+}
+</code></pre>
+<div class="highlight-box fragment">
+<p>Dies nennt man auch <strong>Assoziation</strong> oder <strong>hat-ein-Beziehung</strong>.</p>
+</div>
+</section>
+
+<section>
+<h2>Beispiel: Adresse als Attribut von Person</h2>
+<pre class="fragment"><code class="language-java">
+Adresse adr = new Adresse("Hauptstr. 1", "1050", "Wien");
+Person person = new Person("Anna", 25, adr);
+
+System.out.println(person.getName());
+System.out.println(person.getAdresse().getOrt());
+</code></pre>
+<div class="highlight-box fragment">
+<p>Kettenzugriff: <code>person.getAdresse().getOrt()</code></p>
+</div>
+</section>
+
+<section>
+<h2>Live-Coding: Person mit Adresse</h2>
+<div class="highlight-box fragment">
+<p>Implementiere die Klassen <code>Person</code> und <code>Adresse</code>:</p>
+<ul>
+<li><code>Adresse</code>: strasse, plz, ort, Konstruktor, Getter</li>
+<li><code>Person</code>: name, alter, adresse, Konstruktor, Getter, toString()</li>
+</ul>
+</div>
+<pre class="fragment"><code class="language-java">
+Adresse a = new Adresse("Schulgasse 1", "1050", "Wien");
+Person p = new Person("Max", 16, a);
+System.out.println(p);
+// Max (16), Schulgasse 1, 1050 Wien
+</code></pre>
+</section>
+
+<section>
+<h2>Objekte als Parameter</h2>
+<div class="highlight-box fragment">
+<p>Objekte koennen als Parameter an Methoden ubergeben werden.</p>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Person {
+    public void umziehen(Adresse neueAdresse) {
+        this.adresse = neueAdresse;
+    }
+}
+</code></pre>
+<pre class="fragment"><code class="language-java">
+Adresse neueAdr = new Adresse("Berggasse 5", "1090", "Wien");
+person.umziehen(neueAdr);
+System.out.println(person.getAdresse());
+// Berggasse 5, 1090 Wien
+</code></pre>
+<div class="highlight-box fragment">
+<p>Es wird die <strong>Referenz</strong> auf das Objekt ubergeben.</p>
+</div>
+</section>
+
+<section>
+<h2>NullPointerException vermeiden</h2>
+<div class="highlight-box fragment">
+<p>NullPointerException tritt auf, wenn man eine Methode auf einer <code>null</code>-Referenz aufruft.</p>
+</div>
+<pre class="fragment"><code class="language-java">
+public void printAdresse() {
+    if (this.adresse != null) {
+        System.out.println(this.adresse);
+    } else {
+        System.out.println("Keine Adresse vorhanden");
+    }
+}
+</code></pre>
+<pre class="fragment"><code class="language-java">
+// Mit Ternary-Operator:
+public String getAdresseOrt() {
+    return adresse != null ? adresse.getOrt() : "Unbekannt";
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape: Raum-Verweise</h2>
+<div class="highlight-box fragment">
+<p>Jeder Raum kennt seine Nachbar-Raume:</p>
+</div>
+<pre class="fragment"><code class="language-java">
+public class Raum {
+    private String name;
+    private String beschreibung;
+    private Raum norden;
+    private Raum sueden;
+    private Raum osten;
+    private Raum westen;
+
+    public void setNorden(Raum raum) { this.norden = raum; }
+    public Raum getNorden() { return norden; }
+    // analog fuer sueden, osten, westen
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape: Spieler.aktuellerRaum</h2>
+<pre class="fragment"><code class="language-java">
+public class Spieler {
+    private String name;
+    private Raum aktuellerRaum;
+
+    public Spieler(String name, Raum startRaum) {
+        this.name = name;
+        this.aktuellerRaum = startRaum;
+    }
+
+    public void geheNorden() {
+        if (aktuellerRaum.getNorden() != null) {
+            aktuellerRaum = aktuellerRaum.getNorden();
+            System.out.println("Du gehst nach Norden.");
+        } else {
+            System.out.println("Dort ist keine Tur.");
+        }
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+<p>Der Spieler bewegt sich, indem er <code>aktuellerRaum</code> andert.</p>
+</div>
+</section>
+
+<section>
+<h2>Dungeon Escape Aufgabe</h2>
+<div class="highlight-box fragment">
+<p>Baue ein kleines Dungeon mit 4 Raumen:</p>
+<ul>
+<li>Startraum, Wald, Turm, Schatzraum</li>
+<li>Verlinke die Raume mit setNorden(), setSueden(), etc.</li>
+<li>Der Spieler startet im Startraum</li>
+<li>Gib die aktuellen Ausgange aus: "Du kannst nach: norden, osten"</li>
+<li>Implementiere geheNorden(), geheSueden(), geheOsten(), geheWesten()</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Zusammenfassung</h2>
+<div class="highlight-box">
+<ul>
+<li>Referenz-Typen speichern Adressen von Objekten, primitive Typen speichern Werte</li>
+<li>Stack: lokale Variablen (primitiv) + Referenzen; Heap: Objekte</li>
+<li><code>null</code> = keine Referenz - vor dem Zugriff prufen</li>
+<li>Objekte koennen andere Objekte als Attribute enthalten (Assoziation)</li>
+<li>Objekte werden als Referenz an Methoden ubergeben</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick: Ubung OO</h2>
+<div class="highlight-box fragment">
+<p>Nachster Schritt: Wir vertiefen die Objektorientierung.</p>
+<ul>
+<li>Komplexere Assoziationen</li>
+<li>Mehrere Objekte verwalten</li>
+<li>Dungeon Escape mit Gegenstanden und Inventar</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">19 - Referenzen</span></div>');});
+</script>
+</body>
+</html>

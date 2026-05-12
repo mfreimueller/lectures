@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>15 - Objektorientierung: Klassen und Objekte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section class="center title-slide">
+                <h1>15 - Objektorientierung: Klassen und Objekte</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Wiederholung Methoden -->
+            <section>
+                <h2>Wiederholung: Methoden</h2>
+                <pre><code class="language-java">public class Rechner {
+    public static int addiere(int a, int b) {
+        return a + b;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Bisher: alle Methoden waren <strong>static</strong></li>
+                    <li class="fragment">static = die Methode gehoert zur Klasse, nicht zu einem Objekt</li>
+                    <li class="fragment">Heute lernen wir: Methoden OHNE static - sie gehoeren zu Objekten</li>
+                </ul>
+            </section>
+
+            <!-- Slide 3: Was ist OOP? -->
+            <section>
+                <h2>Was ist OOP?</h2>
+                <div class="fragment highlight-box">
+                    <p><strong>OOP = Objektorientierte Programmierung</strong></p>
+                </div>
+                <ul>
+                    <li class="fragment">Ein Programm besteht aus <strong>Objekten</strong>, die miteinander kommunizieren</li>
+                    <li class="fragment">Jedes Objekt hat <strong>Eigenschaften</strong> (Attribute) und <strong>Faehigkeiten</strong> (Methoden)</li>
+                    <li class="fragment">Analogie: LEGO-Steine - viele kleine Bausteine ergeben ein grosses Ganzes</li>
+                    <li class="fragment">Java ist eine <strong>objektorientierte</strong> Programmiersprache</li>
+                </ul>
+            </section>
+
+            <!-- Slide 4: Klasse vs. Objekt -->
+            <section>
+                <h2>Klasse vs. Objekt</h2>
+                <div class="fragment highlight-box">
+                    <p><strong>Klasse = Bauplan</strong></p>
+                    <p><strong>Objekt = Haus (gebaut nach dem Bauplan)</strong></p>
+                </div>
+                <ul>
+                    <li class="fragment">Eine Klasse definiert den Aufbau (Attribute und Methoden)</li>
+                    <li class="fragment">Mit <strong>new</strong> erzeugen wir konkrete Objekte (Instanzen)</li>
+                    <li class="fragment">Von einer Klasse koennen <strong>viele Objekte</strong> erzeugt werden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">// Klasse = Bauplan
+// Auto meinAuto = new Auto();  // Objekt = Haus</code></pre>
+            </section>
+
+            <!-- Slide 5: Klasse Auto - Attribute -->
+            <section>
+                <h2>Klasse Auto - Attribute</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+    String farbe;
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Attribute</strong> sind Eigenschaften eines Objekts</li>
+                    <li class="fragment">Sie werden als Variablen <strong>innerhalb der Klasse</strong> deklariert</li>
+                    <li class="fragment">Jedes Auto-Objekt hat seine eigenen Werte fuer marke, baujahr, farbe</li>
+                </ul>
+            </section>
+
+            <!-- Slide 6: Klasse Auto - Methoden -->
+            <section>
+                <h2>Klasse Auto - Methoden</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    void fahre() {
+        System.out.println(marke + " faehrt los!");
+    }
+
+    void hupen() {
+        System.out.println("Hup Hup!");
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Methoden ohne <strong>static</strong> gehoeren zu einem Objekt</li>
+                    <li class="fragment">Sie koennen auf die <strong>Attribute des Objekts</strong> zugreifen</li>
+                </ul>
+            </section>
+
+            <!-- Slide 7: Attribut vs. Parameter vs. Variable -->
+            <section>
+                <h2>Attribut vs. Parameter vs. Variable</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;             // ATTRIBUT (gehoert zum Objekt)
+
+    void fahre(int tempo) {   // PARAMETER (wird beim Aufruf uebergeben)
+        String msg = "Start"; // LOKALE VARIABLE (nur in dieser Methode)
+        System.out.println(marke + " faehrt mit " + tempo + " km/h");
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Attribute:</strong> gelten fuer das ganze Objekt</li>
+                    <li class="fragment"><strong>Parameter:</strong> werden beim Methodenaufruf uebergeben</li>
+                    <li class="fragment"><strong>Lokale Variablen:</strong> existieren nur innerhalb einer Methode</li>
+                </ul>
+            </section>
+
+            <!-- Slide 8: new - Objekte erzeugen -->
+            <section>
+                <h2>Objekte erzeugen mit new</h2>
+                <pre><code class="language-java">// Objekt erzeugen
+Auto meinAuto = new Auto();
+
+// Attribute setzen
+meinAuto.marke = "VW";
+meinAuto.baujahr = 2020;
+
+// Methoden aufrufen
+meinAuto.fahre();</code></pre>
+                <ul>
+                    <li class="fragment"><strong>new Auto()</strong> erzeugt ein neues Auto-Objekt im Speicher</li>
+                    <li class="fragment">Der <strong>Datentyp</strong> der Variable ist <strong>Auto</strong> (der Klassenname)</li>
+                    <li class="fragment">Mit dem <strong>Punkt-Operator (.)</strong> greifen wir auf Attribute/Methoden zu</li>
+                </ul>
+            </section>
+
+            <!-- Slide 9: Live-Coding Auto -->
+            <section>
+                <h2>Live-Coding: Auto Klasse + Objekt</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    void fahre() {
+        System.out.println(marke + " faehrt los!");
+    }
+}</code></pre>
+                <pre class="fragment"><code class="language-java">public class AutoTest {
+    public static void main(String[] args) {
+        Auto a1 = new Auto();
+        a1.marke = "VW";
+        a1.baujahr = 2020;
+
+        Auto a2 = new Auto();
+        a2.marke = "BMW";
+        a2.baujahr = 2023;
+
+        a1.fahre(); // VW faehrt los!
+        a2.fahre(); // BMW faehrt los!
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 10: Beispiel Klasse Buch -->
+            <section>
+                <h2>Beispiel: Klasse Buch</h2>
+                <pre><code class="language-java">public class Buch {
+    String titel;
+    String autor;
+
+    void printInfo() {
+        System.out.println("Titel: " + titel);
+        System.out.println("Autor: " + autor);
+    }
+}</code></pre>
+                <pre class="fragment"><code class="language-java">Buch b = new Buch();
+b.titel = "Der Hobbit";
+b.autor = "J.R.R. Tolkien";
+b.printInfo();</code></pre>
+                <p class="fragment">Eigenes Beispiel: Welche Klasse koenntet ihr modellieren?</p>
+            </section>
+
+            <!-- Slide 11: Attribut vs. Parameter vs. Variable - Tabelle -->
+            <section>
+                <h2>Attribut vs. Parameter vs. Variable</h2>
+                <table>
+                    <thead>
+                        <tr><th>Typ</th><th>Wo deklariert?</th><th>Gueltigkeitsbereich</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment"><td>Attribut</td><td>In der Klasse (ausserhalb Methoden)</td><td>Das ganze Objekt</td></tr>
+                        <tr class="fragment"><td>Parameter</td><td>In der Methoden-Signatur</td><td>Die Methode</td></tr>
+                        <tr class="fragment"><td>Lokale Variable</td><td>Innerhalb einer Methode</td><td>Die Methode (ab Deklaration)</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 12: this (Vorgriff) -->
+            <section>
+                <h2>this - Vorgriff</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+
+    void setMarke(String marke) {
+        this.marke = marke; // this.marke = Attribut
+    }                       // marke = Parameter
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>this</strong> verweist auf das aktuelle Objekt</li>
+                    <li class="fragment">Damit unterscheiden wir: Attribut vs. Parameter mit gleichem Namen</li>
+                    <li class="fragment">Detailierte Behandlung in Woche 18</li>
+                </ul>
+            </section>
+
+            <!-- Slide 13: Dungeon Escape - Spieler-Klasse -->
+            <section>
+                <h2>Dungeon Escape: Spieler-Klasse</h2>
+                <pre><code class="language-java">public class Spieler {
+    String name;
+    int hp;
+    int angriff;
+    int verteidigung;
+
+    void zeigeStatus() {
+        System.out.println(name + " - HP: " + hp);
+    }
+}</code></pre>
+                <p class="fragment">Erstelle eine eigene Klasse fuer den Spieler mit Attributen</p>
+            </section>
+
+            <!-- Slide 14: Dungeon Escape - Raum-Klasse -->
+            <section>
+                <h2>Dungeon Escape: Raum-Klasse</h2>
+                <pre><code class="language-java">public class Raum {
+    String name;
+    String beschreibung;
+
+    void zeigeBeschreibung() {
+        System.out.println(beschreibung);
+    }
+}</code></pre>
+                <p class="fragment">Erstelle eine Raum-Klasse fuer die verschiedenen Raeume im Dungeon</p>
+            </section>
+
+            <!-- Slide 15: Zusammenfassung -->
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment"><strong>Klasse</strong> = Bauplan fuer Objekte</li>
+                    <li class="fragment"><strong>Objekt</strong> = konkrete Instanz einer Klasse (erzeugt mit new)</li>
+                    <li class="fragment"><strong>Attribute</strong> = Eigenschaften des Objekts</li>
+                    <li class="fragment"><strong>Methoden</strong> = Faehigkeiten des Objekts (ohne static)</li>
+                    <li class="fragment">Zugriff auf Attribute/Methoden mit dem Punkt-Operator (.)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 16: Ausblick -->
+            <section>
+                <h2>Ausblick: Konstruktoren</h2>
+                <div class="highlight-box">
+                    <p>Aktuell setzen wir Attribute manuell nach new:</p>
+                    <pre><code class="language-java">Auto a = new Auto();
+a.marke = "VW"; // mu hs e lig</code></pre>
+                    <p>Besser: Werte direkt bei der Erzeugung uebergeben</p>
+                    <pre class="fragment"><code class="language-java">Auto a = new Auto("VW", 2020); // elegant!</code></pre>
+                    <p class="fragment">Konstruktoren kommen in Woche 17</p>
+                </div>
+            </section>
+
+            <!-- Slide 17: Ende -->
+            <section class="center">
+                <div class="highlight-box">
+                    <h3>Heute gelernt: Klassen und Objekte</h3>
+                    <p>Klasse = Bauplan | Objekt = Instanz | new = Erzeugung</p>
+                    <p>Attribute = Eigenschaften | Methoden = Faehigkeiten</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">15 - Objektorientierung: Klassen und Objekte</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

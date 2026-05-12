@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>17 - Konstruktoren</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section class="center title-slide">
+                <h1>17 - Konstruktoren</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Wiederholung new -->
+            <section>
+                <h2>Wiederholung: new und Objekte</h2>
+                <pre><code class="language-java">Auto a = new Auto();
+a.marke = "VW";
+a.baujahr = 2020;
+a.fahre();</code></pre>
+                <ul>
+                    <li class="fragment"><strong>new Auto()</strong> erzeugt ein Objekt</li>
+                    <li class="fragment">Danach muessen wir Attribute <strong>manuell setzen</strong></li>
+                    <li class="fragment">Das ist <strong>umstaendlich</strong> - besonders bei vielen Attributen</li>
+                </ul>
+            </section>
+
+            <!-- Slide 3: Problem -->
+            <section>
+                <h2>Das Problem</h2>
+                <div class="highlight-box">
+                    <p>Drei Schritte fuer ein Objekt: erzeugen, Attribute setzen, verwenden</p>
+                </div>
+                <pre><code class="language-java">Auto a = new Auto();     // 1. Erzeugen
+a.marke = "VW";          // 2. Attribute setzen
+a.baujahr = 2020;        // 2. Attribute setzen
+a.fahre();               // 3. Verwenden</code></pre>
+                <p class="fragment">Was, wenn wir vergessen, ein Attribut zu setzen?<br>Was, wenn wir 10 Attribute haben?</p>
+                <p class="fragment highlight-box">Loesung: <strong>Konstruktor</strong> - Initialisierung direkt bei der Erzeugung</p>
+            </section>
+
+            <!-- Slide 4: Was ist ein Konstruktor? -->
+            <section>
+                <h2>Was ist ein Konstruktor?</h2>
+                <ul>
+                    <li class="fragment">Ein Konstruktor ist eine <strong>spezielle Methode</strong> zur Initialisierung</li>
+                    <li class="fragment">Er hat <strong>denselben Namen</strong> wie die Klasse</li>
+                    <li class="fragment">Er hat <strong>keinen Rueckgabetyp</strong> (nicht einmal void)</li>
+                    <li class="fragment">Er wird <strong>automatisch</strong> bei new aufgerufen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    // Konstruktor
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 5: Standardkonstruktor -->
+            <section>
+                <h2>Standardkonstruktor</h2>
+                <ul>
+                    <li class="fragment">Wenn wir <strong>keinen</strong> Konstruktor definieren, erzeugt Java einen <strong>Standardkonstruktor</strong></li>
+                    <li class="fragment">Der Standardkonstruktor hat <strong>keine Parameter</strong></li>
+                    <li class="fragment">Er setzt Attribute auf <strong>Standardwerte</strong> (0, null, false)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">// Von Java automatisch erzeugt:
+public Auto() {
+    // nichts - Attribute bleiben auf Standardwerten
+}</code></pre>
+                <p class="fragment">Sobald wir <strong>irgendeinen</strong> Konstruktor definieren, gibt es keinen automatischen Standardkonstruktor mehr!</p>
+            </section>
+
+            <!-- Slide 6: Parametrisierter Konstruktor -->
+            <section>
+                <h2>Parametrisierter Konstruktor</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Uebergibt Werte <strong>direkt bei der Erzeugung</strong></li>
+                    <li class="fragment"><strong>this.marke</strong> = Attribut, <strong>marke</strong> = Parameter</li>
+                    <li class="fragment">Kein manuelles Setzen mehr noetig!</li>
+                </ul>
+            </section>
+
+            <!-- Slide 7: Syntax im Detail -->
+            <section>
+                <h2>Syntax: Konstruktor</h2>
+                <pre><code class="language-java">[Zugriffsmodifizierer] Klassenname(Parameter) {
+    // Initialisierung
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>public</strong> - damit wir von ueberall darauf zugreifen koennen</li>
+                    <li class="fragment"><strong>Klassenname</strong> - muss exakt dem Klassennamen entsprechen</li>
+                    <li class="fragment"><strong>Parameter</strong> - Werte, die beim Erzeugen uebergeben werden</li>
+                    <li class="fragment"><strong>this.attribut = parameter</strong> - Attribut mit Parameterwert setzen</li>
+                </ul>
+            </section>
+
+            <!-- Slide 8: Live-Coding Auto -->
+            <section>
+                <h2>Live-Coding: Auto mit Konstruktor</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+
+    void fahre() {
+        System.out.println(marke + " faehrt!");
+    }
+}
+
+// Verwendung:
+Auto a = new Auto("VW", 2020);
+a.fahre();  // VW faehrt!</code></pre>
+            </section>
+
+            <!-- Slide 9: Konstruktor-Ueberladung -->
+            <section>
+                <h2>Konstruktor-Ueberladung</h2>
+                <ul>
+                    <li class="fragment">Eine Klasse kann <strong>mehrere Konstruktoren</strong> haben</li>
+                    <li class="fragment">Sie unterscheiden sich in der <strong>Parameterliste</strong> (Anzahl oder Typ)</li>
+                    <li class="fragment">Java waehlt automatisch den passenden Konstruktor aus</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    public Auto() {
+        marke = "Unbekannt";
+        baujahr = 0;
+    }
+
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 10: Beispiel Person -->
+            <section>
+                <h2>Beispiel: Person mit Ueberladung</h2>
+                <pre><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    // 1. Keine Parameter
+    public Person() {
+        name = "Unbekannt";
+        alter = 0;
+    }
+
+    // 2. Nur Name
+    public Person(String name) {
+        this.name = name;
+        this.alter = 0;
+    }
+
+    // 3. Name und Alter
+    public Person(String name, int alter) {
+        this.name = name;
+        this.alter = alter;
+    }
+}</code></pre>
+                <p class="fragment">Alle drei Konstruktoren sind nutzbar: <code>new Person()</code>, <code>new Person("Max")</code>, <code>new Person("Max", 25)</code></p>
+            </section>
+
+            <!-- Slide 11: this(parameter) -->
+            <section>
+                <h2>this(parameter) - Konstruktor ruft Konstruktor</h2>
+                <pre><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    public Person() {
+        this("Unbekannt", 0); // ruft den 3. Konstruktor
+    }
+
+    public Person(String name) {
+        this(name, 0);        // ruft den 3. Konstruktor
+    }
+
+    public Person(String name, int alter) {
+        this.name = name;
+        this.alter = alter;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Vermeidet Code-Wiederholung</li>
+                    <li class="fragment">this() muss die <strong>erste Anweisung</strong> im Konstruktor sein</li>
+                </ul>
+            </section>
+
+            <!-- Slide 12: Dungeon Escape - Spieler-Konstruktor -->
+            <section>
+                <h2>Dungeon Escape: Spieler-Konstruktor</h2>
+                <pre><code class="language-java">public class Spieler {
+    String name;
+    int hp;
+    int angriff;
+
+    public Spieler(String name) {
+        this.name = name;
+        this.hp = 100;
+        this.angriff = 15;
+    }
+}
+
+// Verwendung:
+Spieler held = new Spieler("Held");</code></pre>
+                <p class="fragment">Ein Konstruktor, der Standardwerte setzt - viel sauberer!</p>
+            </section>
+
+            <!-- Slide 13: Dungeon Escape - Raum-Konstruktor -->
+            <section>
+                <h2>Dungeon Escape: Raum-Konstruktor</h2>
+                <pre><code class="language-java">public class Raum {
+    String name;
+    String beschreibung;
+
+    public Raum(String name, String beschreibung) {
+        this.name = name;
+        this.beschreibung = beschreibung;
+    }
+}
+
+// Optional: Raum mit Gegner
+public class Raum {
+    String name;
+    String beschreibung;
+    String gegner;
+
+    public Raum(String name, String beschreibung) {
+        this(name, beschreibung, null);
+    }
+
+    public Raum(String name, String beschreibung, String gegner) {
+        this.name = name;
+        this.beschreibung = beschreibung;
+        this.gegner = gegner;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 14: Zusammenfassung -->
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment"><strong>Konstruktor</strong> = Initialisierung beim Objekt-Erzeugen</li>
+                    <li class="fragment">Gleicher Name wie die Klasse, <strong>kein Rueckgabetyp</strong></li>
+                    <li class="fragment"><strong>Standardkonstruktor</strong> - automatisch, wenn keiner definiert</li>
+                    <li class="fragment"><strong>Parametrisierter Konstruktor</strong> - Werte direkt uebergeben</li>
+                    <li class="fragment"><strong>Ueberladung</strong> - mehrere Konstruktoren mit unterschiedlichen Parametern</li>
+                    <li class="fragment"><strong>this(parameter)</strong> - Konstruktor ruft anderen Konstruktor auf</li>
+                </ul>
+            </section>
+
+            <!-- Slide 15: Ausblick -->
+            <section class="center">
+                <div class="highlight-box">
+                    <h3>Naechste Woche: this, Getter und Setter</h3>
+                    <p>this genauer, Kapselung (private/public), Getter und Setter</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">17 - Konstruktoren</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

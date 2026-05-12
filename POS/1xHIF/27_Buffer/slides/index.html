@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>27 - Puffer: Arrays und Sortieren</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>27 - Puffer: Arrays und Sortieren</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Arrays</h2>
+<ul>
+<li class="fragment">Deklaration: int[] zahlen = new int[5];</li>
+<li class="fragment">Initialisierung: int[] zahlen = {1, 2, 3};</li>
+<li class="fragment">Zugriff ueber Index: zahlen[index]</li>
+<li class="fragment">for-each: for (int z : zahlen) { }</li>
+<li class="fragment">Arrays.toString() fuer schnelle Ausgabe</li>
+<li class="fragment">Mehrdimensionale Arrays: int[][] matrix</li>
+</ul>
+</section>
+
+<section>
+<h2>Wiederholung: Sortieren</h2>
+<ul>
+<li class="fragment">Selection Sort: Minimum suchen, an den Anfang tauschen</li>
+<li class="fragment">Insertion Sort: Element einordnen, nach rechts verschieben</li>
+<li class="fragment">Bubblesort: Benachbarte Elemente vergleichen und tauschen</li>
+<li class="fragment">Alle drei Algorithmen: O(n^2)</li>
+</ul>
+</section>
+
+<section>
+<h2>Arbeitsauftrag</h2>
+<ul>
+<li class="fragment">Kata 1: Notenverwaltung - Durchschnitt, Min, Max, Sortieren</li>
+<li class="fragment">Kata 2: Telefonbuch - Namen suchen und Nummer ausgeben</li>
+<li class="fragment">Dungeon Escape: Highscore verbessern (absteigend sortieren)</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">27 - Puffer: Arrays und Sortieren</span></div>');});
+</script>
+</body>
+</html>

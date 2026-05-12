@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>09 - Konvertierung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide"><h1>09 - Konvertierung (String zu Zahl)</h1><p class="institution">POS1 - 1AHIF</p></section>
+
+<section><h2>Wiederholung</h2>
+<p>Wie bekommt man das dritte Zeichen eines Strings?</p>
+<p class="fragment">charAt(2)</p>
+<p class="fragment">Wie testet man, ob ein String mit "https" beginnt?</p>
+<p class="fragment">startsWith("https")</p>
+</section>
+
+<section><h2>Das Problem</h2>
+<p>Scanner.nextInt() liefert eine Zahl.</p>
+<p>Aber: Scanner.next() liefert einen String.</p>
+<p class="fragment">Was, wenn wir aus einem String eine Zahl machen muessen?</p>
+</section>
+
+<section><h2>Integer.parseInt()</h2>
+<pre><code class="language-java">String zahlAlsText = "42";
+int zahl = Integer.parseInt(zahlAlsText);
+
+System.out.println(zahl + 10);  // 52 (Rechnung!)
+// Ohne parseInt: "42" + 10 = "4210" (Text!)</code></pre>
+</section>
+
+<section><h2>Float.parseFloat()</h2>
+<pre><code class="language-java">String preisAlsText = "19.99";
+double preis = Float.parseFloat(preisAlsText);
+
+System.out.println(preis * 2);  // 39.98</code></pre>
+</section>
+
+<section><h2>Boolean.parseBoolean()</h2>
+<pre><code class="language-java">String wert1 = "true";
+String wert2 = "false";
+String wert3 = "maybe";
+
+boolean b1 = Boolean.parseBoolean(wert1);  // true
+boolean b2 = Boolean.parseBoolean(wert2);  // false
+boolean b3 = Boolean.parseBoolean(wert3);  // false (nur "true" wird true)</code></pre>
+</section>
+
+<section><h2>Fehlerbehandlung (Vorschau)</h2>
+<pre><code class="language-java">String eingabe = "abc";
+// int zahl = Integer.parseInt(eingabe);  // Programm stuerzt ab!
+
+// Bessere Variante (Vorschau auf Exception-Handling):
+try {
+    int zahl = Integer.parseInt(eingabe);
+    System.out.println(zahl);
+} catch (NumberFormatException e) {
+    System.out.println("Keine gueltige Zahl!");
+}</code></pre>
+</section>
+
+<section><h2>Kata 2: Binaer zu Dezimal</h2>
+<pre><code class="language-java">String binaer = "1010";
+int dezimal = 0;
+
+for (int i = 0; i < binaer.length(); i++) {
+    char c = binaer.charAt(i);
+    int ziffer = Integer.parseInt(String.valueOf(c));
+    dezimal = dezimal * 2 + ziffer;
+}
+
+System.out.println(binaer + " = " + dezimal);  // 1010 = 10</code></pre>
+</section>
+
+<section><h2>Dungeon Escape: Heiltranke</h2>
+<pre><code class="language-java">Scanner scanner = new Scanner(System.in);
+
+System.out.print("Wie viele Heiltraenke? ");
+String eingabe = scanner.nextLine();
+int anzahl = Integer.parseInt(eingabe);
+
+int hp = 50;
+int heilung = anzahl * 15;
+hp += heilung;
+
+System.out.println("Du heilst " + heilung + " HP. Neue HP: " + hp);</code></pre>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li>Integer.parseInt(): String -> int</li>
+<li>Float.parseFloat(): String -> float/double</li>
+<li>Boolean.parseBoolean(): String -> boolean</li>
+<li>Scanner-Eingabe in Zahlen umwandeln</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: switch-case</h3></div></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">09 - Konvertierung</span></div>');});
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>04 - for-Schleife</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>04 - for-Schleife</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section><h2>Wiederholung</h2>
+<p class="fragment">Was macht der &&-Operator?</p>
+<p class="fragment">Wann ist eine Bedingung mit || true?</p>
+</section>
+
+<section><h2>for-Schleife - Das Problem</h2>
+<p>Wir wollen 5x "Hallo" ausgeben:</p>
+<pre><code class="language-java">System.out.println("Hallo");  // 1
+System.out.println("Hallo");  // 2
+System.out.println("Hallo");  // 3
+System.out.println("Hallo");  // 4
+System.out.println("Hallo");  // 5</code></pre>
+<p class="fragment">Was, wenn wir 1000x ausgeben wollen?</p>
+<p class="fragment"><strong>Losung: for-Schleife</strong></p>
+</section>
+
+<section><h2>for-Schleife - Syntax</h2>
+<pre><code class="language-java">for (Initialisierung; Bedingung; Inkrement) {
+    // Wiederholter Code
+}</code></pre>
+<p class="fragment">Beispiel:</p>
+<pre class="fragment"><code class="language-java">for (int i = 0; i < 5; i++) {
+    System.out.println("Hallo");
+}</code></pre>
+<p class="fragment">Ausgabe: Hallo (5x)</p>
+</section>
+
+<section><h2>Die Zaehlvariable</h2>
+<pre><code class="language-java">for (int i = 0; i < 5; i++) {
+    System.out.println("Durchlauf: " + i);
+}</code></pre>
+<p class="fragment">Zaehlvariablen-Optionen:</p>
+<ul>
+<li class="fragment">Start: int i = 0 (oder 1, 10, ...)</li>
+<li class="fragment">Bedingung: i < n (oder i <= n, i > 0, ...)</li>
+<li class="fragment">Schritt: i++ (oder i--, i += 2, ...)</li>
+</ul>
+</section>
+
+<section><h2>Durchlauf der for-Schleife</h2>
+<pre><code class="language-java">for (int i = 0; i < 3; i++) {
+    System.out.println(i);
+}</code></pre>
+<ol>
+<li class="fragment">Initialisierung: i = 0</li>
+<li class="fragment">Bedingung: 0 &lt; 3? true -> Ausgabe: 0</li>
+<li class="fragment">Inkrement: i = 1</li>
+<li class="fragment">Bedingung: 1 &lt; 3? true -> Ausgabe: 1</li>
+<li class="fragment">Inkrement: i = 2</li>
+<li class="fragment">Bedingung: 2 &lt; 3? true -> Ausgabe: 2</li>
+<li class="fragment">Inkrement: i = 3</li>
+<li class="fragment">Bedingung: 3 &lt; 3? false -> Ende</li>
+</ol>
+</section>
+
+<section><h2>Summe 1..n</h2>
+<pre><code class="language-java">int n = 10;
+int summe = 0;
+
+for (int i = 1; i <= n; i++) {
+    summe = summe + i;  // oder summe += i
+}
+
+System.out.println("Summe 1.." + n + " = " + summe);</code></pre>
+<p class="fragment">Summe 1..10 = 55</p>
+</section>
+
+<section><h2>Produkt (Fakultaet)</h2>
+<pre><code class="language-java">int n = 5;
+int produkt = 1;
+
+for (int i = 1; i <= n; i++) {
+    produkt = produkt * i;  // produkt *= i
+}
+
+System.out.println(n + "! = " + produkt);</code></pre>
+<p class="fragment">5! = 120</p>
+</section>
+
+<section><h2>1x1-Reihe</h2>
+<pre><code class="language-java">int zahl = 3;
+
+for (int i = 1; i <= 10; i++) {
+    System.out.println(zahl + "x" + i + " = " + (zahl * i));
+}</code></pre>
+<p class="fragment">Ausgabe: 3x1=3, 3x2=6, ..., 3x10=30</p>
+</section>
+
+<section><h2>Primzahl-Prüfung</h2>
+<pre><code class="language-java">int zahl = 17;
+boolean istPrim = true;
+
+for (int i = 2; i < zahl; i++) {
+    if (zahl % i == 0) {
+        istPrim = false;
+        break;  // Schleife vorzeitig beenden
+    }
+}
+
+if (istPrim) {
+    System.out.println(zahl + " ist eine Primzahl.");
+}</code></pre>
+</section>
+
+<section><h2>Typische Fehler</h2>
+<ul>
+<li class="fragment"><strong>Endlosschleife:</strong> for (int i = 0; i < 10; )</li>
+<li class="fragment"><strong>Off-by-one:</strong> i <= statt i < (oder umgekehrt)</li>
+<li class="fragment"><strong>Zaehlvariable aendern:</strong> i = 5 im Schleifenkoerper</li>
+<li class="fragment"><strong>Semikolon zu frueh:</strong> for (int i=0; i<10; i++); { }</li>
+</ul>
+</section>
+
+<section><h2>Dungeon Escape: Kampfrunde</h2>
+<pre><code class="language-java">int gegnerHp = 50;
+int schaden = 12;
+
+for (int runde = 1; runde <= 3; runde++) {
+    System.out.println("Runde " + runde + ":");
+    gegnerHp -= schaden;
+    System.out.println("  Gegner HP: " + gegnerHp);
+}
+
+System.out.println("Gegner besiegt!");</code></pre>
+</section>
+
+<section><h2>Dungeon Escape - Aufgabe</h2>
+<ul>
+<li>Fuehre 3 Angriffe mit for-Schleife aus</li>
+<li>Gib Schaden pro Runde aus</li>
+<li>Berechne Gesamtschaden</li>
+<li>Erweiterung: break bei gegnerHp <= 0</li>
+</ul>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li class="fragment">for-Schleife: Initialisierung, Bedingung, Inkrement</li>
+<li class="fragment">Zaehlvariablen</li>
+<li class="fragment">Akkumulator (Summe, Produkt)</li>
+<li class="fragment">break zum vorzeitigen Abbruch</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box"><h3 class="centered">Naechste Woche: Ubung</h3></div>
+<p>Festigung aller Themen der letzten Wochen.</p>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">04 - for-Schleife</span></div>');});
+</script>
+</body>
+</html>

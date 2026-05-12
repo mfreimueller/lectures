@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>07 - Methoden und Scanner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide"><h1>07 - Methoden und Scanner</h1><p class="institution">POS1 - 1AHIF</p></section>
+
+<section><h2>Wiederholung</h2>
+<p>Welche Schleifenarten kennt ihr?</p>
+<p class="fragment">for, while, do-while</p>
+<p class="fragment">Unterschied zwischen while und do-while?</p>
+</section>
+
+<section><h2>Scanner - Benutzereingabe</h2>
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Eingabe {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Alter: ");
+        int alter = scanner.nextInt();
+
+        System.out.println("Hallo " + name + ", " + alter + " Jahre.");
+    }
+}</code></pre>
+</section>
+
+<section><h2>Scanner-Methoden</h2>
+<table>
+<tr><th>Methode</th><th>Liefert</th></tr>
+<tr class="fragment"><td>nextLine()</td><td>String (ganze Zeile)</td></tr>
+<tr class="fragment"><td>nextInt()</td><td>int</td></tr>
+<tr class="fragment"><td>nextDouble()</td><td>double</td></tr>
+<tr class="fragment"><td>nextBoolean()</td><td>boolean</td></tr>
+</table>
+</section>
+
+<section><h2>Methoden - Wozu?</h2>
+<ul>
+<li class="fragment">Wiederholten Code auslagern</li>
+<li class="fragment">Programm strukturieren</li>
+<li class="fragment">Wiederverwendbarkeit</li>
+<li class="fragment">Lesbarkeit verbessern</li>
+</ul>
+</section>
+
+<section><h2>Methoden - Definition</h2>
+<pre><code class="language-java">// Methode ohne Rueckgabe, ohne Parameter
+public static void sayHello() {
+    System.out.println("Hallo!");
+}
+
+// Methode mit Parameter, ohne Rueckgabe
+public static void sayHelloTo(String name) {
+    System.out.println("Hallo " + name + "!");
+}
+
+// Methode mit Parameter und Rueckgabe
+public static int add(int a, int b) {
+    return a + b;
+}</code></pre>
+</section>
+
+<section><h2>Methoden - Aufruf</h2>
+<pre><code class="language-java">public static void main(String[] args) {
+    sayHello();                    // Hallo!
+    sayHelloTo("Anna");           // Hallo Anna!
+    int summe = add(5, 3);        // summe = 8
+    System.out.println(summe);    // 8
+}
+
+public static void sayHello() {
+    System.out.println("Hallo!");
+}
+
+public static void sayHelloTo(String name) {
+    System.out.println("Hallo " + name + "!");
+}
+
+public static int add(int a, int b) {
+    return a + b;
+}</code></pre>
+</section>
+
+<section><h2>Parameter und Ruckgabe</h2>
+<ul>
+<li class="fragment"><strong>Parameter:</strong> Werte, die die Methode bekommt</li>
+<li class="fragment"><strong>Ruckgabetyp:</strong> void = nichts, sonst Typ des Ruckgabewerts</li>
+<li class="fragment"><strong>return:</strong> beendet die Methode und gibt Wert zurueck</li>
+</ul>
+</section>
+
+<section><h2>Kata 1: int max(int a, int b)</h2>
+<pre><code class="language-java">public static int max(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+public static void main(String[] args) {
+    int groesser = max(15, 8);
+    System.out.println(groesser);  // 15
+}</code></pre>
+</section>
+
+<section><h2>Kata 2: boolean istPalindrom</h2>
+<pre><code class="language-java">public static boolean istPalindrom(String wort) {
+    int laenge = wort.length();
+    for (int i = 0; i < laenge / 2; i++) {
+        if (wort.charAt(i) != wort.charAt(laenge - 1 - i)) {
+            return false;
+        }
+    }
+    return true;
+}</code></pre>
+</section>
+
+<section><h2>Dungeon Escape: Methoden</h2>
+<pre><code class="language-java">public static void zeigeStatus(String name, int hp) {
+    System.out.println("=== " + name + " ===");
+    System.out.println("HP: " + hp);
+}
+
+public static void zeigeRaum(String raumName) {
+    System.out.println("Du bist im: " + raumName);
+}
+
+public static int kaempfe(int hp, int schaden) {
+    return hp - schaden;
+}</code></pre>
+</section>
+
+<section><h2>Dungeon Escape - Aufgabe</h2>
+<ul>
+<li>Lagere Code in Methoden aus: zeigeRaum(), zeigeStatus(), kaempfe()</li>
+<li>Verwende Scanner fuer die Benutzereingabe</li>
+<li>Der Spieler gibt seine Entscheidung ein (1, 2, 3)</li>
+</ul>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li>Scanner: Benutzereingabe lesen</li>
+<li>Methoden definieren (public static ...)</li>
+<li>Parameter und Ruckgabewerte</li>
+<li>Programmstrukturierung mit Methoden</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: String-Methoden</h3></div></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">07 - Methoden Scanner</span></div>');});
+</script>
+</body>
+</html>

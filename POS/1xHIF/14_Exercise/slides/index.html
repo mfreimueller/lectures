@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>14 - Exercise: Wiederholung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title Page -->
+            <section class="center title-slide">
+                <h1>14 - Exercise: Wiederholung</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Themenueberblick -->
+            <section>
+                <h2>Themenueberblick Wochen 00-13</h2>
+                <div class="fragment highlight-box">
+                    <p><strong>Grundlagen</strong></p>
+                    <ul>
+                        <li>00: Einfuehrung, println/printf, IDE</li>
+                        <li>01: Datentypen, Variablen, Operatoren</li>
+                        <li>02: if/else-Verzweigungen</li>
+                        <li>03: Logik: &&, ||, !</li>
+                    </ul>
+                </div>
+                <div class="fragment highlight-box">
+                    <p><strong>Schleifen & Methoden</strong></p>
+                    <ul>
+                        <li>04: for-Schleife</li>
+                        <li>06: while/do-while-Schleife</li>
+                        <li>07: Methoden & Scanner</li>
+                    </ul>
+                </div>
+                <div class="fragment highlight-box">
+                    <p><strong>Fortgeschritten</strong></p>
+                    <ul>
+                        <li>08: String-Methoden</li>
+                        <li>09: Typumwandlung</li>
+                        <li>10: Switch-Case</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 3: Haeufige Fehler -->
+            <section>
+                <h2>Haeufige Fehler</h2>
+                <div class="fragment highlight-box">
+                    <p><strong>Fehlendes Semikolon</strong></p>
+                    <pre><code class="language-java">System.out.println("Hallo") // FEHLT ;</code></pre>
+                </div>
+                <div class="fragment highlight-box">
+                    <p><strong>String-Vergleich mit == statt equals()</strong></p>
+                    <pre><code class="language-java">if (name == "Max")  // FALSCH
+if (name.equals("Max")) // RICHTIG</code></pre>
+                </div>
+                <div class="fragment highlight-box">
+                    <p><strong>Off-by-one in Schleifen</strong></p>
+                    <pre><code class="language-java">for (int i = 1; i < 10; i++) // 1-9, nicht 1-10
+for (int i = 1; i <= 10; i++) // 1-10, korrekt</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 4: Kata-Besprechung -->
+            <section>
+                <h2>Katas heute</h2>
+                <ul>
+                    <li class="fragment"><strong>Hangman:</strong> while-Schleife, charAt, String-Aufbau</li>
+                    <li class="fragment"><strong>Zahlenratespiel:</strong> Methoden-Struktur, Random, Zufall</li>
+                    <li class="fragment"><strong>Mini-Taschenrechner:</strong> Switch-Case, Methoden mit Parametern und Rueckgabewert</li>
+                </ul>
+                <p class="fragment highlight-box">Besprecht zuerst die Strategie, dann programmiert!</p>
+            </section>
+
+            <!-- Slide 5: Offene Fragen & Dungeon Escape -->
+            <section>
+                <h2>Offene Fragen & Dungeon Escape</h2>
+                <ul>
+                    <li class="fragment">Welche Themen waren bisher am schwierigsten?</li>
+                    <li class="fragment">Dungeon Escape komplett neu schreiben - ohne Vorlage!</li>
+                    <li class="fragment">Nur grundlegende Struktur: while-Schleife, if, println</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p>Ziel: Eigenstaendig ein kleines Spiel programmieren koennen</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">14 - Exercise: Wiederholung</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

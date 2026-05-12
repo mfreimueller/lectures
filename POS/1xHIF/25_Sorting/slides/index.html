@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>25 - Sortieren</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>25 - Sortieren</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Arrays und for-each</h2>
+<pre><code class="language-java">int[] zahlen = {5, 2, 8, 1, 9};
+
+// for-each: alle Elemente durchlaufen
+for (int z : zahlen) {
+    System.out.print(z + " ");
+}
+
+// Arrays.toString()
+System.out.println(Arrays.toString(zahlen));</code></pre>
+</section>
+
+<section>
+<h2>Warum sortieren?</h2>
+<ul>
+<li class="fragment">Suchen: sortierte Daten sind schneller durchsuchbar (Binaere Suche)</li>
+<li class="fragment">Darstellen: geordnete Ausgabe (Highscores, Ranglisten)</li>
+<li class="fragment">Rankings: der Beste/Erste steht ganz vorne</li>
+<li class="fragment">Datenanalyse: Muster erkennen in sortierten Daten</li>
+</ul>
+</section>
+
+<section>
+<h2>Selection Sort: Idee</h2>
+<p>Das kleinste Element suchen und an den Anfang stellen.</p>
+<ol>
+<li class="fragment">Suche das Minimum im gesamten Array</li>
+<li class="fragment">Tausche es mit dem Element an Position 0</li>
+<li class="fragment">Suche das Minimum ab Position 1</li>
+<li class="fragment">Tausche es mit dem Element an Position 1</li>
+<li class="fragment">Wiederhole, bis das Array sortiert ist</li>
+</ol>
+</section>
+
+<section>
+<h2>Selection Sort: Visualisierung</h2>
+<pre><code class="language-java">// Start: [5, 2, 8, 1, 9]
+// Schritt 1: Minimum = 1 an Index 3 -> tausche mit Index 0
+//           [1, 2, 8, 5, 9]
+// Schritt 2: Minimum ab Index 1 = 2 (bereits richtig)
+//           [1, 2, 8, 5, 9]
+// Schritt 3: Minimum ab Index 2 = 5 an Index 3 -> tausche mit Index 2
+//           [1, 2, 5, 8, 9]
+// Schritt 4: Minimum ab Index 3 = 8 (bereits richtig)
+//           [1, 2, 5, 8, 9]</code></pre>
+</section>
+
+<section>
+<h2>Selection Sort: Code</h2>
+<pre><code class="language-java">void selectionSort(int[] arr) {
+    for (int i = 0; i &lt; arr.length - 1; i++) {
+        // Minimum ab Position i suchen
+        int minIndex = i;
+        for (int j = i + 1; j &lt; arr.length; j++) {
+            if (arr[j] &lt; arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // Minimum an Position i tauschen
+        int temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Live-Coding: Selection Sort</h2>
+<pre><code class="language-java">int[] zahlen = {5, 2, 8, 1, 9};
+selectionSort(zahlen);
+System.out.println(Arrays.toString(zahlen));
+// [1, 2, 5, 8, 9]</code></pre>
+</section>
+
+<section>
+<h2>Insertion Sort: Idee</h2>
+<p>Elemente einordnen wie Spielkarten:</p>
+<ol>
+<li class="fragment">Beginne mit dem zweiten Element</li>
+<li class="fragment">Vergleiche es mit den Elementen davor</li>
+<li class="fragment">Verschiebe groessere Elemente nach rechts</li>
+<li class="fragment">Fuege das aktuelle Element an der richtigen Stelle ein</li>
+<li class="fragment">Wiederhole bis zum Ende des Arrays</li>
+</ol>
+</section>
+
+<section>
+<h2>Insertion Sort: Visualisierung</h2>
+<pre><code class="language-java">// Start: [5, 2, 8, 1, 9]
+// Schritt 1: 2 mit 5 vergleichen, 5 nach rechts
+//           [2, 5, 8, 1, 9]
+// Schritt 2: 8 mit 5 vergleichen, bleibt
+//           [2, 5, 8, 1, 9]
+// Schritt 3: 1 mit 8,5,2 vergleichen, alle nach rechts
+//           [1, 2, 5, 8, 9]
+// Schritt 4: 9 mit 8 vergleichen, bleibt
+//           [1, 2, 5, 8, 9]</code></pre>
+</section>
+
+<section>
+<h2>Insertion Sort: Code</h2>
+<pre><code class="language-java">void insertionSort(int[] arr) {
+    for (int i = 1; i &lt; arr.length; i++) {
+        int aktuell = arr[i];
+        int j = i - 1;
+
+        // Groessere Elemente nach rechts verschieben
+        while (j &gt;= 0 && arr[j] &gt; aktuell) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        // Aktuelles Element einfuegen
+        arr[j + 1] = aktuell;
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Live-Coding: Insertion Sort</h2>
+<pre><code class="language-java">int[] zahlen = {5, 2, 8, 1, 9};
+insertionSort(zahlen);
+System.out.println(Arrays.toString(zahlen));
+// [1, 2, 5, 8, 9]</code></pre>
+</section>
+
+<section>
+<h2>Vergleich: Selection vs. Insertion</h2>
+<table>
+<thead>
+<tr><th>Kriterium</th><th>Selection Sort</th><th>Insertion Sort</th></tr>
+</thead>
+<tbody>
+<tr><td>Idee</td><td>Minimum suchen, tauschen</td><td>Elemente einordnen</td></tr>
+<tr><td>Best-Case</td><td>O(n^2)</td><td>O(n) (fast sortiert)</td></tr>
+<tr><td>Average-Case</td><td>O(n^2)</td><td>O(n^2)</td></tr>
+<tr><td>Stabil</td><td>Nein</td><td>Ja</td></tr>
+<tr><td>Speicher</td><td>In-place</td><td>In-place</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Zeitkomplexitaet</h2>
+<ul>
+<li class="fragment">Beide Algorithmen haben im Durchschnitt O(n^2)</li>
+<li class="fragment">Fuer n Elemente: ca. n^2/2 Vergleiche</li>
+<li class="fragment">Bei n=10: ca. 50 Vergleiche</li>
+<li class="fragment">Bei n=1000: ca. 500.000 Vergleiche</li>
+<li class="fragment">Insertion Sort ist bei fast sortierten Arrays schneller (O(n))</li>
+</ul>
+</section>
+
+<section>
+<h2>Dungeon Escape: Highscore sortiert</h2>
+<pre><code class="language-java">int[] scores = {85, 120, 45, 200, 70};
+String[] namen = {"Aragorn", "Legolas", "Frodo", "Gandalf", "Gimli"};
+
+// Parallel sortieren: scores und namen
+for (int i = 0; i &lt; scores.length - 1; i++) {
+    int minIndex = i;
+    for (int j = i + 1; j &lt; scores.length; j++) {
+        if (scores[j] &lt; scores[minIndex]) {
+            minIndex = j;
+        }
+    }
+    int tempScore = scores[i];
+    scores[i] = scores[minIndex];
+    scores[minIndex] = tempScore;
+
+    String tempName = namen[i];
+    namen[i] = namen[minIndex];
+    namen[minIndex] = tempName;
+}</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape: Aufgabe</h2>
+<p>Implementiere eine Highscore-Liste fuer Dungeon Escape:</p>
+<ul>
+<li class="fragment">Zwei Arrays: int[] scores und String[] namen</li>
+<li class="fragment">Sortiere beide Arrays parallel mit Selection Sort</li>
+<li class="fragment">Gib die sortierte Highscore-Liste aus</li>
+</ul>
+</section>
+
+<section>
+<h2>Zusammenfassung</h2>
+<ul>
+<li class="fragment">Selection Sort: Minimum suchen und an Position i tauschen</li>
+<li class="fragment">Insertion Sort: Elemente einordnen, groessere nach rechts verschieben</li>
+<li class="fragment">Beide Algorithmen: O(n^2) im Durchschnitt</li>
+<li class="fragment">Insertion Sort ist bei fast sortierten Arrays effizienter</li>
+<li class="fragment">Paralleles Sortieren: beide Arrays gleichzeitig umsortieren</li>
+</ul>
+</section>
+
+<section>
+<h2>Ausblick: Bubblesort-Uebung</h2>
+<p>In der naechsten Woche: Bubblesort als Ubung</p>
+<ul>
+<li class="fragment">Bubblesort Algorithmus</li>
+<li class="fragment">Optimierung mit early break</li>
+<li class="fragment">Laufzeitvergleich der drei Algorithmen</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">25 - Sortieren</span></div>');});
+</script>
+</body>
+</html>

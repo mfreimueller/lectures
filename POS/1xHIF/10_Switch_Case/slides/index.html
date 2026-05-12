@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>10 - switch-case</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide"><h1>10 - switch-case</h1><p class="institution">POS1 - 1AHIF</p></section>
+
+<section><h2>Wiederholung</h2>
+<p>Wie wandelt man "42" in eine int-Zahl um?</p>
+<p class="fragment">Integer.parseInt("42")</p>
+<p class="fragment">Was gibt Boolean.parseBoolean("true") zurueck?</p>
+</section>
+
+<section><h2>Das Problem mit vielen if-else</h2>
+<pre><code class="language-java">if (tag == 1) {
+    System.out.println("Montag");
+} else if (tag == 2) {
+    System.out.println("Dienstag");
+} else if (tag == 3) {
+    System.out.println("Mittwoch");
+} // ... bis Sonntag</code></pre>
+<p class="fragment">Viel Code, unuebersichtlich.</p>
+</section>
+
+<section><h2>switch-case - Syntax</h2>
+<pre><code class="language-java">switch (variable) {
+    case wert1:
+        // Code fuer wert1
+        break;
+    case wert2:
+        // Code fuer wert2
+        break;
+    default:
+        // Code fuer alle anderen Werte
+        break;
+}</code></pre>
+</section>
+
+<section><h2>Wochentag mit switch</h2>
+<pre><code class="language-java">int tag = 3;
+String name;
+
+switch (tag) {
+    case 1: name = "Montag";    break;
+    case 2: name = "Dienstag";  break;
+    case 3: name = "Mittwoch";  break;
+    case 4: name = "Donnerstag";break;
+    case 5: name = "Freitag";   break;
+    case 6: name = "Samstag";   break;
+    case 7: name = "Sonntag";   break;
+    default: name = "Ungueltig";break;
+}
+
+System.out.println(name);  // Mittwoch</code></pre>
+</section>
+
+<section><h2>break nicht vergessen!</h2>
+<pre><code class="language-java">int x = 1;
+
+switch (x) {
+    case 1: System.out.println("Eins");  // break fehlt!
+    case 2: System.out.println("Zwei"); break;
+    default: System.out.println("Sonst"); break;
+}
+// Ausgabe: Eins Zwei (Fall-through!)</code></pre>
+<p class="fragment">Ohne break wird der naechste case ausgefuehrt -> Fall-through.</p>
+</section>
+
+<section><h2>Fall-through nutzen</h2>
+<pre><code class="language-java">int monat = 2;
+int tage;
+
+switch (monat) {
+    case 1: case 3: case 5: case 7:
+    case 8: case 10: case 12:
+        tage = 31; break;
+    case 4: case 6: case 9: case 11:
+        tage = 30; break;
+    case 2:
+        tage = 28; break;  // Schaltjahr ignorieren
+    default:
+        tage = 0; break;
+}</code></pre>
+</section>
+
+<section><h2>if vs. switch</h2>
+<table>
+<tr><th>if-else</th><th>switch</th></tr>
+<tr><td>Beliebige Bedingungen</td><td>Nur == mit Konstanten</td></tr>
+<tr><td>Komplexe Ausdruecke</td><td>Einfache Werte (int, char, String)</td></tr>
+<tr><td>Unuebersichtlich bei vielen Zweigen</td><td>Uebersichtlich bei vielen Zweigen</td></tr>
+</table>
+</section>
+
+<section><h2>switch mit String (ab Java 7)</h2>
+<pre><code class="language-java">String befehl = "status";
+
+switch (befehl) {
+    case "kaempfen":
+        System.out.println("Angriff!");
+        break;
+    case "fliehen":
+        System.out.println("Flucht!");
+        break;
+    case "status":
+        System.out.println("HP: 100");
+        break;
+    default:
+        System.out.println("Unbekannt");
+        break;
+}</code></pre>
+</section>
+
+<section><h2>Dungeon Escape - Aufgabe</h2>
+<ul>
+<li>Ersetze die if-else-Kette fuer Befehle durch switch</li>
+<li>Befehle: kaempfen, fliehen, inventar, hilfe, status</li>
+<li>Fuege default fuer unbekannte Befehle hinzu</li>
+<li>Nutze switch mit String</li>
+</ul>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li>switch-case: Syntax mit break und default</li>
+<li>Fall-through (mit und ohne Absicht)</li>
+<li>switch mit int, char, String</li>
+<li>if vs. switch: wann was verwenden?</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Ubung REPL</h3></div></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">10 - switch-case</span></div>');});
+</script>
+</body>
+</html>

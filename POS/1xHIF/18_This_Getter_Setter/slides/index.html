@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>18 - this, Getter und Setter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section class="center title-slide">
+                <h1>18 - this, Getter und Setter</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Wiederholung Konstruktoren -->
+            <section>
+                <h2>Wiederholung: Konstruktoren</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke;
+    int baujahr;
+
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;
+        this.baujahr = baujahr;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>this</strong> verweist auf das aktuelle Objekt</li>
+                    <li class="fragment">this.marke = Attribut, marke = Parameter</li>
+                    <li class="fragment">Heute: this genauer, plus Kapselung mit private</li>
+                </ul>
+            </section>
+
+            <!-- Slide 3: Problem: Attribut vs. Parameter -->
+            <section>
+                <h2>Problem: Attribut vs. Parameter</h2>
+                <pre><code class="language-java">public class Auto {
+    String marke; // Attribut
+
+    // Ohne this:
+    public Auto(String m, int b) {
+        marke = m;  // funktioniert, aber unklar
+    }
+
+    // Mit this:
+    public Auto(String marke, int baujahr) {
+        this.marke = marke;  // klar!
+        this.baujahr = baujahr;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Ohne this: muessen verschiedene Namen erfinden (m statt marke)</li>
+                    <li class="fragment">Mit this: koennen gleiche Namen verwenden</li>
+                </ul>
+            </section>
+
+            <!-- Slide 4: this.attribut = parameter -->
+            <section>
+                <h2>this.attribut = parameter</h2>
+                <div class="highlight-box">
+                    <p><strong>this</strong> = "dieses Objekt" (die aktuelle Instanz)</p>
+                </div>
+                <pre><code class="language-java">public class Person {
+    String name;
+
+    public void setName(String name) {
+        this.name = name;
+        // this.name = Attribut (gehoert zum Objekt)
+        // name     = Parameter (wird uebergeben)
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">this.name ist das <strong>Attribut</strong> des Objekts</li>
+                    <li class="fragment">name (ohne this) ist der <strong>Parameter</strong> der Methode</li>
+                </ul>
+            </section>
+
+            <!-- Slide 5: Kapselung: private vs. public -->
+            <section>
+                <h2>Kapselung: private vs. public</h2>
+                <ul>
+                    <li class="fragment"><strong>public</strong> - von ueberall zugreifbar (auch aus anderen Klassen)</li>
+                    <li class="fragment"><strong>private</strong> - nur innerhalb derselben Klasse zugreifbar</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p>Grundprinzip: Attribute private, Methoden public</p>
+                </div>
+                <pre class="fragment"><code class="language-java">public class Konto {
+    private long kontostand; // nur innerhalb Konto sichtbar
+
+    public long getKontostand() {
+        return kontostand; // erlaubt (gleiche Klasse)
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 6: private Attribute -->
+            <section>
+                <h2>Warum private Attribute?</h2>
+                <ul>
+                    <li class="fragment"><strong>Daten schuetzen:</strong> Niemand soll direkt fremde Attribute aendern koennen</li>
+                    <li class="fragment"><strong>Kontrolle:</strong> Nur die Klasse selbst entscheidet, wie Daten gelesen/geschaetzt werden</li>
+                    <li class="fragment"><strong>Aenderbarkeit:</strong> Interne Aenderungen wirken sich nicht auf andere Klassen aus</li>
+                    <li class="fragment"><strong>Validierung:</strong> Ungueltige Werte koennen verhindert werden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">// OHNE private: jeder kann kontostand auf -1000 setzen
+// MIT private: nur ueber Methoden mit Pruefung</code></pre>
+            </section>
+
+            <!-- Slide 7: Getter = lesender Zugriff -->
+            <section>
+                <h2>Getter = lesender Zugriff</h2>
+                <pre><code class="language-java">public class Konto {
+    private long kontostand; // privat - kein direkter Zugriff
+
+    // Getter: erlaubt das Lesen von aussen
+    public long getKontostand() {
+        return kontostand;
+    }
+}
+
+// Verwendung:
+Konto k = new Konto();
+long stand = k.getKontostand(); // legal
+// k.kontostand = 1000; // ILLEGAL (private)</code></pre>
+                <ul>
+                    <li class="fragment">Getter sind <strong>public</strong> - sie ermoeglichen kontrollierten Lese-Zugriff</li>
+                    <li class="fragment">Namenskonvention: <strong>get</strong> + Attributname (Grossbuchstabe)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 8: Setter = schreibender Zugriff -->
+            <section>
+                <h2>Setter = schreibender Zugriff</h2>
+                <pre><code class="language-java">public class Konto {
+    private long kontostand;
+
+    // Setter: erlaubt kontrolliertes Schreiben von aussen
+    public void setKontostand(long kontostand) {
+        // mit Validierung!
+        if (kontostand >= 0) {
+            this.kontostand = kontostand;
+        }
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Setter sind <strong>public void</strong> - sie erlauben kontrollierten Schreib-Zugriff</li>
+                    <li class="fragment">Hier kann <strong>Validierung</strong> eingebaut werden</li>
+                    <li class="fragment">Namenskonvention: <strong>set</strong> + Attributname (Grossbuchstabe)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 9: Live-Coding Konto -->
+            <section>
+                <h2>Live-Coding: Gekapseltes Konto</h2>
+                <pre><code class="language-java">public class Konto {
+    private long kontostand;
+
+    public long getKontostand() {
+        return kontostand;
+    }
+
+    public void einzahlen(long betrag) {
+        if (betrag > 0) {
+            kontostand = kontostand + betrag;
+        }
+    }
+
+    public void auszahlen(long betrag) {
+        if (betrag > 0 && kontostand >= betrag) {
+            kontostand = kontostand - betrag;
+        }
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 10: Setter mit Validierung -->
+            <section>
+                <h2>Setter mit Validierung</h2>
+                <pre><code class="language-java">public class Konto {
+    private long kontostand;
+
+    // Setter mit Pruefung
+    public void setKontostand(long kontostand) {
+        if (kontostand < 0) {
+            System.out.println("Negativer Betrag nicht erlaubt!");
+            return; // Methode beenden, nichts aendern
+        }
+        this.kontostand = kontostand;
+    }
+}
+
+// Verwendung:
+konto.setKontostand(-100); // "Negativer Betrag nicht erlaubt!"
+konto.setKontostand(500);  // OK</code></pre>
+                <ul>
+                    <li class="fragment">Pruefe eingehende Werte <strong>bevor</strong> sie gesetzt werden</li>
+                    <li class="fragment">Verhindere ungueltige Zustaende</li>
+                </ul>
+            </section>
+
+            <!-- Slide 11: Getter fuer kontostand -->
+            <section>
+                <h2>Getter - nur lesen, nicht aendern</h2>
+                <pre><code class="language-java">public class Konto {
+    private long kontostand;
+
+    // Getter: gibt den Wert zurueck
+    public long getKontostand() {
+        return kontostand;
+    }
+
+    // KEIN Setter fuer kontostand - Aenderungen nur ueber
+    // einzahlen() und auszahlen() mit eigener Logik
+    public void einzahlen(long betrag) { ... }
+    public void auszahlen(long betrag) { ... }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Manchmal will man <strong>nur lesen</strong> aber nicht direkt schreiben</li>
+                    <li class="fragment">Kein Setter = das Attribut kann nicht von aussen gesetzt werden</li>
+                </ul>
+            </section>
+
+            <!-- Slide 12: Beispiel Temperatur -->
+            <section>
+                <h2>Beispiel: Temperatur</h2>
+                <pre><code class="language-java">public class Temperatur {
+    private double celsius;
+
+    public double getCelsius() {
+        return celsius;
+    }
+
+    public void setCelsius(double celsius) {
+        this.celsius = celsius;
+    }
+
+    // Berechneter Getter: Fahrenheit wird aus celsius berechnet
+    public double getFahrenheit() {
+        return celsius * 9.0 / 5.0 + 32.0;
+    }
+}</code></pre>
+                <ul>
+                    <li class="fragment">Nur <strong>celsius</strong> wird gespeichert</li>
+                    <li class="fragment">Fahrenheit wird <strong>berechnet</strong> - kein extra Attribut</li>
+                </ul>
+            </section>
+
+            <!-- Slide 13: Dungeon Escape - private Attribute -->
+            <section>
+                <h2>Dungeon Escape: Kapselung</h2>
+                <pre><code class="language-java">public class Spieler {
+    private String name;
+    private int hp;
+    private int maxHp;
+    private int angriff;
+
+    // Getter
+    public String getName() { return name; }
+    public int getHp() { return hp; }
+    public int getAngriff() { return angriff; }
+
+    // Setter mit Pruefung
+    public void setHp(int hp) {
+        if (hp < 0) this.hp = 0;
+        else if (hp > maxHp) this.hp = maxHp;
+        else this.hp = hp;
+    }
+}</code></pre>
+                <p class="fragment">HP nie kleiner 0, nie groesser als maxHp!</p>
+            </section>
+
+            <!-- Slide 14: Dungeon Escape Aufgabe -->
+            <section>
+                <h2>Dungeon Escape Aufgabe</h2>
+                <ul>
+                    <li class="fragment">Mache alle Attribute <strong>private</strong></li>
+                    <li class="fragment">Erstelle Getter fuer name, hp, angriff, verteidigung</li>
+                    <li class="fragment">Erstelle <strong>setHp(int)</strong> mit Pruefung: HP nie < 0 oder > maxHp</li>
+                    <li class="fragment">Konstruktor setzt name, hp=100, maxHp=100, angriff=15, verteidigung=8</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Spieler held = new Spieler("Held");
+held.setHp(50);  // OK
+held.setHp(200); // wird auf maxHp (100) begrenzt
+held.setHp(-10); // wird auf 0 gesetzt</code></pre>
+            </section>
+
+            <!-- Slide 15: Zusammenfassung -->
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment"><strong>this</strong> - Verweis auf das aktuelle Objekt, unterscheidet Attribut von Parameter</li>
+                    <li class="fragment"><strong>private</strong> - Zugriff nur innerhalb der eigenen Klasse</li>
+                    <li class="fragment"><strong>public</strong> - Zugriff von ueberall</li>
+                    <li class="fragment"><strong>Getter</strong> - kontrollierter Lese-Zugriff (public int getX())</li>
+                    <li class="fragment"><strong>Setter</strong> - kontrollierter Schreib-Zugriff mit Validierung (public void setX(int x))</li>
+                </ul>
+            </section>
+
+            <!-- Slide 16: Ausblick -->
+            <section class="center">
+                <div class="highlight-box">
+                    <h3>Ausblick: Referenzen</h3>
+                    <p>Objekte als Parameter uebergeben</p>
+                    <p>Objekt-Variablen sind Referenzen (keine Kopien)</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">18 - this, Getter und Setter</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>06 - while und do-while</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide"><h1>06 - while und do-while</h1><p class="institution">POS1 - 1AHIF</p></section>
+
+<section><h2>Wiederholung: for-Schleife</h2>
+<p>for-Schleife: bekanntes Durchlaufverhalten</p>
+<pre><code class="language-java">for (int i = 0; i < 10; i++) { ... }</code></pre>
+<p class="fragment">Frage: Wann weiss man vorher, wie oft die Schleife laufen muss?</p>
+</section>
+
+<section><h2>while-Schleife</h2>
+<pre><code class="language-java">while (bedingung) {
+    // wiederholter Code
+}</code></pre>
+<p class="fragment">Die Bedingung wird vor jedem Durchlauf geprueft.</p>
+<p class="fragment">Wird die Bedingung nie false -> Endlosschleife!</p>
+<pre class="fragment"><code class="language-java">int i = 0;
+while (i < 5) {
+    System.out.println(i);
+    i++;  // Wichtig! Sonst Endlosschleife
+}</code></pre>
+</section>
+
+<section><h2>while: Ziffernsumme</h2>
+<pre><code class="language-java">int zahl = 1234;
+int summe = 0;
+
+while (zahl > 0) {
+    summe += zahl % 10;  // letzte Ziffer
+    zahl /= 10;           // letzte Ziffer entfernen
+}
+
+System.out.println("Ziffernsumme: " + summe);</code></pre>
+<p class="fragment">Durchlauf: 1234 -> 4, 123 -> 3, 12 -> 2, 1 -> 1, 0 -> Ende</p>
+</section>
+
+<section><h2>do-while-Schleife</h2>
+<pre><code class="language-java">do {
+    // wird mindestens einmal ausgefuehrt
+} while (bedingung);</code></pre>
+<p class="fragment">Der Code wird AUSGEFUEHRT, DANN die Bedingung geprueft.</p>
+<pre class="fragment"><code class="language-java">int eingabe;
+do {
+    System.out.println("Bitte Zahl > 0 eingeben:");
+    eingabe = scanner.nextInt();
+} while (eingabe <= 0);</code></pre>
+</section>
+
+<section><h2>for vs. while vs. do-while</h2>
+<table>
+<tr><th>Schleife</th><th>Wann verwenden?</th></tr>
+<tr class="fragment"><td>for</td><td>Bekannte Anzahl Durchlaeufe</td></tr>
+<tr class="fragment"><td>while</td><td>Bedingung vor dem ersten Durchlauf</td></tr>
+<tr class="fragment"><td>do-while</td><td>Mindestens ein Durchlauf</td></tr>
+</table>
+</section>
+
+<section><h2>Endlosschleifen</h2>
+<pre><code class="language-java">// Endlosschleife (Achtung!)
+while (true) {
+    System.out.println("Forever...");
+}</code></pre>
+<p class="fragment">Endlosschleifen sind nicht immer falsch!</p>
+<p class="fragment">Manche Programme laufen absichtlich "forever" (z.B. Betriebssysteme).</p>
+<p class="fragment">Wichtig: break als Ausstieg.</p>
+</section>
+
+<section><h2>break in Schleifen</h2>
+<pre><code class="language-java">while (true) {
+    int eingabe = scanner.nextInt();
+
+    if (eingabe == 0) {
+        break;  // Schleife beenden
+    }
+
+    System.out.println("Eingegeben: " + eingabe);
+}</code></pre>
+</section>
+
+<section><h2>Dungeon Escape: Hauptschleife</h2>
+<pre><code class="language-java">int hp = 100;
+boolean entkommen = false;
+
+while (hp > 0 && !entkommen) {
+    System.out.println("1: Kaempfen  2: Fliehen  3: Status");
+    int wahl = scanner.nextInt();
+
+    if (wahl == 1) {
+        hp -= 10;
+    } else if (wahl == 2) {
+        entkommen = true;
+    } else {
+        System.out.println("HP: " + hp);
+    }
+}</code></pre>
+</section>
+
+<section><h2>Dungeon Escape - Aufgabe</h2>
+<ul>
+<li>Implementiere die Hauptspielschleife mit while</li>
+<li>Verwende do-while fuer das Menue</li>
+<li>Spielende bei hp <= 0 oder entkommen = true</li>
+</ul>
+</section>
+
+<section><h2>Was wir heute gelernt haben</h2>
+<ul>
+<li>while-Schleife: Bedingung vor dem Durchlauf</li>
+<li>do-while-Schleife: mindestens ein Durchlauf</li>
+<li>Unterschiede zu for</li>
+<li>Endlosschleifen vermeiden/steuern</li>
+<li>break zum Abbruch</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Methoden und Scanner</h3></div></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">06 - while do-while</span></div>');});
+</script>
+</body>
+</html>

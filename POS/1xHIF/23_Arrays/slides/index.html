@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>23 - Arrays</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>23 - Arrays</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: UML -> Code</h2>
+<div class="highlight-box fragment">
+<p>Ursula: Aus einem UML-Klassendiagramm Java-Code erzeugen.</p>
+<pre><code class="language-java">
+// Gegeben: Klasse Rechnung mit Attributen und drucken()
+// -> Code generieren aus UML
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Code -> UML: Aus vorhandenem Code ein Klassendiagramm zeichnen.</p>
+</div>
+</section>
+
+<section>
+<h2>Problem: Viele gleichartige Variablen</h2>
+<div class="highlight-box fragment">
+<p>Was, wenn wir 30 Noten speichern mochten?</p>
+<pre><code class="language-java">
+int note1 = 2;
+int note2 = 3;
+int note3 = 1;
+// ... 30 Variablen? Das ist umstandlich!
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Oder 1000 Messwerte? Wir brauchen eine bessere Losung!</p>
+</div>
+</section>
+
+<section>
+<h2>Array = Sammlung gleichartiger Elemente</h2>
+<div class="highlight-box fragment">
+<h3>Definition</h3>
+<p>Ein Array ist eine Sammlung von Elementen <strong>desselben Datentyps</strong> mit <strong>fester Lange</strong>.</p>
+</div>
+<div class="highlight-box fragment">
+<h3>Visualisierung</h3>
+<pre><code>
+Noten: [ 2 | 3 | 1 | 4 | 5 ]
+Index:   0   1   2   3   4
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Deklaration: int[] noten;</h2>
+<div class="highlight-box fragment">
+<h3>Zwei Schreibweisen:</h3>
+<pre><code class="language-java">
+// Empfohlen (Typ gefolgt von []):
+int[] noten;
+
+// Auch moeglich ([] nach dem Namen):
+int noten[];
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Der Array wird nur deklariert, noch nicht mit Lange versehen.</p>
+</div>
+</section>
+
+<section>
+<h2>Initialisierung: noten = new int[5];</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+int[] noten;          // Deklaration
+noten = new int[5];   // Array mit 5 Elementen (Index 0-4)
+
+// Oder in einer Zeile:
+int[] noten = new int[5];
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Standardwerte: int=0, double=0.0, boolean=false, Referenzen=null</p>
+</div>
+</section>
+
+<section>
+<h2>Kurzform: int[] noten = {1, 2, 3, 4, 5};</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+// Kurzform mit Initialisierung:
+int[] noten = {1, 2, 3, 4, 5};
+
+// Gleich bedeutend:
+int[] noten = new int[]{1, 2, 3, 4, 5};
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+// Auch fur Strings und Objekte:
+String[] namen = {"Anna", "Ben", "Clara"};
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Index-Zugriff: noten[0] bis noten[laenge-1]</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+int[] noten = {2, 3, 1, 4, 5};
+
+System.out.println(noten[0]); // 2 (erstes Element)
+System.out.println(noten[2]); // 1 (drittes Element)
+System.out.println(noten[4]); // 5 (letztes Element)
+
+noten[1] = 2; // Andern: noten[1] ist jetzt 2 statt 3
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Achtung: Index von 0 bis laenge-1! <code>noten[5]</code> -> ArrayIndexOutOfBoundsException!</p>
+</div>
+</section>
+
+<section>
+<h2>Array-Lange: noten.length</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+int[] noten = {2, 3, 1, 4, 5};
+int laenge = noten.length; // 5
+
+// Letztes Element:
+int letztes = noten[noten.length - 1]; // 5
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p><code>.length</code> ist ein Attribut (keine Methode!), daher keine Klammern.</p>
+</div>
+</section>
+
+<section>
+<h2>for uber Array</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+int[] noten = {2, 3, 1, 4, 5};
+
+// Alle Elemente ausgeben:
+for (int i = 0; i < noten.length; i++) {
+    System.out.println("Index " + i + ": " + noten[i]);
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Live-Coding: Summe aller Elemente</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+public class ArraySumme {
+    public static void main(String[] args) {
+        int[] zahlen = {5, 10, 15, 20, 25};
+        int summe = 0;
+
+        for (int i = 0; i < zahlen.length; i++) {
+            summe = summe + zahlen[i];
+            // oder: summe += zahlen[i];
+        }
+
+        System.out.println("Summe: " + summe); // 75
+    }
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Live-Coding: Minimum/Maximum suchen</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+int[] zahlen = {12, 7, 19, 3, 25, 8};
+int min = zahlen[0];
+int max = zahlen[0];
+
+for (int i = 1; i < zahlen.length; i++) {
+    if (zahlen[i] < min) {
+        min = zahlen[i];
+    }
+    if (zahlen[i] > max) {
+        max = zahlen[i];
+    }
+}
+System.out.println("Min: " + min + ", Max: " + max);
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Array als Parameter in Methoden</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+public class ArrayUtils {
+    // Array als Parameter
+    public static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int[] zahlen = {1, 2, 3, 4, 5};
+        ArrayUtils.printArray(zahlen); // 1 2 3 4 5
+    }
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Array als Ruckgabewert</h2>
+<div class="highlight-box fragment">
+<pre><code class="language-java">
+public class ArrayUtils {
+    // Array als Ruckgabewert
+    public static int[] createArray(int size) {
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = i * 10;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] werte = ArrayUtils.createArray(5);
+        // werte = {0, 10, 20, 30, 40}
+    }
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Dungeon Escape: Raum[] statt Einzel-Attribute</h2>
+<div class="highlight-box fragment">
+<p>Bisher: Vier einzelne Attribute</p>
+<pre><code class="language-java">
+private Raum norden;
+private Raum sueden;
+private Raum osten;
+private Raum westen;
+</code></pre>
+</div>
+<div class="highlight-box fragment">
+<p>Neu: Ein Array von Raumen</p>
+<pre><code class="language-java">
+public class Raum {
+    public static final int NORDEN = 0;
+    public static final int SUEDEN = 1;
+    public static final int OSTEN = 2;
+    public static final int WESTEN = 3;
+
+    private Raum[] ausgaenge = new Raum[4];
+
+    public void setAusgang(int richtung, Raum raum) {
+        ausgaenge[richtung] = raum;
+    }
+
+    public Raum getAusgang(int richtung) {
+        return ausgaenge[richtung];
+    }
+}
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Dungeon Escape Aufgabe</h2>
+<div class="highlight-box fragment">
+<ul>
+<li>Ersetze die vier Richtungs-Attribute durch ein Raum[4]-Array</li>
+<li>Definiere Index-Konstanten: NORDEN=0, SUEDEN=1, OSTEN=2, WESTEN=3</li>
+<li>Passe alle Bewegungsmethoden im Spieler an</li>
+<li>Implementiere getAusgaenge() zuruck einen String mit allen Richtungen</li>
+<li>Teste, ob alles noch funktioniert wie vorher</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Zusammenfassung</h2>
+<div class="highlight-box">
+<ul>
+<li>Array = Sammlung gleichartiger Elemente mit fester Lange</li>
+<li>Deklaration: <code>int[] arr;</code></li>
+<li>Initialisierung: <code>new int[5]</code> oder <code>{1, 2, 3}</code></li>
+<li>Index von 0 bis laenge-1</li>
+<li><code>.length</code> fur die Lange (ohne Klammern!)</li>
+<li>For-Schleife: <code>for (int i = 0; i &lt; arr.length; i++)</code></li>
+<li>Arrays als Parameter und Ruckgabewert von Methoden</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">23 - Arrays</span></div>');});
+</script>
+</body>
+</html>

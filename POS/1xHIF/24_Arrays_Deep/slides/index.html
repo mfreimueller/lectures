@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>24 - Arrays vertiefen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>24 - Arrays vertiefen</h1>
+<p class="institution">POS1 - 1AHIF</p>
+</section>
+
+<section>
+<h2>Wiederholung: Arrays</h2>
+<p>Array-Deklaration und Initialisierung:</p>
+<pre><code class="language-java">int[] zahlen = new int[5];
+zahlen[0] = 10;
+zahlen[1] = 20;
+zahlen[2] = 30;
+
+// Zugriff ueber Index
+System.out.println(zahlen[0]); // 10
+
+// for-Schleife ueber Array
+for (int i = 0; i &lt; zahlen.length; i++) {
+    System.out.println(zahlen[i]);
+}</code></pre>
+</section>
+
+<section>
+<h2>Erweiterte for-Schleife (for-each)</h2>
+<p>Durchlaeuft alle Elemente eines Arrays ohne Index:</p>
+<pre><code class="language-java">int[] zahlen = {10, 20, 30, 40, 50};
+
+for (int zahl : zahlen) {
+    System.out.println(zahl);
+}</code></pre>
+<p class="fragment highlight-box">Kein Index-Zugriff noetig - ideal zum Lesen!</p>
+</section>
+
+<section>
+<h2>Vergleich: for vs. for-each</h2>
+<table>
+<thead>
+<tr><th>for</th><th>for-each</th></tr>
+</thead>
+<tbody>
+<tr><td>Mit Index</td><td>Ohne Index</td></tr>
+<tr><td>Aenderung von Werten moeglich</td><td>Nur lesender Zugriff</td></tr>
+<tr><td>Manueller Zugriff: zahlen[i]</td><td>Direkter Zugriff: zahl</td></tr>
+</tbody>
+</table>
+<pre><code class="language-java">// for: Index bekannt - Aenderungen moeglich
+for (int i = 0; i &lt; zahlen.length; i++) {
+    zahlen[i] = zahlen[i] * 2;
+}
+
+// for-each: Nur lesen
+for (int zahl : zahlen) {
+    System.out.println(zahl);
+}</code></pre>
+</section>
+
+<section>
+<h2>Arrays.toString()</h2>
+<p>Einfache Ausgabe des gesamten Arrays als lesbare Zeichenkette:</p>
+<pre><code class="language-java">import java.util.Arrays;
+
+int[] zahlen = {10, 20, 30, 40, 50};
+System.out.println(Arrays.toString(zahlen));
+// Ausgabe: [10, 20, 30, 40, 50]</code></pre>
+<p class="fragment highlight-box">Keine eigene Schleife mehr fuer die Ausgabe noetig!</p>
+</section>
+
+<section>
+<h2>Live-Coding: for-each + toString()</h2>
+<pre><code class="language-java">int[] zahlen = {3, 7, 1, 9, 4};
+
+// for-each: alle Elemente ausgeben
+for (int z : zahlen) {
+    System.out.print(z + " ");
+}
+System.out.println();
+
+// Arrays.toString(): gesamtes Array
+System.out.println(Arrays.toString(zahlen));</code></pre>
+</section>
+
+<section>
+<h2>Mehrdimensionale Arrays: int[][] matrix</h2>
+<p>Ein 2D-Array ist ein Array von Arrays:</p>
+<pre><code class="language-java">// Deklaration: 3 Zeilen, 4 Spalten
+int[][] matrix = new int[3][4];
+
+// Standardwert fuer int: 0
+System.out.println(matrix[0][0]); // 0
+
+// Array-Groesse abfragen
+System.out.println("Zeilen: " + matrix.length);    // 3
+System.out.println("Spalten: " + matrix[0].length); // 4</code></pre>
+</section>
+
+<section>
+<h2>Matrix deklarieren und initialisieren</h2>
+<pre><code class="language-java">int[][] matrix = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+// Visualisierung:
+// [1,  2,  3,  4 ]
+// [5,  6,  7,  8 ]
+// [9, 10, 11, 12 ]</code></pre>
+</section>
+
+<section>
+<h2>Zugriff: matrix[zeile][spalte]</h2>
+<pre><code class="language-java">int[][] matrix = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+// Lesender Zugriff
+int wert = matrix[1][2]; // Zeile 1, Spalte 2
+System.out.println(wert); // 7
+
+// Schreibender Zugriff
+matrix[0][3] = 42; // Zeile 0, Spalte 3
+System.out.println(matrix[0][3]); // 42</code></pre>
+</section>
+
+<section>
+<h2>For ueber 2D-Array (verschachtelte Schleifen)</h2>
+<pre><code class="language-java">int[][] matrix = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+for (int z = 0; z &lt; matrix.length; z++) {
+    for (int s = 0; s &lt; matrix[z].length; s++) {
+        System.out.print(matrix[z][s] + "\t");
+    }
+    System.out.println();
+}</code></pre>
+</section>
+
+<section>
+<h2>Live-Coding: Labyrinth aus int[][] ausgeben</h2>
+<pre><code class="language-java">int[][] labyrinth = {
+    {1, 1, 1, 1, 1},
+    {1, 0, 0, 0, 1},
+    {1, 0, 1, 0, 1},
+    {1, 0, 0, 0, 1},
+    {1, 1, 1, 1, 1}
+};
+
+for (int z = 0; z &lt; labyrinth.length; z++) {
+    for (int s = 0; s &lt; labyrinth[z].length; s++) {
+        if (labyrinth[z][s] == 0) {
+            System.out.print("  ");
+        } else {
+            System.out.print("# ");
+        }
+    }
+    System.out.println();
+}</code></pre>
+<p class="fragment">Ausgabe: Labyrinth als Karte (# = Wand)</p>
+</section>
+
+<section>
+<h2>Array-Filter: Neues Array mit bestimmten Werten</h2>
+<pre><code class="language-java">int[] filterGerade(int[] eingabe) {
+    // 1. Anzahl der geraden Zahlen zaehlen
+    int count = 0;
+    for (int zahl : eingabe) {
+        if (zahl % 2 == 0) count++;
+    }
+
+    // 2. Neues Array mit passender Groesse
+    int[] ergebnis = new int[count];
+
+    // 3. Gerade Zahlen einfuegen
+    int i = 0;
+    for (int zahl : eingabe) {
+        if (zahl % 2 == 0) {
+            ergebnis[i++] = zahl;
+        }
+    }
+    return ergebnis;
+}</code></pre>
+<p class="fragment">Drei Schritte: zaehlen, erzeugen, befuellen</p>
+</section>
+
+<section>
+<h2>Dungeon Escape: Inventar als Gegenstand[]</h2>
+<p>Inventar als Array von Gegenstaenden mit maximal 10 Plaetzen:</p>
+<pre><code class="language-java">class Gegenstand {
+    String name;
+    int gewicht;
+}
+
+// Inventar mit max. 10 Plaetzen
+Gegenstand[] inventar = new Gegenstand[10];
+int anzahl = 0;</code></pre>
+</section>
+
+<section>
+<h2>Dungeon Escape: Inventar-Methoden</h2>
+<pre><code class="language-java">void addGegenstand(Gegenstand g) {
+    if (anzahl &gt;= inventar.length) {
+        System.out.println("Inventar voll!");
+        return;
+    }
+    inventar[anzahl] = g;
+    anzahl++;
+}
+
+void entferneGegenstand(int index) {
+    if (index &lt; 0 || index &gt;= anzahl) return;
+    inventar[index] = inventar[anzahl - 1];
+    inventar[anzahl - 1] = null;
+    anzahl--;
+}
+
+void zeigeInventar() {
+    for (int i = 0; i &lt; anzahl; i++) {
+        System.out.println(i + ": " + inventar[i].name);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Zusammenfassung</h2>
+<ul>
+<li class="fragment">for-each: einfaches Durchlaufen ohne Index - ideal zum Lesen</li>
+<li class="fragment">Arrays.toString(): schnelle, lesbare Ausgabe des gesamten Arrays</li>
+<li class="fragment">Mehrdimensionale Arrays: Array von Arrays (int[][])</li>
+<li class="fragment">Verschachtelte Schleifen fuer 2D-Arrays: for (z) { for (s) { } }</li>
+<li class="fragment">Array-Filter: zaehlen, erzeugen, befuellen in drei Schritten</li>
+<li class="fragment">Inventar-Verwaltung mit begrenzter Kapazitaet</li>
+</ul>
+</section>
+
+<section>
+<h2>Ausblick: Sortieren</h2>
+<p>In der naechsten Woche lernen wir Sortieralgorithmen:</p>
+<ul>
+<li class="fragment">Selection Sort - das Minimum suchen und an den Anfang stellen</li>
+<li class="fragment">Insertion Sort - Elemente einordnen wie Spielkarten</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">24 - Arrays vertiefen</span></div>');});
+</script>
+</body>
+</html>
