@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>01 - Datentypen und Arithmetik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title Page -->
+            <section class="center title-slide">
+                <h1>01 - Datentypen und Arithmetik</h1>
+                <p class="institution">POS1 - 1AHIF</p>
+            </section>
+
+            <!-- Slide 2: Wiederholung -->
+            <section>
+                <h2>Wiederholung: Letzte Woche</h2>
+                <p>Was haben wir gelernt?</p>
+                <ul>
+                    <li class="fragment">System.out.println(), print(), printf()</li>
+                    <li class="fragment">Aufbau eines Java-Programms (Klasse, main-Methode)</li>
+                    <li class="fragment">IDE-Grundlagen (IntelliJ)</li>
+                    <li class="fragment">Escape-Sequenzen (\n, \t)</li>
+                </ul>
+                <p class="fragment"><strong>Frage:</strong> Was macht System.out.print() anders als println()?</p>
+            </section>
+
+            <!-- Slide 3: Compiler vs. Interpreter -->
+            <section>
+                <h2>Compiler vs. Interpreter</h2>
+                <ul>
+                    <li class="fragment"><strong>Compiler</strong> uebersetzt den gesamten Quellcode auf einmal in Maschinensprache</li>
+                    <li class="fragment"><strong>Interpreter</strong> fuehrt den Quellcode Zeile fuer Zeile aus</li>
+                    <li class="fragment">Java verwendet <strong>beides</strong>: Compiler + Interpreter (JVM)</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p><strong>Compiler:</strong> javac HalloWelt.java -> HalloWelt.class</p>
+                    <p><strong>Interpreter:</strong> java HalloWelt -> fuehrt Bytecode aus</p>
+                </div>
+            </section>
+
+            <!-- Slide 4: JVM -->
+            <section>
+                <h2>JVM - Java Virtual Machine</h2>
+                <ul>
+                    <li class="fragment">Java-Code wird in <strong>Bytecode</strong> uebersetzt (.class-Datei)</li>
+                    <li class="fragment">Die JVM fuehrt den Bytecode aus</li>
+                    <li class="fragment">Vorteil: <strong>Plattformunabhaengigkeit</strong></li>
+                    <ul>
+                        <li class="fragment">Einmal schreiben, ueberall ausfuehren</li>
+                        <li class="fragment">Windows, Mac, Linux - die JVM macht den Unterschied</li>
+                    </ul>
+                </ul>
+            </section>
+
+            <!-- Slide 5: Der Prozess -->
+            <section>
+                <h2>Der Java-Prozess</h2>
+                <pre><code class="language-java">// 1. Quelltext schreiben (.java)
+public class HalloWelt {
+    public static void main(String[] args) {
+        System.out.println("Hallo!");
+    }
+}
+
+// 2. Compilieren: javac HalloWelt.java -> HalloWelt.class
+// 3. Ausfuehren:  java HalloWelt -> "Hallo!"</code></pre>
+                <p class="fragment">In IntelliJ passieren Schritt 2 und 3 automatisch beim Klick auf Run.</p>
+            </section>
+
+            <!-- Slide 6: Was sind Variablen? -->
+            <section>
+                <h2>Was sind Variablen?</h2>
+                <div class="fragment highlight-box">
+                    <p><strong>Eine Variable ist ein named Platzhalter im Speicher fuer einen Wert.</strong></p>
+                </div>
+                <ul>
+                    <li class="fragment">Jede Variable hat einen <strong>Typ</strong> und einen <strong>Namen</strong></li>
+                    <li class="fragment">Deklaration: <code>int alter;</code></li>
+                    <li class="fragment">Initialisierung: <code>alter = 17;</code></li>
+                    <li class="fragment">Beides zusammen: <code>int alter = 17;</code></li>
+                </ul>
+            </section>
+
+            <!-- Slide 7: int -->
+            <section>
+                <h2>Datentyp: int</h2>
+                <p><strong>int</strong> = ganze Zahlen (ohne Nachkommastellen)</p>
+                <pre><code class="language-java">int alter = 17;
+int jahr = 2026;
+int anzahlSchueler = 28;
+int minus = -5;</code></pre>
+                <ul>
+                    <li class="fragment">Wertebereich: ca. -2,1 Mrd. bis +2,1 Mrd.</li>
+                    <li class="fragment">Typisch fuer Zaehlungen, Indizes, Alter, etc.</li>
+                </ul>
+            </section>
+
+            <!-- Slide 8: double -->
+            <section>
+                <h2>Datentyp: double</h2>
+                <p><strong>double</strong> = Gleitkommazahlen (mit Nachkommastellen)</p>
+                <pre><code class="language-java">double preis = 19.99;
+double pi = 3.14159;
+double temperatur = -5.5;
+double prozent = 0.15;</code></pre>
+                <ul>
+                    <li class="fragment">Genauer als float (double = doppelte Genauigkeit)</li>
+                    <li class="fragment">Punkt (.) als Dezimaltrenner, NICHT Komma (,)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 9: boolean, char -->
+            <section>
+                <h2>Datentypen: boolean und char</h2>
+                <h3>boolean</h3>
+                <pre><code class="language-java">boolean istFertig = true;
+boolean istGeburtstag = false;</code></pre>
+                <ul>
+                    <li class="fragment">Nur zwei Werte: true oder false</li>
+                    <li class="fragment">Wichtig fuer Bedingungen (naechste Woche)</li>
+                </ul>
+                <h3>char</h3>
+                <pre><code class="language-java">char buchstabe = 'A';
+char ziffer = '7';</code></pre>
+                <ul>
+                    <li class="fragment">Ein einzelnes Zeichen in <strong>Hochkomma</strong> (''), nicht in Anfuerhrungszeichen ("")</li>
+                </ul>
+            </section>
+
+            <!-- Slide 10: Grundrechenarten -->
+            <section>
+                <h2>Arithmetische Operatoren</h2>
+                <pre><code class="language-java">int a = 10;
+int b = 3;
+
+int summe     = a + b;    // 13
+int differenz = a - b;    // 7
+int produkt   = a * b;    // 30</code></pre>
+                <p class="fragment">Punkt-vor-Strich-Regel gilt auch in Java!</p>
+            </section>
+
+            <!-- Slide 11: Ganzzahldivision -->
+            <section>
+                <h2>Ganzzahldivision</h2>
+                <pre><code class="language-java">int a = 7;
+int b = 2;
+
+int ergebnis = a / b;    // 3, NICHT 3.5!
+// int / int = int (Nachkommastellen werden abgeschnitten)</code></pre>
+                <div class="fragment highlight-box">
+                    <p><strong>Wichtig:</strong> Wenn beide Operanden int sind, ist das Ergebnis int!</p>
+                </div>
+                <pre class="fragment"><code class="language-java">double ergebnisExakt = 7.0 / 2;    // 3.5
+double ergebnisExakt2 = (double) 7 / 2;  // 3.5 (Cast)</code></pre>
+            </section>
+
+            <!-- Slide 12: Modulo -->
+            <section>
+                <h2>Modulo-Operator %</h2>
+                <p>Der %-Operator gibt den <strong>Rest</strong> einer Division zurueck.</p>
+                <pre><code class="language-java">int rest = 7 % 2;    // 1 (7 / 2 = 3 Rest 1)
+int rest2 = 10 % 3;  // 1 (10 / 3 = 3 Rest 1)
+int rest3 = 12 % 4;  // 0 (12 / 4 = 3 Rest 0)</code></pre>
+                <p class="fragment"><strong>Anwendung:</strong> Ist eine Zahl gerade? <code>zahl % 2 == 0</code></p>
+            </section>
+
+            <!-- Slide 13: Ausdruecke -->
+            <section>
+                <h2>Komplexe Ausdruecke</h2>
+                <pre><code class="language-java">int ergebnis = 5 + 3 * 2;        // 11 (Punkt vor Strich)
+int ergebnis2 = (5 + 3) * 2;     // 16 (Klammern zuerst)
+
+double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
+// Achtung: (10 + 20 + 30) / 3 waere 20 (int!), aber 10+20+30 / 3 waere...?</code></pre>
+                <ul>
+                    <li class="fragment">Klammern <strong>immer</strong> verwenden, wenn es unklar ist</li>
+                    <li class="fragment">Bei Division lieber double verwenden</li>
+                </ul>
+            </section>
+
+            <!-- Slide 14: Beispiel 1 - Temperaturumrechnung -->
+            <section>
+                <h2>Live-Coding: Celsius -> Fahrenheit</h2>
+                <pre><code class="language-java">public class CelsiusToFahrenheit {
+    public static void main(String[] args) {
+        double celsius = 25.0;
+        double fahrenheit = celsius * 9.0 / 5.0 + 32.0;
+
+        System.out.printf("%.1f°C = %.1f°F\n", celsius, fahrenheit);
+    }
+}</code></pre>
+                <p class="fragment">Ausgabe: <code>25,0°C = 77,0°F</code></p>
+            </section>
+
+            <!-- Slide 15: Beispiel 2 - Rechteck -->
+            <section>
+                <h2>Live-Coding: Rechteck</h2>
+                <pre><code class="language-java">public class Rechteck {
+    public static void main(String[] args) {
+        int laenge = 8;
+        int breite = 5;
+
+        int flaeche = laenge * breite;
+        int umfang = 2 * (laenge + breite);
+
+        System.out.println("Laenge: " + laenge);
+        System.out.println("Breite: " + breite);
+        System.out.println("Flaeche: " + flaeche);
+        System.out.println("Umfang: " + umfang);
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 16: Beispiel 3 - Brutto-Netto -->
+            <section>
+                <h2>Live-Coding: Brutto-Netto-Rechner</h2>
+                <pre><code class="language-java">public class BruttoNetto {
+    public static void main(String[] args) {
+        double brutto = 120.0;
+        double mwst = 0.2;  // 20%
+
+        double netto = brutto / (1 + mwst);
+        double steuer = brutto - netto;
+
+        System.out.printf("Brutto:  %.2f\n", brutto);
+        System.out.printf("Netto:   %.2f\n", netto);
+        System.out.printf("MWST:    %.2f\n", steuer);
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 17: Dungeon Escape - Projektvorstellung -->
+            <section>
+                <h2>Dungeon Escape - Projektstart</h2>
+                <p>Wir bauen dieses Jahr gemeinsam ein <strong>Textadventure</strong>!</p>
+                <ul>
+                    <li class="fragment">Du steuerst einen Helden durch einen Dungeon</li>
+                    <li class="fragment">Traeume Entscheidungen, kaempfe gegen Gegner, sammle Schaetze</li>
+                    <li class="fragment">Jede Woche wird das Spiel erweitert</li>
+                </ul>
+            </section>
+
+            <!-- Slide 18: Dungeon Escape - Aufgabe -->
+            <section>
+                <h2>Dungeon Escape - Aufgabe der Woche</h2>
+                <p>Lege Variablen fuer den Spieler an und gib den Status aus.</p>
+                <pre><code class="language-java">String name = "Heldenname";
+int hp = 100;
+double angriff = 15.5;
+double verteidigung = 8.3;
+
+// Status ausgeben
+System.out.println("=============================");
+System.out.println("Spieler: " + name);
+System.out.println("HP: " + hp);
+// ...</code></pre>
+            </section>
+
+            <!-- Slide 19: Zusammenfassung -->
+            <section>
+                <h2>Was wir heute gelernt haben</h2>
+                <ul>
+                    <li class="fragment">JVM: Compiler + Interpreter, Bytecode, Plattformunabhaengigkeit</li>
+                    <li class="fragment">Variablen: Deklaration, Initialisierung, Zuweisung</li>
+                    <li class="fragment">Datentypen: int, double, boolean, char</li>
+                    <li class="fragment">Arithmetische Operatoren: +, -, *, /, %</li>
+                    <li class="fragment">Ganzzahldivision: int / int = int</li>
+                </ul>
+            </section>
+
+            <!-- Slide 20: Ausblick -->
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Naechste Woche: Verzweigungen (if/else)</h3>
+                </div>
+                <p class="fragment">Dein Held wird Entscheidungen treffen muessen...</p>
+                <p class="fragment">"Wenn der Spieler die linke Tuer waehlt, geht er in den Schatzraum."</p>
+                <p class="fragment">"Sonst (else) betritt er den Drachensaal."</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">01 - Datentypen und Arithmetik</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>
