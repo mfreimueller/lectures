@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>16 - Java Streams - Advanced</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>16 - Java Streams - Advanced</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Review: Stream-Grundlagen</h2>
+<ul>
+<li class="fragment"><strong>3xHIF Lektion 10:</strong> filter, map, flatMap, reduce</li>
+<li class="fragment"><strong>3xHIF Lektion 11:</strong> toList, toSet, toMap, joining, groupingBy, partitioningBy</li>
+<li class="fragment"><strong>Lektion 15:</strong> Lambdas — funktionale Interfaces, Methodenreferenzen</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Typische Pipeline (bekannt)
+List&lt;String&gt; result = people.stream()
+    .filter(p -> p.age() >= 18)
+    .map(Person::name)
+    .sorted()
+    .toList();</code></pre>
+<div class="highlight-box fragment">
+<p>Heute: Was kommt danach? Parallelisierung, eigene Collectors, moderne Stream-APIs.</p>
+</div>
+</section>
+
+<section>
+<h2>Parallel Streams</h2>
+<ul>
+<li class="fragment"><code>parallelStream()</code> statt <code>stream()</code> — nutzt den gemeinsamen ForkJoinPool</li>
+<li class="fragment">Daten werden in Teilaufgaben zerlegt (Spliterator)</li>
+<li class="fragment">Teilaufgaben werden parallel in mehreren Threads bearbeitet</li>
+<li class="fragment">Ergebnisse werden wieder zusammengefuhrt</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Sequentiell
+long count1 = words.stream()
+    .filter(w -> w.length() > 5)
+    .count();
+
+// Parallel (gleiche Pipeline, ein Methodenaufruf Unterschied)
+long count2 = words.parallelStream()
+    .filter(w -> w.length() > 5)
+    .count();
+
+// Oder: stream().parallel()
+long count3 = words.stream()
+    .parallel()
+    .filter(w -> w.length() > 5)
+    .count();</code></pre>
+</section>
+
+<section>
+<h2>Parallel Streams — Wann hilft es?</h2>
+<table>
+<tr><th>Gut geeignet</th><th>Schlecht geeignet</th></tr>
+<tr class="fragment">
+<td>Gro&szlig;e Datenmengen (&gt;10.000 Elemente)</td>
+<td>Kleine Datenmengen (Overhead &gt; Nutzen)</td>
+</tr>
+<tr class="fragment">
+<td>CPU-intensive Operationen (Berechnungen)</td>
+<td>I/O-intensive Operationen (Datenbank, Files)</td>
+</tr>
+<tr class="fragment">
+<td>Unabhangige Elemente (keine gemeinsame mutable State)</td>
+<td>Diese Abhangigkeit zwischen Elementen (sorted, distinct)</td>
+</tr>
+<tr class="fragment">
+<td>Gut splittbare Quellen (ArrayList, IntStream.range)</td>
+<td>Schlecht splittbare Quellen (LinkedList, Iterator-basiert)</td>
+</tr>
+</table>
+<div class="fragment highlight-box">
+<p>Faustregel: Vor Parallelisierung immer messen! (Benchmark mit JMH)</p>
+</div>
+</section>
+
+<section>
+<h2>Custom Collectors — Collector-Interface</h2>
+<pre><code class="language-java">public interface Collector&lt;T, A, R&gt; {
+    Supplier&lt;A&gt; supplier();       // neuen Behälter erzeugen
+    BiConsumer&lt;A, T&gt; accumulator(); // Element hinzufügen
+    BinaryOperator&lt;A&gt; combiner();   // Behälter zusammenführen
+    Function&lt;A, R&gt; finisher();      // Behälter in Ergebnis umwandeln
+    Set&lt;Characteristics&gt; characteristics(); // Eigenschaften
+}
+
+// Characteristics:
+// - CONCURRENT: threadsicherer Akkumulator
+// - IDENTITY_FINISH: finisher ist Identität (kann direkt verwendet werden)
+// - UNORDERED: Reihenfolge der Elemente egal</code></pre>
+</section>
+
+<section>
+<h2>Custom Collector Beispiel: toHistogram</h2>
+<pre><code class="language-java">public static &lt;T&gt; Collector&lt;T, Map&lt;T, Integer&gt;, Map&lt;T, Integer&gt;&gt;
+       toHistogram() {
+    return Collector.of(
+        HashMap::new,                 // supplier
+        (map, element) -> map.merge(element, 1, Integer::sum), // accumulator
+        (m1, m2) -> {                 // combiner
+            m2.forEach((k, v) -> m1.merge(k, v, Integer::sum));
+            return m1;
+        },
+        Collector.Characteristics.IDENTITY_FINISH
+    );
+}
+
+// Verwendung
+Map&lt;String, Integer&gt; freq = words.stream()
+    .collect(toHistogram());
+
+// Oder mit groupingBy und downstream:
+Map&lt;String, Long&gt; freq2 = words.stream()
+    .collect(Collectors.groupingBy(
+        Function.identity(), Collectors.counting()
+    ));</code></pre>
+</section>
+
+<section>
+<h2>Advanced Collectors — teeing</h2>
+<p><code>Collectors.teeing()</code> (Java 12+): Zwei Collectors parallel anwenden und Ergebnisse kombinieren.</p>
+<pre class="fragment"><code class="language-java">// Statistik aus einem Durchlauf: Summe und Anzahl
+IntSummaryStatistics stats = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.summingInt(i -> i),
+        Collectors.counting(),
+        (sum, count) -> {
+            IntSummaryStatistics s = new IntSummaryStatistics();
+            s.accept(sum.intValue());
+            return s;
+        }
+    ));
+
+// Elegant: Durchschnitt und Standardabweichung berechnen
+record AvgAndStd(double average, double stdDev) {}
+
+AvgAndStd result = numbers.stream()
+    .collect(Collectors.teeing(
+        Collectors.averagingDouble(i -> i),
+        Collectors.mapping(i -> i * i, Collectors.averagingDouble(i -> i)),
+        (avg, avgSq) -> new AvgAndStd(avg, Math.sqrt(avgSq - avg * avg))
+    ));</code></pre>
+</section>
+
+<section>
+<h2>Advanced Collectors — filtering & flatMapping</h2>
+<pre><code class="language-java">// filtering (Java 9+): filtert bevor der downstream-Collector sammelt
+Map&lt;String, List&lt;Person&gt;&gt; adultsByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.filtering(p -> p.age() >= 18, Collectors.toList())
+    ));
+
+// flatMapping (Java 9+): flatten bevor der downstream-Collector sammelt
+Map&lt;String, List&lt;String&gt;&gt; wordsByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.flatMapping(
+            p -> Arrays.stream(p.bio().split("\\s+")),
+            Collectors.toList()
+        )
+    ));
+
+// Ohne flatMapping ware eine ZwischenMap notig:
+// person -> [wohnort, [woerter]] -> flatMap -> group</code></pre>
+</section>
+
+<section>
+<h2>takeWhile / dropWhile</h2>
+<ul>
+<li class="fragment"><strong>takeWhile:</strong> Nimm Elemente, solange das Pradikat true ist, dann brich ab</li>
+<li class="fragment"><strong>dropWhile:</strong> Uberspringe Elemente, solange das Pradikat true ist, dann nimm den Rest</li>
+</ul>
+<pre class="fragment"><code class="language-java">// takeWhile: Nimm solange Werte kleiner 10 sind
+Stream.of(2, 4, 6, 8, 9, 12, 3)
+    .takeWhile(n -> n < 10)
+    .toList();
+// Ergebnis: [2, 4, 6, 8, 9]
+
+// dropWhile: Uberspringe Werte kleiner 10, nimm den Rest
+Stream.of(2, 4, 6, 8, 9, 12, 3)
+    .dropWhile(n -> n < 10)
+    .toList();
+// Ergebnis: [12, 3]</code></pre>
+<div class="highlight-box fragment">
+<p>Wichtig: takeWhile/dropWhile arbeiten auf der <strong>Reihenfolge</strong> der Stream-Quelle. Bei ungeordneten Quellen (z. B. HashSet) ist das Verhalten nicht deterministisch!</p>
+</div>
+</section>
+
+<section>
+<h2>Stream-Quellen (Java 9+)</h2>
+<pre><code class="language-java">// ofNullable: Optional-ahnlich, null-sicherer Stream
+Stream.ofNullable(getMiddleName())
+      .map(String::toUpperCase)
+      .forEach(System.out::println);
+// Liefert leeren Stream bei null, sonst Stream mit einem Element
+
+// iterate mit Predicate (Java 9): Bedingung fur Abbruch
+Stream.iterate(0, n -> n < 100, n -> n + 1)
+      .filter(n -> n % 2 == 0)
+      .toList();
+// Alte Variante (Java 8): kein Predicate -> unendlicher Stream
+Stream.iterate(0, n -> n + 1).limit(100);
+
+// concat: zwei Streams zusammenführen
+Stream&lt;String&gt; abc = Stream.of("a", "b", "c");
+Stream&lt;String&gt; xyz = Stream.of("x", "y", "z");
+Stream.concat(abc, xyz).toList();  // [a, b, c, x, y, z]</code></pre>
+</section>
+
+<section>
+<h2>Primitive Streams</h2>
+<ul>
+<li class="fragment">IntStream, LongStream, DoubleStream — spezialisiert fur primitive Typen</li>
+<li class="fragment">Vermeiden Boxing/Unboxing — performanter</li>
+</ul>
+<pre class="fragment"><code class="language-java">// IntStream.range: inklusive/exklusive Grenzen
+IntStream.range(0, 10)       // 0 bis 9
+IntStream.rangeClosed(1, 10) // 1 bis 10
+
+// Spezielle Operationen
+int sum = IntStream.rangeClosed(1, 100).sum();
+IntSummaryStatistics stats = IntStream.rangeClosed(1, 100)
+    .summaryStatistics();
+// stats.getSum(), getAverage(), getMin(), getMax(), getCount()
+
+// Konvertierung: boxed(), mapToObj()
+List&lt;String&gt; labels = IntStream.rangeClosed(1, 5)
+    .mapToObj(i -> "Item #" + i)
+    .toList();
+
+// Primitive Streams erzeugen: mapToInt, mapToLong, mapToDouble
+int totalAge = people.stream()
+    .mapToInt(Person::age)
+    .sum();</code></pre>
+</section>
+
+<section>
+<h2>Gatherers (Java 22+)</h2>
+<ul>
+<li class="fragment">Neues Feature (Preview in Java 22, finalized in Java 23+)</li>
+<li class="fragment">Ermoglicht <strong>custom Intermediate Operations</strong> (bisher nur terminale Custom Collectors)</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Integrierte Gatherer:
+// - Gatherers.windowFixed(n): Fenster fester Groesse
+// - Gatherers.windowSliding(n): Uberlappende Fenster
+// - Gatherers.mapConcurrent(n): Parallele Verarbeitung mit max n Threads
+
+// Beispiel: Feste Fenster
+List&lt;List&lt;Integer&gt;&gt; windows = IntStream.rangeClosed(1, 10)
+    .boxed()
+    .gather(Gatherers.windowFixed(3))
+    .toList();
+// [[1,2,3], [4,5,6], [7,8,9], [10]]
+
+// Beispiel: Eigener Gatherer (vereinfacht)
+// Gatherer&lt;T, A, R&gt; mit initializer, integrator, combiner, finisher</code></pre>
+<div class="highlight-box fragment">
+<p>Gatherers schlie&szlig;en die Lucke: Bisher nur custom Collectors (terminal), jetzt auch custom Intermediate Operations!</p>
+</div>
+</section>
+
+<section>
+<h2>Stream-Pitfalls</h2>
+<ul>
+<li class="fragment"><strong>Keine Wiederverwendung:</strong> Ein Stream kann nur einmal konsumiert werden</li>
+</ul>
+<pre class="fragment"><code class="language-java">Stream&lt;String&gt; stream = names.stream();
+stream.toList();  // OK
+stream.toList();  // IllegalStateException: stream has already been operated upon or closed</code></pre>
+<ul>
+<li class="fragment"><strong>Seiteneffekte in Lambdas vermeiden:</strong> Lambdas sollten zustandslos sein</li>
+</ul>
+<pre class="fragment"><code class="language-java">// SCHLECHT: mutable externer State
+List&lt;String&gt; result = new ArrayList&lt;&gt;();
+stream.filter(s -> s.length() > 3)
+      .forEach(result::add);  // Nicht threadsicher, nebenlaufiges Problem!
+
+// GUT: Collectors verwenden
+List&lt;String&gt; result = stream
+    .filter(s -> s.length() > 3)
+    .toList();</code></pre>
+<ul>
+<li class="fragment"><strong>Unendliche Streams:</strong> Immer mit limit() oder short-circuit ops arbeiten</li>
+<li class="fragment"><strong>Parallel mit sorted/limit:</strong> Kann teurer sein als sequentiell (Merge-Overhead)</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Parallel Streams: &Auml;hnliche API, aber nicht immer schneller — messen!</li>
+<li>Custom Collectors: supplier, accumulator, combiner, finisher, characteristics</li>
+<li>Advanced Collectors: teeing (2 Ergebnisse parallel), filtering, flatMapping</li>
+<li>takeWhile/dropWhile: Stateful, aber nur auf geordneten Quellen deterministisch</li>
+<li>Primitive Streams: IntStream, LongStream, DoubleStream — kein Boxing</li>
+<li>Gatherers (Java 22+): Custom Intermediate Operations als Preview</li>
+<li>Pitfalls: Keine Wiederverwendung, keine Seiteneffekte, unendliche Streams begrenzen</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">16 - Java Streams - Advanced</span></div>');});
+</script>
+</body>
+</html>

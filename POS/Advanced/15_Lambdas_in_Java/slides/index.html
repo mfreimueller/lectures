@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>15 - Lambdas in Java</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>15 - Lambdas in Java</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Was ist eine Lambda?</h2>
+<ul>
+<li class="fragment">Kompakte Schreibweise fur eine anonyme Funktion</li>
+<li class="fragment">Ermoglicht funktionales Programmieren in Java (seit Java 8)</li>
+<li class="fragment">Kann einer Variablen zugewiesen oder direkt ubergeben werden</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Anonyme Klasse
+button.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Clicked!");
+    }
+});
+
+// Lambda
+button.addActionListener(e -> System.out.println("Clicked!"));</code></pre>
+</section>
+
+<section>
+<h2>Functional Interfaces</h2>
+<ul>
+<li class="fragment">Ein Interface mit genau <strong>einer</strong> abstrakten Methode (SAM)</li>
+<li class="fragment">Mit <code>@FunctionalInterface</code> annotiert (optional, aber empfohlen)</li>
+</ul>
+<pre class="fragment"><code class="language-java">@FunctionalInterface
+interface Validator&lt;T&gt; {
+    boolean isValid(T value);
+    // Nur EINE abstrakte Methode erlaubt
+}
+
+// Lambda als Implementierung
+Validator&lt;String&gt; nonEmpty = s -> s != null && !s.isEmpty();</code></pre>
+</section>
+
+<section>
+<h2>Die wichtigsten Standard-FIs</h2>
+<table>
+<tr><th>Interface</th><th>Parameter</th><th>Ruckgabe</th><th>Methode</th></tr>
+<tr class="fragment"><td>Predicate&lt;T&gt;</td><td>T</td><td>boolean</td><td>test()</td></tr>
+<tr class="fragment"><td>Consumer&lt;T&gt;</td><td>T</td><td>void</td><td>accept()</td></tr>
+<tr class="fragment"><td>Function&lt;T,R&gt;</td><td>T</td><td>R</td><td>apply()</td></tr>
+<tr class="fragment"><td>Supplier&lt;T&gt;</td><td>—</td><td>T</td><td>get()</td></tr>
+<tr class="fragment"><td>UnaryOperator&lt;T&gt;</td><td>T</td><td>T</td><td>apply()</td></tr>
+<tr class="fragment"><td>BinaryOperator&lt;T&gt;</td><td>T,T</td><td>T</td><td>apply()</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Lambda-Syntax im Detail</h2>
+<pre><code class="language-java">// Vollstandige Form: (Parameter) -> { Rumpf }
+(int x, int y) -> { return x + y; }
+
+// Typ-Inferenz: Typen konnen weggelassen werden
+(x, y) -> { return x + y; }
+
+// Einzelner Ausdruck: return und {} konnen entfallen
+(x, y) -> x + y
+
+// Ein Parameter: Klammern optional
+x -> x * x
+
+// Keine Parameter: leere Klammern
+() -> Math.random()
+
+// Mehrere Anweisungen: Block mit return
+s -> {
+    String trimmed = s.trim();
+    return trimmed.isEmpty() ? "default" : trimmed;
+}</code></pre>
+</section>
+
+<section>
+<h2>Variable Capture & effectively final</h2>
+<ul>
+<li class="fragment">Lambdas konnen lokale Variablen der umschlie&szlig;enden Methode verwenden</li>
+<li class="fragment">Diese mussen <strong>effectively final</strong> sein (seit Java 8)</li>
+<li class="fragment">Eine Variable ist effectively final, wenn sie nach Initialisierung nicht mehr geandert wird</li>
+</ul>
+<pre class="fragment"><code class="language-java">String prefix = "User: ";  // effectively final
+Function&lt;String, String&gt; greet = name -> prefix + name;
+
+// NICHT erlaubt:
+// prefix = "Admin: ";  // wurde Compiler-Fehler verursachen</code></pre>
+<div class="highlight-box fragment">
+<p>Im Unterschied zu anonymen Klassen: <code>this</code> in Lambdas bezieht sich auf die umschlie&szlig;ende Klasse, nicht auf die Lambda-Instanz.</p>
+</div>
+</section>
+
+<section>
+<h2>Methodenreferenzen — 4 Arten</h2>
+<table>
+<tr><th>Art</th><th>Syntax</th><th>Beispiel</th></tr>
+<tr class="fragment"><td>Statische Methode</td><td>Class::staticMethod</td><td><code>Math::max</code></td></tr>
+<tr class="fragment"><td>Instanzmethode eines Objekts</td><td>instance::method</td><td><code>System.out::println</code></td></tr>
+<tr class="fragment"><td>Instanzmethode einer Klasse</td><td>Class::instanceMethod</td><td><code>String::length</code></td></tr>
+<tr class="fragment"><td>Konstruktor</td><td>Class::new</td><td><code>ArrayList::new</code></td></tr>
+</table>
+<pre class="fragment"><code class="language-java">// Lambda vs. Methodenreferenz
+names.stream().map(s -> s.toUpperCase())  // Lambda
+names.stream().map(String::toUpperCase)   // Methodenreferenz
+
+names.stream().map(s -> new Person(s))    // Lambda
+names.stream().map(Person::new)           // Konstruktor-Referenz</code></pre>
+</section>
+
+<section>
+<h2>Methodenreferenzen — Praxisbeispiele</h2>
+<pre><code class="language-java">// 1. Statische Methode
+Stream.of(3, 7, 2, 9)
+    .reduce(Integer::sum);  // Integer.sum(a, b)
+
+// 2. Instanzmethode eines Objekts
+names.forEach(System.out::println);
+
+// 3. Instanzmethode einer Klasse (erstes Argument wird Empfanger)
+List&lt;String&gt; sorted = names.stream()
+    .sorted(String::compareToIgnoreCase)
+    .toList();
+
+// 4. Konstruktor
+List&lt;Person&gt; people = names.stream()
+    .map(Person::new)
+    .toList();</code></pre>
+</section>
+
+<section>
+<h2>Funktionskomposition</h2>
+<pre><code class="language-java">// Function: andThen, compose
+Function&lt;String, String&gt; trim = String::trim;
+Function&lt;String, String&gt; capitalize = s ->
+    s.substring(0, 1).toUpperCase() + s.substring(1);
+
+Function&lt;String, String&gt; format = trim.andThen(capitalize);
+// format.apply("  hello  ") -> "Hello"
+
+// compose ist die Umkehrung: f.compose(g) = f(g(x))
+Function&lt;String, String&gt; format2 = capitalize.compose(trim);
+// Gleiches Ergebnis
+
+// Predicate: and, or, negate
+Predicate&lt;String&gt; nonNull = Objects::nonNull;
+Predicate&lt;String&gt; nonEmpty = s -> !s.isEmpty();
+Predicate&lt;String&gt; valid = nonNull.and(nonEmpty);
+// valid.test(null) -> false</code></pre>
+</section>
+
+<section>
+<h2>Lambda und this</h2>
+<pre><code class="language-java">public class ButtonHandler {
+    private String label = "Button";
+
+    public void handle() {
+        // Anonyme Klasse: this bezieht sich auf das匿名 Klassenobjekt
+        Runnable r1 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(this.label);  // Compiler-Fehler!
+            }
+        };
+
+        // Lambda: this bezieht sich auf ButtonHandler-Instanz
+        Runnable r2 = () -> System.out.println(this.label);  // "Button"
+    }
+}</code></pre>
+<div class="highlight-box fragment">
+<p><code>this</code> in einem Lambda verhalt sich wie <code>this</code> in der umschlie&szlig;enden Methode!</p>
+</div>
+</section>
+
+<section>
+<h2>Exception-Handling in Lambdas</h2>
+<pre><code class="language-java">// Problem: Standard-FIs werfen keine checked exceptions
+Function&lt;String, String&gt; readFile = path -> {
+    // Compiler-Fehler: IOException ist checked!
+    // return Files.readString(Path.of(path));
+};
+
+// Losung 1: Checked exception in unchecked wrappen
+Function&lt;String, String&gt; readFile = path -> {
+    try {
+        return Files.readString(Path.of(path));
+    } catch (IOException e) {
+        throw new UncheckedIOException(e);
+    }
+};
+
+// Losung 2: Eigenes ThrowingFunction-Interface
+@FunctionalInterface
+interface ThrowingFunction&lt;T, R&gt; {
+    R apply(T t) throws Exception;
+}
+
+static &lt;T, R&gt; Function&lt;T, R&gt; wrap(ThrowingFunction&lt;T, R&gt; fn) {
+    return t -> {
+        try {
+            return fn.apply(t);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
+}
+
+// Verwendung
+Function&lt;String, String&gt; safeRead = wrap(
+    path -> Files.readString(Path.of(path))
+);</code></pre>
+</section>
+
+<section>
+<h2>Primitive Specializations</h2>
+<ul>
+<li class="fragment">Generische FIs (z. B. <code>Function&lt;T,R&gt;</code>) vermeiden Boxing/Unboxing</li>
+<li class="fragment">Fur primitive Typen gibt es spezialisierte Interfaces</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Statt Boxing:
+Function&lt;Integer, Integer&gt; f1 = x -> x * 2;  // Boxing!
+
+// Mit primitiver Specialization:
+IntUnaryOperator f2 = x -> x * 2;  // Kein Boxing!
+
+// Weitere Beispiele:
+IntPredicate    // int -> boolean
+DoubleConsumer  // double -> void
+ToIntFunction&lt;String&gt;  // String -> int (keine Ruckgabe-Boxing)
+IntFunction&lt;String&gt;    // int -> String (kein Parameter-Boxing)</code></pre>
+<div class="highlight-box fragment">
+<p>Bei Performance-kritischen Operationen auf primitiven Streams immer primitive FIs bevorzugen!</p>
+</div>
+</section>
+
+<section>
+<h2>Currying mit Lambdas</h2>
+<pre><code class="language-java">// Currying: Eine Funktion mit mehreren Parametern wird in
+// eine Kette von Funktionen mit je einem Parameter zerlegt.
+
+// Uncurried:
+Function&lt;Integer, Function&lt;Integer, Integer&gt;&gt; add = x -> y -> x + y;
+// add.apply(3).apply(4) -> 7
+
+// Praxisbeispiel: Konfigurierbare Validierung
+Function&lt;Integer, Predicate&lt;String&gt;&gt; lengthValidator =
+    maxLen -> s -> s.length() <= maxLen;
+
+Predicate&lt;String&gt; max10 = lengthValidator.apply(10);
+Predicate&lt;String&gt; max255 = lengthValidator.apply(255);
+
+// Wiederverwendbare Bausteine
+Function&lt;String, Function&lt;String, String&gt;&gt; prefixer =
+    separator -> prefix -> name -> prefix + separator + name;
+
+Function&lt;String, String&gt; greet = prefixer.apply(" ").apply("Hallo");
+greet.apply("Welt");  // "Hallo Welt"</code></pre>
+</section>
+
+<section>
+<h2>Best Practices & Pitfalls</h2>
+<ul>
+<li class="fragment"><strong>Lambdas fur einfache Logik</strong> — bei komplexer Logik: benannte Methode extrahieren</li>
+<li class="fragment"><strong>Seiteneffekte vermeiden</strong> — Lambdas sollten idealerweise zustandslos sein</li>
+<li class="fragment"><strong>Keine mutable State von au&szlig;en modifizieren</strong> — Variable Capture ist read-only</li>
+<li class="fragment"><strong>Methodenreferenzen bevorzugen</strong> wenn moglich (lesbarer)</li>
+<li class="fragment"><strong>Lambdas nicht serialisieren</strong> — Serialisierung von Lambdas ist implementierungsabhangig</li>
+<li class="fragment"><strong>Stacktrace kann verwirren</strong> — Lambdas erscheinen als synthetic Methoden</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Lambdas: kurze Schreibweise fur anonyme Funktionen</li>
+<li>Functional Interfaces: @FunctionalInterface, Predicate, Function, Consumer, Supplier</li>
+<li>Variable Capture: nur effectively final Variablen</li>
+<li>Methodenreferenzen: 4 Arten — statisch, Instanz, Klasse, Konstruktor</li>
+<li>Komposition: andThen, compose, and, or, negate</li>
+<li>Exception-Handling: Wrapper-Pattern mit eigenem ThrowingFunction</li>
+<li>Primitive Specializations vermeiden Boxing</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nachste Lektion: Java Streams — Advanced</p>
+<p>Parallel Streams, Custom Collectors, takeWhile/dropWhile, Gatherers</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">15 - Lambdas in Java</span></div>');});
+</script>
+</body>
+</html>
