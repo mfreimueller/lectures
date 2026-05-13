@@ -1,14 +1,14 @@
 # K2: @ToString Annotation Processor
 
-| Feld | Wert |
-|------|------|
-| Konzepte | @interface, @Retention, @Target, annotation-processing, Field.get/set |
-| Schwierigkeit | 2/5 |
-| Dauer | ca. 25 min |
+| Field | Value |
+|-------|-------|
+| Concepts | @interface, @Retention, @Target, annotation-processing, Field.get/set |
+| Difficulty | 2/5 |
+| Duration | approx. 25 min |
 
-### Aufgabenstellung
+### Task
 
-Implementiere eine `@ToString` Annotation und einen Prozessor, der automatisch einen String-Repräsentation eines Objekts erzeugt.
+Implement a `@ToString` annotation and a processor that automatically generates a string representation of an object.
 
 ```java
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,24 +19,24 @@ public @interface ToString {
 }
 ```
 
-Schreibe eine `ToStringProcessor` Klasse mit einer Methode:
+Write a `ToStringProcessor` class with a method:
 ```java
 public static String toString(Object obj) throws Exception
 ```
 
-Der Prozessor soll:
-1. Prüfen, ob die Klasse mit `@ToString` annotiert ist
-2. Alle deklarierten Felder via Reflection lesen
-3. Felder in `excludeFields()` überspringen
-4. Wenn `includeFields=false`, nur den Klassennamen ausgeben
-5. Einen String im Format `ClassName{field1=value1, field2=value2, ...}` erzeugen
+The processor shall:
+1. Check if the class is annotated with `@ToString`
+2. Read all declared fields via reflection
+3. Skip fields listed in `excludeFields()`
+4. If `includeFields=false`, output only the class name
+5. Produce a string in the format `ClassName{field1=value1, field2=value2, ...}`
 
-### Beispiel-Output
+### Example Output
 
 ```
 Person{name=Alice, age=30}
 ```
 
-### Erweiterung
+### Extension
 
-Füge ein `@ToStringExclude` Annotation hinzu, die auf einzelne Felder angewendet werden kann, um sie von der Ausgabe auszuschließen, unabhängig von der Klassen-Annotation.
+Add a `@ToStringExclude` annotation that can be applied to individual fields to exclude them from the output, independently of the class-level annotation.

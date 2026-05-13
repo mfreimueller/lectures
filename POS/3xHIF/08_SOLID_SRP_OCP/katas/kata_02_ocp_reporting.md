@@ -17,6 +17,9 @@ Create:
 4. A `CsvFormatter` implementation
 5. Modify `ReportGenerator` to accept any `ReportFormatter`
 
+Answer:
+1. Why does `ReportGenerator` violate OCP?
+
 ### Example Output
 
 ```

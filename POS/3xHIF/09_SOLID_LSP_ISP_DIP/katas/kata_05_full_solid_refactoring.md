@@ -10,10 +10,8 @@
 
 Given a monolithic `Printer` class that violates multiple SOLID principles:
 
-Violations:
-- ISP: Fat interface with print, scan, fax methods that throw `UnsupportedOperationException`
-- LSP: Subclasses cannot substitute parent because methods throw exceptions
-- DIP: Depends on concrete classes for document storage and network communication
+Answer:
+1. Which SOLID principles are violated and why?
 
 Refactor:
 1. Split into focused interfaces: `Printable`, `Scannable`, `Faxable`
