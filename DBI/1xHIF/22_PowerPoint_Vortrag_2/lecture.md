@@ -2,17 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer & Lautsprecher bereit
-- [ ] Timer/Stoppuhr bereit
-- [ ] Feedback-Bögen für die letzte Runde
-- [ ] Reflexionsbögen (oder Moodle-Fragen) vorbereitet
-- [ ] Reihenfolge der restlichen Vorträge festlegen
-- [ ] Bewertungsbögen von Woche 21 ergänzen
-
----
-
 ## 1. Einstieg & Begrüßung (5 min)
 
 ### Ablauf heute

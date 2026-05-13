@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] VS Code mit Markdown-Vorschau geöffnet
-- [ ] Beispiel Tabellen und Task-Listen vorbereitet
-- [ ] GitHub-README mit Task-Liste zeigen (Browser-Tab)
-
----
-
 ## 1. Wiederholung: Markdown I (10 min)
 
 **Schnelles Quiz:**

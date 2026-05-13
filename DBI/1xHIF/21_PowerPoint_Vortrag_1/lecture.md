@@ -2,17 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer & Lautsprecher bereit
-- [ ] Timer/Stoppuhr bereit
-- [ ] Sitzordnung prüfen (alle sollen die Leinwand sehen können)
-- [ ] Feedback-Bögen (optional) vorbereitet
-- [ ] Reihenfolge der Vorträge festlegen
-- [ ] Moodle/Notizen für Bewertung bereit
-
----
-
 ## 1. Einstieg & Organisation (10 min)
 
 ### Begrüßung & Ablauf

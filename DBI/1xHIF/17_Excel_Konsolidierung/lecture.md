@@ -2,13 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Excel offen
-
----
-
 ## 1. Überblick: Alle Excel-Themen (10 min)
 
 Die Excel Phase ist zu Ende. Nächste Woche: **PLÜ-Prüfung**!

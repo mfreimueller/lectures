@@ -2,16 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Texteditor (VS Code / Notepad++) offen
-- [ ] Excel offen mit Beispiel-CSV
-- [ ] CSV-Dateien mit UTF-8 und ANSI Encoding vorbereitet (mit Umlauten)
-- [ ] Beispiel-CSV mit verschiedenen Delimitern vorbereitet
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz zu Markdown und AsciiDoc:

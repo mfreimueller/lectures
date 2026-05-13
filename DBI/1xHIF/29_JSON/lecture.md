@@ -2,16 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Texteditor (VS Code) offen
-- [ ] JSONLint.com oder alternativen JSON-Validator bereit (oder Browser-Konsole)
-- [ ] Beispiel-JSON-Dateien vorbereitet (korrekt und fehlerhaft)
-- [ ] Vergleich CSV vs. JSON vorbereitet
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz zu CSV:

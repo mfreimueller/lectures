@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word offen
-- [ ] Optional: Beispiel-Bild zum Testen parat
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz:

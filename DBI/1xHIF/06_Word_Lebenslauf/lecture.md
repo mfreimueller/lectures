@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word offen
-- [ ] Optional: Muster-Lebensläufe als Beispiele
-
----
-
 ## 1. PLÜ-Nachbesprechung (15 min)
 
 Fragen zur Word-PLÜ durchgehen.

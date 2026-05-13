@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] PowerPoint offen
-- [ ] Beispiel-Präsentationen vorbereitet (1 gute, 1 schlechte)
-- [ ] Kata-Blätter gedruckt oder digital bereit
-
----
-
 ## 1. Einstieg: Gute vs. Schlechte Beispiele (10 min)
 
 Zeige zwei kurze Beispiel-Präsentationen (je 2-3 Folien):

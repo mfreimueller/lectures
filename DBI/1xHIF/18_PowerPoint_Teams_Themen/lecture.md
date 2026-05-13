@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Moodle-Kurs vorbereitet (Abgabe Teams & Themen)
-- [ ] Beispiel-Themenliste als Inspiration vorbereitet
-- [ ] Feedback-Regeln als Handout oder Folie
-
----
-
 ## 1. Kick-off: PowerPoint-Modul (10 min)
 
 ### Überblick

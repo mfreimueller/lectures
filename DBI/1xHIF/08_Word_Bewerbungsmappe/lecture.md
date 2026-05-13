@@ -2,13 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word offen
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz:

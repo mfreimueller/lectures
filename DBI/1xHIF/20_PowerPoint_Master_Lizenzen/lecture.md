@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] PowerPoint offen mit leerer Präsentation
-- [ ] Beispiel-Bilder (CC0, CC-BY, Copyright) vorbereitet
-- [ ] Unsplash / Pexels / Pixabay im Browser geöffnet
-
----
-
 ## 1. Wiederholung (10 min)
 
 **Fragen zur vorherigen Woche** (Gute Präsentationen):

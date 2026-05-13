@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde (Checkliste)
-
-- [ ] Beamer bereit
-- [ ] Word geöffnet mit leerem Dokument
-- [ ] Optional: Beispieldokument vorbereitet
-
----
-
 ## 1. Wiederholung & Einstieg (10 min)
 
 ### Quick-Quiz am Beamer:

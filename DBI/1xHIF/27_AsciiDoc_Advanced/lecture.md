@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] VS Code mit AsciiDoc Extension
-- [ ] Beispiel-Dateien vorbereitet: `hauptdoku.adoc`, `kapitel1.adoc`, `kapitel2.adoc`
-- [ ] GitHub-Repo mit .adoc Dateien zeigen (optional)
-
----
-
 ## 1. Wiederholung AsciiDoc Grundlagen (10 min)
 
 Quick-Quiz:

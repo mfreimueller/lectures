@@ -1,11 +1,5 @@
 # Lecture: Woche 00 - Einführung & Word Recap
 
-## Vor der Stunde (Checkliste)
-
-- [ ] Beamer an, Jahresplan offen
-- [ ] Klassenzimmer bereit
-- [ ] Namensschilder / Sitzordnung (falls notwendig)
-
 ---
 
 ## 1. Begrüßung & Vorstellung (20 min)

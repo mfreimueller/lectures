@@ -2,16 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] LibreOffice installiert und geöffnet
-- [ ] Beispiel-DOCX-Datei vorbereitet
-- [ ] Beispiel-XLSX-Datei vorbereitet
-- [ ] Google Workspace-Übersicht (Browser-Tabs)
-
----
-
 ## 1. Einführung: Warum Alternativen zu MS Office? (10 min)
 
 **Frage an die Klasse:**

@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Excel offen
-- [ ] Optional: Beispieldatei vorbereitet
-
----
-
 ## 1. Wiederholung & Einstieg (15 min)
 
 **Willkommen zurück nach den Ferien!**

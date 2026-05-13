@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word offen
-- [ ] Optional: Beispieldokument mit Überschriften vorbereitet
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz:

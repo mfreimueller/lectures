@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word + Excel offen
-- [ ] Optional: Beispieldaten in Excel vorbereitet
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz:

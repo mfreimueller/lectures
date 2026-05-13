@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] VS Code mit AsciiDoc Extension installiert
-- [ ] AsciiDoctor.js oder lokales `asciidoctor` bereit
-- [ ] Beispiel-Dateien (.md und .adoc) vorbereitet
-
----
-
 ## 1. Wiederholung Markdown (10 min)
 
 Quick-Quiz:

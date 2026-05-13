@@ -2,14 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] Word offen
-- [ ] Optional: Muster-Bewerbungsschreiben als Beispiel
-
----
-
 ## 1. Wiederholung (10 min)
 
 Quick-Quiz zum Lebenslauf:

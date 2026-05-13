@@ -2,15 +2,6 @@
 
 ---
 
-## Vor der Stunde
-
-- [ ] Beamer bereit
-- [ ] VS Code (oder anderer Editor) mit Markdown-Vorschau geöffnet
-- [ ] Beispiel-README.md vorbereitet
-- [ ] GitHub-Repository mit README.md zeigen (Browser-Tab)
-
----
-
 ## 1. Einführung: Was ist Markdown? (10 min)
 
 **Frage an die Klasse:**
