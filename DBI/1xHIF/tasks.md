@@ -91,7 +91,7 @@ tasks:
 
   - id: 09-excel-grundlagen
     description: "Erstelle Woche 09: Excel Grundlagen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 09_Excel_Grundlagen/plan.md
       - 09_Excel_Grundlagen/lecture.md
@@ -102,7 +102,7 @@ tasks:
 
   - id: 10-excel-bezuege
     description: "Erstelle Woche 10: Excel Bezüge (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 10_Excel_Bezuege/plan.md
       - 10_Excel_Bezuege/lecture.md
@@ -113,7 +113,7 @@ tasks:
 
   - id: 11-excel-funktionen1
     description: "Erstelle Woche 11: Excel Funktionen I (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 11_Excel_Funktionen_Grundlagen/plan.md
       - 11_Excel_Funktionen_Grundlagen/lecture.md
