@@ -124,7 +124,7 @@ tasks:
 
   - id: 12-excel-logik
     description: "Erstelle Woche 12: Excel Logische Funktionen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 12_Excel_Logische_Funktionen/plan.md
       - 12_Excel_Logische_Funktionen/lecture.md
@@ -135,7 +135,7 @@ tasks:
 
   - id: 13-excel-bereich
     description: "Erstelle Woche 13: Excel Bereichsfunktionen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 13_Excel_Bereichsfunktionen/plan.md
       - 13_Excel_Bereichsfunktionen/lecture.md
@@ -146,7 +146,7 @@ tasks:
 
   - id: 14-excel-suchen
     description: "Erstelle Woche 14: Excel Suchen & Referenzieren (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 14_Excel_Suchen_Referenzieren/plan.md
       - 14_Excel_Suchen_Referenzieren/lecture.md
@@ -157,7 +157,7 @@ tasks:
 
   - id: 15-excel-text-datum
     description: "Erstelle Woche 15: Excel Text & Datum Funktionen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 15_Excel_Text_Datum/plan.md
       - 15_Excel_Text_Datum/lecture.md
@@ -168,7 +168,7 @@ tasks:
 
   - id: 16-excel-bedingt-diagramme
     description: "Erstelle Woche 16: Excel Bedingte Formatierung & Diagramme (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 16_Excel_Conditional_Diagramme/plan.md
       - 16_Excel_Conditional_Diagramme/lecture.md
@@ -179,7 +179,7 @@ tasks:
 
   - id: 17-excel-konsolidierung
     description: "Erstelle Woche 17: Excel Konsolidierung PLÜ-Vorbereitung (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 17_Excel_Konsolidierung/plan.md
       - 17_Excel_Konsolidierung/lecture.md
@@ -190,7 +190,7 @@ tasks:
 
   - id: 18-powerpoint-teams
     description: "Erstelle Woche 18: PowerPoint Teamzusammenstellung (KEINE Katas)"
-    done: false
+    done: true
     creates:
       - 18_PowerPoint_Teams_Themen/plan.md
       - 18_PowerPoint_Teams_Themen/lecture.md
@@ -198,7 +198,7 @@ tasks:
 
   - id: 19-powerpoint-gute-praes
     description: "Erstelle Woche 19: PowerPoint Gute Präsentationen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 19_PowerPoint_Gute_Praesentationen/plan.md
       - 19_PowerPoint_Gute_Praesentationen/lecture.md
@@ -209,7 +209,7 @@ tasks:
 
   - id: 20-powerpoint-master-lizenz
     description: "Erstelle Woche 20: PowerPoint Masterfolie & Lizenzen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 20_PowerPoint_Master_Lizenzen/plan.md
       - 20_PowerPoint_Master_Lizenzen/lecture.md
@@ -220,7 +220,7 @@ tasks:
 
   - id: 21-powerpoint-vortrag1
     description: "Erstelle Woche 21: PowerPoint Vortrag 1 (KEINE Katas)"
-    done: false
+    done: true
     creates:
       - 21_PowerPoint_Vortrag_1/plan.md
       - 21_PowerPoint_Vortrag_1/lecture.md
@@ -228,7 +228,7 @@ tasks:
 
   - id: 22-powerpoint-vortrag2
     description: "Erstelle Woche 22: PowerPoint Vortrag 2 (KEINE Katas)"
-    done: false
+    done: true
     creates:
       - 22_PowerPoint_Vortrag_2/plan.md
       - 22_PowerPoint_Vortrag_2/lecture.md
