@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>15 - Annotations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>15 - Annotations</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>What are Annotations?</h2>
+<p>Annotations are metadata attached to Java source code elements (classes, methods, fields, etc.).</p>
+<ul>
+<li class="fragment">Start with <code>@</code> symbol</li>
+<li class="fragment">Do not directly affect program execution</li>
+<li class="fragment">Can be processed at compile time, class loading, or runtime</li>
+</ul>
+<div class="highlight-box fragment">Annotations enable declarative programming — you say <em>what</em> to do, not <em>how</em>.</div>
+</section>
+
+<section>
+<h2>Built-in Annotations</h2>
+<pre><code class="language-java">@Override           // compiler checks method override
+@Deprecated         // marks element as deprecated
+@SuppressWarnings   // suppresses compiler warnings
+@FunctionalInterface // marks a functional interface</code></pre>
+<p class="fragment">These are processed by the compiler (RetentionPolicy.SOURCE or CLASS).</p>
+</section>
+
+<section>
+<h2>Defining Custom Annotations</h2>
+<pre><code class="language-java">import java.lang.annotation.*;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface LogExecutionTime {
+    String unit() default "ms";
+}</code></pre>
+<ul>
+<li class="fragment">Use <code>@interface</code> keyword</li>
+<li class="fragment">Define elements like methods</li>
+<li class="fragment">Provide default values with <code>default</code></li>
+</ul>
+</section>
+
+<section>
+<h2>@Retention Policy</h2>
+<table>
+<tr><th>Policy</th><th>Retained in .class</th><th>Available at runtime</th></tr>
+<tr class="fragment"><td>SOURCE</td><td>No</td><td>No</td></tr>
+<tr class="fragment"><td>CLASS</td><td>Yes</td><td>No</td></tr>
+<tr class="fragment"><td>RUNTIME</td><td>Yes</td><td>Yes</td></tr>
+</table>
+<p class="fragment">Only <code>RUNTIME</code> annotations are accessible via reflection.</p>
+</section>
+
+<section>
+<h2>@Target Element Types</h2>
+<pre><code class="language-java">@Target(ElementType.TYPE)       // class, interface, enum
+@Target(ElementType.FIELD)      // field
+@Target(ElementType.METHOD)     // method
+@Target(ElementType.PARAMETER)  // parameter
+@Target(ElementType.CONSTRUCTOR) // constructor
+@Target(ElementType.ANNOTATION_TYPE) // annotation
+@Target({ElementType.FIELD, ElementType.METHOD}) // multiple</code></pre>
+</section>
+
+<section>
+<h2>Annotation Elements</h2>
+<pre><code class="language-java">public @interface TaskInfo {
+    String author();                    // required
+    String description();               // required
+    int priority() default 5;           // optional with default
+    String[] tags() default {};         // array element
+    Status status() default Status.PENDING;  // enum element
+}
+
+enum Status { PENDING, IN_PROGRESS, DONE }</code></pre>
+<p class="fragment">Valid element types: primitives, String, Class, enum, annotation, arrays of these.</p>
+</section>
+
+<section>
+<h2>Runtime Annotation Processing</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = MyService.class;
+
+if (clazz.isAnnotationPresent(LogExecutionTime.class)) {
+    LogExecutionTime anno =
+        clazz.getAnnotation(LogExecutionTime.class);
+    String unit = anno.unit();
+    // process annotation...
+}</code></pre>
+<p class="fragment">Use <code>isAnnotationPresent()</code> to check, <code>getAnnotation()</code> to retrieve.</p>
+</section>
+
+<section>
+<h2>Processing Class-level Annotations</h2>
+<pre><code class="language-java">for (Class&lt;?&gt; clazz : classes) {
+    MyAnnotation anno =
+        clazz.getAnnotation(MyAnnotation.class);
+    if (anno != null) {
+        // process class
+    }
+}</code></pre>
+<p class="fragment">Common in dependency injection and ORM frameworks.</p>
+</section>
+
+<section>
+<h2>Processing Field-level Annotations</h2>
+<pre><code class="language-java">for (Field field : clazz.getDeclaredFields()) {
+    if (field.isAnnotationPresent(NotNull.class)) {
+        field.setAccessible(true);
+        Object value = field.get(obj);
+        if (value == null) {
+            // validation error
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Processing Method-level Annotations</h2>
+<pre><code class="language-java">for (Method method : clazz.getDeclaredMethods()) {
+    if (method.isAnnotationPresent(LogExecutionTime.class)) {
+        long start = System.nanoTime();
+        method.invoke(obj);
+        long duration = System.nanoTime() - start;
+        System.out.println(method.getName()
+            + " took " + duration + "ns");
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Repeatable Annotations</h2>
+<pre><code class="language-java">@Repeatable(Schedules.class)
+public @interface Schedule {
+    String dayOfWeek();
+}
+
+public @interface Schedules {
+    Schedule[] value();
+}
+
+// Usage:
+@Schedule(dayOfWeek = "MON")
+@Schedule(dayOfWeek = "WED")
+public void weeklyTask() {}</code></pre>
+</section>
+
+<section>
+<h2>Real-world: JPA Annotations</h2>
+<pre><code class="language-java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @OneToMany(mappedBy = "user")
+    private List&lt;Order&gt; orders;
+}</code></pre>
+<ul>
+<li class="fragment">JPA uses runtime annotation processing to generate SQL</li>
+<li class="fragment">EntityManager reads annotations to map objects to tables</li>
+<li class="fragment">Column annotations define database column mappings</li>
+</ul>
+</section>
+
+<section>
+<h2>Real-world: Jackson and JUnit</h2>
+<pre><code class="language-java">// Jackson — JSON serialization
+public class Person {
+    @JsonProperty("full_name")
+    private String name;
+
+    @JsonIgnore
+    private String internalId;
+}
+
+// JUnit — test framework
+@Test
+@DisplayName("should return 42")
+@Tag("fast")
+void testAnswer() {
+    assertEquals(42, answer());
+}</code></pre>
+<ul>
+<li class="fragment">Jackson uses @JsonProperty, @JsonIgnore for serialization</li>
+<li class="fragment">JUnit uses @Test, @DisplayName, @Tag for test discovery</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li>Annotations are metadata — <code>@interface</code> defines them</li>
+<li><code>@Retention</code> controls lifecycle (SOURCE, CLASS, RUNTIME)</li>
+<li><code>@Target</code> restricts where annotations can be used</li>
+<li>RUNTIME annotations are processed via reflection</li>
+<li>Real-world examples: JPA (@Entity, @Column), Jackson (@JsonProperty), JUnit (@Test)</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">15 - Annotations</span></div>');});
+</script>
+</body>
+</html>

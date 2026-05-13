@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>26 - DynamicAPI_Reflection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>26 - DynamicAPI_Reflection</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Reflection</h2>
+<ul>
+<li class="fragment">Reflection allows inspecting classes, methods, fields at runtime</li>
+<li class="fragment">Class.forName(), obj.getClass(), Class&lt;?&gt; API</li>
+<li class="fragment">Method.invoke() for dynamic method calls</li>
+<li class="fragment">Field.get() / Field.set() for reading/writing fields</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+Method method = obj.getClass().getMethod("sayHello");
+String result = (String) method.invoke(obj);
+</code></pre>
+</section>
+
+<section>
+<h2>Review: Annotations</h2>
+<ul>
+<li class="fragment">Annotations add metadata to code (classes, methods, fields)</li>
+<li class="fragment">@Retention(RUNTIME) makes them available at runtime</li>
+<li class="fragment">@Target specifies where annotations can be used</li>
+<li class="fragment">Processing: obj.getClass().isAnnotationPresent(MyAnnotation.class)</li>
+</ul>
+</section>
+
+<section>
+<h2>Motivation</h2>
+<ul>
+<li class="fragment">Spring Boot uses annotations like @RestController, @GetMapping</li>
+<li class="fragment">Routes are auto-discovered without manual registration</li>
+<li class="fragment">This is called "convention over configuration"</li>
+<li class="fragment">Today we build our own mini version of this!</li>
+</ul>
+<div class="highlight-box fragment">
+<p>We will create a framework that scans for annotations and auto-registers routes in Javalin.</p>
+</div>
+</section>
+
+<section>
+<h2>Annotation Design</h2>
+<pre><code class="language-java">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Controller {
+    String path() default "";
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Get {
+    String path() default "";
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Post {
+    String path() default "";
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Using the Annotations</h2>
+<pre><code class="language-java">
+@Controller(path = "/api/users")
+public class UserController {
+
+    private final UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+    @Get(path = "/{id}")
+    public UserResponse getUser(long id) {
+        return service.getUser(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User", id));
+    }
+
+    @Post
+    public UserResponse createUser(CreateUserRequest request) {
+        return service.createUser(request);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Scanning for Classes</h2>
+<pre><code class="language-java">
+// Classpath scanning using reflection
+public class ClasspathScanner {
+
+    public static List&lt;Class&lt;?&gt;&gt; scan(String packageName) throws Exception {
+        var classes = new ArrayList&lt;Class&lt;?&gt;&gt;();
+        var packagePath = packageName.replace('.', '/');
+        var urls = Thread.currentThread()
+            .getContextClassLoader()
+            .getResources(packagePath);
+
+        while (urls.hasMoreElements()) {
+            var url = urls.nextElement();
+            var file = new File(url.toURI());
+            scanDirectory(file, packageName, classes);
+        }
+        return classes;
+    }
+
+    private static void scanDirectory(File dir, String packageName,
+                                       List&lt;Class&lt;?&gt;&gt; classes) {
+        for (var file : dir.listFiles()) {
+            if (file.isDirectory()) {
+                scanDirectory(file, packageName + "." + file.getName(), classes);
+            } else if (file.getName().endsWith(".class")) {
+                var className = packageName + "." +
+                    file.getName().replace(".class", "");
+                classes.add(Class.forName(className));
+            }
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Processing @Controller</h2>
+<pre><code class="language-java">
+public class RouteRegistrar {
+
+    public static void registerControllers(Javalin app,
+                                            List&lt;Class&lt;?&gt;&gt; classes) {
+        for (var clazz : classes) {
+            if (!clazz.isAnnotationPresent(Controller.class)) continue;
+
+            var controller = clazz.getAnnotation(Controller.class);
+            var basePath = controller.path();
+
+            // Instantiate controller (simple DI)
+            var instance = clazz.getDeclaredConstructor().newInstance();
+
+            for (var method : clazz.getMethods()) {
+                if (method.isAnnotationPresent(Get.class)) {
+                    var get = method.getAnnotation(Get.class);
+                    var fullPath = basePath + get.path();
+                    var paramTypes = method.getParameterTypes();
+
+                    app.get(fullPath, ctx -> {
+                        // Resolve arguments and invoke
+                        var args = resolveArguments(ctx, paramTypes);
+                        var result = method.invoke(instance, args);
+                        if (result != null) ctx.json(result);
+                    });
+                }
+                // Similar for @Post, @Put, @Delete...
+            }
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Resolving Handler Arguments</h2>
+<pre><code class="language-java">
+private static Object[] resolveArguments(Context ctx,
+                                          Class&lt;?&gt;[] paramTypes) {
+    var args = new Object[paramTypes.length];
+    for (int i = 0; i < paramTypes.length; i++) {
+        if (paramTypes[i] == String.class) {
+            args[i] = ctx.body();  // Default: request body
+        } else if (paramTypes[i] == Long.class || paramTypes[i] == long.class) {
+            args[i] = Long.parseLong(ctx.pathParam("id"));
+        } else {
+            // Try to deserialize from body
+            args[i] = ctx.bodyAsClass(paramTypes[i]);
+        }
+    }
+    return args;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>@PathVariable Support</h2>
+<pre><code class="language-java">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface PathVariable {
+    String value();
+}
+
+// Enhanced argument resolver:
+if (param.isAnnotationPresent(PathVariable.class)) {
+    var pathVar = param.getAnnotation(PathVariable.class);
+    var value = ctx.pathParam(pathVar.value());
+    // Convert to correct type
+    if (paramType == Long.class || paramType == long.class)
+        args[i] = Long.parseLong(value);
+    else if (paramType == Integer.class || paramType == int.class)
+        args[i] = Integer.parseInt(value);
+    else
+        args[i] = value;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Putting It All Together</h2>
+<pre><code class="language-java">
+public class App {
+    public static void main(String[] args) throws Exception {
+        var app = Javalin.create().start(7070);
+
+        // Scan for controllers
+        var controllers = ClasspathScanner.scan("com.example.controllers");
+
+        // Auto-register routes
+        RouteRegistrar.registerControllers(app, controllers);
+
+        System.out.println("Server started with auto-registered routes!");
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+<p>This is how Spring Boot discovers @RestController classes!</p>
+</div>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Custom annotations define metadata for route mapping</li>
+<li class="fragment">Classpath scanning finds annotated classes at startup</li>
+<li class="fragment">Reflection processes annotations and dynamically invokes methods</li>
+<li class="fragment">Javalin routes are registered programmatically based on annotations</li>
+<li class="fragment">This pattern is the foundation of Spring Boot, Micronaut, Quarkus</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next up: Project WMC!</p>
+<p>Apply everything you learned in a team project over the next 6 weeks.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">26 - DynamicAPI_Reflection</span></div>');});
+</script>
+</body>
+</html>

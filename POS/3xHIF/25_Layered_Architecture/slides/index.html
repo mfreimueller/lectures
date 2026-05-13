@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>25 - Layered_Architecture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>25 - Layered_Architecture</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: DTOs and Validation</h2>
+<ul>
+<li class="fragment">DTOs separate API contracts from domain models</li>
+<li class="fragment">Custom annotations + reflection enable reusable validation</li>
+<li class="fragment">Exception mappers centralize error handling</li>
+<li class="fragment">Structured error responses help client developers</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Current Architecture</h2>
+<ul>
+<li class="fragment">All code lives in route handlers (big lambda functions)</li>
+<li class="fragment">Hard to test, hard to maintain, hard to extend</li>
+<li class="fragment">Business logic mixed with HTTP concerns</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+// Monolithic handler - everything in one place
+app.get("/api/users/{id}", ctx -> {
+    // validation, business logic, data access all here
+    var id = Long.parseLong(ctx.pathParam("id"));
+    // ... query database, format response, handle errors
+});
+</code></pre>
+</section>
+
+<section>
+<h2>The Problem with Monoliths</h2>
+<ul>
+<li class="fragment">Violates Single Responsibility Principle</li>
+<li class="fragment">Code duplication across handlers</li>
+<li class="fragment">Cannot test business logic without HTTP</li>
+<li class="fragment">Changing data source affects everything</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Solution: Separate concerns into layers</p>
+</div>
+</section>
+
+<section>
+<h2>Three-Layer Architecture</h2>
+<pre><code>
+Client (HTTP)
+    |
+    v
++------------------+
+|  Controller      |  HTTP routing, request/response handling
++------------------+
+    |
+    v
++------------------+
+|  Service         |  Business logic, validation, orchestration
++------------------+
+    |
+    v
++------------------+
+|  Repository      |  Data access (in-memory, JDBC, JPA)
++------------------+
+    |
+    v
+   Database
+</code></pre>
+</section>
+
+<section>
+<h2>Layer Responsibilities</h2>
+<table>
+<tr><th>Layer</th><th>Responsibility</th><th>Depends On</th></tr>
+<tr class="fragment"><td>Controller</td><td>HTTP handling, routing, JSON serialization</td><td>Service (interface)</td></tr>
+<tr class="fragment"><td>Service</td><td>Business logic, validation, transactions</td><td>Repository (interface)</td></tr>
+<tr class="fragment"><td>Repository</td><td>Data access, CRUD operations</td><td>Domain entities</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Repository Layer</h2>
+<pre><code class="language-java">
+// Interface (abstraction)
+public interface UserRepository {
+    Optional&lt;User&gt; findById(Long id);
+    List&lt;User&gt; findAll();
+    User save(User user);
+    boolean delete(Long id);
+}
+
+// In-memory implementation
+public class InMemoryUserRepository implements UserRepository {
+    private final Map&lt;Long, User&gt; users = new ConcurrentHashMap&lt;&gt;();
+    private long nextId = 1;
+
+    public User save(User user) {
+        var saved = new User(nextId++, user.username(), user.email());
+        users.put(saved.id(), saved);
+        return saved;
+    }
+    // ... other methods
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Service Layer</h2>
+<pre><code class="language-java">
+// Interface
+public interface UserService {
+    UserResponse createUser(CreateUserRequest request);
+    UserResponse getUser(Long id);
+    List&lt;UserResponse&gt; getAllUsers();
+    void deleteUser(Long id);
+}
+
+// Implementation depends on Repository interface
+public class UserServiceImpl implements UserService {
+    private final UserRepository repository;
+
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository; // Constructor injection
+    }
+
+    public UserResponse createUser(CreateUserRequest request) {
+        // Business logic: validation, mapping, rules
+        var user = repository.save(new User(request.username(), request.email()));
+        return new UserResponse(user.id(), user.username(), user.email());
+    }
+    // ... other methods
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Controller Layer</h2>
+<pre><code class="language-java">
+// Controller wires everything together
+public class UserController {
+    private final UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+    public void registerRoutes(Javalin app) {
+        app.get("/api/users", ctx -> {
+            ctx.json(service.getAllUsers());
+        });
+
+        app.get("/api/users/{id}", ctx -> {
+            var id = Long.parseLong(ctx.pathParam("id"));
+            var user = service.getUser(id);
+            if (user == null) ctx.status(404);
+            else ctx.json(user);
+        });
+
+        app.post("/api/users", ctx -> {
+            var request = ctx.bodyAsClass(CreateUserRequest.class);
+            var created = service.createUser(request);
+            ctx.status(201).json(created);
+        });
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Constructor Injection</h2>
+<ul>
+<li class="fragment">Dependencies are passed through the constructor</li>
+<li class="fragment">No framework needed -- pure Java!</li>
+<li class="fragment">Makes dependencies explicit and testable</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+// Wiring everything together
+var repository = new InMemoryUserRepository();
+var service = new UserServiceImpl(repository);
+var controller = new UserController(service);
+
+var app = Javalin.create().start(7070);
+controller.registerRoutes(app);
+</code></pre>
+</section>
+
+<section>
+<h2>Testing with Layers</h2>
+<pre><code class="language-java">
+// Service test with mock repository
+class UserServiceTest {
+    @Test
+    void testCreateUser() {
+        var repo = new InMemoryUserRepository();
+        var service = new UserServiceImpl(repo);
+
+        var request = new CreateUserRequest("alice", "alice@test.com");
+        var result = service.createUser(request);
+
+        assertThat(result.username()).isEqualTo("alice");
+        assertThat(result.id()).isNotNull();
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+<p>No HTTP server needed to test business logic!</p>
+</div>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Three-layer architecture separates HTTP, business logic, and data access</li>
+<li class="fragment">Each layer depends on interfaces, not implementations</li>
+<li class="fragment">Constructor injection makes dependencies explicit</li>
+<li class="fragment">Layers enable testing business logic without HTTP</li>
+<li class="fragment">Swapping implementations (e.g., in-memory to JDBC) is transparent</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Dynamic API with Reflection</p>
+<p>Building a mini-framework that auto-registers routes using annotations and reflection.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">25 - Layered_Architecture</span></div>');});
+</script>
+</body>
+</html>

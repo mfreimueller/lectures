@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>06 - JUnit5_Testing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>06 - JUnit5_Testing</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Previous Week</h2>
+<p>Last week: Refactoring Exercise</p>
+<ul>
+<li class="fragment">Improving code structure without changing behavior</li>
+<li class="fragment">Extract methods, rename variables, simplify conditionals</li>
+<li class="fragment">Importance of clean code and readability</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Why Testing Matters</h2>
+<ul>
+<li class="fragment">Tests catch regressions early</li>
+<li class="fragment">Tests document expected behavior</li>
+<li class="fragment">Tests enable safe refactoring</li>
+<li class="fragment">Without tests, you cannot know if code still works</li>
+</ul>
+</section>
+
+<section>
+<h2>What is Unit Testing?</h2>
+<ul>
+<li class="fragment">Testing individual units of code (methods, classes) in isolation</li>
+<li class="fragment">Fast, automated, repeatable</li>
+<li class="fragment">First line of defense against bugs</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Key idea: A test should fail for only one reason</p>
+</div>
+</section>
+
+<section>
+<h2>JUnit 5 Overview</h2>
+<ul>
+<li class="fragment">JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage</li>
+<li class="fragment">JUnit Jupiter provides the programming model</li>
+<li class="fragment">Annotations: @Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+import org.junit.jupiter.api.*;
+
+class CalculatorTest {
+
+    @Test
+    void testAddition() {
+        assertEquals(4, 2 + 2);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Test Lifecycle</h2>
+<ul>
+<li class="fragment">@BeforeAll: runs once before all tests (static)</li>
+<li class="fragment">@BeforeEach: runs before each test method</li>
+<li class="fragment">@Test: the test method itself</li>
+<li class="fragment">@AfterEach: runs after each test method</li>
+<li class="fragment">@AfterAll: runs once after all tests (static)</li>
+</ul>
+</section>
+
+<section>
+<h2>Lifecycle Example</h2>
+<pre><code class="language-java">
+class LifecycleTest {
+
+    @BeforeAll
+    static void initAll() { /* once */ }
+
+    @BeforeEach
+    void init() { /* before each */ }
+
+    @Test
+    void test1() { /* test */ }
+
+    @Test
+    void test2() { /* test */ }
+
+    @AfterEach
+    void tearDown() { /* after each */ }
+
+    @AfterAll
+    static void tearDownAll() { /* once */ }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>AssertJ: Fluent Assertions</h2>
+<ul>
+<li class="fragment">AssertJ provides readable, fluent assertion methods</li>
+<li class="fragment">Static import: <code>import static org.assertj.core.api.Assertions.*;</code></li>
+</ul>
+<pre class="fragment"><code class="language-java">
+assertThat(result)
+    .isEqualTo(42)
+    .isNotNull()
+    .isInstanceOf(Integer.class);
+</code></pre>
+</section>
+
+<section>
+<h2>Common AssertJ Methods</h2>
+<pre><code class="language-java">
+assertThat(actual).isEqualTo(expected);
+assertThat(actual).isNotEqualTo(other);
+assertThat(actual).isNull();
+assertThat(actual).isNotNull();
+assertThat(list).hasSize(3);
+assertThat(list).contains("a", "b");
+assertThat(str).startsWith("Hello");
+assertThat(str).contains("World");
+</code></pre>
+</section>
+
+<section>
+<h2>AssertJ for Collections</h2>
+<pre><code class="language-java">
+List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
+
+assertThat(names)
+    .hasSize(3)
+    .contains("Alice")
+    .doesNotContain("Dave")
+    .allMatch(name -> name.length() > 2);
+</code></pre>
+</section>
+
+<section>
+<h2>Parameterized Tests</h2>
+<ul>
+<li class="fragment">Run the same test with different inputs</li>
+<li class="fragment">Reduces boilerplate code</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+@ParameterizedTest
+@CsvSource({
+    "1, 1, 2",
+    "2, 3, 5",
+    "5, 5, 10"
+})
+void testAddition(int a, int b, int expected) {
+    assertEquals(expected, a + b);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>More Parameterized Sources</h2>
+<ul>
+<li class="fragment">@ValueSource: supply literal values</li>
+<li class="fragment">@CsvSource: CSV-style inline data</li>
+<li class="fragment">@CsvFileSource: load from CSV file</li>
+<li class="fragment">@MethodSource: return Stream of Arguments</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+@ParameterizedTest
+@ValueSource(strings = { "racecar", "radar", "madam" })
+void testPalindrome(String word) {
+    assertThat(isPalindrome(word)).isTrue();
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">JUnit 5 is the standard testing framework for Java</li>
+<li class="fragment">Lifecycle annotations control setup and teardown</li>
+<li class="fragment">AssertJ provides fluent, readable assertions</li>
+<li class="fragment">Parameterized tests reduce duplication</li>
+</ul>
+</section>
+
+<section>
+<h2>Best Practices</h2>
+<ul>
+<li class="fragment">Test one thing per test method</li>
+<li class="fragment">Use descriptive test method names</li>
+<li class="fragment">Write tests before code (TDD)</li>
+<li class="fragment">Keep tests fast and independent</li>
+<li class="fragment">Tests are code too -- keep them clean</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: TDD and FIRST Principles</p>
+<p>Write tests first, then implement!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">06 - JUnit5_Testing</span></div>');});
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>18 - PreparedStatement_DAO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>18 - PreparedStatement_DAO</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>SQL Injection - The Problem</h2>
+<p>SQL injection occurs when untrusted user input is concatenated directly into SQL queries.</p>
+<pre><code class="language-java">// Vulnerable code
+String username = request.getParameter("username"); // user input: ' OR '1'='1
+String sql = "SELECT * FROM users WHERE name = '" + username + "'";
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery(sql); // Returns ALL users!
+</code></pre>
+<div class="highlight-box fragment danger">
+The input ' OR '1'='1 transforms the WHERE clause into: WHERE name = '' OR '1'='1' - which is always TRUE!
+</div>
+</section>
+
+<section>
+<h2>SQL Injection Demo</h2>
+<p>Input: <code>'; DROP TABLE students; --</code></p>
+<pre><code class="language-sql">-- Original query
+SELECT * FROM students WHERE name = '';
+
+-- After concatenation
+SELECT * FROM students WHERE name = ''; DROP TABLE students; --'
+</code></pre>
+<div class="highlight-box fragment danger">
+This deletes the entire students table! This is known as a "SQL injection attack."
+</div>
+</section>
+
+<section>
+<h2>PreparedStatement to the Rescue</h2>
+<p>PreparedStatement uses parameterized queries - SQL and data are sent separately.</p>
+<pre><code class="language-java">// Safe: parameterized query
+String sql = "SELECT * FROM users WHERE name = ?";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, username); // User input is treated as data, not SQL
+ResultSet rs = pstmt.executeQuery();
+</code></pre>
+<div class="highlight-box fragment">
+The database driver escapes the input automatically, preventing injection.
+</div>
+</section>
+
+<section>
+<h2>PreparedStatement Benefits</h2>
+<ul>
+<li><strong>Security:</strong> Prevents SQL injection via parameter separation</li>
+<li class="fragment"><strong>Performance:</strong> Precompiled queries are cached by the database</li>
+<li class="fragment"><strong>Type safety:</strong> setString(), setInt(), setDate() enforce types</li>
+<li class="fragment"><strong>Readability:</strong> SQL stays clean without string concatenation</li>
+</ul>
+</section>
+
+<section>
+<h2>Using PreparedStatement - INSERT</h2>
+<pre><code class="language-java">String sql = "INSERT INTO student (name, email, grade) VALUES (?, ?, ?)";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    pstmt.setString(1, "Bob");
+    pstmt.setString(2, "bob@school.com");
+    pstmt.setInt(3, 2);
+
+    int rows = pstmt.executeUpdate();
+    System.out.println(rows + " row(s) inserted.");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Using PreparedStatement - SELECT</h2>
+<pre><code class="language-java">String sql = "SELECT id, name, email FROM student WHERE grade = ?";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    pstmt.setInt(1, 1); // Find all grade 1 students
+
+    try (ResultSet rs = pstmt.executeQuery()) {
+        while (rs.next()) {
+            System.out.println(rs.getInt("id") + ": " +
+                               rs.getString("name"));
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Batch Processing</h2>
+<p>Execute multiple statements as a batch for better performance:</p>
+<pre><code class="language-java">String sql = "INSERT INTO student (name, email) VALUES (?, ?)";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    for (var student : students) {
+        pstmt.setString(1, student.name());
+        pstmt.setString(2, student.email());
+        pstmt.addBatch(); // Add to batch
+    }
+
+    int[] results = pstmt.executeBatch();
+    System.out.println("Inserted: " + results.length + " students");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DAO Pattern - Motivation</h2>
+<p>DAO (Data Access Object) separates data access logic from business logic:</p>
+<ul>
+<li>Interface defines the contract</li>
+<li class="fragment">Implementation hides SQL details</li>
+<li class="fragment">Business code depends on abstraction, not database</li>
+<li class="fragment">Easier testing with mock implementations</li>
+</ul>
+</section>
+
+<section>
+<h2>DAO Interface</h2>
+<pre><code class="language-java">public interface StudentDao {
+    Optional&lt;Student&gt; findById(int id);
+    List&lt;Student&gt; findAll();
+    Student save(Student student);
+    void update(Student student);
+    void delete(int id);
+}
+</code></pre>
+<div class="highlight-box fragment">
+Interfaces keep the data access contract database-independent.
+</div>
+</section>
+
+<section>
+<h2>DAO Implementation</h2>
+<pre><code class="language-java">public class StudentDaoImpl implements StudentDao {
+    private static final String URL = "jdbc:postgresql://...";
+
+    @Override
+    public Optional&lt;Student&gt; findById(int id) {
+        var sql = "SELECT * FROM student WHERE id = ?";
+        try (var conn = DriverManager.getConnection(URL, user, pass);
+             var pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            try (var rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapStudent(rs));
+                }
+            }
+        } catch (SQLException e) { throw new RuntimeException(e); }
+        return Optional.empty();
+    }
+
+    private Student mapStudent(ResultSet rs) throws SQLException {
+        return new Student(rs.getInt("id"), rs.getString("name"),
+                          rs.getString("email"), rs.getInt("grade"));
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DAO in Practice</h2>
+<pre><code class="language-java">// Business layer uses DAO interface
+public class StudentService {
+    private final StudentDao studentDao;
+
+    public StudentService(StudentDao studentDao) {
+        this.studentDao = studentDao; // Dependency injection
+    }
+
+    public void promoteStudent(int id) {
+        var student = studentDao.findById(id)
+            .orElseThrow(() -> new NotFoundException("Student not found"));
+
+        var promoted = new Student(id, student.name(),
+                                   student.email(), student.grade() - 1);
+        studentDao.update(promoted);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DAO with Connection Pooling</h2>
+<pre><code class="language-java">// Real applications use connection pools (HikariCP)
+public class StudentDaoImpl implements StudentDao {
+    private final DataSource dataSource;
+
+    public StudentDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public List&lt;Student&gt; findAll() {
+        var sql = "SELECT * FROM student";
+        try (var conn = dataSource.getConnection();
+             var pstmt = conn.prepareStatement(sql);
+             var rs = pstmt.executeQuery()) {
+
+            var result = new ArrayList&lt;Student&gt;();
+            while (rs.next()) result.add(mapStudent(rs));
+            return result;
+        } catch (SQLException e) { throw new RuntimeException(e); }
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>SQL injection is a serious security vulnerability</li>
+<li>PreparedStatement prevents injection via parameterized queries</li>
+<li>Batch processing improves bulk operation performance</li>
+<li>DAO pattern provides clean abstraction over data access</li>
+<li>Always depend on DAO interfaces, not implementations</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Next Week</h2>
+<div class="highlight-box">
+JPA: Entities, EntityManager, JPQL, and Entity Relationships.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">18 - PreparedStatement_DAO</span></div>');});
+</script>
+</body>
+</html>

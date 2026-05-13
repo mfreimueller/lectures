@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>21 - Exercise_JPA_Repository</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>21 - Exercise_JPA_Repository</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>JPA Recap - Entities and Relationships</h2>
+<ul>
+<li>@Entity, @Id, @GeneratedValue for entity mapping</li>
+<li>EntityManager: persist(), find(), createQuery(), remove()</li>
+<li>JPQL queries entities with dot-notation navigation</li>
+<li>Relationships: @OneToOne, @OneToMany/@ManyToOne, @ManyToMany</li>
+<li>Cascade types control operation propagation</li>
+</ul>
+</section>
+
+<section>
+<h2>JPA Recap - Inheritance and Value Objects</h2>
+<ul>
+<li>SINGLE_TABLE: one table, discriminator column, nullable columns</li>
+<li>JOINED: normalized tables, JOIN for queries</li>
+<li>TABLE_PER_CLASS: separate tables, UNION for polymorphic queries</li>
+<li>@Embeddable/@Embedded for value objects (Address, Money, Email)</li>
+<li>Repository pattern with generic type-safe CRUD</li>
+<li>EntityTransaction for explicit transaction boundaries</li>
+</ul>
+</section>
+
+<section>
+<h2>Exercise: School Management Data Layer</h2>
+<p>Build a complete data layer for a school management system using JPA with H2 in-memory database.</p>
+<ul>
+<li><strong>Domain:</strong> Students, Teachers, Courses, Enrollments, Electives</li>
+<li class="fragment"><strong>Inheritance:</strong> Person base with Student and Teacher subclasses</li>
+<li class="fragment"><strong>Value Objects:</strong> Address, Email, Money (for teacher salary)</li>
+<li class="fragment"><strong>Relationships:</strong> @ManyToMany (students-&gt;electives), @OneToMany (course-&gt;enrollments)</li>
+<li class="fragment"><strong>Testing:</strong> H2 in-memory database with integration tests</li>
+</ul>
+</section>
+
+<section>
+<h2>Domain Model</h2>
+<pre><code class="language-java">// Inheritance: Person -> Student, Teacher
+// Value Objects: Address, Email (embeddable)
+// Relationships:
+//   Course 1---* Enrollment *---1 Student
+//   Student *---* Elective
+//   Teacher *---1...* Course
+
+Repository&lt;T, ID&gt; (interface)
+  +-- JpaRepository&lt;T, ID&gt; (generic impl)
+  +-- StudentRepository (extends JpaRepository)
+  +-- TeacherRepository (extends JpaRepository)
+  +-- CourseRepository (extends JpaRepository)
+</code></pre>
+</section>
+
+<section>
+<h2>Testing with H2</h2>
+<pre><code class="language-java">// persistence.xml for H2 testing
+&lt;persistence-unit name="school-test"&gt;
+    &lt;properties&gt;
+        &lt;property name="jakarta.persistence.jdbc.url"
+                  value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"/&gt;
+        &lt;property name="jakarta.persistence.jdbc.user" value="sa"/&gt;
+        &lt;property name="jakarta.persistence.jdbc.password" value=""/&gt;
+        &lt;property name="hibernate.hbm2ddl.auto" value="create-drop"/&gt;
+        &lt;property name="hibernate.dialect"
+                  value="org.hibernate.dialect.H2Dialect"/&gt;
+    &lt;/properties&gt;
+&lt;/persistence-unit&gt;
+</code></pre>
+</section>
+
+<section>
+<h2>Deliverables</h2>
+<ul>
+<li>Entity classes with proper annotations and relationships</li>
+<li>Embeddable value objects (Address, Email)</li>
+<li>Repository interface and generic implementation</li>
+<li>Concrete repositories for Student, Teacher, Course</li>
+<li>Integration tests verifying CRUD, relationships, queries</li>
+<li>Maven project with H2 and Hibernate dependencies</li>
+</ul>
+</section>
+
+<section class="center">
+<h2>Good Luck!</h2>
+<div class="highlight-box">
+Apply everything from weeks 17-20 in this exercise. Use H2 for quick testing without needing PostgreSQL.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">21 - Exercise_JPA_Repository</span></div>');});
+</script>
+</body>
+</html>

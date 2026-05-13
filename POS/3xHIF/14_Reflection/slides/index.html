@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>14 - Reflection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>14 - Reflection</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>What is Reflection?</h2>
+<p>Reflection is the ability of a program to inspect and modify its own structure and behavior at runtime.</p>
+<ul>
+<li class="fragment">Inspect classes, methods, fields, constructors at runtime</li>
+<li class="fragment">Invoke methods and access fields dynamically</li>
+<li class="fragment">Create instances without compile-time type knowledge</li>
+</ul>
+<div class="highlight-box fragment">Reflection is the foundation of frameworks like Spring, JPA, and Jackson.</div>
+</section>
+
+<section>
+<h2>The Class Object</h2>
+<p>Every Java class has a corresponding <code>Class&lt;?&gt;</code> object that contains metadata.</p>
+<pre><code class="language-java">// Three ways to get a Class object
+Class&lt;String&gt; c1 = String.class;
+Class&lt;?&gt; c2 = "hello".getClass();
+Class&lt;?&gt; c3 = Class.forName("java.lang.String");</code></pre>
+<p class="fragment">The Class object is the entry point for all reflection operations.</p>
+</section>
+
+<section>
+<h2>Inspecting Class Metadata</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = Person.class;
+
+String name = clazz.getName();        // fully qualified
+String simpleName = clazz.getSimpleName();  // simple name
+Package pkg = clazz.getPackage();     // package
+int mods = clazz.getModifiers();      // public, abstract, etc.
+Class&lt;?&gt; superClass = clazz.getSuperclass();
+Class&lt;?&gt;[] interfaces = clazz.getInterfaces();</code></pre>
+</section>
+
+<section>
+<h2>Inspecting Methods</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = Person.class;
+
+Method[] methods = clazz.getMethods();
+// all public methods including inherited
+
+Method[] declared = clazz.getDeclaredMethods();
+// all methods declared in this class
+
+Method m = clazz.getDeclaredMethod("getName");
+Method m2 = clazz.getDeclaredMethod(
+    "setName", String.class);</code></pre>
+</section>
+
+<section>
+<h2>Inspecting Fields</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = Person.class;
+
+Field[] fields = clazz.getFields();
+// all public fields including inherited
+
+Field[] declared = clazz.getDeclaredFields();
+// all fields declared in this class
+
+Field f = clazz.getDeclaredField("name");</code></pre>
+</section>
+
+<section>
+<h2>Inspecting Constructors</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = Person.class;
+
+Constructor&lt;?&gt;[] ctors = clazz.getConstructors();
+Constructor&lt;?&gt; ctor = clazz.getDeclaredConstructor(
+    String.class, int.class);
+
+// Inspect parameter types
+Class&lt;?&gt;[] paramTypes = ctor.getParameterTypes();</code></pre>
+</section>
+
+<section>
+<h2>Dynamic Method Invocation</h2>
+<pre><code class="language-java">Person p = new Person("Alice", 30);
+Class&lt;?&gt; clazz = p.getClass();
+
+Method getName = clazz.getDeclaredMethod("getName");
+String name = (String) getName.invoke(p);
+// → "Alice"
+
+Method setName = clazz.getDeclaredMethod(
+    "setName", String.class);
+setName.invoke(p, "Bob");
+// p.getName() → "Bob"</code></pre>
+</section>
+
+<section>
+<h2>Dynamic Field Access</h2>
+<pre><code class="language-java">Person p = new Person("Alice", 30);
+Class&lt;?&gt; clazz = p.getClass();
+
+Field nameField = clazz.getDeclaredField("name");
+nameField.setAccessible(true);  // bypass private
+
+String name = (String) nameField.get(p);
+nameField.set(p, "Bob");</code></pre>
+</section>
+
+<section>
+<h2>Working with Constructors</h2>
+<pre><code class="language-java">Class&lt;?&gt; clazz = Class.forName("Person");
+
+Constructor&lt;?&gt; ctor =
+    clazz.getDeclaredConstructor(String.class, int.class);
+Object person = ctor.newInstance("Alice", 30);
+
+// Equivalent to: new Person("Alice", 30)</code></pre>
+</section>
+
+<section>
+<h2>setAccessible and Encapsulation</h2>
+<ul>
+<li class="fragment"><code>setAccessible(true)</code> suppresses access control checks</li>
+<li class="fragment">Allows access to private, protected, and package-private members</li>
+<li class="fragment">Introduced in Java 9: module system restricts reflective access by default</li>
+<li class="fragment"><code>--add-opens</code> JVM flag to open packages for reflection</li>
+<li class="fragment">Use with caution — breaks encapsulation and can impact security</li>
+</ul>
+</section>
+
+<section>
+<h2>Arrays via Reflection</h2>
+<pre><code class="language-java">// Create an array dynamically
+int[] array = (int[]) Array.newInstance(
+    int.class, 5);
+
+// Set and get values
+Array.set(array, 0, 42);
+int value = (int) Array.get(array, 0);
+// → 42</code></pre>
+<p class="fragment">The <code>java.lang.reflect.Array</code> utility class provides dynamic array operations.</p>
+</section>
+
+<section>
+<h2>Performance Considerations</h2>
+<ul>
+<li class="fragment">Reflection is slower than direct code — method invocation is ~100x slower</li>
+<li class="fragment">Caching reflected Method/Field objects improves performance</li>
+<li class="fragment">JVM can inline reflective calls after warmup (in some cases)</li>
+<li class="fragment">Use <code>MethodHandles</code> (Java 7+) for better performance</li>
+<li class="fragment"><code>invokedynamic</code> (Java 7+) enables efficient dynamic calls</li>
+</ul>
+<div class="highlight-box fragment">Prefer static types when possible. Use reflection only when necessary.</div>
+</section>
+
+<section>
+<h2>Practical Use Cases</h2>
+<ul>
+<li class="fragment">Dependency injection frameworks (Spring, Guice)</li>
+<li class="fragment">Object-relational mapping (JPA, Hibernate)</li>
+<li class="fragment">Serialization/deserialization (Jackson, Gson)</li>
+<li class="fragment">Testing frameworks (JUnit, TestNG)</li>
+<li class="fragment">Dynamic proxies (AOP, Spring aspects)</li>
+<li class="fragment">Code generation and annotation processing</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li><code>Class&lt;?&gt;</code> is the entry point for all reflection</li>
+<li class="fragment">Inspect methods, fields, constructors via <code>getDeclared*</code></li>
+<li class="fragment">Invoke methods with <code>Method.invoke()</code></li>
+<li class="fragment">Access fields with <code>Field.get()</code> / <code>Field.set()</code></li>
+<li class="fragment">Create instances with <code>Constructor.newInstance()</code></li>
+<li class="fragment"><code>setAccessible(true)</code> breaks encapsulation — use wisely</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">14 - Reflection</span></div>');});
+</script>
+</body>
+</html>

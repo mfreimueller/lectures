@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>01 - Interfaces_PatternMatching</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>01 - Interfaces_PatternMatching</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Recap: Records</h2>
+<pre><code class="language-java">// Last week: Records
+public record Person(String name, int age) {}
+
+var p = new Person("Alice", 30);
+System.out.println(p.name()); // accessor
+</code></pre>
+<div class="highlight-box">
+Records model immutable data concisely.
+</div>
+</section>
+
+<section>
+<h2>Recap: var</h2>
+<pre><code class="language-java">var message = "Hello";
+var numbers = List.of(1, 2, 3);
+// Type inferred from initializer
+</code></pre>
+<p>Use var when the right-hand side makes the type obvious.</p>
+</section>
+
+<section>
+<h2>Default Methods</h2>
+<p>Interfaces can now provide method implementations.</p>
+<pre><code class="language-java">public interface Greeter {
+    String name();
+
+    // default method
+    default String greet() {
+        return "Hello, " + name() + "!";
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+Default methods allow adding functionality to interfaces without breaking existing implementations.
+</div>
+</section>
+
+<section>
+<h2>Default Methods: Usage</h2>
+<pre><code class="language-java">public record Person(String name) implements Greeter {}
+
+public static void main(String[] args) {
+    var p = new Person("Alice");
+    System.out.println(p.greet()); // Hello, Alice!
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Default Method Inheritance</h2>
+<ul>
+<li>A class wins over an interface (class wins rule)</li>
+<li class="fragment">Subtype wins over supertype</li>
+<li class="fragment">Otherwise, the class must override the conflicting method</li>
+</ul>
+<pre class="fragment"><code class="language-java">public interface A {
+    default void sayHi() { System.out.println("Hi from A"); }
+}
+public interface B {
+    default void sayHi() { System.out.println("Hi from B"); }
+}
+// Must override
+public class C implements A, B {
+    public void sayHi() { A.super.sayHi(); }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Static Methods in Interfaces</h2>
+<pre><code class="language-java">public interface MathUtils {
+    static double circleArea(double radius) {
+        return Math.PI * radius * radius;
+    }
+
+    static double celsiusToFahrenheit(double celsius) {
+        return celsius * 9.0 / 5.0 + 32;
+    }
+}
+
+// Usage
+var area = MathUtils.circleArea(5.0);
+</code></pre>
+<div class="highlight-box fragment">
+Static interface methods are utility methods that belong to the interface, not to instances.
+</div>
+</section>
+
+<section>
+<h2>Pattern Matching for instanceof</h2>
+<p>Traditional approach (Java 15 and earlier):</p>
+<pre><code class="language-java">if (obj instanceof String) {
+    String s = (String) obj;
+    System.out.println(s.length());
+}
+</code></pre>
+<p>With pattern matching (Java 16+):</p>
+<pre class="fragment"><code class="language-java">if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+</code></pre>
+<div class="highlight-box fragment">
+No explicit cast needed; the pattern variable is already in scope.
+</div>
+</section>
+
+<section>
+<h2>Pattern Variables Scope</h2>
+<pre><code class="language-java">// Pattern variable is in scope in the true block
+if (obj instanceof String s && s.length() &gt; 5) {
+    System.out.println(s); // s is available
+}
+
+// Not available after the condition
+if (!(obj instanceof String s)) {
+    return; // s is NOT available here
+}
+// s is available here (definite assignment)
+System.out.println(s.length());
+</code></pre>
+</section>
+
+<section>
+<h2>Pattern Matching with Records</h2>
+<pre><code class="language-java">public record Point(int x, int y) {}
+
+public static void printPoint(Object obj) {
+    if (obj instanceof Point(int x, int y)) {
+        System.out.println("Point at (" + x + ", " + y + ")");
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+Record patterns destructure the record into its components.
+</div>
+</section>
+
+<section>
+<h2>Complex Pattern Matching</h2>
+<pre><code class="language-java">// Nested pattern matching
+record Address(String street, String city) {}
+record Person(String name, Address address) {}
+
+if (obj instanceof Person(var name, Address(var street, var city))) {
+    System.out.println(name + " lives on " + street + " in " + city);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Text Blocks</h2>
+<p>Multiline strings introduced in Java 13 (preview) and finalized in Java 15.</p>
+<pre><code class="language-java">// Before
+String html = "&lt;html&gt;\n" +
+              "    &lt;body&gt;\n" +
+              "        &lt;p&gt;Hello&lt;/p&gt;\n" +
+              "    &lt;/body&gt;\n" +
+              "&lt;/html&gt;";
+
+// After
+String html = """
+    &lt;html&gt;
+        &lt;body&gt;
+            &lt;p&gt;Hello&lt;/p&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+    """;
+</code></pre>
+</section>
+
+<section>
+<h2>Text Block Features</h2>
+<ul>
+<li>Leading whitespace is stripped (based on indentation of closing delimiter)</li>
+<li class="fragment">Escape sequences work inside text blocks</li>
+<li class="fragment">New escape: <code>\s</code> (space) and <code>\</code> (line continuation)</li>
+</ul>
+<pre class="fragment"><code class="language-java">var json = """
+    {
+        "name": "Alice",
+        "age": 30
+    }
+    """;
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Default methods add new behavior to interfaces without breaking implementors</li>
+<li>Static interface methods provide utility functions</li>
+<li>Pattern matching eliminates boilerplate instanceof/cast chains</li>
+<li>Text Blocks make multiline strings readable</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Optional, switch Expressions, and Sealed Classes.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">01 - Interfaces_PatternMatching</span></div>');});
+</script>
+</body>
+</html>

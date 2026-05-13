@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>00 - Introduction</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>00 - Introduction</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Welcome to POS3</h2>
+<p>Object-oriented programming with modern Java.</p>
+<ul>
+<li>Course overview and organisation</li>
+<li>Topics: Records, Pattern Matching, Streams, JDBC, JPA, REST</li>
+<li class="fragment">Assessment: tests, exercises, project work</li>
+</ul>
+</section>
+
+<section>
+<h2>Course Topics</h2>
+<ul>
+<li>Java Language Features (Records, Sealed Classes, Pattern Matching)</li>
+<li>Streams and Functional Programming</li>
+<li class="fragment">Testing with JUnit 5 and TDD</li>
+<li class="fragment">SOLID Principles</li>
+<li class="fragment">JDBC, JPA, and Database Access</li>
+<li class="fragment">REST APIs and Javalin</li>
+<li class="fragment">Project Work (WMC)</li>
+</ul>
+</section>
+
+<section>
+<h2>Grading</h2>
+<ul>
+<li>Written tests (PLU checks)</li>
+<li>Practical exercises and katas</li>
+<li class="fragment">Semester project</li>
+<li class="fragment">Active participation</li>
+</ul>
+</section>
+
+<section>
+<h2>Tooling Setup</h2>
+<p>Required tools for this course:</p>
+<ul>
+<li>JDK 17+ (we recommend JDK 21 LTS)</li>
+<li class="fragment">IntelliJ IDEA (Community or Ultimate)</li>
+<li class="fragment">Maven (via archetype)</li>
+<li class="fragment">Git for version control</li>
+</ul>
+</section>
+
+<section>
+<h2>Installing JDK</h2>
+<p>Download from <a href="https://adoptium.net">Adoptium</a> or use SDKMAN:</p>
+<pre><code class="language-bash"># Using SDKMAN
+sdk install java 21.0.2-tem
+
+# Verify installation
+java --version
+javac --version
+</code></pre>
+</section>
+
+<section>
+<h2>Maven Setup</h2>
+<pre><code class="language-bash"># Create a new Maven project
+mvn archetype:generate -DgroupId=com.example -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart
+
+# Build and run
+mvn package
+mvn exec:java -Dexec.mainClass="com.example.App"
+</code></pre>
+</section>
+
+<section>
+<h2>IDE Setup</h2>
+<ul>
+<li>IntelliJ IDEA: Open the pom.xml file</li>
+<li class="fragment">VS Code: Install Extension Pack for Java</li>
+<li class="fragment">Enable auto-import for Maven projects</li>
+</ul>
+</section>
+
+<section>
+<h2>Local Variable Type Inference</h2>
+<p>Introduced in Java 10: <code>var</code> keyword</p>
+<pre><code class="language-java">// Before (Java 9 and earlier)
+String message = "Hello, World!";
+List&lt;String&gt; names = new ArrayList&lt;&gt;();
+
+// After (Java 10+)
+var message = "Hello, World!";
+var names = new ArrayList&lt;String&gt;();
+</code></pre>
+<div class="highlight-box fragment">
+Rule: Use var when the type is obvious from the right-hand side.
+</div>
+</section>
+
+<section>
+<h2>var Restrictions</h2>
+<ul>
+<li>Only for local variables (not fields, method params, return types)</li>
+<li class="fragment">Must be initialized at declaration</li>
+<li class="fragment">Cannot be used with <code>null</code> initializer</li>
+<li class="fragment">Cannot be used in lambda expressions explicitly</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Valid
+var count = 42;
+var name = "Alice";
+
+// Invalid
+var x;              // must initialize
+var y = null;       // type cannot be inferred
+</code></pre>
+</section>
+
+<section>
+<h2>var with Collections</h2>
+<pre><code class="language-java">var names = List.of("Alice", "Bob", "Charlie");
+var map = new HashMap&lt;String, List&lt;Integer&gt;&gt;();
+
+// Iterating
+for (var entry : map.entrySet()) {
+    var key = entry.getKey();
+    var value = entry.getValue();
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Records (Java 16+)</h2>
+<p>A Record is a transparent carrier for immutable data.</p>
+<pre><code class="language-java">// Before: boilerplate
+public class Person {
+    private final String name;
+    private final int age;
+    // constructor, getters, equals, hashCode, toString
+}
+
+// After: Record
+public record Person(String name, int age) {}
+</code></pre>
+<div class="highlight-box">
+Records automatically generate constructor, accessors, equals, hashCode, and toString.
+</div>
+</section>
+
+<section>
+<h2>Record Features</h2>
+<pre><code class="language-java">public record Point(int x, int y) {
+    // Compact constructor
+    public Point {
+        if (x &lt; 0 || y &lt; 0) {
+            throw new IllegalArgumentException("Negative coordinates");
+        }
+    }
+
+    // Additional methods
+    public double distanceFromOrigin() {
+        return Math.sqrt(x * x + y * y);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Using Records</h2>
+<pre><code class="language-java">var p = new Point(3, 4);
+System.out.println(p.x());    // 3 (accessor, not getX!)
+System.out.println(p.y());    // 4
+System.out.println(p);         // Point[x=3, y=4]
+System.out.println(p.distanceFromOrigin()); // 5.0
+
+// Pattern matching with records (Java 21)
+if (p instanceof Point(int x, int y)) {
+    System.out.println(x + ", " + y);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Set up JDK, IDE, and Maven</li>
+<li><code>var</code> simplifies local variable declarations</li>
+<li>Records provide concise immutable data carriers</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Interfaces (default/static methods), Pattern Matching for instanceof, and Text Blocks.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">00 - Introduction</span></div>');});
+</script>
+</body>
+</html>

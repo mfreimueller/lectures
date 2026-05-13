@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>27 - Projekt WMC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>27 - Projekt WMC</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Layered Architecture</h2>
+<ul>
+<li>Controller: handles HTTP requests and responses</li>
+<li class="fragment">Service: contains business logic</li>
+<li class="fragment">Repository: data access layer (JPA)</li>
+<li class="fragment">DTO: data transfer objects for request/response</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Javalin REST API</h2>
+<pre><code class="language-java">var app = Javalin.create();
+app.get("/api/items", ctx -> {
+    var items = itemService.findAll();
+    ctx.json(items);
+});
+app.start(7000);
+</code></pre>
+</section>
+
+<section>
+<h2>POS-WMC Project Overview</h2>
+<ul>
+<li>Solo project: REST API + Web Frontend</li>
+<li class="fragment">POS: backend (REST API with JPA + Javalin)</li>
+<li class="fragment">WMC: frontend (web UI)</li>
+<li class="fragment">Duration: weeks 27 to 32</li>
+<li class="fragment">Your own domain, your own database model</li>
+</ul>
+</section>
+
+<section>
+<h2>Project Requirements</h2>
+<ul>
+<li>At least 6 database tables</li>
+<li class="fragment">At least one 1:1 relationship</li>
+<li class="fragment">At least one 1:n relationship</li>
+<li class="fragment">At least one inheritance case</li>
+<li class="fragment">Authentication (login/registration)</li>
+<li class="fragment">Roles: user and admin</li>
+<li class="fragment">Full CRUD for all entities</li>
+<li class="fragment">Unit tests</li>
+</ul>
+</section>
+
+<section>
+<h2>Choosing a Domain</h2>
+<p>Possible domains:</p>
+<ul>
+<li>Library management system</li>
+<li class="fragment">Fitness studio / gym</li>
+<li class="fragment">Restaurant / cafe</li>
+<li class="fragment">Hotel reservation system</li>
+<li class="fragment">E-commerce / shop</li>
+<li class="fragment">School management</li>
+<li class="fragment">Your own idea!</li>
+</ul>
+</section>
+
+<section>
+<h2>Database Model: 6 Tables Minimum</h2>
+<p>Example: Library</p>
+<ul>
+<li>User (auth)</li>
+<li class="fragment">Book, Author, Category</li>
+<li class="fragment">Loan (1:n between User and Book)</li>
+<li class="fragment">Review (1:n between User and Book)</li>
+<li class="fragment">Address (1:1 with User)</li>
+<li class="fragment">Inheritance: PhysicalBook vs EBook</li>
+</ul>
+</section>
+
+<section>
+<h2>Entity Relationships</h2>
+<ul>
+<li><strong>1:1</strong> - e.g. User - Address</li>
+<li class="fragment"><strong>1:n</strong> - e.g. Category - Book</li>
+<li class="fragment"><strong>Inheritance</strong> - e.g. Book (PhysicalBook, EBook)</li>
+</ul>
+<pre class="fragment"><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Book { ... }
+
+@Entity
+public class PhysicalBook extends Book { ... }
+
+@Entity
+public class EBook extends Book { ... }
+</code></pre>
+</section>
+
+<section>
+<h2>Maven Project Setup</h2>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;io.javalin&lt;/groupId&gt;
+        &lt;artifactId&gt;javalin&lt;/artifactId&gt;
+        &lt;version&gt;5.6.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+        &lt;version&gt;6.2.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+        &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+        &lt;version&gt;42.6.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+        &lt;version&gt;2.15.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+        &lt;version&gt;5.10.0&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+        &lt;artifactId&gt;mockito-core&lt;/artifactId&gt;
+        &lt;version&gt;5.4.0&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+</section>
+
+<section>
+<h2>Layered Architecture</h2>
+<pre><code>src/main/java/com/example/project/
+  ├── controller/
+  ├── service/
+  ├── repository/
+  ├── model/
+  │   ├── entity/
+  │   └── dto/
+  └── config/
+</code></pre>
+<div class="highlight-box fragment">
+Controller - Service - Repository: each layer has a clear responsibility.
+</div>
+</section>
+
+<section>
+<h2>Project Deliverables This Week</h2>
+<ul>
+<li>Domain decision and brief description</li>
+<li class="fragment">ER diagram (at least 6 tables)</li>
+<li class="fragment">Maven project skeleton with dependencies</li>
+<li class="fragment">Architecture plan (plan.md)</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Choose your own project domain</li>
+<li>Define a database model with 6+ tables</li>
+<li>Set up the project with Maven, JPA, Javalin</li>
+<li>Plan the layered architecture</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Setup authentication and registration with JPA.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">27 - Projekt WMC</span></div>');});
+</script>
+</body>
+</html>

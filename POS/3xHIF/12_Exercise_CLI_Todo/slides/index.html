@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>12 - Exercise_CLI_Todo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>12 - Exercise_CLI_Todo</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Exercise Overview</h2>
+<p>Build a CLI Todo application with the following components:</p>
+<ul>
+<li class="fragment">Task record — domain model</li>
+<li class="fragment">TaskRepository interface — data access contract</li>
+<li class="fragment">InMemoryTaskRepository — stream-based implementation</li>
+<li class="fragment">CLI shell — switch expression command parsing</li>
+</ul>
+<div class="highlight-box fragment">Apply TDD throughout the entire exercise.</div>
+</section>
+
+<section>
+<h2>Task Record</h2>
+<pre><code class="language-java">public record Task(
+    int id,
+    String title,
+    boolean completed,
+    Priority priority,
+    LocalDate dueDate,
+    List&lt;String&gt; tags
+) {}</code></pre>
+<ul>
+<li class="fragment">Compact data carrier with built-in equals/hashCode/toString</li>
+<li class="fragment">Priority can be an enum: LOW, MEDIUM, HIGH</li>
+<li class="fragment">dueDate wrapped in Optional when accessed</li>
+</ul>
+</section>
+
+<section>
+<h2>Repository Interface</h2>
+<pre><code class="language-java">public interface TaskRepository {
+    List&lt;Task&gt; findAll();
+    Optional&lt;Task&gt; findById(int id);
+    List&lt;Task&gt; findByCompleted(boolean completed);
+    List&lt;Task&gt; findByPriority(Priority priority);
+    List&lt;Task&gt; findByTag(String tag);
+    Task save(Task task);
+    void delete(int id);
+}</code></pre>
+<p class="fragment">Implement all query methods using streams.</p>
+</section>
+
+<section>
+<h2>CLI Command Structure</h2>
+<pre><code class="language-java">switch (command) {
+    case "add"  -> addTask(scanner);
+    case "list" -> listTasks(scanner);
+    case "done" -> markDone(scanner);
+    case "remove" -> removeTask(scanner);
+    case "exit" -> { return; }
+    default -> System.out.println("Unknown command");
+}</code></pre>
+</section>
+
+<section>
+<h2>Summary and Goals</h2>
+<ul>
+<li>Practice records, streams, and switch expressions</li>
+<li>Write TDD tests for every component</li>
+<li>Pair programming is recommended</li>
+<li>This app will be extended with JDBC in later weeks</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">12 - Exercise_CLI_Todo</span></div>');});
+</script>
+</body>
+</html>

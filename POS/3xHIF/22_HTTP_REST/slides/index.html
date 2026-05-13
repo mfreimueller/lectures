@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>22 - HTTP_REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>22 - HTTP_REST</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: JDBC Recap</h2>
+<ul>
+<li class="fragment">JDBC provides database access via Connection, Statement, ResultSet</li>
+<li class="fragment">PreparedStatement prevents SQL injection</li>
+<li class="fragment">DAO pattern separates data access from business logic</li>
+<li class="fragment">JPA provides ORM: entities, relationships, JPQL queries</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Repository Pattern</h2>
+<ul>
+<li class="fragment">Repository abstracts data access behind an interface</li>
+<li class="fragment">Enables switching implementations (in-memory, JDBC, JPA)</li>
+<li class="fragment">Key methods: findById, findAll, save, delete</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Today we move from data persistence to network communication.</p>
+</div>
+</section>
+
+<section>
+<h2>What is HTTP?</h2>
+<ul>
+<li class="fragment">Hypertext Transfer Protocol</li>
+<li class="fragment">Client-server protocol for distributed systems</li>
+<li class="fragment">Request-response model</li>
+<li class="fragment">Stateless: each request is independent</li>
+</ul>
+<pre class="fragment"><code class="language-http">
+GET /api/users HTTP/1.1
+Host: jsonplaceholder.typicode.com
+Accept: application/json
+</code></pre>
+</section>
+
+<section>
+<h2>HTTP Structure</h2>
+<ul>
+<li class="fragment">Request: Method + URL + Headers + Body (optional)</li>
+<li class="fragment">Response: Status Code + Headers + Body</li>
+<li class="fragment">Headers carry metadata (content type, auth, caching)</li>
+<li class="fragment">Body carries payload (JSON, XML, form data)</li>
+</ul>
+</section>
+
+<section>
+<h2>HTTP Methods</h2>
+<table>
+<tr><th>Method</th><th>Purpose</th><th>CRUD</th></tr>
+<tr class="fragment"><td>GET</td><td>Retrieve a resource</td><td>Read</td></tr>
+<tr class="fragment"><td>POST</td><td>Create a new resource</td><td>Create</td></tr>
+<tr class="fragment"><td>PUT</td><td>Update/replace a resource</td><td>Update</td></tr>
+<tr class="fragment"><td>DELETE</td><td>Delete a resource</td><td>Delete</td></tr>
+<tr class="fragment"><td>PATCH</td><td>Partial update</td><td>Update</td></tr>
+</table>
+</section>
+
+<section>
+<h2>HTTP Status Codes</h2>
+<table>
+<tr><th>Code</th><th>Meaning</th></tr>
+<tr class="fragment"><td>200</td><td>OK (successful GET/PUT)</td></tr>
+<tr class="fragment"><td>201</td><td>Created (successful POST)</td></tr>
+<tr class="fragment"><td>204</td><td>No Content (successful DELETE)</td></tr>
+<tr class="fragment"><td>400</td><td>Bad Request (client error)</td></tr>
+<tr class="fragment"><td>404</td><td>Not Found</td></tr>
+<tr class="fragment"><td>500</td><td>Internal Server Error</td></tr>
+</table>
+</section>
+
+<section>
+<h2>REST Principles</h2>
+<ul>
+<li class="fragment">Resource-oriented: everything is a resource (users, posts, products)</li>
+<li class="fragment">Each resource has a unique URI</li>
+<li class="fragment">Standard HTTP methods for CRUD operations</li>
+<li class="fragment">Stateless: server does not store client state</li>
+<li class="fragment">Representations: JSON, XML, etc.</li>
+</ul>
+</section>
+
+<section>
+<h2>REST Resource Design</h2>
+<pre><code class="language-http">
+GET    /api/users        # List all users
+GET    /api/users/1      # Get user with id 1
+POST   /api/users        # Create a new user
+PUT    /api/users/1      # Update user with id 1
+DELETE /api/users/1      # Delete user with id 1
+</code></pre>
+<div class="highlight-box fragment">
+<p>Resources are nouns, not verbs. Use /users not /getUsers.</p>
+</div>
+</section>
+
+<section>
+<h2>Java HttpClient</h2>
+<p>Introduced in Java 11. Modern, non-blocking HTTP client.</p>
+<pre><code class="language-java">
+var client = HttpClient.newHttpClient();
+
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://api.example.com/users"))
+    .GET()
+    .build();
+
+HttpResponse&lt;String&gt; response =
+    client.send(request, HttpResponse.BodyHandlers.ofString());
+</code></pre>
+</section>
+
+<section>
+<h2>HttpClient: GET Request</h2>
+<pre><code class="language-java">
+var client = HttpClient.newHttpClient();
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))
+    .header("Accept", "application/json")
+    .GET()
+    .build();
+
+var response = client.send(request, BodyHandlers.ofString());
+System.out.println("Status: " + response.statusCode());
+System.out.println("Body: " + response.body());
+</code></pre>
+</section>
+
+<section>
+<h2>HttpClient: POST Request</h2>
+<pre><code class="language-java">
+var json = "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}";
+
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://jsonplaceholder.typicode.com/posts"))
+    .header("Content-Type", "application/json")
+    .POST(BodyPublishers.ofString(json))
+    .build();
+
+var response = client.send(request, BodyHandlers.ofString());
+System.out.println(response.statusCode()); // 201
+</code></pre>
+</section>
+
+<section>
+<h2>Parsing JSON with Records</h2>
+<pre><code class="language-java">
+public record Post(int userId, int id, String title, String body) {}
+
+// Using Jackson ObjectMapper
+var mapper = new ObjectMapper();
+var post = mapper.readValue(response.body(), Post.class);
+System.out.println(post.title());
+
+// Manual parsing with string operations (simple case)
+var title = response.body()
+    .replaceAll(".*\"title\":\"([^\"]+)\".*", "$1");
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">HTTP is a stateless request-response protocol</li>
+<li class="fragment">REST uses HTTP methods for CRUD on resources</li>
+<li class="fragment">Java HttpClient provides a modern API for HTTP requests</li>
+<li class="fragment">JSON responses can be parsed into Java records</li>
+</ul>
+</section>
+
+<section>
+<h2>Best Practices</h2>
+<ul>
+<li class="fragment">Use meaningful resource URIs (plural nouns)</li>
+<li class="fragment">Return appropriate status codes</li>
+<li class="fragment">Handle errors gracefully (try-catch around HTTP calls)</li>
+<li class="fragment">Use timeouts to avoid blocking indefinitely</li>
+<li class="fragment">Set proper headers (Content-Type, Accept)</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Building REST APIs with Javalin</p>
+<p>We will create our own server-side endpoints!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">22 - HTTP_REST</span></div>');});
+</script>
+</body>
+</html>

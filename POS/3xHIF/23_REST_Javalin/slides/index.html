@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>23 - REST_Javalin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>23 - REST_Javalin</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: REST Recap</h2>
+<ul>
+<li class="fragment">REST uses HTTP methods for CRUD on resources</li>
+<li class="fragment">Resources identified by URIs (e.g., /api/users)</li>
+<li class="fragment">Standard status codes: 200 OK, 201 Created, 404 Not Found</li>
+<li class="fragment">Java HttpClient can send requests and receive responses</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: From Client to Server</h2>
+<ul>
+<li class="fragment">Last week: we built HTTP clients that consume APIs</li>
+<li class="fragment">This week: we build the server side</li>
+<li class="fragment">Same protocol, same REST principles, different perspective</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Client (HttpClient) ← HTTP → Server (Javalin)</p>
+</div>
+</section>
+
+<section>
+<h2>What is Javalin?</h2>
+<ul>
+<li class="fragment">Lightweight Java web framework</li>
+<li class="fragment">Built on top of Jetty (embedded server)</li>
+<li class="fragment">Simple, expressive routing API</li>
+<li class="fragment">Built-in support for JSON, WebSockets, OpenAPI</li>
+</ul>
+</section>
+
+<section>
+<h2>Setting Up Javalin</h2>
+<p>Add dependency to pom.xml:</p>
+<pre><code class="language-groovy">
+implementation 'io.javalin:javalin:6.1.3'
+implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
+</code></pre>
+<p>Minimal server:</p>
+<pre><code class="language-java">
+var app = Javalin.create(ctx -> {
+    ctx.jsonMapper(new JacksonMapper());
+}).start(7070);
+
+app.get("/", ctx -> ctx.result("Hello World"));
+</code></pre>
+</section>
+
+<section>
+<h2>Routing Basics</h2>
+<pre><code class="language-java">
+app.get("/hello", ctx -> {
+    ctx.result("Hello, GET!");
+});
+
+app.post("/hello", ctx -> {
+    ctx.result("Hello, POST!");
+});
+
+app.put("/hello", ctx -> {
+    ctx.result("Hello, PUT!");
+});
+
+app.delete("/hello", ctx -> {
+    ctx.result("Hello, DELETE!");
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Route Handlers</h2>
+<ul>
+<li class="fragment">Handler is a lambda: <code>ctx -> { ... }</code></li>
+<li class="fragment">Context object provides request/response access</li>
+<li class="fragment"><code>ctx.result()</code> - set response body (String)</li>
+<li class="fragment"><code>ctx.json()</code> - serialize object to JSON</li>
+<li class="fragment"><code>ctx.status()</code> - set HTTP status code</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+app.get("/api/status", ctx -> {
+    ctx.json(Map.of("status", "running", "version", 1.0));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>JSON Serialization</h2>
+<p>Javalin uses Jackson for JSON by default:</p>
+<pre><code class="language-java">
+public record Todo(int id, String title, boolean completed) {}
+
+app.get("/api/todos", ctx -> {
+    var todos = List.of(
+        new Todo(1, "Learn Javalin", false),
+        new Todo(2, "Build REST API", true)
+    );
+    ctx.json(todos);
+});
+</code></pre>
+<p>Response: <code>[{"id":1,"title":"Learn Javalin","completed":false}, ...]</code></p>
+</section>
+
+<section>
+<h2>Receiving JSON</h2>
+<pre><code class="language-java">
+app.post("/api/todos", ctx -> {
+    var todo = ctx.bodyAsClass(Todo.class);
+    // todo is deserialized from request body
+    System.out.println("Received: " + todo);
+    ctx.status(201).json(todo);
+});
+
+// Usage: curl -X POST -H "Content-Type: application/json" \
+//   -d '{"id":1,"title":"test","completed":false}' \
+//   http://localhost:7070/api/todos
+</code></pre>
+</section>
+
+<section>
+<h2>Path Parameters</h2>
+<pre><code class="language-java">
+app.get("/api/todos/{id}", ctx -> {
+    var id = ctx.pathParamAsClass("id", Integer.class).get();
+    var todo = todoService.findById(id);
+    if (todo != null) {
+        ctx.json(todo);
+    } else {
+        ctx.status(404).result("Todo not found");
+    }
+});
+
+// GET /api/todos/42
+// ctx.pathParam("id") -> "42"
+</code></pre>
+</section>
+
+<section>
+<h2>Query Parameters</h2>
+<pre><code class="language-java">
+app.get("/api/todos", ctx -> {
+    var completed = ctx.queryParam("completed");
+
+    if (completed != null) {
+        var filter = Boolean.parseBoolean(completed);
+        var filtered = todos.stream()
+            .filter(t -> t.completed() == filter)
+            .toList();
+        ctx.json(filtered);
+    } else {
+        ctx.json(todos);
+    }
+});
+
+// GET /api/todos?completed=true
+</code></pre>
+</section>
+
+<section>
+<h2>CRUD: Create</h2>
+<pre><code class="language-java">
+app.post("/api/todos", ctx -> {
+    var todo = ctx.bodyAsClass(Todo.class);
+    var created = todoService.create(todo);
+    ctx.status(201).json(created);
+});
+</code></pre>
+</section>
+
+<section>
+<h2>CRUD: Read and Update</h2>
+<pre><code class="language-java">
+// Read all
+app.get("/api/todos", ctx -> ctx.json(todoService.findAll()));
+
+// Read one
+app.get("/api/todos/{id}", ctx -> {
+    var todo = todoService.findById(ctx.pathParamAsClass("id", Integer.class).get());
+    if (todo != null) ctx.json(todo);
+    else ctx.status(404);
+});
+
+// Update
+app.put("/api/todos/{id}", ctx -> {
+    var todo = ctx.bodyAsClass(Todo.class);
+    var updated = todoService.update(ctx.pathParamAsClass("id", Integer.class).get(), todo);
+    if (updated != null) ctx.json(updated);
+    else ctx.status(404);
+});
+</code></pre>
+</section>
+
+<section>
+<h2>CRUD: Delete</h2>
+<pre><code class="language-java">
+app.delete("/api/todos/{id}", ctx -> {
+    var id = ctx.pathParamAsClass("id", Integer.class).get();
+    var deleted = todoService.delete(id);
+    if (deleted) ctx.status(204);
+    else ctx.status(404);
+});
+
+// Testing with curl:
+// curl -X DELETE http://localhost:7070/api/todos/1
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Javalin provides a simple API for building REST servers</li>
+<li class="fragment">Routes map HTTP methods + paths to handler lambdas</li>
+<li class="fragment">Jackson handles JSON serialization/deserialization</li>
+<li class="fragment">Path params and query params enable dynamic routing</li>
+<li class="fragment">CRUD endpoints follow REST conventions</li>
+</ul>
+</section>
+
+<section>
+<h2>Best Practices</h2>
+<ul>
+<li class="fragment">Use plural nouns for resource paths (/todos, not /todo)</li>
+<li class="fragment">Return appropriate status codes (201 for create, 204 for delete)</li>
+<li class="fragment">Validate input before processing</li>
+<li class="fragment">Handle errors gracefully with try-catch</li>
+<li class="fragment">Test endpoints with curl or a REST client</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: DTOs, Commands, Validation, and Error Handling</p>
+<p>Structuring request/response data and validating inputs.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">23 - REST_Javalin</span></div>');});
+</script>
+</body>
+</html>

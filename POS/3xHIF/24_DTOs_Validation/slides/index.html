@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>24 - DTOs_Validation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>24 - DTOs_Validation</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Javalin Recap</h2>
+<ul>
+<li class="fragment">Javalin provides simple routing with GET, POST, PUT, DELETE</li>
+<li class="fragment">ctx.bodyAsClass() deserializes request JSON into objects</li>
+<li class="fragment">ctx.json() serializes objects to JSON responses</li>
+<li class="fragment">Path params and query params enable dynamic routing</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Current Limitations</h2>
+<div class="highlight-box fragment">
+<p>Currently we accept any data from clients -- but what if data is invalid?</p>
+</div>
+<ul>
+<li class="fragment">Empty title? Negative price? Missing email?</li>
+<li class="fragment">API should reject invalid data with clear error messages</li>
+<li class="fragment">We need validation and structured error handling</li>
+</ul>
+</section>
+
+<section>
+<h2>What are DTOs?</h2>
+<ul>
+<li class="fragment">Data Transfer Objects carry data between processes</li>
+<li class="fragment">Separate API contracts from internal domain models</li>
+<li class="fragment">DTOs can differ from entities (hide fields, combine data)</li>
+<li class="fragment">Request DTOs: what the client sends</li>
+<li class="fragment">Response DTOs: what the server returns</li>
+</ul>
+</section>
+
+<section>
+<h2>DTO Example</h2>
+<pre><code class="language-java">
+// Domain entity (internal)
+public record User(Long id, String username, String email,
+                   String passwordHash, LocalDateTime createdAt) {}
+
+// Request DTO (what client sends)
+public record CreateUserRequest(String username, String email, String password) {}
+
+// Response DTO (what server returns)
+public record UserResponse(Long id, String username, String email) {}
+</code></pre>
+<div class="highlight-box fragment">
+<p>Note: passwordHash is in the entity but NOT in any DTO!</p>
+</div>
+</section>
+
+<section>
+<h2>Manual Validation</h2>
+<pre><code class="language-java">
+app.post("/api/users", ctx -> {
+    var request = ctx.bodyAsClass(CreateUserRequest.class);
+
+    if (request.username() == null || request.username().isBlank()) {
+        ctx.status(400).json(Map.of("error", "Username is required"));
+        return;
+    }
+    if (request.email() == null || !request.email().contains("@")) {
+        ctx.status(400).json(Map.of("error", "Valid email is required"));
+        return;
+    }
+    if (request.password() == null || request.password().length() < 8) {
+        ctx.status(400).json(Map.of("error", "Password must be at least 8 characters"));
+        return;
+    }
+
+    // Create user...
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Custom Validation Annotations</h2>
+<pre><code class="language-java">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface NotBlank {
+    String message() default "Field must not be blank";
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface MinLength {
+    int value();
+    String message() default "Field too short";
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Validation with Reflection</h2>
+<pre><code class="language-java">
+class Validator {
+    public static List&lt;String&gt; validate(Object obj) {
+        var errors = new ArrayList&lt;String&gt;();
+        for (var field : obj.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                var value = field.get(obj);
+
+                if (field.isAnnotationPresent(NotBlank.class)) {
+                    if (value == null || value.toString().isBlank()) {
+                        var msg = field.getAnnotation(NotBlank.class).message();
+                        errors.add(field.getName() + ": " + msg);
+                    }
+                }
+                if (field.isAnnotationPresent(MinLength.class)) {
+                    var min = field.getAnnotation(MinLength.class).value();
+                    if (value == null || value.toString().length() < min) {
+                        errors.add(field.getName() + ": too short (min " + min + ")");
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                errors.add(field.getName() + ": validation error");
+            }
+        }
+        return errors;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Annotated DTO</h2>
+<pre><code class="language-java">
+public class CreateUserRequest {
+    @NotBlank(message = "Username is required")
+    public String username;
+
+    @NotBlank(message = "Email is required")
+    public String email;
+
+    @MinLength(value = 8, message = "Password must be at least 8 characters")
+    public String password;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Integration with Javalin</h2>
+<pre><code class="language-java">
+app.post("/api/users", ctx -> {
+    var request = ctx.bodyAsClass(CreateUserRequest.class);
+    var errors = Validator.validate(request);
+
+    if (!errors.isEmpty()) {
+        ctx.status(400).json(Map.of("errors", errors));
+        return;
+    }
+
+    var user = userService.create(request);
+    ctx.status(201).json(new UserResponse(user.id(), user.username(), user.email()));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Structured Error Responses</h2>
+<pre><code class="language-java">
+public record ErrorResponse(
+    int status,
+    String message,
+    List&lt;String&gt; details
+) {}
+
+// Usage
+app.get("/api/users/{id}", ctx -> {
+    var id = Long.parseLong(ctx.pathParam("id"));
+    var user = userService.findById(id);
+    if (user == null) {
+        ctx.status(404).json(new ErrorResponse(
+            404, "User not found", List.of("No user exists with id " + id)
+        ));
+        return;
+    }
+    ctx.json(new UserResponse(user.id(), user.username(), user.email()));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Exception Mappers</h2>
+<pre><code class="language-java">
+class UserNotFoundException extends RuntimeException {
+    private final long userId;
+    public UserNotFoundException(long userId) {
+        super("User not found: " + userId);
+        this.userId = userId;
+    }
+    public long getUserId() { return userId; }
+}
+
+// Global exception handler
+app.exception(UserNotFoundException.class, (e, ctx) -> {
+    ctx.status(404).json(new ErrorResponse(
+        404, e.getMessage(), List.of("User ID: " + e.getUserId())
+    ));
+});
+
+// Now handlers can throw exceptions:
+app.get("/api/users/{id}", ctx -> {
+    var user = userService.findById(Long.parseLong(ctx.pathParam("id")));
+    if (user == null) throw new UserNotFoundException(id);
+    ctx.json(new UserResponse(user.id(), user.username(), user.email()));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">DTOs separate API contracts from domain models</li>
+<li class="fragment">Request DTOs define what clients send; Response DTOs define what servers return</li>
+<li class="fragment">Manual validation works but becomes repetitive</li>
+<li class="fragment">Custom annotations + reflection enable reusable validation</li>
+<li class="fragment">Exception mappers centralize error handling</li>
+<li class="fragment">Structured error responses help client developers</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Layered Architecture</p>
+<p>Controller, Service, and Repository layers for clean separation of concerns.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">24 - DTOs_Validation</span></div>');});
+</script>
+</body>
+</html>

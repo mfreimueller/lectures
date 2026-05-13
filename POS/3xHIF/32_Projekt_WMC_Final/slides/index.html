@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>32 - Projekt WMC Final</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>32 - Projekt WMC Final</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Project Requirements</h2>
+<ul>
+<li>6+ database tables</li>
+<li class="fragment">1:1, 1:n, inheritance relationships</li>
+<li class="fragment">Authentication with JWT</li>
+<li class="fragment">Full CRUD via REST API</li>
+<li class="fragment">Unit and integration tests</li>
+<li class="fragment">Layered architecture</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: What We Built</h2>
+<ul>
+<li>Week 27: Project setup, domain choice, ER diagram</li>
+<li class="fragment">Week 28: User registration, login, JWT auth</li>
+<li class="fragment">Week 29: JPA entities, relationships, inheritance</li>
+<li class="fragment">Week 30: REST API endpoints, DTOs, validation</li>
+<li class="fragment">Week 31: Unit tests, integration tests, error handling</li>
+<li class="fragment">Week 32: Finalization, documentation, submission</li>
+</ul>
+</section>
+
+<section>
+<h2>Code Cleanup Checklist</h2>
+<ul>
+<li>Remove unused imports and dead code</li>
+<li class="fragment">Fix all compiler warnings</li>
+<li class="fragment">Consistent formatting and naming conventions</li>
+<li class="fragment">Remove System.out.println / debug statements</li>
+<li class="fragment">Use constants instead of magic strings</li>
+<li class="fragment">Check for proper exception handling</li>
+</ul>
+</section>
+
+<section>
+<h2>Documentation: README</h2>
+<p>A good README should contain:</p>
+<ul>
+<li>Project title and description</li>
+<li class="fragment">Domain explanation and ER diagram</li>
+<li class="fragment">Technology stack</li>
+<li class="fragment">Setup instructions (clone, configure, run)</li>
+<li class="fragment">API documentation (endpoints table)</li>
+<li class="fragment">Test instructions</li>
+</ul>
+</section>
+
+<section>
+<h2>API Documentation</h2>
+<pre><code>## API Endpoints
+
+| Method | URL | Description | Auth |
+|--------|-----|-------------|------|
+| POST   | /api/register | Register user | No |
+| POST   | /api/login | Login | No |
+| GET    | /api/books | List all books | Yes |
+| GET    | /api/books/{id} | Get book | Yes |
+| POST   | /api/books | Create book | Admin |
+| PUT    | /api/books/{id} | Update book | Admin |
+| DELETE | /api/books/{id} | Delete book | Admin |
+</code></pre>
+</section>
+
+<section>
+<h2>Javadoc</h2>
+<pre><code class="language-java">/**
+ * Service for managing books.
+ */
+public class BookService {
+
+    /**
+     * Creates a new book from the given DTO.
+     * @param dto the creation data
+     * @return the persisted book
+     * @throws BadRequestResponse if category not found
+     */
+    public Book create(CreateBookDto dto) { ... }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Submission Package</h2>
+<p>Option A: Git tag</p>
+<pre><code class="language-bash">git tag -a v1.0 -m "Final submission"
+git push origin v1.0
+</code></pre>
+<p class="fragment">Option B: ZIP archive</p>
+<pre class="fragment"><code class="language-bash">git archive -o project.zip HEAD
+</code></pre>
+</section>
+
+<section>
+<h2>Final Checklist</h2>
+<ul>
+<li>All 6+ entities implemented</li>
+<li class="fragment">1:1, 1:n, inheritance present</li>
+<li class="fragment">Authentication working (register + login)</li>
+<li class="fragment">All CRUD endpoints functional</li>
+<li class="fragment">Tests pass (unit + integration)</li>
+<li class="fragment">README and documentation complete</li>
+<li class="fragment">Code compiles without errors</li>
+</ul>
+</section>
+
+<section>
+<h2>Project Demo Tips</h2>
+<ul>
+<li>Prepare a short demo (3-5 minutes)</li>
+<li class="fragment">Show the ER diagram first</li>
+<li class="fragment">Demonstrate register/login</li>
+<li class="fragment">Show CRUD operations on a few entities</li>
+<li class="fragment">Run a test and show coverage</li>
+<li class="fragment">Be ready to explain your domain choices</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Clean up code and fix warnings</li>
+<li>Write README and API documentation</li>
+<li>Prepare submission (git tag or ZIP)</li>
+<li>Verify all requirements are met</li>
+<li>Prepare a short demo presentation</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Retrospective, recap of the year, and outlook to 4th grade.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">32 - Projekt WMC Final</span></div>');});
+</script>
+</body>
+</html>

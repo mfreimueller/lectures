@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>20 - JPA_Inheritance_ValueObjects</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>20 - JPA_Inheritance_ValueObjects</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>JPA Inheritance Overview</h2>
+<p>JPA supports three strategies for mapping class inheritance to database tables:</p>
+<ul>
+<li><strong>SINGLE_TABLE:</strong> One table for the entire hierarchy</li>
+<li class="fragment"><strong>JOINED:</strong> One table per class, joined via foreign keys</li>
+<li class="fragment"><strong>TABLE_PER_CLASS:</strong> One table per concrete class</li>
+</ul>
+<pre class="fragment"><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+    // ...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>SINGLE_TABLE Strategy</h2>
+<p>All classes in the hierarchy map to one database table.</p>
+<pre><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+@DiscriminatorValue("STU")
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+
+@Entity
+@DiscriminatorValue("TCH")
+public class Teacher extends Person {
+    private String employeeId;
+    private String subject;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>SINGLE_TABLE - Table Structure</h2>
+<table>
+<tr><th>id</th><th>person_type</th><th>name</th><th>studentId</th><th>grade</th><th>employeeId</th><th>subject</th></tr>
+<tr><td>1</td><td>STU</td><td>Alice</td><td>S123</td><td>1</td><td>NULL</td><td>NULL</td></tr>
+<tr><td>2</td><td>TCH</td><td>Mr. Smith</td><td>NULL</td><td>NULL</td><td>T456</td><td>Math</td></tr>
+</table>
+<div class="highlight-box fragment">
+<strong>Pros:</strong> No JOINs, fast queries<br>
+<strong>Cons:</strong> Many nullable columns, violates normalization
+</div>
+</section>
+
+<section>
+<h2>JOINED Strategy</h2>
+<p>Each class gets its own table; subclasses reference the parent via foreign key.</p>
+<pre><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+</code></pre>
+<pre class="fragment"><code class="language-sql">-- Queries require JOIN between person and student tables
+SELECT p.id, p.name, s.studentId, s.grade
+FROM Person p JOIN Student s ON p.id = s.id
+</code></pre>
+</section>
+
+<section>
+<h2>JOINED - Table Structure</h2>
+<table>
+<tr><th colspan="2">person</th></tr>
+<tr><td>id (PK)</td><td>name</td></tr>
+<tr><td>1</td><td>Alice</td></tr>
+</table>
+<br>
+<table>
+<tr><th colspan="3">student</th></tr>
+<tr><td>id (PK, FK)</td><td>studentId</td><td>grade</td></tr>
+<tr><td>1</td><td>S123</td><td>1</td></tr>
+</table>
+<div class="highlight-box fragment">
+<strong>Pros:</strong> Normalized, no nulls<br>
+<strong>Cons:</strong> JOINs required for queries
+</div>
+</section>
+
+<section>
+<h2>TABLE_PER_CLASS Strategy</h2>
+<p>Each concrete class has its own complete table.</p>
+<pre><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+
+@Entity
+public class Teacher extends Person {
+    private String employeeId;
+    private String subject;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>TABLE_PER_CLASS - Table Structure</h2>
+<table>
+<tr><th colspan="4">student</th></tr>
+<tr><td>id</td><td>name</td><td>studentId</td><td>grade</td></tr>
+<tr><td>1</td><td>Alice</td><td>S123</td><td>1</td></tr>
+</table>
+<br>
+<table>
+<tr><th colspan="4">teacher</th></tr>
+<tr><td>id</td><td>name</td><td>employeeId</td><td>subject</td></tr>
+<tr><td>2</td><td>Mr. Smith</td><td>T456</td><td>Math</td></tr>
+</table>
+<div class="highlight-box fragment">
+<strong>Pros:</strong> No JOINs, no nullable columns<br>
+<strong>Cons:</strong> Duplicate columns, UNION for polymorphic queries
+</div>
+</section>
+
+<section>
+<h2>Inheritance Strategy Comparison</h2>
+<table>
+<tr><th>Feature</th><th>SINGLE_TABLE</th><th>JOINED</th><th>TABLE_PER_CLASS</th></tr>
+<tr><td>Tables</td><td>1</td><td>N (per class)</td><td>N (per concrete)</td></tr>
+<tr><td>NULL columns</td><td>Many</td><td>None</td><td>None</td></tr>
+<tr><td>Query speed</td><td>Fastest</td><td>JOIN required</td><td>UNION for poly</td></tr>
+<tr><td>Normalized</td><td>No</td><td>Yes</td><td>Partial</td></tr>
+<tr><td>Polymorphic</td><td>Native</td><td>JOIN</td><td>UNION</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Value Objects with @Embeddable</h2>
+<p>Value objects have no identity - they are defined solely by their attributes.</p>
+<pre><code class="language-java">@Embeddable
+public class Address {
+    private String street;
+    private String city;
+    private String zipCode;
+    private String country;
+
+    // Required: no-arg constructor
+    public Address() {}
+
+    public Address(String street, String city, String zip, String country) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zip;
+        this.country = country;
+    }
+    // getters...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Using @Embedded</h2>
+<pre><code class="language-java">@Entity
+public class Student {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+
+    @Embedded
+    private Address address;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "street", column = @Column(name = "parent_street")),
+        @AttributeOverride(name = "city",   column = @Column(name = "parent_city")),
+        @AttributeOverride(name = "zipCode", column = @Column(name = "parent_zip")),
+        @AttributeOverride(name = "country", column = @Column(name = "parent_country"))
+    })
+    private Address parentAddress;
+    // ...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Value Object Examples</h2>
+<pre><code class="language-java">@Embeddable
+public class Money {
+    private BigDecimal amount;
+    private String currency; // ISO 4217 (EUR, USD)
+
+    public Money() {}
+    public Money(BigDecimal amount, String currency) { ... }
+
+    public Money add(Money other) {
+        if (!this.currency.equals(other.currency))
+            throw new IllegalArgumentException("Currency mismatch");
+        return new Money(this.amount.add(other.amount), this.currency);
+    }
+}
+
+@Embeddable
+public class Email {
+    @Column(name = "email_address")
+    private String value;
+
+    public Email() {}
+    public Email(String value) {
+        if (!value.contains("@"))
+            throw new IllegalArgumentException("Invalid email");
+        this.value = value;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Repository Pattern</h2>
+<p>A Repository mediates between the domain and data mapping layers.</p>
+<pre><code class="language-java">public interface Repository&lt;T, ID&gt; {
+    T findById(ID id);
+    List&lt;T&gt; findAll();
+    T save(T entity);
+    void delete(T entity);
+    void deleteById(ID id);
+    long count();
+}
+</code></pre>
+<div class="highlight-box fragment">
+The Repository pattern provides a collection-like interface for domain objects.
+</div>
+</section>
+
+<section>
+<h2>Generic Repository Implementation</h2>
+<pre><code class="language-java">public class JpaRepository&lt;T, ID&gt; implements Repository&lt;T, ID&gt; {
+
+    private final EntityManager em;
+    private final Class&lt;T&gt; entityClass;
+
+    public JpaRepository(EntityManager em, Class&lt;T&gt; entityClass) {
+        this.em = em;
+        this.entityClass = entityClass;
+    }
+
+    @Override
+    public T findById(ID id) {
+        return em.find(entityClass, id);
+    }
+
+    @Override
+    public List&lt;T&gt; findAll() {
+        var cb = em.getCriteriaBuilder();
+        var query = cb.createQuery(entityClass);
+        query.select(query.from(entityClass));
+        return em.createQuery(query).getResultList();
+    }
+
+    @Override
+    public T save(T entity) {
+        if (em.contains(entity)) {
+            return em.merge(entity);
+        } else {
+            em.persist(entity);
+            return entity;
+        }
+    }
+
+    @Override
+    public void delete(T entity) {
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
+    }
+    // ...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Transaction Management</h2>
+<pre><code class="language-java">public class StudentService {
+    private final Repository&lt;Student, Long&gt; studentRepo;
+    private final EntityManager em;
+
+    public StudentService(EntityManager em,
+                          Repository&lt;Student, Long&gt; studentRepo) {
+        this.em = em;
+        this.studentRepo = studentRepo;
+    }
+
+    public void transferStudent(Long studentId, Course from, Course to) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Student student = studentRepo.findById(studentId);
+            student.removeCourse(from);
+            student.addCourse(to);
+            studentRepo.save(student);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw new RuntimeException("Transfer failed", e);
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Three inheritance strategies: SINGLE_TABLE, JOINED, TABLE_PER_CLASS</li>
+<li>Each strategy has different trade-offs for schema and performance</li>
+<li>@Embeddable/@Embedded model value objects without identity</li>
+<li>Repository pattern provides clean, type-safe data access</li>
+<li>Use EntityTransaction for explicit transaction boundaries</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Next Week</h2>
+<div class="highlight-box">
+Exercise: Build a complete JPA data layer with H2 in-memory testing.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">20 - JPA_Inheritance_ValueObjects</span></div>');});
+</script>
+</body>
+</html>

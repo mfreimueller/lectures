@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>09 - SOLID_LSP_ISP_DIP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>09 - SOLID_LSP_ISP_DIP</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: SRP & OCP</h2>
+<ul>
+<li class="fragment">SRP: One reason to change per class</li>
+<li class="fragment">OCP: Open for extension, closed for modification</li>
+<li class="fragment">Both rely on clean abstractions</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Why SOLID Matters</h2>
+<ul>
+<li class="fragment">Code that is easy to change is valuable</li>
+<li class="fragment">SOLID reduces coupling and increases cohesion</li>
+<li class="fragment">Today we finish the remaining three principles</li>
+</ul>
+</section>
+
+<section>
+<h2>LSP: Liskov Substitution Principle</h2>
+<div class="highlight-box">
+<p>"Objects of a superclass should be replaceable with objects of a subclass without affecting correctness."</p>
+</div>
+<ul>
+<li class="fragment">Subtypes must be substitutable for their base types</li>
+<li class="fragment">A subclass should not weaken the parent's contract</li>
+</ul>
+</section>
+
+<section>
+<h2>LSP: Classic Violation</h2>
+<pre><code class="language-java">
+class Rectangle {
+    void setWidth(int w) { this.width = w; }
+    void setHeight(int h) { this.height = h; }
+    int area() { return width * height; }
+}
+
+class Square extends Rectangle {
+    void setWidth(int w) {
+        super.setWidth(w);
+        super.setHeight(w);  // Breaks LSP!
+    }
+}
+</code></pre>
+<p class="fragment">Client code expecting Rectangle behavior breaks with Square.</p>
+</section>
+
+<section>
+<h2>LSP: Solution</h2>
+<ul>
+<li class="fragment">Use composition instead of inheritance</li>
+<li class="fragment">Or use a common interface with no mutators</li>
+</ul>
+<pre class="fragment"><code class="language-java">
+interface Shape {
+    int area();
+}
+
+class Rectangle implements Shape { /* ... */ }
+class Square implements Shape { /* ... */ }
+</code></pre>
+</section>
+
+<section>
+<h2>ISP: Interface Segregation Principle</h2>
+<div class="highlight-box">
+<p>"No client should be forced to depend on methods it does not use."</p>
+</div>
+<ul>
+<li class="fragment">Large interfaces should be split into smaller ones</li>
+<li class="fragment">Clients should only know about methods they actually call</li>
+</ul>
+</section>
+
+<section>
+<h2>ISP: Violation Example</h2>
+<pre><code class="language-java">
+interface Worker {
+    void work();
+    void eat();
+    void sleep();
+}
+// A RobotWorker doesn't eat or sleep,
+// but is forced to implement those methods!
+</code></pre>
+<p class="fragment">Solution: Split into Workable, Eatable, Sleepable interfaces.</p>
+</section>
+
+<section>
+<h2>ISP: Solution</h2>
+<pre><code class="language-java">
+interface Workable { void work(); }
+interface Eatable { void eat(); }
+interface Sleepable { void sleep(); }
+
+class HumanWorker implements Workable, Eatable, Sleepable { /* all */ }
+class RobotWorker implements Workable { /* only work */ }
+</code></pre>
+</section>
+
+<section>
+<h2>DIP: Dependency Inversion Principle</h2>
+<div class="highlight-box">
+<p>"Depend on abstractions, not on concrete implementations."</p>
+</div>
+<ul>
+<li class="fragment">High-level modules should not depend on low-level modules</li>
+<li class="fragment">Both should depend on abstractions</li>
+</ul>
+</section>
+
+<section>
+<h2>DIP: Violation Example</h2>
+<pre><code class="language-java">
+class NotificationService {
+    private EmailSender email = new EmailSender();
+    void notify(String msg) {
+        email.send(msg);
+    }
+}
+// NotificationService depends directly on EmailSender
+</code></pre>
+</section>
+
+<section>
+<h2>DIP: Solution</h2>
+<pre><code class="language-java">
+interface MessageSender {
+    void send(String message);
+}
+
+class EmailSender implements MessageSender { /* ... */ }
+class SmsSender implements MessageSender { /* ... */ }
+
+class NotificationService {
+    private final MessageSender sender;
+    NotificationService(MessageSender sender) {
+        this.sender = sender;  // Dependency Injection
+    }
+    void notify(String msg) { sender.send(msg); }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DIP: Benefits</h2>
+<ul>
+<li class="fragment">Loosely coupled code</li>
+<li class="fragment">Easier to test (mock abstractions)</li>
+<li class="fragment">Easier to swap implementations</li>
+<li class="fragment">Follows naturally from OCP</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary: All SOLID Principles</h2>
+<ul>
+<li class="fragment"><strong>SRP:</strong> One reason to change</li>
+<li class="fragment"><strong>OCP:</strong> Extend without modifying</li>
+<li class="fragment"><strong>LSP:</strong> Subtypes must be substitutable</li>
+<li class="fragment"><strong>ISP:</strong> Small, focused interfaces</li>
+<li class="fragment"><strong>DIP:</strong> Depend on abstractions</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Streams -- filter, map, flatMap, forEach, reduce</p>
+<p>Functional programming in Java!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">09 - SOLID_LSP_ISP_DIP</span></div>');});
+</script>
+</body>
+</html>

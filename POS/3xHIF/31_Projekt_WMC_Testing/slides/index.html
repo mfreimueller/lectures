@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>31 - Projekt WMC Testing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>31 - Projekt WMC Testing</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: JUnit 5 Basics</h2>
+<pre><code class="language-java">@Test
+void shouldReturnBookWhenFound() {
+    var result = bookService.findById(1L);
+    assertThat(result).isPresent();
+    assertThat(result.get().getTitle()).isEqualTo("The Hobbit");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Review: TDD Principles</h2>
+<ul>
+<li>Red: write a failing test first</li>
+<li class="fragment">Green: write minimal code to pass</li>
+<li class="fragment">Refactor: improve code while keeping tests green</li>
+<li class="fragment">FIRST: Fast, Isolated, Repeatable, Self-validating, Timely</li>
+</ul>
+</section>
+
+<section>
+<h2>Unit Testing with Mockito</h2>
+<pre><code class="language-java">@ExtendWith(MockitoExtension.class)
+class BookServiceTest {
+    @Mock
+    private BookRepository bookRepo;
+    @InjectMocks
+    private BookService bookService;
+
+    @Test
+    void shouldCreateBook() {
+        var dto = new CreateBookDto("Dune", "...", 1965, 1L);
+        when(bookRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+        var result = bookService.create(dto);
+        assertThat(result.getTitle()).isEqualTo("Dune");
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Repository Testing</h2>
+<pre><code class="language-java">@Test
+void shouldSaveAndFindBook() {
+    var category = new Category("Fiction");
+    var book = new PhysicalBook("Dune", "...", 1965, category, "A1", 3);
+    bookRepo.save(book);
+    var found = bookRepo.findById(book.getId());
+    assertThat(found).isPresent();
+}
+</code></pre>
+<div class="highlight-box fragment">
+Use an in-memory H2 database for repository tests.
+</div>
+</section>
+
+<section>
+<h2>Integration Testing REST Endpoints</h2>
+<pre><code class="language-java">@Test
+void shouldCreateBookViaApi() {
+    var app = Javalin.create();
+    app.post("/api/books", ctx -> {
+        ctx.status(201).json(new BookDto(1L, "Dune"));
+    });
+    var response = HttpRequest.post("http://localhost:7000/api/books")
+        .body("{\"title\":\"Dune\"}")
+        .asString();
+    assertThat(response.statusCode()).isEqualTo(201);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Javalin Test Client</h2>
+<pre><code class="language-java">@Test
+void testGetAllBooks() {
+    var app = Javalin.create();
+    app.get("/api/books", ctx -> ctx.json(List.of()));
+    app.start(0); // random port
+    var port = app.port();
+    var response = Unirest.get("http://localhost:" + port + "/api/books").asString();
+    assertThat(response.getStatus()).isEqualTo(200);
+    app.stop();
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Parameterized Tests</h2>
+<pre><code class="language-java">@ParameterizedTest
+@CsvSource({
+    ", false",
+    "'', false",
+    "Dune, true"
+})
+void shouldValidateTitle(String title, boolean expected) {
+    var validator = new BookValidator();
+    assertThat(validator.isValidTitle(title)).isEqualTo(expected);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Validation Testing</h2>
+<pre><code class="language-java">@Test
+void shouldRejectInvalidBook() {
+    var dto = new CreateBookDto("", "123", 1800, null);
+    var errors = BookValidator.validate(dto);
+    assertThat(errors)
+        .contains("title must not be blank")
+        .contains("isbn must be 13 digits");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Test Coverage with JaCoCo</h2>
+<pre><code class="language-xml"><plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.11</version>
+    <executions>
+        <execution>
+            <goals><goal>prepare-agent</goal></goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals><goal>report</goal></goals>
+        </execution>
+    </executions>
+</plugin>
+</code></pre>
+<div class="highlight-box fragment">
+Goal: at least 70% line coverage.
+</div>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Unit test services with Mockito</li>
+<li>Test repositories with in-memory database</li>
+<li>Integration test REST endpoints</li>
+<li>Parameterized tests for validation</li>
+<li>JaCoCo for coverage measurement</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Finalization, documentation, and submission.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">31 - Projekt WMC Testing</span></div>');});
+</script>
+</body>
+</html>

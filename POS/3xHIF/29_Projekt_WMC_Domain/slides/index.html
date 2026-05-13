@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>29 - Projekt WMC Domain</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>29 - Projekt WMC Domain</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: JPA Annotations</h2>
+<pre><code class="language-java">@Entity
+@Table(name = "books")
+public class Book {
+    @Id @GeneratedValue
+    private Long id;
+    @Column(nullable = false)
+    private String title;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Review: EntityManager</h2>
+<pre><code class="language-java">EntityManager em = emf.createEntityManager();
+em.getTransaction().begin();
+em.persist(entity);
+em.getTransaction().commit();
+em.close();
+</code></pre>
+</section>
+
+<section>
+<h2>1:1 Relationship</h2>
+<pre><code class="language-java">@Entity
+public class User {
+    @Id @GeneratedValue
+    private Long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+}
+
+@Entity
+public class Address {
+    @Id @GeneratedValue
+    private Long id;
+    @OneToOne(mappedBy = "address")
+    private User user;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>1:n Relationship</h2>
+<pre><code class="language-java">@Entity
+public class Category {
+    @Id @GeneratedValue
+    private Long id;
+    @OneToMany(mappedBy = "category")
+    private List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+}
+
+@Entity
+public class Book {
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>n:m Relationship</h2>
+<pre><code class="language-java">@Entity
+public class Book {
+    @ManyToMany
+    @JoinTable(name = "book_author",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private List&lt;Author&gt; authors = new ArrayList&lt;&gt;();
+}
+</code></pre>
+</section>
+
+<section>
+<h2>JPA Inheritance: JOINED</h2>
+<pre><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Book {
+    @Id @GeneratedValue
+    private Long id;
+    private String title;
+    private String isbn;
+}
+
+@Entity
+public class PhysicalBook extends Book {
+    private String shelfLocation;
+    private int copiesAvailable;
+}
+
+@Entity
+public class EBook extends Book {
+    private String fileFormat;
+    private double fileSizeMb;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Embeddable Value Objects</h2>
+<pre><code class="language-java">@Embeddable
+public class Money {
+    private BigDecimal amount;
+    private String currency;
+}
+
+@Entity
+public class Book {
+    @Embedded
+    private Money price;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Repository Pattern</h2>
+<pre><code class="language-java">public class BookRepository {
+    private final EntityManager em;
+
+    public BookRepository(EntityManager em) { this.em = em; }
+
+    public List&lt;Book&gt; findAll() {
+        return em.createQuery("SELECT b FROM Book b", Book.class)
+            .getResultList();
+    }
+
+    public Optional&lt;Book&gt; findById(Long id) {
+        return Optional.ofNullable(em.find(Book.class, id));
+    }
+
+    public Book save(Book book) {
+        em.getTransaction().begin();
+        em.persist(book);
+        em.getTransaction().commit();
+        return book;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>JPQL Queries</h2>
+<pre><code class="language-java">// Find by category
+em.createQuery("SELECT b FROM Book b WHERE b.category.name = :cat", Book.class)
+    .setParameter("cat", "Fiction")
+    .getResultList();
+
+// Find with join fetch
+em.createQuery("SELECT b FROM Book b JOIN FETCH b.authors WHERE b.id = :id", Book.class)
+    .setParameter("id", 1L)
+    .getSingleResult();
+
+// Count
+em.createQuery("SELECT COUNT(b) FROM Book b", Long.class)
+    .getSingleResult();
+</code></pre>
+</section>
+
+<section>
+<h2>Entity Design Summary</h2>
+<ul>
+<li>User - Address (1:1)</li>
+<li class="fragment">Category - Book (1:n)</li>
+<li class="fragment">Book - Author (n:m via join table)</li>
+<li class="fragment">Book - PhysicalBook / EBook (inheritance)</li>
+<li class="fragment">User - Loan - Book (1:n on both sides)</li>
+<li class="fragment">User - Review - Book (1:n on both sides)</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Define all JPA entities with @Entity, @Table, @Id</li>
+<li>Map 1:1 with @OneToOne, 1:n with @OneToMany/@ManyToOne</li>
+<li>Implement inheritance with @Inheritance(JOINED)</li>
+<li>Create repositories for each entity</li>
+<li>Write JPQL queries for data access</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Implement REST API endpoints with CRUD operations.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">29 - Projekt WMC Domain</span></div>');});
+</script>
+</body>
+</html>

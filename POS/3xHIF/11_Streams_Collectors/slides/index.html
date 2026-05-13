@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>11 - Streams_Collectors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>11 - Streams_Collectors</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: Stream Intermediate Operations</h2>
+<ul>
+<li class="fragment">filter: select elements by predicate</li>
+<li class="fragment">map: transform elements</li>
+<li class="fragment">flatMap: flatten nested streams</li>
+<li class="fragment">Intermediate ops are lazy -- nothing happens until a terminal op is called</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Terminal Operations</h2>
+<ul>
+<li class="fragment">forEach: perform action on each element</li>
+<li class="fragment">reduce: combine into single value</li>
+<li class="fragment">collect: gather into a mutable container (our focus today)</li>
+</ul>
+</section>
+
+<section>
+<h2>What is collect?</h2>
+<p>The collect method is a terminal operation that accumulates stream elements into a mutable result container.</p>
+<pre><code class="language-java">
+&lt;R, A&gt; R collect(Collector&lt;? super T, A, R&gt; collector);
+</code></pre>
+<ul>
+<li class="fragment">Works with Collector implementations in java.util.stream.Collectors</li>
+<li class="fragment">More flexible than reduce for mutable accumulation</li>
+</ul>
+</section>
+
+<section>
+<h2>Collectors.toList()</h2>
+<pre><code class="language-java">
+List&lt;String&gt; filtered = stream
+    .filter(s -> s.length() &gt; 3)
+    .collect(Collectors.toList());
+</code></pre>
+<p class="fragment">Since Java 16: <code>.toList()</code> is shorter and returns an unmodifiable list.</p>
+</section>
+
+<section>
+<h2>Collectors.toSet()</h2>
+<pre><code class="language-java">
+Set&lt;String&gt; unique = stream
+    .map(String::toLowerCase)
+    .collect(Collectors.toSet());
+// Removes duplicates
+</code></pre>
+</section>
+
+<section>
+<h2>Collectors.toMap()</h2>
+<pre><code class="language-java">
+List&lt;Person&gt; people = /* ... */;
+
+Map&lt;Integer, String&gt; idToName = people.stream()
+    .collect(Collectors.toMap(
+        Person::id,      // key mapper
+        Person::name     // value mapper
+    ));
+</code></pre>
+<p class="fragment">Be careful with duplicate keys -- will throw IllegalStateException!</p>
+</section>
+
+<section>
+<h2>Collectors.joining()</h2>
+<pre><code class="language-java">
+List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
+
+String result = names.stream()
+    .collect(Collectors.joining(", "));
+
+// "Alice, Bob, Charlie"
+</code></pre>
+<p>Supports prefix and suffix: <code>joining(", ", "[", "]")</code> -> "[Alice, Bob, Charlie]"</p>
+</section>
+
+<section>
+<h2>Collectors.groupingBy()</h2>
+<p>Groups elements by a classifier function into a Map.</p>
+<pre><code class="language-java">
+List&lt;Person&gt; people = /* ... */;
+
+Map&lt;String, List&lt;Person&gt;&gt; byCity = people.stream()
+    .collect(Collectors.groupingBy(Person::city));
+</code></pre>
+</section>
+
+<section>
+<h2>groupingBy: Downstream Collector</h2>
+<pre><code class="language-java">
+// Count people per city
+Map&lt;String, Long&gt; countByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.counting()
+    ));
+
+// Average age per city
+Map&lt;String, Double&gt; avgAgeByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.averagingInt(Person::age)
+    ));
+</code></pre>
+</section>
+
+<section>
+<h2>groupingBy: Mapping Downstream</h2>
+<pre><code class="language-java">
+// Names per city (collect to List)
+Map&lt;String, List&lt;String&gt;&gt; namesByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.mapping(Person::name, Collectors.toList())
+    ));
+</code></pre>
+</section>
+
+<section>
+<h2>Collectors.partitioningBy()</h2>
+<p>Splits elements into two groups based on a Predicate.</p>
+<pre><code class="language-java">
+List&lt;Integer&gt; numbers = List.of(1, 2, 3, 4, 5, 6);
+
+Map&lt;Boolean, List&lt;Integer&gt;&gt; evenOdd = numbers.stream()
+    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+
+// {false=[1, 3, 5], true=[2, 4, 6]}
+</code></pre>
+</section>
+
+<section>
+<h2>partitioningBy with Downstream</h2>
+<pre><code class="language-java">
+// Count even vs odd
+Map&lt;Boolean, Long&gt; countEvenOdd = numbers.stream()
+    .collect(Collectors.partitioningBy(
+        n -> n % 2 == 0,
+        Collectors.counting()
+    ));
+// {false=3, true=3}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">collect is the most flexible terminal operation</li>
+<li class="fragment">toList, toSet, toMap, joining for simple collections</li>
+<li class="fragment">groupingBy for multi-level classification</li>
+<li class="fragment">partitioningBy for binary splits</li>
+<li class="fragment">Downstream collectors enable powerful aggregations</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Exercise -- CLI Todo Application</p>
+<p>Apply streams, collections, and testing in a real project!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">11 - Streams_Collectors</span></div>');});
+</script>
+</body>
+</html>

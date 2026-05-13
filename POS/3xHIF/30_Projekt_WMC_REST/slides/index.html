@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>30 - Projekt WMC REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>30 - Projekt WMC REST</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: REST Principles</h2>
+<ul>
+<li>GET: retrieve resources</li>
+<li class="fragment">POST: create resources</li>
+<li class="fragment">PUT: update/replace resources</li>
+<li class="fragment">DELETE: remove resources</li>
+<li class="fragment">Stateless communication</li>
+<li class="fragment">Resource-based URLs: /api/books, /api/books/{id}</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Javalin Setup</h2>
+<pre><code class="language-java">var app = Javalin.create(config -> {
+    config.plugins.enableCors(cors -> cors.add(c -> c.anyHost()));
+    config.jsonMapper(new JacksonMapper());
+});
+app.start(7000);
+</code></pre>
+</section>
+
+<section>
+<h2>Controller Structure</h2>
+<pre><code class="language-java">public class BookController {
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    public void registerRoutes(Javalin app) {
+        app.get("/api/books", this::getAll);
+        app.get("/api/books/{id}", this::getById);
+        app.post("/api/books", this::create);
+        app.put("/api/books/{id}", this::update);
+        app.delete("/api/books/{id}", this::delete);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>GET Endpoints</h2>
+<pre><code class="language-java">private void getAll(Context ctx) {
+    var books = bookService.findAll();
+    ctx.json(books.stream().map(BookDto::from).toList());
+}
+
+private void getById(Context ctx) {
+    var id = ctx.pathParamAsClass("id", Long.class).get();
+    var book = bookService.findById(id);
+    ctx.json(BookDto.from(book));
+}
+</code></pre>
+</section>
+
+<section>
+<h2>POST Endpoint</h2>
+<pre><code class="language-java">private void create(Context ctx) {
+    var dto = ctx.bodyAsClass(CreateBookDto.class);
+    // Validate
+    if (dto.title() == null || dto.title().isBlank()) {
+        throw new BadRequestResponse("Title is required");
+    }
+    var book = bookService.create(dto);
+    ctx.status(201).json(BookDto.from(book));
+}
+</code></pre>
+</section>
+
+<section>
+<h2>PUT Endpoint</h2>
+<pre><code class="language-java">private void update(Context ctx) {
+    var id = ctx.pathParamAsClass("id", Long.class).get();
+    var dto = ctx.bodyAsClass(UpdateBookDto.class);
+    var book = bookService.update(id, dto);
+    ctx.json(BookDto.from(book));
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DELETE Endpoint</h2>
+<pre><code class="language-java">private void delete(Context ctx) {
+    var id = ctx.pathParamAsClass("id", Long.class).get();
+    bookService.delete(id);
+    ctx.status(204);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>DTOs: Data Transfer Objects</h2>
+<pre><code class="language-java">public record BookDto(
+    Long id, String title, String isbn,
+    int publishedYear, String categoryName,
+    List&lt;String&gt; authorNames
+) {
+    public static BookDto from(Book book) {
+        return new BookDto(
+            book.getId(), book.getTitle(), book.getIsbn(),
+            book.getPublishedYear(), book.getCategory().getName(),
+            book.getAuthors().stream().map(Author::getName).toList()
+        );
+    }
+}
+
+public record CreateBookDto(
+    String title, String isbn, int publishedYear,
+    Long categoryId, List&lt;Long&gt; authorIds
+) {}
+</code></pre>
+</section>
+
+<section>
+<h2>Input Validation</h2>
+<pre><code class="language-java">// Manual validation
+private void validate(CreateBookDto dto) {
+    var errors = new ArrayList&lt;String&gt;();
+    if (dto.title() == null || dto.title().isBlank())
+        errors.add("title is required");
+    if (dto.isbn() == null || !dto.isbn().matches("\\d{13}"))
+        errors.add("isbn must be 13 digits");
+    if (!errors.isEmpty())
+        throw new BadRequestResponse(String.join("; ", errors));
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Service Layer</h2>
+<pre><code class="language-java">public class BookService {
+    private final BookRepository bookRepo;
+    private final CategoryRepository catRepo;
+
+    public Book create(CreateBookDto dto) {
+        var category = catRepo.findById(dto.categoryId())
+            .orElseThrow(() -> new NotFoundResponse("Category not found"));
+        var book = new Book(dto.title(), dto.isbn(), dto.publishedYear(), category);
+        return bookRepo.save(book);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Error Handling</h2>
+<pre><code class="language-java">app.exception(BadRequestResponse.class, (e, ctx) -> {
+    ctx.status(400).json(new ErrorDto(e.getMessage()));
+});
+app.exception(NotFoundResponse.class, (e, ctx) -> {
+    ctx.status(404).json(new ErrorDto(e.getMessage()));
+});
+app.exception(Exception.class, (e, ctx) -> {
+    ctx.status(500).json(new ErrorDto("Internal server error"));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Controller classes with route registration</li>
+<li>CRUD endpoints: GET, POST, PUT, DELETE</li>
+<li>DTOs for request/response mapping</li>
+<li>Input validation</li>
+<li>Consistent error handling</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Unit testing, validation, and error handling.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">30 - Projekt WMC REST</span></div>');});
+</script>
+</body>
+</html>

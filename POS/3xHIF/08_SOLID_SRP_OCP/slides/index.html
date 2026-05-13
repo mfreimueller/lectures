@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>08 - SOLID_SRP_OCP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>08 - SOLID_SRP_OCP</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: TDD Recap</h2>
+<ul>
+<li class="fragment">Red: Write a failing test</li>
+<li class="fragment">Green: Write the simplest code to pass</li>
+<li class="fragment">Refactor: Improve code quality</li>
+<li class="fragment">FIRST: Fast, Isolated, Repeatable, Self-validating, Timely</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Why Design Matters</h2>
+<ul>
+<li class="fragment">TDD helps with correctness, but good design needs principles</li>
+<li class="fragment">Without design, code becomes hard to change</li>
+<li class="fragment">SOLID gives us guidelines for maintainable code</li>
+</ul>
+</section>
+
+<section>
+<h2>What are SOLID Principles?</h2>
+<p>Five design principles for object-oriented programming:</p>
+<ul>
+<li class="fragment"><strong>S</strong>ingle Responsibility Principle (SRP)</li>
+<li class="fragment"><strong>O</strong>pen-Closed Principle (OCP)</li>
+<li class="fragment"><strong>L</strong>iskov Substitution Principle (LSP)</li>
+<li class="fragment"><strong>I</strong>nterface Segregation Principle (ISP)</li>
+<li class="fragment"><strong>D</strong>ependency Inversion Principle (DIP)</li>
+</ul>
+<p class="fragment">Today: SRP and OCP</p>
+</section>
+
+<section>
+<h2>SRP: Single Responsibility Principle</h2>
+<div class="highlight-box">
+<p>"A class should have only one reason to change."</p>
+</div>
+<ul>
+<li class="fragment">Each class should do one thing well</li>
+<li class="fragment">If a class has multiple responsibilities, changing one may break another</li>
+</ul>
+</section>
+
+<section>
+<h2>SRP: Violation Example</h2>
+<pre><code class="language-java">
+class Invoice {
+    void calculateTotal() { /* ... */ }
+    void printInvoice() { /* ... */ }
+    void saveToDatabase() { /* ... */ }
+    void sendEmail() { /* ... */ }
+}
+</code></pre>
+<p class="fragment">Four responsibilities: calculation, printing, persistence, notification</p>
+</section>
+
+<section>
+<h2>SRP: Solution</h2>
+<pre><code class="language-java">
+class InvoiceCalculator { /* calculate total */ }
+class InvoicePrinter { /* print */ }
+class InvoiceRepository { /* save/load */ }
+class EmailService { /* send email */ }
+</code></pre>
+<p class="fragment">Each class has exactly one reason to change.</p>
+</section>
+
+<section>
+<h2>SRP: Benefits</h2>
+<ul>
+<li class="fragment">Easier to understand</li>
+<li class="fragment">Easier to test (fewer dependencies)</li>
+<li class="fragment">Easier to maintain (changes are localized)</li>
+<li class="fragment">Better reuse (small classes compose well)</li>
+</ul>
+</section>
+
+<section>
+<h2>OCP: Open-Closed Principle</h2>
+<div class="highlight-box">
+<p>"Software entities should be open for extension, closed for modification."</p>
+</div>
+<ul>
+<li class="fragment">Add new functionality without changing existing code</li>
+<li class="fragment">Use abstraction (interfaces, abstract classes)</li>
+</ul>
+</section>
+
+<section>
+<h2>OCP: Violation Example</h2>
+<pre><code class="language-java">
+class AreaCalculator {
+    double area(Object shape) {
+        if (shape instanceof Circle) { /* ... */ }
+        else if (shape instanceof Rectangle) { /* ... */ }
+        // Adding Square requires modifying this class
+    }
+}
+</code></pre>
+<p class="fragment">Every new shape type requires changing AreaCalculator!</p>
+</section>
+
+<section>
+<h2>OCP: Solution</h2>
+<pre><code class="language-java">
+interface Shape {
+    double area();
+}
+
+class Circle implements Shape {
+    public double area() { return Math.PI * r * r; }
+}
+
+class Rectangle implements Shape {
+    public double area() { return width * height; }
+}
+// Adding Square? Just implement Shape -- no changes needed!
+</code></pre>
+</section>
+
+<section>
+<h2>OCP: Benefits</h2>
+<ul>
+<li class="fragment">Reduces risk of introducing bugs in working code</li>
+<li class="fragment">Encourages reuse through interfaces</li>
+<li class="fragment">Supports plugin-like architectures</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary: SRP + OCP</h2>
+<ul>
+<li class="fragment">SRP: One reason to change per class</li>
+<li class="fragment">OCP: Extend behavior without modifying existing code</li>
+<li class="fragment">Both rely on clean abstractions</li>
+<li class="fragment">Both make code more maintainable</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: LSP, ISP, DIP</p>
+<p>The remaining three SOLID principles!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">08 - SOLID_SRP_OCP</span></div>');});
+</script>
+</body>
+</html>

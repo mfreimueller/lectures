@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>17 - JDBC_Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>17 - JDBC_Basics</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>What is JDBC?</h2>
+<p>JDBC (Java Database Connectivity) is the standard Java API for database-independent connectivity between Java applications and relational databases.</p>
+<ul>
+<li>Part of java.sql package (since JDK 1.1)</li>
+<li class="fragment">Provides a vendor-neutral interface</li>
+<li class="fragment">Database vendors provide JDBC driver implementations</li>
+</ul>
+</section>
+
+<section>
+<h2>JDBC Architecture</h2>
+<ul>
+<li><strong>DriverManager</strong> - manages JDBC drivers</li>
+<li class="fragment"><strong>Connection</strong> - represents a database session</li>
+<li class="fragment"><strong>Statement</strong> - executes SQL statements</li>
+<li class="fragment"><strong>ResultSet</strong> - represents query results</li>
+<li class="fragment"><strong>SQLException</strong> - handles database errors</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Architecture overview
+DriverManager -&gt; Connection -&gt; Statement -&gt; ResultSet
+</code></pre>
+</section>
+
+<section>
+<h2>JDBC Drivers</h2>
+<p>Type 4 drivers (pure Java) are most common:</p>
+<pre><code class="language-java">// PostgreSQL driver
+// Maven dependency
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;version&gt;42.7.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<div class="highlight-box fragment">
+PostgreSQL JDBC driver class: org.postgresql.Driver
+</div>
+</section>
+
+<section>
+<h2>Establishing a Connection</h2>
+<pre><code class="language-java">String url = "jdbc:postgresql://localhost:5432/school";
+String user = "postgres";
+String password = "secret";
+
+try (Connection conn = DriverManager.getConnection(url, user, password)) {
+    System.out.println("Connected: " + conn.isValid(5));
+} catch (SQLException e) {
+    System.err.println("Connection failed: " + e.getMessage());
+}
+</code></pre>
+<div class="highlight-box fragment">
+JDBC URL format: jdbc:postgresql://host:port/database
+</div>
+</section>
+
+<section>
+<h2>Connection Parameters</h2>
+<pre><code class="language-java">// Connection properties
+Properties props = new Properties();
+props.setProperty("user", "postgres");
+props.setProperty("password", "secret");
+props.setProperty("ssl", "false");
+props.setProperty("connectTimeout", "10");
+
+Connection conn = DriverManager
+    .getConnection("jdbc:postgresql://localhost:5432/school", props);
+</code></pre>
+</section>
+
+<section>
+<h2>Statement Interface</h2>
+<p>Statement is used to execute static SQL queries:</p>
+<pre><code class="language-java">Statement stmt = conn.createStatement();
+
+// Execute a query (SELECT)
+ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+
+// Execute an update (INSERT, UPDATE, DELETE)
+int rows = stmt.executeUpdate("UPDATE student SET grade = 1 WHERE id = 101");
+</code></pre>
+<div class="highlight-box fragment">
+executeQuery() returns ResultSet; executeUpdate() returns affected row count.
+</div>
+</section>
+
+<section>
+<h2>Processing ResultSet</h2>
+<pre><code class="language-java">String sql = "SELECT id, name, email FROM student";
+try (Statement stmt = conn.createStatement();
+     ResultSet rs = stmt.executeQuery(sql)) {
+
+    while (rs.next()) {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String email = rs.getString("email");
+        System.out.println(id + ": " + name + " (" + email + ")");
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>ResultSet Data Types</h2>
+<table>
+<tr><th>SQL Type</th><th>Java Method</th></tr>
+<tr><td>INTEGER</td><td>getInt()</td></tr>
+<tr><td>VARCHAR / TEXT</td><td>getString()</td></tr>
+<tr><td>BOOLEAN</td><td>getBoolean()</td></tr>
+<tr><td>DATE</td><td>getDate()</td></tr>
+<tr><td>TIMESTAMP</td><td>getTimestamp()</td></tr>
+<tr><td>DECIMAL / NUMERIC</td><td>getBigDecimal()</td></tr>
+<tr><td>DOUBLE / FLOAT</td><td>getDouble()</td></tr>
+</table>
+</section>
+
+<section>
+<h2>INSERT with Statement</h2>
+<pre><code class="language-java">String sql = "INSERT INTO student (name, email, grade) VALUES ("
+           + "'Alice', 'alice@school.com', 1)";
+
+int rows = stmt.executeUpdate(sql);
+System.out.println(rows + " row(s) inserted.");
+</code></pre>
+<div class="highlight-box fragment warning">
+String concatenation in SQL is vulnerable to injection attacks!
+</div>
+</section>
+
+<section>
+<h2>UPDATE and DELETE</h2>
+<pre><code class="language-java">// UPDATE
+String sql = "UPDATE student SET grade = 2 WHERE id = 101";
+int updated = stmt.executeUpdate(sql);
+
+// DELETE
+String sqlDel = "DELETE FROM student WHERE id = 101";
+int deleted = stmt.executeUpdate(sqlDel);
+
+// Check affected rows
+if (deleted &gt; 0) {
+    System.out.println("Student deleted successfully.");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Handling SQLException</h2>
+<pre><code class="language-java">try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+    // database operations
+} catch (SQLException e) {
+    System.err.println("Error Code: " + e.getErrorCode());
+    System.err.println("SQL State: " + e.getSQLState());
+    System.err.println("Message: " + e.getMessage());
+
+    // Chained exceptions
+    Throwable t = e.getNextException();
+    while (t != null) {
+        System.err.println("Caused by: " + t.getMessage());
+        t = t.getNextException();
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Resource Management</h2>
+<p>Always close JDBC resources to prevent memory/resource leaks:</p>
+<pre><code class="language-java">// Bad: manual close with null checks
+Connection conn = null;
+Statement stmt = null;
+try {
+    conn = DriverManager.getConnection(url, user, pass);
+    stmt = conn.createStatement();
+    // ...
+} finally {
+    if (stmt != null) stmt.close();
+    if (conn != null) conn.close();
+}
+
+// Good: try-with-resources (Java 7+)
+try (Connection conn = DriverManager.getConnection(url, user, pass);
+     Statement stmt = conn.createStatement()) {
+    // ...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Complete CRUD Example</h2>
+<pre><code class="language-java">public class StudentDao {
+    private static final String URL = "jdbc:postgresql://localhost:5432/school";
+
+    public List&lt;String&gt; getAllStudents() throws SQLException {
+        var students = new ArrayList&lt;String&gt;();
+        var sql = "SELECT id, name FROM student ORDER BY id";
+
+        try (var conn = DriverManager.getConnection(URL, "postgres", "secret");
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                students.add(rs.getInt("id") + ": " + rs.getString("name"));
+            }
+        }
+        return students;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>JDBC provides database-independent Java database access</li>
+<li>Connection, Statement, ResultSet are core interfaces</li>
+<li>Always use try-with-resources for automatic cleanup</li>
+<li>CRUD operations use executeQuery() and executeUpdate()</li>
+<li>Handle SQLException with detailed error information</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Next Week</h2>
+<div class="highlight-box">
+PreparedStatement, SQL Injection prevention, and the DAO Pattern.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">17 - JDBC_Basics</span></div>');});
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>07 - TDD_FIRST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>07 - TDD_FIRST</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Review: JUnit 5</h2>
+<ul>
+<li class="fragment">@Test, @BeforeEach, @AfterEach</li>
+<li class="fragment">AssertJ for fluent assertions</li>
+<li class="fragment">@ParameterizedTest for multiple inputs</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Why Write Tests?</h2>
+<ul>
+<li class="fragment">Catch regressions early</li>
+<li class="fragment">Document expected behavior</li>
+<li class="fragment">Enable safe refactoring</li>
+</ul>
+</section>
+
+<section>
+<h2>What is TDD?</h2>
+<p>Test-Driven Development is a software development process where you write tests before production code.</p>
+<ul>
+<li class="fragment">Write a failing test (Red)</li>
+<li class="fragment">Write the simplest code to pass (Green)</li>
+<li class="fragment">Refactor to improve quality (Refactor)</li>
+</ul>
+</section>
+
+<section>
+<h2>Why TDD?</h2>
+<ul>
+<li class="fragment">Forces you to think about design before coding</li>
+<li class="fragment">Every line of code is tested</li>
+<li class="fragment">Safe refactoring with instant feedback</li>
+<li class="fragment">Reduces debugging time</li>
+</ul>
+</section>
+
+<section>
+<h2>The TDD Cycle: Red</h2>
+<div class="highlight-box">
+<p>Write a test that fails.</p>
+</div>
+<pre><code class="language-java">
+@Test
+void testFizzBuzz() {
+    assertEquals("Fizz", fizzBuzz(3));
+    // This won't compile yet -- no FizzBuzz class!
+}
+</code></pre>
+<p class="fragment">The test failure proves the test can detect the missing feature.</p>
+</section>
+
+<section>
+<h2>The TDD Cycle: Green</h2>
+<div class="highlight-box">
+<p>Write the simplest code to make the test pass.</p>
+</div>
+<pre><code class="language-java">
+String fizzBuzz(int n) {
+    return "Fizz";  // simplest thing that works
+}
+</code></pre>
+<p class="fragment">Do not add extra functionality yet!</p>
+</section>
+
+<section>
+<h2>The TDD Cycle: Refactor</h2>
+<div class="highlight-box">
+<p>Improve code without changing behavior.</p>
+</div>
+<ul>
+<li class="fragment">Remove duplication</li>
+<li class="fragment">Improve readability</li>
+<li class="fragment">Extract methods</li>
+<li class="fragment">All tests must stay green</li>
+</ul>
+</section>
+
+<section>
+<h2>FIRST Principles</h2>
+<table>
+<thead><tr><th>Letter</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>F</td><td><strong>Fast</strong> -- tests run quickly</td></tr>
+<tr class="fragment"><td>I</td><td><strong>Isolated</strong> -- no test depends on another</td></tr>
+<tr class="fragment"><td>R</td><td><strong>Repeatable</strong> -- same result every time</td></tr>
+<tr class="fragment"><td>S</td><td><strong>Self-validating</strong> -- pass/fail clearly</td></tr>
+<tr class="fragment"><td>T</td><td><strong>Timely</strong> -- written before production code</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Fast Tests</h2>
+<ul>
+<li class="fragment">Unit tests must run in milliseconds</li>
+<li class="fragment">Avoid database, network, file I/O in unit tests</li>
+<li class="fragment">If a test suite takes 10 minutes, developers stop running it</li>
+</ul>
+</section>
+
+<section>
+<h2>Isolated Tests</h2>
+<ul>
+<li class="fragment">Each test should be independent</li>
+<li class="fragment">No shared state between tests</li>
+<li class="fragment">Use @BeforeEach to create fresh objects</li>
+<li class="fragment">Tests should run in any order</li>
+</ul>
+</section>
+
+<section>
+<h2>Live Coding: FizzBuzz</h2>
+<pre><code class="language-java">
+// Step 1: Write test for "Fizz"
+@Test
+void testFizz() {
+    assertEquals("Fizz", FizzBuzz.of(3));
+}
+
+// Step 2: Simplest code
+class FizzBuzz {
+    static String of(int n) { return "Fizz"; }
+}
+
+// Step 3: Add more tests, generalize...
+</code></pre>
+</section>
+
+<section>
+<h2>Live Coding: Full FizzBuzz</h2>
+<pre><code class="language-java">
+@ParameterizedTest
+@CsvSource({"1,1","2,2","3,Fizz","5,Buzz","15,FizzBuzz"})
+void testFizzBuzz(int input, String expected) {
+    assertThat(FizzBuzz.of(input)).isEqualTo(expected);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">TDD = Red, Green, Refactor</li>
+<li class="fragment">FIRST principles guide good test design</li>
+<li class="fragment">Tests drive the design, not the other way around</li>
+<li class="fragment">Start simple, then generalize</li>
+</ul>
+</section>
+
+<section>
+<h2>Common Pitfalls</h2>
+<ul>
+<li class="fragment">Writing too much code in the Green phase</li>
+<li class="fragment">Skipping the Refactor phase</li>
+<li class="fragment">Writing tests that are too large</li>
+<li class="fragment">Not running tests frequently enough</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: SOLID Principles -- SRP and OCP</p>
+<p>Design principles for maintainable code!</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">07 - TDD_FIRST</span></div>');});
+</script>
+</body>
+</html>

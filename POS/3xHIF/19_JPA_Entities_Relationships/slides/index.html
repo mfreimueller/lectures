@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>19 - JPA_Entities_Relationships</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>19 - JPA_Entities_Relationships</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>From JDBC to JPA</h2>
+<p>JDBC requires a lot of boilerplate code for common operations.</p>
+<pre><code class="language-java">// JDBC: ~20 lines to save one student
+String sql = "INSERT INTO student (name, email, grade) VALUES (?, ?, ?)";
+try (Connection conn = dataSource.getConnection();
+     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    pstmt.setString(1, student.name());
+    pstmt.setString(2, student.email());
+    pstmt.setInt(3, student.grade());
+    pstmt.executeUpdate();
+}
+
+// JPA: 1 line
+entityManager.persist(student);
+</code></pre>
+<div class="highlight-box fragment">
+JPA eliminates boilerplate by mapping Java objects directly to database rows.
+</div>
+</section>
+
+<section>
+<h2>JPA Architecture</h2>
+<ul>
+<li><strong>EntityManager:</strong> Core interface for persistence operations</li>
+<li class="fragment"><strong>EntityManagerFactory:</strong> Creates EntityManager instances (one per database)</li>
+<li class="fragment"><strong>Persistence Context:</strong> First-level cache of managed entities</li>
+<li class="fragment"><strong>Persistence Unit:</strong> Configuration in persistence.xml</li>
+</ul>
+<pre class="fragment"><code class="language-java">EntityManagerFactory emf =
+    Persistence.createEntityManagerFactory("school-unit");
+EntityManager em = emf.createEntityManager();
+</code></pre>
+</section>
+
+<section>
+<h2>Persistence Unit Configuration</h2>
+<pre><code class="language-xml">&lt;!-- META-INF/persistence.xml --&gt;
+&lt;persistence-unit name="school-unit"&gt;
+    &lt;provider&gt;org.hibernate.jpa.HibernatePersistenceProvider&lt;/provider&gt;
+    &lt;class&gt;com.school.model.Student&lt;/class&gt;
+    &lt;properties&gt;
+        &lt;property name="jakarta.persistence.jdbc.url"
+                  value="jdbc:postgresql://localhost:5432/school"/&gt;
+        &lt;property name="jakarta.persistence.jdbc.user" value="postgres"/&gt;
+        &lt;property name="jakarta.persistence.jdbc.password" value="secret"/&gt;
+        &lt;property name="hibernate.hbm2ddl.auto" value="update"/&gt;
+        &lt;property name="hibernate.show_sql" value="true"/&gt;
+    &lt;/properties&gt;
+&lt;/persistence-unit&gt;
+</code></pre>
+</section>
+
+<section>
+<h2>Entity Mapping</h2>
+<pre><code class="language-java">@Entity
+@Table(name = "student")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "full_name", nullable = false)
+    private String name;
+
+    @Column(unique = true)
+    private String email;
+
+    private int grade;
+
+    // Constructors, getters, setters (required by JPA)
+    public Student() {}  // No-arg constructor required
+
+    // getters and setters...
+}
+</code></pre>
+</section>
+
+<section>
+<h2>EntityManager Operations</h2>
+<pre><code class="language-java">EntityManager em = emf.createEntityManager();
+EntityTransaction tx = em.getTransaction();
+
+// CREATE
+tx.begin();
+Student student = new Student("Alice", "alice@school.com", 1);
+em.persist(student);   // Makes entity managed
+tx.commit();
+
+// READ
+Student found = em.find(Student.class, 1L);
+
+// UPDATE (within transaction)
+tx.begin();
+Student s = em.find(Student.class, 1L);
+s.setGrade(2);  // Automatically detected and persisted
+tx.commit();
+
+// DELETE
+tx.begin();
+Student s = em.find(Student.class, 1L);
+em.remove(s);
+tx.commit();
+</code></pre>
+</section>
+
+<section>
+<h2>JPQL - JPA Query Language</h2>
+<p>JPQL queries entities (not tables) using Java class and field names:</p>
+<pre><code class="language-java">// JPQL: queries entity classes and fields
+String jpql = "SELECT s FROM Student s WHERE s.grade &gt; :minGrade";
+List&lt;Student&gt; result = em.createQuery(jpql, Student.class)
+    .setParameter("minGrade", 1)
+    .getResultList();
+
+// Equivalent SQL: SELECT * FROM student WHERE grade &gt; 1
+
+// Projection with SELECT
+String jpql2 = "SELECT s.name, s.email FROM Student s";
+List&lt;Object[]&gt; rows = em.createQuery(jpql2, Object[].class)
+    .getResultList();
+</code></pre>
+<div class="highlight-box fragment">
+JPQL is database-independent - JPA generates the appropriate SQL dialect.
+</div>
+</section>
+
+<section>
+<h2>JPQL vs SQL</h2>
+<table>
+<tr><th>Feature</th><th>JPQL</th><th>SQL</th></tr>
+<tr><td>Target</td><td>Entity classes and fields</td><td>Tables and columns</td></tr>
+<tr><td>JOIN</td><td>s.courses (navigation)</td><td>JOIN student_course sc</td></tr>
+<tr><td>Polymorphic</td><td>Yes (inheritance-aware)</td><td>No (manual UNION)</td></tr>
+<tr><td>Portable</td><td>Yes (any DB)</td><td>Vendor-specific</td></tr>
+</table>
+<pre class="fragment"><code class="language-java">// JPQL: Navigate relationships directly
+"SELECT s FROM Student s JOIN s.courses c WHERE c.name = :name"
+
+// SQL: Must know join table structure
+"SELECT s.* FROM student s JOIN enrollment e ON s.id = e.student_id
+ JOIN course c ON e.course_id = c.id WHERE c.name = ?"
+</code></pre>
+</section>
+
+<section>
+<h2>@OneToOne Relationship</h2>
+<pre><code class="language-java">@Entity
+public class Student {
+    @Id @GeneratedValue
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
+    private ContactInfo contactInfo;
+    // ...
+}
+
+@Entity
+public class ContactInfo {
+    @Id @GeneratedValue
+    private Long id;
+
+    private String phone;
+    private String address;
+
+    @OneToOne(mappedBy = "contactInfo")
+    private Student student;  // Inverse side
+}
+</code></pre>
+</section>
+
+<section>
+<h2>@OneToMany / @ManyToOne</h2>
+<pre><code class="language-java">@Entity
+public class Course {
+    @Id @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "course")
+    private List&lt;Enrollment&gt; enrollments = new ArrayList&lt;&gt;();
+}
+
+@Entity
+public class Enrollment {
+    @Id @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+
+    private int grade;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>@ManyToMany Relationship</h2>
+<pre><code class="language-java">@Entity
+public class Student {
+    @Id @GeneratedValue
+    private Long id;
+    // ...
+
+    @ManyToMany
+    @JoinTable(
+        name = "student_ elective",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "elective_id")
+    )
+    private List&lt;Elective&gt; electives = new ArrayList&lt;&gt;();
+}
+
+@Entity
+public class Elective {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+    private int maxStudents;
+
+    @ManyToMany(mappedBy = "electives")
+    private List&lt;Student&gt; students = new ArrayList&lt;&gt;();
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Cascade Types</h2>
+<table>
+<tr><th>Cascade Type</th><th>Description</th></tr>
+<tr><td>PERSIST</td><td>Save related entities when parent is saved</td></tr>
+<tr><td>MERGE</td><td>Merge related entities when parent is merged</td></tr>
+<tr><td>REMOVE</td><td>Delete related entities when parent is deleted</td></tr>
+<tr><td>REFRESH</td><td>Refresh related entities when parent is refreshed</td></tr>
+<tr><td>DETACH</td><td>Detach related entities when parent is detached</td></tr>
+<tr><td>ALL</td><td>All of the above</td></tr>
+</table>
+<pre class="fragment"><code class="language-java">// CascadeType.ALL propagates every operation
+@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
+           orphanRemoval = true)
+private List&lt;Enrollment&gt; enrollments;
+
+// Now: persist(course) also persists all enrollments
+</code></pre>
+</section>
+
+<section>
+<h2>JPA vs JDBC DAO - Comparison</h2>
+<pre><code class="language-java">// JDBC DAO: ~15 lines for findById
+public Optional&lt;Student&gt; findById(Long id) {
+    var sql = "SELECT * FROM student WHERE id = ?";
+    try (var conn = dataSource.getConnection();
+         var pstmt = conn.prepareStatement(sql)) {
+        pstmt.setLong(1, id);
+        try (var rs = pstmt.executeQuery()) {
+            if (rs.next()) return Optional.of(mapRow(rs));
+        }
+    } catch (SQLException e) { throw new RuntimeException(e); }
+    return Optional.empty();
+}
+
+// JPA: 1 line
+Student student = em.find(Student.class, id);
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>JPA maps Java objects to database tables via @Entity</li>
+<li>EntityManager handles all CRUD operations</li>
+<li>JPQL queries entities, not tables</li>
+<li>Relationships: @OneToOne, @OneToMany/@ManyToOne, @ManyToMany</li>
+<li>Cascade types control how operations propagate</li>
+<li>JPA eliminates the boilerplate of JDBC DAO code</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Next Week</h2>
+<div class="highlight-box">
+JPA Inheritance Strategies, Value Objects with @Embeddable, and the Repository Pattern.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">19 - JPA_Entities_Relationships</span></div>');});
+</script>
+</body>
+</html>

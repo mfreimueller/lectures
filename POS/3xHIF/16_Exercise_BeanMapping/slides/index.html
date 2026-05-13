@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>16 - Exercise_BeanMapping</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>16 - Exercise_BeanMapping</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Exercise Overview</h2>
+<p>Build a simple ORM-style BeanMapper using reflection:</p>
+<ul>
+<li class="fragment">Copy fields from a source object to a target object</li>
+<li class="fragment">Match fields by name (case-insensitive)</li>
+<li class="fragment">Handle type conversions automatically</li>
+<li class="fragment">Support annotation-driven mapping configuration</li>
+</ul>
+<div class="highlight-box fragment">This mirrors how Hibernate and MapStruct work internally.</div>
+</section>
+
+<section>
+<h2>Core Mapping Logic</h2>
+<pre><code class="language-java">public class BeanMapper {
+    public &lt;T&gt; T map(Object source, Class&lt;T&gt; targetClass)
+            throws Exception {
+        T target = targetClass.getDeclaredConstructor().newInstance();
+
+        for (Field sourceField : source.getClass().getDeclaredFields()) {
+            Field targetField = findField(targetClass, sourceField.getName());
+            if (targetField != null) {
+                sourceField.setAccessible(true);
+                targetField.setAccessible(true);
+                Object value = sourceField.get(source);
+                targetField.set(target, convert(value, targetField.getType()));
+            }
+        }
+        return target;
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Type Conversion</h2>
+<pre><code class="language-java">private Object convert(Object value, Class&lt;?&gt; targetType) {
+    if (value == null) return null;
+    if (targetType.isAssignableFrom(value.getClass())) {
+        return value;
+    }
+    return switch (targetType.getSimpleName()) {
+        case "String" -> String.valueOf(value);
+        case "int", "Integer" -> Integer.parseInt(value.toString());
+        case "long", "Long" -> Long.parseLong(value.toString());
+        case "double", "Double" -> Double.parseDouble(value.toString());
+        case "boolean", "Boolean" -> Boolean.parseBoolean(value.toString());
+        default -> throw new IllegalArgumentException(
+            "Cannot convert " + value.getClass() + " to " + targetType);
+    };
+}</code></pre>
+</section>
+
+<section>
+<h2>Annotation-driven Mapping</h2>
+<pre><code class="language-java">@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Mapping {
+    String source();
+    String target() default "";
+}
+
+// Usage:
+public class UserDto {
+    @Mapping(source = "fullName")
+    private String name;
+
+    @Mapping(source = "dateOfBirth")
+    private String birthDate;  // LocalDate → String
+}</code></pre>
+</section>
+
+<section>
+<h2>Summary and Goals</h2>
+<ul>
+<li>Practice reflection for field access and modification</li>
+<li>Implement type conversion between common Java types</li>
+<li>Design annotation-driven configuration</li>
+<li>Understand ORM mapping fundamentals</li>
+<li>Test the mapper with different object types (TDD)</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">16 - Exercise_BeanMapping</span></div>');});
+</script>
+</body>
+</html>

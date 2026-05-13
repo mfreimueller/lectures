@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>03 - UnnamedVariables_UtilityAPIs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>03 - UnnamedVariables_UtilityAPIs</h1>
+<p class="institution">POS3 - 3xHIF</p>
+</section>
+
+<section>
+<h2>Recap: Optional</h2>
+<pre><code class="language-java">var email = findUser(42)
+    .map(User::email)
+    .orElse("unknown@example.com");
+</code></pre>
+<div class="highlight-box">
+Optional helps avoid NullPointerException.
+</div>
+</section>
+
+<section>
+<h2>Recap: Sealed + Pattern Matching</h2>
+<pre><code class="language-java">sealed interface Shape permits Circle, Rectangle {}
+
+double area = switch (shape) {
+    case Circle c -&gt; Math.PI * c.radius() * c.radius();
+    case Rectangle r -&gt; r.width() * r.height();
+};
+</code></pre>
+</section>
+
+<section>
+<h2>Unnamed Variables: Motivation</h2>
+<p>Sometimes you need a variable only for structure, not for its value.</p>
+<pre><code class="language-java">// Before: unused variable
+try {
+    int count = processItems();
+} catch (Exception e) {
+    // e is never used
+    System.out.println("Error occurred");
+}
+
+// After: unnamed variable
+try {
+    int count = processItems();
+} catch (Exception _) {
+    System.out.println("Error occurred");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Unnamed Variables in Loops</h2>
+<pre><code class="language-java">// Traditional
+for (var item : items) {
+    counter++;
+}
+
+// With unnamed variable
+for (var _ : items) {
+    counter++;
+}
+</code></pre>
+<div class="highlight-box fragment">
+Use _ when you need to iterate but dont need the element value.
+</div>
+</section>
+
+<section>
+<h2>Unnamed Variables in Pattern Matching</h2>
+<pre><code class="language-java">// Record pattern with unused components
+if (obj instanceof Point(int x, int _)) {
+    System.out.println("x = " + x);
+}
+
+// Switch with unnamed patterns
+String result = switch (obj) {
+    case Integer _ -&gt; "It's a number";
+    case String _ -&gt; "It's a string";
+    default -&gt; "Unknown";
+};
+</code></pre>
+</section>
+
+<section>
+<h2>Unnamed Pattern Variables</h2>
+<pre><code class="language-java">// Multiple unused components
+record Person(String name, int age, String email) {}
+
+if (obj instanceof Person(var name, int _, String _)) {
+    System.out.println("Name: " + name);
+}
+
+// Try-with-resources
+try (var _ = new Scanner(System.in)) {
+    // resource is opened but not directly used
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Flexible Constructor Bodies</h2>
+<p>Before Java 22, statements in a constructor had to come after super().</p>
+<pre><code class="language-java">// Before: error - cannot use this before super()
+public class PositiveInt extends Number {
+    private final int value;
+
+    public PositiveInt(int value) {
+        if (value &lt;= 0) {
+            throw new IllegalArgumentException("Must be positive");
+        }
+        super(); // super MUST be first
+        this.value = value;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Flexible Constructor Bodies (Java 22+)</h2>
+<pre><code class="language-java">// With flexible constructor bodies
+public class PositiveInt extends Number {
+    private final int value;
+
+    public PositiveInt(int value) {
+        if (value &lt;= 0) {
+            throw new IllegalArgumentException("Must be positive");
+        }
+        super(); // Now allowed after statements
+        this.value = value;
+    }
+}
+</code></pre>
+<div class="highlight-box fragment">
+Statements that dont reference the instance being constructed can appear before super().
+</div>
+</section>
+
+<section>
+<h2>Common Use Cases</h2>
+<pre><code class="language-java">// Validation before super
+public class ValidatedHashMap&lt;K, V&gt; extends HashMap&lt;K, V&gt; {
+    public ValidatedHashMap(Map&lt;K, V&gt; source) {
+        if (source == null) {
+            throw new IllegalArgumentException("source must not be null");
+        }
+        super(source); // super is not first, but thats fine now
+    }
+}
+
+// Preparation before super
+public class Logger extends PrintWriter {
+    public Logger(String path) throws IOException {
+        var file = new File(path);
+        file.getParentFile().mkdirs(); // preparation
+        super(file); // Now OK
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Modern String APIs</h2>
+<pre><code class="language-java">var text = "  Hello, World!  ";
+
+// New methods
+System.out.println(text.isBlank());     // false
+System.out.println(text.strip());       // "Hello, World!"
+System.out.println(text.repeat(3));     // repeat string
+System.out.println("  ".isBlank());     // true
+
+// Lines
+"line1\nline2\nline3".lines()
+    .forEach(System.out::println);
+
+// Transform
+var upper = "hello".transform(s -&gt; s.toUpperCase());
+</code></pre>
+</section>
+
+<section>
+<h2>Files and Collection APIs</h2>
+<pre><code class="language-java">// Files
+var content = Files.readString(Path.of("data.txt"));
+Files.writeString(Path.of("out.txt"), content);
+
+// Collection factory methods
+var list = List.of("a", "b", "c");
+var set = Set.of(1, 2, 3);
+var map = Map.of("key1", "value1", "key2", "value2");
+
+// Copy of
+var copy = List.copyOf(list);
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Unnamed variables (_) clarify intent when values are unused</li>
+<li>Flexible constructor bodies allow validation before super()</li>
+<li>Modern APIs (String, Files, Collections) reduce boilerplate</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Exercise - Refactoring Java 7 to Modern Java.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">03 - UnnamedVariables_UtilityAPIs</span></div>');});
+</script>
+</body>
+</html>
