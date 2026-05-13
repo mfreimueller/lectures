@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>14 - Concurrency in Modern Java</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>14 - Concurrency in Modern Java</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Recap: Bisherige Concurrency-Lektionen</h2>
+<ul>
+<li class="fragment">Lektion 12: Threads, Runnable, synchronized, volatile, wait/notify</li>
+<li class="fragment">Lektion 13: Locks, Executors, Callable/Future, CompletableFuture, ForkJoin</li>
+<li class="fragment">Einschrankung: Platform Threads sind teuer (1 MB Stack pro Thread)</li>
+<li class="fragment">Einschrankung: Manuelle Future-Verwaltung ist fehleranfallig (vergessene join(), ausreissende Tasks)</li>
+<li class="fragment">Einschrankung: ThreadLocal hat Probleme mit Virtual Threads und Speicherlecks</li>
+</ul>
+</section>
+
+<section>
+<h2>Motivation</h2>
+<ul>
+<li class="fragment">Ein Platform Thread = ~1 MB Stack + OS-Thread = teuer</li>
+<li class="fragment">Server mit 16 GB RAM: max ~16.000 Platform Threads</li>
+<li class="fragment">Virtual Thread: ~einige KB, Millionen gleichzeitig moglich</li>
+<li class="fragment">"Einfach zu codierende, hochskalierbare Server-Anwendungen" (JEP 444)</li>
+</ul>
+</section>
+
+<section>
+<h2>Platform Threads vs. Virtual Threads</h2>
+<div class="fragment">
+<h3>Platform Thread (OS Thread)</h3>
+<ul>
+<li>Wird direkt vom OS verwaltet</li>
+<li>1:1 Mapping auf OS-Thread</li>
+<li>Kostet ~1 MB Stack + OS-Ressourcen</li>
+<li>Teurer Context Switch</li>
+</ul>
+</div>
+<div class="fragment">
+<h3>Virtual Thread</h3>
+<ul>
+<li>Wird von der JVM verwaltet</li>
+<li>M:N Mapping (viele Virtual Threads auf wenige Platform Threads)</li>
+<li>Kostet ~einige KB</li>
+<li>Leichtgewichtiger Mount/Unmount auf Carrier Thread</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Virtual Threads - Prinzip</h2>
+<pre><code class="language-plaintext">JVM (M : N Mapping)
+
+Carrier Thread 1 (Platform Thread) ---+--- VT-A, VT-B, VT-C
+Carrier Thread 2 (Platform Thread) ---+--- VT-D, VT-E
+...
+
+Wenn VT-A blockiert (z.B. I/O):
+   VT-A wird ausgehangt (unmount)
+   Carrier-1 fuhrt VT-B weiter aus
+   Wenn I/O fertig: VT-A wird wieder auf einen freien Carrier gemountet</code></pre>
+<ul>
+<li class="fragment">Blockierende I/O-Operationen blockieren NICHT den Carrier Thread</li>
+<li class="fragment">Keine Thread-Pools mehr notig — einfach fur jede Aufgabe einen neuen Virtual Thread</li>
+</ul>
+</section>
+
+<section>
+<h2>Virtual Threads erzeugen</h2>
+<pre><code class="language-java">// Mit Thread Builder
+Thread vThread = Thread.ofVirtual()
+    .name("my-virtual-thread")
+    .unstarted(() -> System.out.println("Hello from VT"));
+vThread.start();
+
+// Direkt starten
+Thread.startVirtualThread(() -> {
+    System.out.println("Hello from VT");
+});
+
+// Mit ExecutorService (Java 21+)
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    executor.submit(() -> "Task in VT");
+} // auto-close: wartet auf alle Tasks</code></pre>
+</section>
+
+<section>
+<h2>100.000 Virtual Threads</h2>
+<pre><code class="language-java">// Platform Threads: inakzeptabel (100.000 * 1 MB = ~100 GB)
+// Virtual Threads: problemlos moglich
+
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    for (int i = 0; i < 100_000; i++) {
+        int taskId = i;
+        executor.submit(() -> {
+            Thread.sleep(1000);  // blockiert NICHT den Carrier
+            return taskId;
+        });
+    }
+} // wartet auf alle 100.000 Virtual Threads</code></pre>
+</section>
+
+<section>
+<h2>Virtual Threads - Einschrankungen</h2>
+<ul>
+<li class="fragment"><strong>synchronized:</strong> Virtual Thread wird beim Eintritt in synchronized blockiert und belegt den Carrier (Pinning) — vermeiden!</li>
+<li class="fragment"><strong>CPU-intensive Tasks:</strong> Virtual Threads bringen keinen Vorteil, da sie keine I/O-Wartezeit haben</li>
+<li class="fragment"><strong>Native Code / JNI:</strong> Kann zu Pinning fuhren</li>
+<li class="fragment">Losung: synchronized durch ReentrantLock ersetzen (kein Pinning)</li>
+</ul>
+</section>
+
+<section>
+<h2>Structured Concurrency - Konzept</h2>
+<ul>
+<li class="fragment">Ziel: "Strukturierte Nebenlaufigkeit" mit klaren Lebenszyklen</li>
+<li class="fragment">Ein Task erzeugt Sub-Tasks, deren Lebensdauer an den umgebenden Block gebunden ist</li>
+<li class="fragment">Wenn ein Sub-Task fehlschlagt: alle anderen werden abgebrochen</li>
+<li class="fragment">Keine "ausreissenden" Tasks (runaway tasks)</li>
+<li class="fragment">Fehlerpropagation: Entweder alle erfolgreich ODER Fehler</li>
+</ul>
+</section>
+
+<section>
+<h2>StructuredTaskScope - ShutdownOnFailure</h2>
+<pre><code class="language-java">// Alle Subtasks mussen erfolgreich sein
+try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+    Future&lt;String&gt; user = scope.fork(() -> fetchUser(1));
+    Future&lt;String&gt; address = scope.fork(() -> fetchAddress(1));
+
+    scope.join();             // warte auf alle
+    scope.throwIfFailed();    // wenn einer fehlschlagt -> Exception
+
+    // Alle erfolgreich:
+    return user.resultNow() + ", " + address.resultNow();
+}</code></pre>
+</section>
+
+<section>
+<h2>StructuredTaskScope - ShutdownOnSuccess</h2>
+<pre><code class="language-java">// Das erste erfolgreiche Ergebnis nehmen
+try (var scope = new StructuredTaskScope.ShutdownOnSuccess&lt;String&gt;()) {
+    scope.fork(() -> fetchFromPrimary("data"));
+    scope.fork(() -> fetchFromSecondary("data"));
+    scope.fork(() -> fetchFromCache("data"));
+
+    String result = scope.join().result();  // erstes erfolgreiches
+    return result;
+}
+// Alle anderen Tasks werden abgebrochen</code></pre>
+</section>
+
+<section>
+<h2>Structured Concurrency - Beispiel</h2>
+<pre><code class="language-java">Response handle() throws InterruptedException, ExecutionException {
+    try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+        Future&lt;User&gt; user = scope.fork(() -> userService.getUser(id));
+        Future&lt;List&lt;Order&gt;&gt; orders = scope.fork(() -> orderService.getOrders(id));
+
+        scope.join();           // warte auf beide
+        scope.throwIfFailed();  // wenn einer fehlschlagt -> beide abbrechen
+
+        return new Response(user.resultNow(), orders.resultNow());
+    }
+}
+
+// Vorteil: Wenn getUser() fehlschlagt ->
+// orders-Task wird automatisch abgebrochen
+// Kein manuelles future.cancel() notig!</code></pre>
+</section>
+
+<section>
+<h2>ScopedValue - Motivation</h2>
+<ul>
+<li class="fragment">Problem mit ThreadLocal: Jeder Thread hat eigene Kopie, Speicherlecks, mutable, Probleme mit Virtual Threads</li>
+<li class="fragment">Losung: ScopedValue (JEP 446) — immutable, scope-gebunden, sicher fur Virtual Threads</li>
+<li class="fragment">Anwendungsfalle: Request-ID, User-Context, Transaktions-ID</li>
+</ul>
+</section>
+
+<section>
+<h2>ScopedValue vs. ThreadLocal</h2>
+<pre><code class="language-java">// ThreadLocal (alt, mutable, Speicherleck-Gefahr)
+private static final ThreadLocal&lt;String&gt; requestId = new ThreadLocal<>();
+requestId.set("abc-123");
+// ... requestId.get() ...
+requestId.remove();  // manuelle Bereinigung!
+
+// ScopedValue (neu, immutable, scope-gebunden)
+private static final ScopedValue&lt;String&gt; REQUEST_ID = ScopedValue.newInstance();
+
+ScopedValue.where(REQUEST_ID, "abc-123")
+    .run(() -> {
+        // Innerhalb dieses Scopes:
+        String id = REQUEST_ID.get();  // "abc-123"
+    });
+// Ausserhalb: REQUEST_ID.get() -> NoSuchElementException (sicher!)</code></pre>
+</section>
+
+<section>
+<h2>ScopedValue - Beispiel</h2>
+<pre><code class="language-java">public class RequestContext {
+    private static final ScopedValue&lt;String&gt; REQUEST_ID = ScopedValue.newInstance();
+    private static final ScopedValue&lt;String&gt; USER = ScopedValue.newInstance();
+
+    public static void processRequest(String requestId, String user) {
+        ScopedValue.where(REQUEST_ID, requestId)
+            .where(USER, user)
+            .run(() -> handle());
+    }
+
+    private static void handle() {
+        System.out.println("Request " + REQUEST_ID.get() + " by " + USER.get());
+        // weiterer Code ohne explizite Parameterubergabe
+    }
+}
+
+// Virtual Threads + ScopedValues: perfekte Kombination
+Thread.startVirtualThread(() ->
+    RequestContext.processRequest("req-1", "alice")
+);</code></pre>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Virtual Threads: leichtgewichtige Threads (M:N), Millionen gleichzeitig moglich</li>
+<li>I/O-blockierende Operationen blockieren keine Platform Threads</li>
+<li>Structured Concurrency: Strukturierte Lebenszyklen fur Sub-Tasks</li>
+<li>StructuredTaskScope: ShutdownOnFailure / ShutdownOnSuccess</li>
+<li>ScopedValue: Scope-gebundene, immutable Kontextwerte (Alternative zu ThreadLocal)</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Diese Lektion schliesst den POS Advanced Zyklus ab. Herzlichen Gluckwunsch!</p>
+<p>Behandelte Themen: Design Patterns (Strategy, Builder, Factory, Singleton, Facade, Iterator, Visitor), DDD, ACID, Optimistic Locking, Lazy Loading, Concurrency (Grundlagen, Fortgeschritten, Modern).</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">14 - Concurrency in Modern Java</span></div>');});
+</script>
+</body>
+</html>

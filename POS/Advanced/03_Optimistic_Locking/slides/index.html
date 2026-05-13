@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>03 - Optimistic Locking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>03 - Optimistic Locking</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Das Lost Update Problem</h2>
+<pre><code class="language-java">// Benutzer A liest (Version 1)
+Product p1 = repo.findById(1); // stock=10
+
+// Benutzer B liest (Version 1)
+Product p2 = repo.findById(1); // stock=10
+
+// A schreibt: stock = 10 - 2 = 8
+repo.update(p1.setStock(8));
+
+// B schreibt: stock = 10 - 5 = 5  (Lost Update!)
+repo.update(p2.setStock(5));</code></pre>
+<p class="fragment">Anderung von A wurde uberschrieben! Endstand: 5 statt 8 oder 3</p>
+</section>
+
+<section>
+<h2>Optimistic vs Pessimistic Locking</h2>
+<table>
+<thead><tr><th>Kriterium</th><th>Optimistic</th><th>Pessimistic</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Annahme</td><td>Wenig Konflikte</td><td>Viele Konflikte</td></tr>
+<tr class="fragment"><td>Sperrmechanismus</td><td>Version prufen beim Schreiben</td><td>Ressource gleich sperren</td></tr>
+<tr class="fragment"><td>Durchsatz</td><td>Hoch bei wenig Konflikten</td><td>Niedriger (Wartezeiten)</td></tr>
+<tr class="fragment"><td>Deadlocks</td><td>Nicht moglich</td><td>moglich</td></tr>
+<tr class="fragment"><td>Typisch fur</td><td>Webanwendungen, Leselastig</td><td>Batch-Verarbeitung, Schreibintensiv</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Version Field Pattern</h2>
+<ul>
+<li class="fragment">Jede Tabelle bekommt eine zusatzliche Versionsspalte</li>
+<li class="fragment">Version wird bei jedem Update inkrementiert</li>
+<li class="fragment">Beim Update wird gepruft: Ist die Version noch aktuell?</li>
+</ul>
+<pre class="fragment"><code class="language-sql">CREATE TABLE product (
+    id    INT PRIMARY KEY,
+    name  VARCHAR(100),
+    stock INT,
+    version INT DEFAULT 1
+);</code></pre>
+</section>
+
+<section>
+<h2>Compare-and-Swap (CAS)</h2>
+<pre><code class="language-sql">UPDATE product
+SET stock = 8, version = version + 1
+WHERE id = 1 AND version = 1;
+-- Wenn 0 Zeilen betroffen: Konflikt!</code></pre>
+<ul>
+<li class="fragment">Der WHERE-Teil pruft die alte Version</li>
+<li class="fragment">Nur wenn die Version noch aktuell ist, wird aktualisiert</li>
+<li class="fragment">Die AND-Operation ist atomar in der Datenbank</li>
+</ul>
+</section>
+
+<section>
+<h2>CAS in Java</h2>
+<pre><code class="language-java">public boolean update(Product expected, Product updated) {
+    Product current = store.get(expected.getId());
+    if (current.getVersion() != expected.getVersion()) {
+        throw new OptimisticLockException(
+            "Version conflict: expected " +
+            expected.getVersion() +
+            " but was " + current.getVersion());
+    }
+    updated.setVersion(expected.getVersion() + 1);
+    store.put(expected.getId(), updated);
+    return true;
+}</code></pre>
+</section>
+
+<section>
+<h2>Retry-Logik</h2>
+<pre><code class="language-java">public void reduceStock(int productId, int quantity) {
+    for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            Product p = repo.findById(productId);
+            p.setStock(p.getStock() - quantity);
+            repo.update(p, /* alte Version */);
+            return; // Erfolg
+        } catch (OptimisticLockException e) {
+            if (attempt == MAX_RETRIES) throw e;
+            // Erneut versuchen (mit aktualisierten Daten)
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>JPA @Version Annotation</h2>
+<pre><code class="language-java">@Entity
+public class Product {
+    @Id
+    private Long id;
+
+    private String name;
+    private int stock;
+
+    @Version
+    private int version;
+}</code></pre>
+<ul>
+<li class="fragment">JPA erhoht die Version automatisch bei jedem Update</li>
+<li class="fragment">Bei Konflikt: <code>OptimisticLockException</code> (oder <code>StaleObjectStateException</code>)</li>
+<li class="fragment">Funktioniert mit <code>EntityManager.merge()</code> und <code>flush()</code></li>
+</ul>
+</section>
+
+<section>
+<h2>JPA — Beispiel</h2>
+<pre><code class="language-java">@Service
+public class ProductService {
+    @Transactional
+    public void buyProduct(Long productId, int quantity) {
+        Product p = repo.findById(productId)
+            .orElseThrow();
+        p.setStock(p.getStock() - quantity);
+        // JPA erhoht @Version beim flush()
+    }
+}
+
+// Bei Konflikt:
+try { productService.buyProduct(1L, 2); }
+catch (OptimisticLockException e) {
+    // Retry mit frisch geladenem Produkt
+}</code></pre>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Optimistic Locking lost das Lost Update Problem ohne langfristige Sperren</li>
+<li>Version-Felder und CAS ermoglichen Konflikterkennung beim Schreiben</li>
+<li>Retry-Logik behandelt OptimisticLockExceptions</li>
+<li>JPA @Version automatisiert das Version-Management</li>
+<li>Geeignet fur Systeme mit wenigen Schreibkonflikten</li>
+<li>Nachste Lektion: Strategy Pattern</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">03 - Optimistic Locking</span></div>');});
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>00 - Software Design Patterns</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>00 - Software Design Patterns</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Was sind Design Patterns?</h2>
+<ul>
+<li class="fragment">Wiederkehrende Losungen fur wiederkehrende Probleme in der Softwareentwicklung</li>
+<li class="fragment">Kein fertiger Code, sondern eine Vorlage / Schablone</li>
+<li class="fragment">Ermoglichen eine gemeinsame Sprache zwischen Entwicklern</li>
+</ul>
+<aside class="fragment highlight-box">
+<p>Ein Pattern hat vier wesentliche Elemente: Name, Problem, Losung, Konsequenzen</p>
+</aside>
+</section>
+
+<section>
+<h2>Geschichte: Gang of Four (GoF)</h2>
+<ul>
+<li class="fragment">1994: "Design Patterns: Elements of Reusable Object-Oriented Software"</li>
+<li class="fragment">Autoren: Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides</li>
+<li class="fragment">Enthalt 23 Patterns, kategorisiert in 3 Gruppen</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Ein Pattern ist keine Bibliothek, sondern eine Idee
+// "Program to an interface, not an implementation"</code></pre>
+</section>
+
+<section>
+<h2>Die drei GoF-Kategorien</h2>
+<table>
+<thead><tr><th>Kategorie</th><th>Fokus</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Creational</td><td>Objekterzeugung</td></tr>
+<tr class="fragment"><td>Structural</td><td>Zusammensetzung von Klassen/Objekten</td></tr>
+<tr class="fragment"><td>Behavioral</td><td>Interaktion und Zustandigkeitsverteilung</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Creational Patterns</h2>
+<ul>
+<li class="fragment">Abstraktion des Instanziierungsprozesses</li>
+<li class="fragment">Beispiele: Singleton, Factory Method, Abstract Factory, Builder, Prototype</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Factory Method
+Pizza pizza = PizzaFactory.create("margherita");</code></pre>
+</section>
+
+<section>
+<h2>Structural Patterns</h2>
+<ul>
+<li class="fragment">Definieren, wie Klassen und Objekte zusammengesetzt werden</li>
+<li class="fragment">Beispiele: Adapter, Decorator, Facade, Proxy, Composite</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Adapter
+LegacyLogger logger = new LoggerAdapter(new ModernLogger());</code></pre>
+</section>
+
+<section>
+<h2>Behavioral Patterns</h2>
+<ul>
+<li class="fragment">Beschreiben Kommunikation zwischen Objekten</li>
+<li class="fragment">Beispiele: Observer, Strategy, Iterator, Command, Template Method</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Strategy
+PaymentStrategy strategy = new CreditCardStrategy();
+checkout.pay(strategy, 99.99);</code></pre>
+</section>
+
+<section>
+<h2>Pattern Language</h2>
+<ul>
+<li class="fragment">Patterns stehen in Beziehung zueinander</li>
+<li class="fragment">Ein Pattern kann auf hoherer Ebene andere Patterns kombinieren</li>
+<li class="fragment">Beispiel: Ein Abstract Factory kann Singleton fur Factory-Instanzen nutzen</li>
+</ul>
+<div class="fragment highlight-box">
+<p>Patterns bilden ein Vokabular: Sie ermoglichen praziose Kommunikation</p>
+</div>
+</section>
+
+<section>
+<h2>Warum Patterns verwenden?</h2>
+<ul>
+<li class="fragment">Wiederverwendbarkeit erprobter Losungen</li>
+<li class="fragment">Verbesserte Kommunikation im Team ("Wir brauchen einen Observer hier")</li>
+<li class="fragment">Erhohte Wartbarkeit durch klarere Strukturen</li>
+<li class="fragment">Vermeidung von Anti-Patterns</li>
+</ul>
+</section>
+
+<section>
+<h2>Code-Beispiel: Pattern erkennen</h2>
+<pre><code class="language-java">public class ShoppingCart {
+    private List&lt;Item&gt; items = new ArrayList&lt;&gt;();
+    private PaymentStrategy paymentStrategy;
+
+    public void setPaymentStrategy(PaymentStrategy s) {
+        this.paymentStrategy = s;
+    }
+
+    public void checkout() {
+        paymentStrategy.pay(calculateTotal());
+    }
+}</code></pre>
+<p class="fragment">Welche Kategorie? -> Behavioral (Strategy Pattern)</p>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>GoF definiert 23 Patterns in 3 Kategorien</li>
+<li>Creational: Objekterzeugung (Singleton, Factory, Builder)</li>
+<li>Structural: Zusammensetzung (Adapter, Facade, Decorator)</li>
+<li>Behavioral: Interaktion (Strategy, Observer, Iterator)</li>
+<li>Patterns sind ein Kommunikationswerkzeug und keine fertigen Bibliotheken</li>
+<li>Nachste Lektion: Domain-Driven Design</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">00 - Software Design Patterns</span></div>');});
+</script>
+</body>
+</html>

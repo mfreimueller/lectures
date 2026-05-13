@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>12 - Concurrency in Java - Introduction</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>12 - Concurrency in Java - Introduction</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Motivation</h2>
+<ul>
+<li class="fragment">Moderne CPUs haben mehrere Kerne — echte Parallelitat moglich</li>
+<li class="fragment">Nebenlaufigkeit verbessert Durchsatz und Responsivitat</li>
+<li class="fragment">Beispiele: Webserver (viele Clients gleichzeitig), UI-Apps (Hintergrundthreads), Big Data</li>
+<li class="fragment">Aber: Nebenlaufigkeit ist fehleranfallig (Race Conditions, Deadlocks)</li>
+</ul>
+</section>
+
+<section>
+<h2>Prozesse vs. Threads</h2>
+<div class="fragment">
+<h3>Prozess</h3>
+<ul>
+<li>Eigener Adressraum, eigene Ressourcen</li>
+<li>Schwergewichtiger Kontextwechsel</li>
+<li>Isolation zwischen Prozessen</li>
+</ul>
+</div>
+<div class="fragment">
+<h3>Thread</h3>
+<ul>
+<li>Teilt Adressraum mit anderen Threads</li>
+<li>Leichtgewichtiger Kontextwechsel</li>
+<li>Direkter Speicherzugriff uber gemeinsame Variablen</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Thread-Erzeugung: extends Thread</h2>
+<pre><code class="language-java">class MyThread extends Thread {
+    private final String name;
+
+    MyThread(String name) { this.name = name; }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(name + ": " + i);
+        }
+    }
+}
+
+// Verwendung
+Thread t1 = new MyThread("Thread-A");
+Thread t2 = new MyThread("Thread-B");
+t1.start();  // startet neuen Thread
+t2.start();</code></pre>
+<ul>
+<li class="fragment">Nachteil: Kann keine andere Klasse erweitern (keine Mehrfachvererbung)</li>
+</ul>
+</section>
+
+<section>
+<h2>Thread-Erzeugung: implements Runnable</h2>
+<pre><code class="language-java">class MyTask implements Runnable {
+    private final String name;
+
+    MyTask(String name) { this.name = name; }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(name + ": " + i);
+        }
+    }
+}
+
+// Verwendung
+Thread t1 = new Thread(new MyTask("Task-A"));
+Thread t2 = new Thread(new MyTask("Task-B"));
+t1.start();
+t2.start();</code></pre>
+<ul>
+<li class="fragment">Vorteil: Klasse kann andere Klasse erweitern</li>
+<li class="fragment">Bevorzugter Ansatz (Trennung von Task und Thread)</li>
+</ul>
+</section>
+
+<section>
+<h2>Thread-Lebenszyklus</h2>
+<pre><code class="language-plaintext">  NEW
+   |
+   v
+ RUNNABLE &lt;--&gt; RUNNING
+   |
+   v
+ BLOCKED / WAITING / TIMED_WAITING
+   |
+   v
+ TERMINATED</code></pre>
+<ul>
+<li class="fragment"><strong>NEW:</strong> erzeugt, noch nicht gestartet</li>
+<li class="fragment"><strong>RUNNABLE:</strong> bereit zur Ausfuhrung (im Scheduler)</li>
+<li class="fragment"><strong>BLOCKED/WAITING:</strong> wartet auf Monitor oder Bedingung</li>
+<li class="fragment"><strong>TERMINATED:</strong> run() ist beendet</li>
+</ul>
+</section>
+
+<section>
+<h2>Race Conditions</h2>
+<pre><code class="language-java">class Counter {
+    private int count = 0;
+
+    public void increment() { count++; }  // nicht atomar!
+
+    public int getCount() { return count; }
+}
+
+// Zwei Threads rufen gleichzeitig increment() auf
+Counter counter = new Counter();
+
+// Thread 1: count++
+// Thread 2: count++
+// Resultat kann 1 statt 2 sein!</code></pre>
+<div class="fragment highlight-box">
+<p>count++ ist nicht atomar: lesen + erhohen + schreiben (3 Schritte!)</p>
+</div>
+</section>
+
+<section>
+<h2>Race Condition - Ablauf</h2>
+<pre><code class="language-plaintext">count = 0
+
+Thread 1: liest count (0)
+Thread 2: liest count (0)
+Thread 1: erhoht auf 1, schreibt count = 1
+Thread 2: erhoht auf 1, schreibt count = 1
+
+Ergebnis: 1 (statt 2!)</code></pre>
+<p class="fragment">Ursache: Gleichzeitiger Zugriff auf gemeinsamen Zustand ohne Synchronisation</p>
+</section>
+
+<section>
+<h2>Losung: synchronized</h2>
+<pre><code class="language-java">class SynchronizedCounter {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++;  // Jetzt atomar aus Sicht der Threads
+    }
+
+    public synchronized int getCount() {
+        return count;
+    }
+}
+
+// Oder als Block:
+public void increment() {
+    synchronized (this) {
+        count++;
+    }
+}</code></pre>
+<ul>
+<li class="fragment">synchronized stellt gegenseitigen Ausschluss (Mutual Exclusion) sicher</li>
+<li class="fragment">Jedes Objekt in Java hat einen intrinsischen Lock (Monitor)</li>
+</ul>
+</section>
+
+<section>
+<h2>synchronized - Wirkung</h2>
+<pre><code class="language-plaintext">Thread 1: betritt synchronized(increment) -> erwirbt Lock
+Thread 2: wartet an der synchronized-Grenze (BLOCKED)
+Thread 1: verlasst synchronized -> gibt Lock frei
+Thread 2: erwirbt Lock, fuhrt aus, gibt Lock frei</code></pre>
+<ul>
+<li class="fragment">Nur ein Thread kann gleichzeitig in einem synchronized-Block auf demselben Objekt sein</li>
+<li class="fragment">Andere Threads mussen warten (BLOCKED-Zustand)</li>
+</ul>
+</section>
+
+<section>
+<h2>volatile</h2>
+<pre><code class="language-java">class FlagHolder {
+    private volatile boolean running = true;
+
+    public void stop() { running = false; }
+
+    public void run() {
+        while (running) {
+            // tue etwas
+        }
+    }
+}</code></pre>
+<ul>
+<li class="fragment"><strong>Problem ohne volatile:</strong> Thread konnte running im CPU-Cache puffern (nie die Anderung sehen)</li>
+<li class="fragment"><strong>volatile:</strong> Schreibzugriff wird sofort in den Hauptspeicher geschrieben, Lesezugriff liest aus Hauptspeicher</li>
+<li class="fragment">Lost das Sichtbarkeitsproblem, aber NICHT das Atomaritatsproblem</li>
+</ul>
+</section>
+
+<section>
+<h2>Thread-Koordination: wait/notify</h2>
+<pre><code class="language-java">class BoundedBuffer {
+    private final int[] buffer;
+    private int count = 0, putIndex = 0, takeIndex = 0;
+
+    public BoundedBuffer(int capacity) {
+        buffer = new int[capacity];
+    }
+
+    public synchronized void put(int value) throws InterruptedException {
+        while (count == buffer.length) {
+            wait();  // Puffer voll -> warten
+        }
+        buffer[putIndex] = value;
+        putIndex = (putIndex + 1) % buffer.length;
+        count++;
+        notifyAll();  // Konsument benachrichtigen
+    }
+
+    public synchronized int take() throws InterruptedException {
+        while (count == 0) {
+            wait();  // Puffer leer -> warten
+        }
+        int value = buffer[takeIndex];
+        takeIndex = (takeIndex + 1) % buffer.length;
+        count--;
+        notifyAll();  // Produzent benachrichtigen
+        return value;
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>wait/notify - Regeln</h2>
+<ul>
+<li class="fragment"><strong>wait()</strong> muss in synchronized-Block aufgerufen werden</li>
+<li class="fragment"><strong>wait()</strong> gibt den Monitor-Lock frei und wartet</li>
+<li class="fragment"><strong>notify()</strong> weckt einen wartenden Thread</li>
+<li class="fragment"><strong>notifyAll()</strong> weckt alle wartenden Threads</li>
+<li class="fragment"><strong>Immer in einer while-Schleife warten!</strong> (Spurious Wakeups)</li>
+</ul>
+</section>
+
+<section>
+<h2>Producer-Consumer Pattern</h2>
+<pre><code class="language-java">// Produzent-Thread
+class Producer implements Runnable {
+    private final BoundedBuffer buffer;
+    // ...
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            buffer.put(i);
+            System.out.println("Produziert: " + i);
+        }
+    }
+}
+
+// Konsument-Thread
+class Consumer implements Runnable {
+    private final BoundedBuffer buffer;
+    // ...
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            int value = buffer.take();
+            System.out.println("Konsumiert: " + value);
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Deadlocks</h2>
+<pre><code class="language-java">// Thread 1
+synchronized (lockA) {
+    synchronized (lockB) {
+        // tue etwas
+    }
+}
+
+// Thread 2
+synchronized (lockB) {
+    synchronized (lockA) {
+        // tue etwas
+    }
+}</code></pre>
+<div class="fragment highlight-box">
+<p>Vermeidung: Immer Locks in derselben Reihenfolge anfordern!</p>
+</div>
+</section>
+
+<section>
+<h2>Best Practices</h2>
+<ul>
+<li class="fragment"><strong>Runnable bevorzugen</strong> statt Thread zu erweitern</li>
+<li class="fragment"><strong>Synchronisation so klein wie moglich</strong> halten (Performance)</li>
+<li class="fragment"><strong>wait() immer in while-Schleife</strong> (Spurious Wakeups)</li>
+<li class="fragment"><strong>Immer notifyAll() statt notify()</strong> verwenden (Signalverlust vermeiden)</li>
+<li class="fragment"><strong>Geteilte mutable State minimieren</strong> — bessere Alternative: immutable Objekte</li>
+<li class="fragment"><strong>Thread-Interrupts ordentlich behandeln</strong> (InterruptedException)</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Thread-Erzeugung: extends Thread oder implements Runnable</li>
+<li>Race Conditions: Gleichzeitiger Zugriff auf shared mutable State</li>
+<li>synchronized: Gegenseitiger Ausschluss (Lock auf Objekt)</li>
+<li>volatile: Sichtbarkeit von Variablen (keine Atomaritat)</li>
+<li>wait/notify: Koordination zwischen Threads (Producer-Consumer)</li>
+<li>Deadlocks durch konsistente Lock-Reihenfolge vermeiden</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nachste Lektion: Fortgeschrittene Concurrency — Locks, Executors, ForkJoin, CompletableFuture</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">12 - Concurrency in Java - Introduction</span></div>');});
+</script>
+</body>
+</html>

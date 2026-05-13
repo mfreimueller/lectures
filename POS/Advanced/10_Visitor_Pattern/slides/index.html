@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>10 - Visitor Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>10 - Visitor Pattern</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Problemstellung</h2>
+<ul>
+<li class="fragment">Sie haben eine Objektstruktur mit verschiedenen Elementtypen (Circle, Rectangle, Triangle)</li>
+<li class="fragment">Sie mochten Operationen wie Flachenberechnung, Umfangsberechnung, Zeichnen ausfuhren</li>
+<li class="fragment">Problem: Jede neue Operation erfordert Anderungen an allen Elementklassen</li>
+</ul>
+</section>
+
+<section>
+<h2>Problemstellung - Beispiel</h2>
+<pre><code class="language-java">interface Shape {
+    double area();           // neue Methode fur jede Operation
+    double perimeter();      // jede neue Operation = Anderung aller Klassen
+    void draw();
+}
+
+class Circle implements Shape {
+    // Muss area(), perimeter(), draw() implementieren
+}
+
+class Rectangle implements Shape {
+    // Muss ebenfalls alle drei implementieren
+}</code></pre>
+<p class="fragment">Verstoss gegen das Open/Closed-Prinzip!</p>
+</section>
+
+<section>
+<h2>Visitor Pattern - Losung</h2>
+<div class="fragment highlight-box">
+<p>Trenne die Operationen von der Objektstruktur.</p>
+</div>
+<ul>
+<li class="fragment">Die Elementklassen bleiben stabil</li>
+<li class="fragment">Neue Operationen = neue Visitor-Klassen</li>
+<li class="fragment">Erfullt das Open/Closed-Prinzip fur Operationen</li>
+</ul>
+</section>
+
+<section>
+<h2>GoF Klassifikation</h2>
+<ul>
+<li class="fragment"><strong>Kategorie:</strong> Behavioral Pattern (Verhaltensmuster)</li>
+<li class="fragment"><strong>Zweck:</strong> Ermoglicht das Definieren neuer Operationen auf einer Objektstruktur, ohne die Klassen der Elemente zu andern</li>
+<li class="fragment"><strong>Auch bekannt als:</strong> Double Dispatch</li>
+<li class="fragment"><strong>Prinzip:</strong> "Represent an operation to be performed on the elements of an object structure"</li>
+</ul>
+</section>
+
+<section>
+<h2>Struktur</h2>
+<pre><code class="language-plaintext">+----------------+      +-------------------+
+|    Visitor     |      |    Element        |
++----------------+      +-------------------+
+| +visitCircle() |&lt;--+  | +accept(Visitor)  |
+| +visitRect()   |   |  +-------------------+
+| +visitTri()    |   |          ^
++----------------+   |          |
+         ^           |   +------+------+
+         |           |   |             |
++------------------+ | +---+       +---------+
+| AreaCalculator   | | |Circle|    |Rectangle|
++------------------+ | +-------+  +---------+
+| +visitCircle()   |-+ |+accept()|  |+accept()|
+| +visitRect()     |   +-------+  +---------+
++------------------+</code></pre>
+</section>
+
+<section>
+<h2>Double Dispatch</h2>
+<ul>
+<li class="fragment"><strong>Single Dispatch:</strong> Java wählt die Methode basierend auf dem Laufzeittyp des Empfangers (this)</li>
+<li class="fragment"><strong>Double Dispatch:</strong> Die Wahl der Methode hangt vom Laufzeittyp <em>beider</em> Objekte ab</li>
+</ul>
+<pre class="fragment"><code class="language-java">// Single Dispatch (normale Methoden)
+shape.draw();  // nur shape bestimmt die Implementierung
+
+// Double Dispatch (Visitor)
+shape.accept(visitor);  // sowohl shape als auch visitor bestimmen</code></pre>
+</section>
+
+<section>
+<h2>Double Dispatch - Ablauf</h2>
+<pre><code class="language-java">element.accept(visitor);
+// 1. Aufruf: accept() auf element -> Dynamic Dispatch
+// 2. Im accept(): visitor.visit(this) -> erneuter Dynamic Dispatch
+
+class Circle implements Shape {
+    public void accept(Visitor v) {
+        v.visitCircle(this);  // this ist vom Typ Circle
+    }
+}</code></pre>
+<p class="fragment">Zwei aufeinanderfolgende dynamische Dispatchs = Double Dispatch</p>
+</section>
+
+<section>
+<h2>Visitor Interface</h2>
+<pre><code class="language-java">public interface ShapeVisitor {
+    void visitCircle(Circle circle);
+    void visitRectangle(Rectangle rectangle);
+}</code></pre>
+<ul>
+<li class="fragment">Eine visit-Methode pro konkreter Elementklasse</li>
+<li class="fragment">Methodenname + Parameter-Typ bestimmen die Zuordnung</li>
+</ul>
+</section>
+
+<section>
+<h2>Element Interface</h2>
+<pre><code class="language-java">public interface Shape {
+    double getArea();       // bestehende Methode
+    void accept(ShapeVisitor visitor);  // NEU: Accept-Methode
+}</code></pre>
+<ul>
+<li class="fragment">accept nimmt einen Visitor entgegen</li>
+<li class="fragment">Ruft die passende visit-Methode des Visitors auf</li>
+</ul>
+</section>
+
+<section>
+<h2>Konkrete Elemente</h2>
+<pre><code class="language-java">class Circle implements Shape {
+    private double radius;
+    public Circle(double radius) { this.radius = radius; }
+    public double getRadius() { return radius; }
+
+    public double getArea() { return Math.PI * radius * radius; }
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitCircle(this);  // this ist Circle
+    }
+}
+
+class Rectangle implements Shape {
+    private double width, height;
+    public Rectangle(double w, double h) { this.width = w; this.height = h; }
+    public double getWidth() { return width; }
+    public double getHeight() { return height; }
+
+    public double getArea() { return width * height; }
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitRectangle(this);  // this ist Rectangle
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Konkreter Visitor - AreaCalculator</h2>
+<pre><code class="language-java">public class AreaCalculator implements ShapeVisitor {
+    private double totalArea = 0;
+
+    public void visitCircle(Circle c) {
+        totalArea += Math.PI * c.getRadius() * c.getRadius();
+    }
+
+    public void visitRectangle(Rectangle r) {
+        totalArea += r.getWidth() * r.getHeight();
+    }
+
+    public double getTotalArea() { return totalArea; }
+}</code></pre>
+</section>
+
+<section>
+<h2>Konkreter Visitor - PerimeterCalculator</h2>
+<pre><code class="language-java">public class PerimeterCalculator implements ShapeVisitor {
+    private double totalPerimeter = 0;
+
+    public void visitCircle(Circle c) {
+        totalPerimeter += 2 * Math.PI * c.getRadius();
+    }
+
+    public void visitRectangle(Rectangle r) {
+        totalPerimeter += 2 * (r.getWidth() + r.getHeight());
+    }
+
+    public double getTotalPerimeter() { return totalPerimeter; }
+}</code></pre>
+</section>
+
+<section>
+<h2>Client-Code</h2>
+<pre><code class="language-java">List&lt;Shape&gt; shapes = List.of(
+    new Circle(5),
+    new Rectangle(3, 4)
+);
+
+AreaCalculator areaCalc = new AreaCalculator();
+PerimeterCalculator perimCalc = new PerimeterCalculator();
+
+for (Shape s : shapes) {
+    s.accept(areaCalc);    // double dispatch
+    s.accept(perimCalc);   // double dispatch
+}
+
+System.out.println("Total area: " + areaCalc.getTotalArea());
+System.out.println("Total perimeter: " + perimCalc.getTotalPerimeter());</code></pre>
+</section>
+
+<section>
+<h2>Vor- und Nachteile</h2>
+<div class="fragment">
+<h3>Vorteile</h3>
+<ul>
+<li>Open/Closed-Prinzip: neue Operationen ohne Anderung der Elemente</li>
+<li>Sammelt verwandte Operationen in einer Klasse</li>
+<li>Visitor kann Zustand uber die Traversierung hinweg speichern</li>
+</ul>
+</div>
+<div class="fragment">
+<h3>Nachteile</h3>
+<ul>
+<li>Neue Elementklassen erfordern Anderung aller Visitor</li>
+<li>Zirkulare Abhangigkeit zwischen Visitor und Elementhierarchie</li>
+<li>Aufwandiger als einfaches Pattern Matching</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Alternative: Pattern Matching (Java 21+)</h2>
+<pre><code class="language-java">double calculateArea(Shape shape) {
+    return switch (shape) {
+        case Circle c     -> Math.PI * c.getRadius() * c.getRadius();
+        case Rectangle r  -> r.getWidth() * r.getHeight();
+        default           -> throw new IllegalArgumentException();
+    };
+}</code></pre>
+<ul>
+<li class="fragment">Weniger Boilerplate-Code</li>
+<li class="fragment">Keine separate Visitor-Hierarchie notig</li>
+<li class="fragment">Aber: Compiler warnt nicht bei neuen Elementtypen (weicht Open/Closed auf)</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Visitor = GoF Behavioral Pattern fur Operationen auf heterogenen Strukturen</li>
+<li>Double Dispatch = zwei dynamische Methodenaufrufe hintereinander</li>
+<li>accept-Methode in jedem Element ruft visit-Methode des Visitors</li>
+<li>Neue Operationen = neue Visitor-Klasse (offen fur Erweiterung)</li>
+<li>Neue Elemente = Anderung aller Visitor (geschlossen fur Anderung)</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nachste Lektion: Lazy Loading in Spring Boot - @Lazy, FetchType.LAZY, Lazy-Initialisierung</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">10 - Visitor Pattern</span></div>');});
+</script>
+</body>
+</html>

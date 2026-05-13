@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>13 - Concurrency in Java - Advanced</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>13 - Concurrency in Java - Advanced</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Recap: Lektion 12</h2>
+<ul>
+<li class="fragment">Thread-Erzeugung (extends Thread / implements Runnable)</li>
+<li class="fragment">synchronized — gegenseitiger Ausschluss</li>
+<li class="fragment">volatile — Sichtbarkeit</li>
+<li class="fragment">wait/notify — Thread-Koordination</li>
+<li class="fragment">Einschrankungen: synchronized ist starr, kein Timeout, keine feineren Locks</li>
+</ul>
+</section>
+
+<section>
+<h2>Motivation</h2>
+<ul>
+<li class="fragment">synchronized ist inflexibel: kein Timeout, kein tryLock, keine getrennten Lese-/Schreib-Locks</li>
+<li class="fragment">Manuelle Thread-Verwaltung ist fehleranfallig und schwer skalierbar</li>
+<li class="fragment">Thread-Pools trennen Aufgaben von der Thread-Verwaltung</li>
+<li class="fragment">Asynchrone Programmierung mit Futures ermoglicht nicht-blockierende Aufrufe</li>
+</ul>
+</section>
+
+<section>
+<h2>Lock Interface & ReentrantLock</h2>
+<pre><code class="language-java">Lock lock = new ReentrantLock();
+
+lock.lock();
+try {
+    // kritischer Abschnitt
+    counter++;
+} finally {
+    lock.unlock();  // immer freigeben!
+}
+
+// Optional: tryLock mit Timeout
+if (lock.tryLock(1, TimeUnit.SECONDS)) {
+    try {
+        // ...
+    } finally {
+        lock.unlock();
+    }
+}</code></pre>
+<ul>
+<li class="fragment">Explizites Lock — mehr Kontrolle als synchronized</li>
+<li class="fragment">ReentrantLock: Thread kann Lock mehrmals erwerben</li>
+<li class="fragment">Immer unlock() in finally-Block!</li>
+</ul>
+</section>
+
+<section>
+<h2>ReentrantLock - Eigenschaften</h2>
+<ul>
+<li class="fragment"><strong>Fairness:</strong> ReentrantLock(true) = langs/langere Wartezeit (fair), ReentrantLock(false) = keine Garantie (Standard)</li>
+<li class="fragment"><strong>tryLock:</strong> Versucht Lock zu erwerben, bricht bei Misserfolg ab (mit/ohne Timeout)</li>
+<li class="fragment"><strong>Condition:</strong> wait/notify-Ersatz mit mehr Kontrolle (await/signal statt wait/notify)</li>
+<li class="fragment">Mit Condition kann man getrennte Wait-Sets fur Produzenten und Konsumenten haben</li>
+</ul>
+</section>
+
+<section>
+<h2>ReadWriteLock</h2>
+<pre><code class="language-java">ReadWriteLock rwLock = new ReentrantReadWriteLock();
+
+// Lesen: viele gleichzeitig
+rwLock.readLock().lock();
+try {
+    return data;
+} finally {
+    rwLock.readLock().unlock();
+}
+
+// Schreiben: exklusiv
+rwLock.writeLock().lock();
+try {
+    data = newData;
+} finally {
+    rwLock.writeLock().unlock();
+}</code></pre>
+<ul>
+<li class="fragment">Optimiert fur: viele Lese-, wenige Schreibzugriffe</li>
+<li class="fragment">Read-Lock: mehrere Threads gleichzeitig</li>
+<li class="fragment">Write-Lock: exklusiv (kein Lesen/Schreiben parallel)</li>
+</ul>
+</section>
+
+<section>
+<h2>ExecutorService & Thread-Pools</h2>
+<pre><code class="language-java">// Thread-Pool erstellen
+ExecutorService executor = Executors.newFixedThreadPool(4);
+
+// Aufgabe ausfuhren (Runnable)
+executor.execute(() -> System.out.println("Task in pool"));
+
+// Aufgabe mit Ruckgabe (Callable)
+Future&lt;Integer&gt; future = executor.submit(() -> {
+    Thread.sleep(1000);
+    return 42;
+});
+
+// Ergebnis abholen (blockierend)
+Integer result = future.get();  // wartet maximal
+
+ExecutorService executor.shutdown();</code></pre>
+</section>
+
+<section>
+<h2>Thread-Pool Typen</h2>
+<ul>
+<li class="fragment"><strong>newFixedThreadPool(n):</strong> Feste Anzahl Threads, Warteschlange fur Aufgaben</li>
+<li class="fragment"><strong>newCachedThreadPool():</strong> Dynamisch wachsende Anzahl (Idle-Threads werden nach 60s beendet)</li>
+<li class="fragment"><strong>newSingleThreadExecutor():</strong> Ein Thread, Aufgaben werden sequenziell ausgefuhrt</li>
+<li class="fragment"><strong>newScheduledThreadPool(n):</strong> Fur verzogerte/wiederholte Ausfuhrung</li>
+</ul>
+</section>
+
+<section>
+<h2>Callable & Future</h2>
+<pre><code class="language-java">Callable&lt;String&gt; task = () -> {
+    TimeUnit.SECONDS.sleep(2);
+    return "Ergebnis";
+};
+
+ExecutorService executor = Executors.newFixedThreadPool(2);
+Future&lt;String&gt; future = executor.submit(task);
+
+// Andere Arbeit wahrend Task lauft
+System.out.println("Warte auf Ergebnis...");
+
+// Ergebnis abholen (blockiert bis Task fertig)
+String result = future.get(3, TimeUnit.SECONDS);  // Timeout
+System.out.println("Ergebnis: " + result);
+
+executor.shutdown();</code></pre>
+<ul>
+<li class="fragment">Future.get() blockiert den aufrufenden Thread</li>
+<li class="fragment">Future.isDone() prüft, ob Task abgeschlossen ist</li>
+<li class="fragment">Future.cancel() bricht den Task ab (per Interrupt)</li>
+</ul>
+</section>
+
+<section>
+<h2>invokeAll & invokeAny</h2>
+<pre><code class="language-java">List&lt;Callable&lt;Integer&gt;&gt; tasks = List.of(
+    () -> compute(1000),   // 1 Sekunde
+    () -> compute(2000),   // 2 Sekunden
+    () -> compute(500)     // 0.5 Sekunden
+);
+
+// Alle abwarten:
+List&lt;Future&lt;Integer&gt;&gt; results = executor.invokeAll(tasks);
+
+// Das schnellste Ergebnis nehmen:
+Integer firstResult = executor.invokeAny(tasks, 3, TimeUnit.SECONDS);</code></pre>
+</section>
+
+<section>
+<h2>CompletableFuture - Grundlagen</h2>
+<pre><code class="language-java">// Manuelle Erstellung
+CompletableFuture&lt;String&gt; future = new CompletableFuture<>();
+future.complete("fertig");  // Setzt Ergebnis
+
+// Asynchrone Ausfuhrung
+CompletableFuture&lt;Integer&gt; future = CompletableFuture
+    .supplyAsync(() -> {
+        // Wird in ForkJoinPool.commonPool() ausgefuhrt
+        return 42;
+    });
+
+// Ergebnis abholen (blockierend)
+Integer result = future.join();  // wirft keine checked Exception
+Integer result2 = future.get();  // wirft InterruptedException, ExecutionException</code></pre>
+<ul>
+<li class="fragment">CompletableFuture implementiert CompletionStage und Future</li>
+<li class="fragment">Ermoglicht funktionale Verkettung von asynchronen Operationen</li>
+</ul>
+</section>
+
+<section>
+<h2>CompletableFuture - Verkettung</h2>
+<pre><code class="language-java">CompletableFuture
+    .supplyAsync(() -> fetchUser(1))
+    .thenApply(user -> user.getEmail().toLowerCase())
+    .thenAccept(email -> System.out.println("Email: " + email))
+    .exceptionally(ex -> {
+        System.err.println("Fehler: " + ex);
+        return null;
+    });
+
+// Sequenzielle Verkettung (flaches Future)
+CompletableFuture
+    .supplyAsync(() -> getUser(1))
+    .thenCompose(user -> fetchOrders(user.getId()))
+    .thenAccept(orders -> orders.forEach(System.out::println));</code></pre>
+<ul>
+<li class="fragment">thenApply: Transformiert Ergebnis (Function)</li>
+<li class="fragment">thenAccept: Konsumiert Ergebnis (Consumer)</li>
+<li class="fragment">thenCompose: Verkettet Futures (flacht Verschachtelung)</li>
+<li class="fragment">exceptionally: Fehlerbehandlung</li>
+</ul>
+</section>
+
+<section>
+<h2>CompletableFuture - Kombination</h2>
+<pre><code class="language-java">// Zwei unabhangige Futures kombinieren
+CompletableFuture&lt;String&gt; user = CompletableFuture.supplyAsync(() -> getUser(1));
+CompletableFuture&lt;String&gt; address = CompletableFuture.supplyAsync(() -> getAddress(1));
+
+user.thenCombine(address, (u, a) -> u + " wohnt in " + a)
+    .thenAccept(System.out::println);
+
+// Auf mehrere warten (alle abschliessen)
+CompletableFuture.allOf(f1, f2, f3).join();
+
+// Auf das schnellste warten
+CompletableFuture.anyOf(f1, f2, f3).join();</code></pre>
+</section>
+
+<section>
+<h2>Fork/Join Framework</h2>
+<pre><code class="language-java">// Divide-and-Conquer mit RecursiveTask/RecursiveAction
+class SumTask extends RecursiveTask&lt;Long&gt; {
+    private static final int THRESHOLD = 10_000;
+    private final int[] array;
+    private final int start, end;
+
+    @Override
+    protected Long compute() {
+        if (end - start <= THRESHOLD) {
+            // Direkte Berechnung fur kleine Arrays
+            long sum = 0;
+            for (int i = start; i < end; i++) sum += array[i];
+            return sum;
+        }
+        // Aufteilung in Teilaufgaben
+        int mid = start + (end - start) / 2;
+        SumTask left = new SumTask(array, start, mid);
+        SumTask right = new SumTask(array, mid, end);
+        left.fork();  // Asynchrone Ausfuhrung
+        return right.compute() + left.join();
+    }
+}
+
+// Verwendung
+ForkJoinPool pool = new ForkJoinPool();
+Long result = pool.invoke(new SumTask(array, 0, array.length));</code></pre>
+</section>
+
+<section>
+<h2>Fork/Join - Work Stealing</h2>
+<ul>
+<li class="fragment">Jeder Thread hat eine eigene Aufgabenschlange (Deque)</li>
+<li class="fragment">Leerlaufende Threads stehlen Aufgaben von anderen Threads (Work Stealing)</li>
+<li class="fragment">Optimal fur Divide-and-Conquer: fork() = Aufgabe in eigene Schlange, compute() = selbst ausfuhren, join() = Ergebnis abholen</li>
+<li class="fragment">ForkJoinPool.commonPool() == standardmassig verfugbar</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>ReentrantLock: Flexiblere Alternative zu synchronized (tryLock, Timeout, Fairness)</li>
+<li>ReadWriteLock: Getrennte Lese-/Schreib-Locks</li>
+<li>ExecutorService: Thread-Pools fur Aufgabenverwaltung</li>
+<li>Callable/Future: Aufgaben mit Ruckgabewert</li>
+<li>CompletableFuture: Asynchrone Verkettung und Kombination</li>
+<li>Fork/Join: Divide-and-Conquer mit Work Stealing</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nachste Lektion: Moderne Java Concurrency — Virtual Threads, Structured Concurrency, Scoped Values (Java 19+)</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">13 - Concurrency in Java - Advanced</span></div>');});
+</script>
+</body>
+</html>

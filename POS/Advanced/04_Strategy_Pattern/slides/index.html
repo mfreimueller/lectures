@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>04 - Strategy Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>04 - Strategy Pattern</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Das Problem</h2>
+<pre><code class="language-java">public void sort(int[] data, String algorithm) {
+    if (algorithm.equals("bubble")) {
+        // Bubble Sort
+    } else if (algorithm.equals("quick")) {
+        // Quick Sort
+    } else if (algorithm.equals("merge")) {
+        // Merge Sort
+    }
+}</code></pre>
+<ul>
+<li class="fragment">Lange if/else-Ketten</li>
+<li class="fragment">Schwer erweiterbar (neue Algorithmen)</li>
+<li class="fragment">Verletzung des Open/Closed-Prinzips</li>
+</ul>
+</section>
+
+<section>
+<h2>Losung: Strategy Pattern</h2>
+<ul>
+<li class="fragment">Kapselt Algorithmen in eigenen Klassen</li>
+<li class="fragment">Macht sie austauschbar (zur Laufzeit)</li>
+<li class="fragment">Trennt die Nutzung von der Implementierung</li>
+</ul>
+<div class="fragment highlight-box">
+<p>"Define a family of algorithms, encapsulate each one, and make them interchangeable." — GoF</p>
+</div>
+</section>
+
+<section>
+<h2>Struktur des Strategy Patterns</h2>
+<pre><code class="language-java">// 1. Strategy Interface
+public interface SortStrategy {
+    void sort(int[] data);
+}
+
+// 2. Concrete Strategies
+public class BubbleSortStrategy implements SortStrategy { ... }
+public class QuickSortStrategy implements SortStrategy { ... }
+
+// 3. Context
+public class Sorter {
+    private SortStrategy strategy;
+    public void setStrategy(SortStrategy s) { this.strategy = s; }
+    public void sort(int[] data) { strategy.sort(data); }
+}</code></pre>
+</section>
+
+<section>
+<h2>Beispiel: Sortierstrategien</h2>
+<pre><code class="language-java">public class Sorter {
+    private SortStrategy strategy;
+    private String strategyName;
+
+    public Sorter(SortStrategy strategy, String name) {
+        this.strategy = strategy;
+        this.strategyName = name;
+    }
+
+    public void executeSort(int[] data) {
+        System.out.println("Using: " + strategyName);
+        int[] copy = data.clone();
+        long start = System.nanoTime();
+        strategy.sort(copy);
+        long end = System.nanoTime();
+        System.out.println("Time: " + (end - start) / 1e6 + " ms");
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>BubbleSort als Strategie</h2>
+<pre><code class="language-java">public class BubbleSortStrategy implements SortStrategy {
+    public void sort(int[] data) {
+        int n = data.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (data[j] > data[j + 1]) {
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Nutzung der Strategien</h2>
+<pre><code class="language-java">int[] data = {5, 2, 9, 1, 5, 6};
+
+Sorter sorter = new Sorter(new BubbleSortStrategy(), "Bubble Sort");
+sorter.executeSort(data);
+
+// Einfach wechseln:
+sorter = new Sorter(new QuickSortStrategy(), "Quick Sort");
+sorter.executeSort(data);</code></pre>
+<p class="fragment">Keine if/else — einfach neue Strategie ubergeben</p>
+</section>
+
+<section>
+<h2>Beispiel: Payment-Strategien</h2>
+<pre><code class="language-java">public interface PaymentStrategy {
+    void pay(double amount);
+    String getMethodName();
+}
+
+public class CreditCardStrategy implements PaymentStrategy {
+    private String cardNumber;
+    public void pay(double amount) {
+        System.out.println(cardNumber + ": " + amount + " EUR belastet");
+    }
+}
+
+public class PayPalStrategy implements PaymentStrategy {
+    private String email;
+    public void pay(double amount) {
+        System.out.println(email + ": " + amount + " EUR uber PayPal");
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Payment — Kontext</h2>
+<pre><code class="language-java">public class ShoppingCart {
+    private List&lt;Item&gt; items = new ArrayList&lt;&gt;();
+    private PaymentStrategy paymentStrategy;
+
+    public void setPaymentStrategy(PaymentStrategy s) {
+        this.paymentStrategy = s;
+    }
+
+    public void checkout() {
+        double total = items.stream()
+            .mapToDouble(Item::getPrice).sum();
+        paymentStrategy.pay(total);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Vor- und Nachteile</h2>
+<table>
+<thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Open/Closed Principle</td><td>Mehr Klassen</td></tr>
+<tr class="fragment"><td>Austauschbar zur Laufzeit</td><td>Client muss Strategien kennen</td></tr>
+<tr class="fragment"><td>if/else eliminieren</td><td>Overhead bei wenigen Strategien</td></tr>
+<tr class="fragment"><td>Einzeln testbar</td><td>Strategie-Objekte verwalten</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Strategy = austauschbare Algorithmen (Behavioral Pattern)</li>
+<li>Drei Rollen: Strategy Interface, Concrete Strategies, Context</li>
+<li>Ermoglicht Erweiterung ohne Modifikation (OCP)</li>
+<li>Typische Anwendungen: Sortieren, Bezahlen, Validieren, Komprimieren</li>
+<li>Nachste Lektion: Builder Pattern</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">04 - Strategy Pattern</span></div>');});
+</script>
+</body>
+</html>

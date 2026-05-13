@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>07 - Singleton Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>07 - Singleton Pattern</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Was ist ein Singleton?</h2>
+<ul>
+<li class="fragment">Stellt sicher, dass eine Klasse genau eine Instanz hat</li>
+<li class="fragment">Bietet einen globalen Zugriffspunkt auf diese Instanz</li>
+<li class="fragment">GoF Creational Pattern</li>
+</ul>
+<div class="fragment highlight-box">
+"Ensure a class only has one instance, and provide a global point of access to it." — GoF
+</div>
+</section>
+
+<section>
+<h2>Klassisches Singleton</h2>
+<pre><code class="language-java">public class ClassicSingleton {
+    private static ClassicSingleton instance;
+
+    private ClassicSingleton() {}
+
+    public static ClassicSingleton getInstance() {
+        if (instance == null) {
+            instance = new ClassicSingleton();
+        }
+        return instance;
+    }
+}</code></pre>
+<div class="fragment">Problem: <strong>Nicht thread-safe</strong> — zwei Threads konnten gleichzeitig <code>new</code> aufrufen</div>
+</section>
+
+<section>
+<h2>Thread-Safety mit synchronized</h2>
+<pre><code class="language-java">public synchronized static
+        ClassicSingleton getInstance() {
+    if (instance == null) {
+        instance = new ClassicSingleton();
+    }
+    return instance;
+}</code></pre>
+<ul>
+<li class="fragment">Einfach, aber teuer: jeder Aufruf wird synchronisiert</li>
+<li class="fragment">Synchronisation nur beim ersten Aufruf notig</li>
+</ul>
+</section>
+
+<section>
+<h2>Double-Checked Locking</h2>
+<pre><code class="language-java">private static volatile Singleton instance;
+
+public static Singleton getInstance() {
+    if (instance == null) {
+        synchronized (Singleton.class) {
+            if (instance == null) {
+                instance = new Singleton();
+            }
+        }
+    }
+    return instance;
+}</code></pre>
+<ul>
+<li class="fragment">Erst prüfen, dann synchronisieren</li>
+<li class="fragment"><code>volatile</code> verhindert das "halb konstruierte Objekt"-Problem</li>
+</ul>
+</section>
+
+<section>
+<h2>Bill Pugh — Holder Pattern</h2>
+<pre><code class="language-java">public class Singleton {
+    private Singleton() {}
+
+    private static class Holder {
+        static final Singleton INSTANCE = new Singleton();
+    }
+
+    public static Singleton getInstance() {
+        return Holder.INSTANCE;
+    }
+}</code></pre>
+<ul>
+<li class="fragment">Nutzt den Java Classloader-Mechanismus</li>
+<li class="fragment">Holder wird erst bei getInstance() geladen</li>
+<li class="fragment">Garantiert thread-safe ohne synchronized</li>
+</ul>
+</section>
+
+<section>
+<h2>Enum Singleton</h2>
+<pre><code class="language-java">public enum Singleton {
+    INSTANCE;
+
+    public void doSomething() {
+        System.out.println("Singleton is working!");
+    }
+}
+
+// Usage:
+Singleton.INSTANCE.doSomething();</code></pre>
+<ul>
+<li class="fragment">Von Haus aus serialisierbar und reflection-sicher</li>
+<li class="fragment">Die eleganteste Losung laut Effective Java</li>
+</ul>
+</section>
+
+<section>
+<h2>Vor- und Nachteile</h2>
+<table>
+<thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Eine Instanz garantiert</td><td>Versteckte Abhangigkeiten (globaler Zustand)</td></tr>
+<tr class="fragment"><td>Lazy Initialization moglich</td><td>Testbarkeit erschwert ( schwer zu mocken)</td></tr>
+<tr class="fragment"><td>Speicherschonend</td><td>Verletzt Single Responsibility Principle</td></tr>
+<tr class="fragment"><td>Thread-Safety implementierbar</td><td>Oft uberflussig ( DI ersetzt Singleton)</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Wann Singleton, wann nicht?</h2>
+<div class="fragment highlight-box">
+<b>Geeignet fur:</b> Logger, Config-Manager, Connection-Pools, Caches
+</div>
+<div class="fragment highlight-box">
+<b>Nicht geeignet fur:</b> Services mit vielen Abhangigkeiten, Stateful Components, wo Testbarkeit wichtig ist
+</div>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Singleton = genau eine Instanz + globaler Zugriff</li>
+<li>Vier Varianten: synchronized, DCL, Bill Pugh, Enum</li>
+<li>Enum Singleton ist die sicherste Variante</li>
+<li>Nächstes Mal: Facade Pattern</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">07 - Singleton Pattern</span></div>');});
+</script>
+</body>
+</html>

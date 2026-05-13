@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>05 - Builder Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>05 - Builder Pattern</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Problem: Telescoping Constructors</h2>
+<pre><code class="language-java">public class Pizza {
+    public Pizza() { }
+    public Pizza(String size) { }
+    public Pizza(String size, boolean cheese) { }
+    public Pizza(String size, boolean cheese,
+                 boolean pepperoni) { }
+    public Pizza(String size, boolean cheese,
+                 boolean pepperoni, boolean mushrooms) { }
+    // ...
+}</code></pre>
+<ul>
+<li class="fragment">Schlecht lesbar und fehleranfallig</li>
+<li class="fragment">Reihenfolge der Parameter leicht zu verwechseln</li>
+<li class="fragment">Viele Kombinationen notig</li>
+</ul>
+</section>
+
+<section>
+<h2>Builder Pattern — Grundidee</h2>
+<ul>
+<li class="fragment">Trennung von Konstruktion und Reprasentation</li>
+<li class="fragment">Schrittweiser Aufbau des Objekts</li>
+<li class="fragment">Letzter Schritt: build() erzeugt finales Objekt</li>
+</ul>
+<div class="fragment highlight-box">
+Typischerweise als statische innere Klasse implementiert
+</div>
+</section>
+
+<section>
+<h2>Fluent Interface</h2>
+<pre><code class="language-java">Pizza pizza = new Pizza.Builder()
+    .size("large")
+    .cheese(true)
+    .pepperoni(true)
+    .mushrooms(false)
+    .build();</code></pre>
+<ul>
+<li class="fragment">Jede Setter-Methode gibt <code>return this;</code> zuruck</li>
+<li class="fragment">Ermoglicht Method Chaining</li>
+<li class="fragment">Konfiguration auf einen Blick erfassbar</li>
+</ul>
+</section>
+
+<section>
+<h2>Pizza Builder — Implementierung</h2>
+<pre><code class="language-java">public class Pizza {
+    private final String size;
+    private final boolean cheese;
+    private final boolean pepperoni;
+    private final boolean mushrooms;
+
+    private Pizza(Builder builder) {
+        this.size = builder.size;
+        this.cheese = builder.cheese;
+        this.pepperoni = builder.pepperoni;
+        this.mushrooms = builder.mushrooms;
+    }
+
+    public static class Builder {
+        private String size = "medium";
+        private boolean cheese = false;
+        // ...
+
+        public Builder size(String size) {
+            this.size = size; return this;
+        }
+        public Builder cheese(boolean v) {
+            this.cheese = v; return this;
+        }
+        public Pizza build() { return new Pizza(this); }
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Query Builder — Beispiel</h2>
+<pre><code class="language-java">String query = new QueryBuilder()
+    .select("name", "age")
+    .from("users")
+    .where("age > 18")
+    .orderBy("name", "ASC")
+    .build();
+
+// Result: SELECT name, age FROM users
+//        WHERE age > 18 ORDER BY name ASC</code></pre>
+</section>
+
+<section>
+<h2>Vor- und Nachteile</h2>
+<table>
+<thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Lesbarer Code</td><td>Mehr Code (zusatzliche Klasse)</td></tr>
+<tr class="fragment"><td>Imutable Objekte moglich</td><td>Overkill bei wenigen Parametern</td></tr>
+<tr class="fragment"><td>Wiederverwendbarer Builder</td><td>Builder muss gewartet werden</td></tr>
+<tr class="fragment"><td>Validierung in build()</td><td>Thread-Safety beachten</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Builder ersetzt Telescoping Constructors</li>
+<li>Fluent Interface = return this</li>
+<li>Ideal fur Objekte mit vielen optionalen Feldern</li>
+<li>Nächstes Mal: Factory Pattern (Simple Factory, Factory Method, Abstract Factory)</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">05 - Builder Pattern</span></div>');});
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>11 - Lazy Load (Spring Boot)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>11 - Lazy Load (Spring Boot)</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Motivation</h2>
+<ul>
+<li class="fragment">Eine Spring-Anwendung kann Dutzende oder Hunderte von Beans haben</li>
+<li class="fragment">Nicht alle Beans werden beim Start benotigt</li>
+<li class="fragment">Manche Beans sind teuer in der Initialisierung (Datenbankverbindungen, externe APIs, Caches)</li>
+<li class="fragment">Lazy Loading = Initialisierung nur bei Bedarf</li>
+</ul>
+</section>
+
+<section>
+<h2>Motivation - Beispiel</h2>
+<pre><code class="language-java">@Component
+public class ExpensiveService {
+    public ExpensiveService() {
+        System.out.println("ExpensiveService initialisiert!");
+        // z.B. Datenbankverbindung, externer API-Client
+    }
+}</code></pre>
+<ul>
+<li class="fragment">Bei Eager Loading: Initialisierung beim Start der Anwendung</li>
+<li class="fragment">Bei Lazy Loading: Initialisierung erst beim ersten Zugriff</li>
+<li class="fragment">Vorteil: Schnellerer Start, weniger Ressourcenverbrauch</li>
+</ul>
+</section>
+
+<section>
+<h2>Lazy vs. Eager Loading</h2>
+<div class="fragment">
+<h3>Eager Loading (Default)</h3>
+<ul>
+<li>Alle Beans werden beim Context-Start initialisiert</li>
+<li>Fruhzeitige Fehlererkennung</li>
+<li>Langsamerer Start, hoherer Speicherverbrauch</li>
+</ul>
+</div>
+<div class="fragment">
+<h3>Lazy Loading</h3>
+<ul>
+<li>Initialisierung erst bei Bedarf</li>
+<li>Schnellerer Start, weniger Speicher</li>
+<li>Spatere Fehlererkennung (erst bei Zugriff)</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Lazy vs. Eager - Wann was?</h2>
+<div class="fragment highlight-box">
+<p>Faustregel: Kritische Infrastruktur (Datenquellen, Sicherheit) eager, optionale Dienste lazy.</p>
+</div>
+<ul>
+<li class="fragment">Eager: Datenbank-Connection-Pool, Sicherheitsfilter, zentrale Dienste</li>
+<li class="fragment">Lazy: Selten genutzte Services, Report-Generierung, Batch-Jobs</li>
+</ul>
+</section>
+
+<section>
+<h2>@Lazy in Spring</h2>
+<pre><code class="language-java">@Component
+@Lazy
+public class LazyService {
+    public LazyService() {
+        System.out.println("LazyService: erst jetzt initialisiert!");
+    }
+}
+
+@Component
+public class EagerService {
+    public EagerService() {
+        System.out.println("EagerService: sofort initialisiert!");
+    }
+}</code></pre>
+<p class="fragment">Output beim Start: "EagerService: sofort initialisiert!"<br>
+Output beim ersten Zugriff auf LazyService: "LazyService: erst jetzt initialisiert!"</p>
+</section>
+
+<section>
+<h2>Globale Lazy-Initialisierung</h2>
+<pre><code class="language-java">@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(Application.class);
+        app.setLazyInitialization(true);
+        app.run(args);
+    }
+}</code></pre>
+<p class="fragment">Oder in application.properties:</p>
+<pre class="fragment"><code class="language-properties">spring.main.lazy-initialization=true</code></pre>
+<p class="fragment">Uberschreibbar pro Bean mit <code>@Lazy(false)</code></p>
+</section>
+
+<section>
+<h2>@Lazy auf @Configuration</h2>
+<pre><code class="language-java">@Configuration
+@Lazy
+public class AppConfig {
+
+    @Bean
+    public ServiceA serviceA() {
+        return new ServiceA();
+    }
+
+    @Bean
+    public ServiceB serviceB() {
+        return new ServiceB();
+    }
+}</code></pre>
+<ul>
+<li class="fragment">Alle Beans in dieser @Configuration-Klasse werden lazy</li>
+<li class="fragment">Einzelne Beans konnen mit <code>@Lazy(false)</code> uberschrieben werden</li>
+</ul>
+</section>
+
+<section>
+<h2>@Lazy auf @Bean</h2>
+<pre><code class="language-java">@Configuration
+public class AppConfig {
+
+    @Bean
+    @Lazy
+    public ExpensiveService expensiveService() {
+        return new ExpensiveService();
+    }
+
+    @Bean
+    public SimpleService simpleService() {
+        return new SimpleService();
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>JPA: FetchType.LAZY</h2>
+<pre><code class="language-java">@Entity
+public class Order {
+    @Id
+    private Long id;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List&lt;OrderItem&gt; items;
+}
+
+@Entity
+public class OrderItem {
+    @Id
+    private Long id;
+    private String product;
+    private int quantity;
+}</code></pre>
+<ul>
+<li class="fragment">FetchType.LAZY: items werden erst bei Zugriff geladen</li>
+<li class="fragment">FetchType.EAGER: items werden sofort per JOIN geladen</li>
+</ul>
+</section>
+
+<section>
+<h2>Hibernate Proxies</h2>
+<ul>
+<li class="fragment">Bei FetchType.LAZY erzeugt Hibernate einen Proxy</li>
+<li class="fragment">Der Proxy ist eine Unterklasse der Entitat (z.B. Order$HibernateProxy$...)</li>
+<li class="fragment">Beim ersten Methodenaufruf auf dem Proxy wird die SQL-Query ausgefuhrt</li>
+</ul>
+<pre class="fragment"><code class="language-java">Order order = em.find(Order.class, 1L);
+// order.getItems() ist ein Proxy (noch nicht geladen)
+
+List&lt;OrderItem&gt; items = order.getItems();
+// Beim Zugriff: Hibernate fuhrt SELECT ... FROM order_item WHERE order_id = 1 aus</code></pre>
+</section>
+
+<section>
+<h2>Das N+1 Problem</h2>
+<pre><code class="language-java">List&lt;Order&gt; orders = em.createQuery(
+    "SELECT o FROM Order o", Order.class)
+    .getResultList();
+// 1 Query: SELECT * FROM orders
+
+for (Order o : orders) {
+    System.out.println(o.getItems().size());
+    // N Queries: SELECT * FROM order_item WHERE order_id = ?
+}
+// Gesamt: 1 + N Queries!</code></pre>
+<div class="fragment highlight-box">
+<p>N+1 = 1 Query fur die Haupt-Entitaten + N Queries fur jede Assoziation</p>
+</div>
+</section>
+
+<section>
+<h2>N+1 Problem - Erkennung</h2>
+<ul>
+<li class="fragment">Aktivieren von Hibernate SQL Logging:</li>
+</ul>
+<pre class="fragment"><code class="language-properties">logging.level.org.hibernate.SQL=DEBUG
+spring.jpa.show-sql=true</code></pre>
+<ul>
+<li class="fragment">Oder mit Datenbank-Monitoring-Tools</li>
+<li class="fragment">Oder mit Hibernate Statistics (hibernate.generate_statistics=true)</li>
+</ul>
+</section>
+
+<section>
+<h2>Losung: JOIN FETCH</h2>
+<pre><code class="language-java">// Statt:
+// SELECT o FROM Order o
+
+// Mit JOIN FETCH:
+List&lt;Order&gt; orders = em.createQuery(
+    "SELECT DISTINCT o FROM Order o JOIN FETCH o.items", Order.class)
+    .getResultList();
+// 1 Query: SELECT o.*, i.* FROM orders o JOIN order_item i ON o.id = i.order_id</code></pre>
+<ul>
+<li class="fragment">Ladt alle Daten in einer einzigen Query</li>
+<li class="fragment">FetchType.LAZY wird fur diese Query uberschrieben</li>
+</ul>
+</section>
+
+<section>
+<h2>Losung: @EntityGraph</h2>
+<pre><code class="language-java">@Entity
+@NamedEntityGraph(name = "Order.withItems",
+    attributeNodes = @NamedAttributeNode("items"))
+public class Order { ... }
+
+// Im Repository:
+public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+
+    @EntityGraph("Order.withItems")
+    List&lt;Order&gt; findAllWithItems();
+}</code></pre>
+<ul>
+<li class="fragment">Deklarativer Ansatz statt JPQL</li>
+<li class="fragment">Flexibler: mehrere EntityGraphs pro Entitat moglich</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>@Lazy: Verzogerte Bean-Initialisierung in Spring</li>
+<li>Global: spring.main.lazy-initialization=true</li>
+<li>FetchType.LAZY: Assoziationen werden erst bei Bedarf geladen</li>
+<li>Hibernate verwendet Proxys fur Lazy Loading</li>
+<li>N+1 Problem: zu viele Queries durch Lazy Loading</li>
+<li>Losungen: JOIN FETCH, EntityGraph, Batch-Fetching</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nachste Lektion: Concurrency in Java - Grundlagen mit Threads, Runnable, synchronized, volatile</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">11 - Lazy Load (Spring Boot)</span></div>');});
+</script>
+</body>
+</html>

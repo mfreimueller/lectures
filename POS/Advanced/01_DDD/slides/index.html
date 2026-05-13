@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>01 - Domain-Driven Design</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>01 - Domain-Driven Design</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Warum Domain-Driven Design?</h2>
+<ul>
+<li class="fragment">Software bildet reale Geschaftsprozesse ab</li>
+<li class="fragment">Fachliche Komplexitat ist die groste Herausforderung</li>
+<li class="fragment">Fachexperten und Entwickler sprechen oft verschiedene Sprachen</li>
+<li class="fragment">DDD bringt den Fokus auf die Domane (Fachlichkeit)</li>
+</ul>
+<aside class="fragment highlight-box">
+<p>"The heart of software is its ability to solve domain-related problems" — Eric Evans</p>
+</aside>
+</section>
+
+<section>
+<h2>Ubiquitous Language</h2>
+<ul>
+<li class="fragment">Eine gemeinsame, verbindliche Sprache fur alle Beteiligten</li>
+<li class="fragment">Fachbegriffe werden im Code, in Dokumenten und in Gesprachen einheitlich verwendet</li>
+<li class="fragment">Beispiel: "Ausleihe" statt "Transaction" oder "BorrowProcess"</li>
+</ul>
+<pre class="fragment"><code class="language-java">public class Ausleihe {
+    private Mitglied mitglied;
+    private Medium medium;
+    private LocalDate ausleihdatum;
+}</code></pre>
+</section>
+
+<section>
+<h2>Bounded Context</h2>
+<ul>
+<li class="fragment">Ein expliziter Grenzbereich um ein domanenspezifisches Modell</li>
+<li class="fragment">Derselbe Begriff kann in verschiedenen Kontexten unterschiedliche Bedeutung haben</li>
+<li class="fragment">Beispiel: "Produkt" im Verkaufskontext vs. im Lagerkontext</li>
+</ul>
+<div class="fragment highlight-box">
+<p>Ein Bounded Context grenzt die Gultigkeit der Ubiquitous Language ein</p>
+</div>
+</section>
+
+<section>
+<h2>Entities</h2>
+<ul>
+<li class="fragment">Haben eine eindeutige Identitat (ID), die uber die Zeit stabil bleibt</li>
+<li class="fragment">Konnen ihren Zustand andern, behalten aber ihre Identitat</li>
+</ul>
+<pre class="fragment"><code class="language-java">public class Kunde {
+    private final String kundenId; // Identitat
+    private String name;           // Anderbar
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Kunde k && kundenId.equals(k.kundenId);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Value Objects</h2>
+<ul>
+<li class="fragment">Keine eigene Identitat — werden durch ihre Attribute definiert</li>
+<li class="fragment">Unveranderlich (immutable)</li>
+<li class="fragment">Zwei Value Objects sind gleich, wenn alle Attribute gleich sind</li>
+</ul>
+<pre class="fragment"><code class="language-java">public record Adresse(String strasse, String plz, String ort) {
+    public Adresse {
+        if (strasse == null || strasse.isBlank())
+            throw new IllegalArgumentException();
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Entities vs Value Objects — Entscheidung</h2>
+<table>
+<thead><tr><th>Kriterium</th><th>Entity</th><th>Value Object</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Identitat</td><td>Ja (ID)</td><td>Nein (Werte)</td></tr>
+<tr class="fragment"><td>Immutability</td><td>Nein</td><td>Ja</td></tr>
+<tr class="fragment"><td>Lebensdauer</td><td>Wird verfolgt</td><td>Austauschbar</td></tr>
+<tr class="fragment"><td>Beispiel</td><td>Kunde, Bestellung</td><td>Adresse, Geldbetrag</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Aggregates</h2>
+<ul>
+<li class="fragment">Eine Gruppe zusammengehoriger Objekte, die als Einheit behandelt werden</li>
+<li class="fragment">Haben eine Aggregate Root (eine Entity) als Einstiegspunkt</li>
+<li class="fragment">Auere Objekte durfen nur uber die Root auf das Aggregate zugreifen</li>
+</ul>
+<pre class="fragment"><code class="language-java">public class Bestellung {          // Aggregate Root
+    private final List&lt;Bestellposition&gt; positionen;
+
+    public void addPosition(Produkt p, int menge) {
+        positionen.add(new Bestellposition(p, menge));
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Repositories</h2>
+<ul>
+<li class="fragment">Kapseln den Zugriff auf Aggregates (Speicherung, Wiederherstellung)</li>
+<li class="fragment">Pro Aggregate Root ein Repository</li>
+<li class="fragment">Bieten eine sammlungsahnliche Schnittstelle</li>
+</ul>
+<pre class="fragment"><code class="language-java">public interface BestellRepository {
+    Optional&lt;Bestellung&gt; findById(String id);
+    void save(Bestellung bestellung);
+    void delete(Bestellung bestellung);
+}</code></pre>
+</section>
+
+<section>
+<h2>Domain Events</h2>
+<ul>
+<li class="fragment">Dokumentieren etwas Bedeutendes, das in der Domane passiert ist</li>
+<li class="fragment">Typisch als vergangenes Ereignis benannt: "OrderPlaced", "PaymentReceived"</li>
+<li class="fragment">Ermoglichen lose Kopplung zwischen Bounded Contexts</li>
+</ul>
+<pre class="fragment"><code class="language-java">public record BestellungAufgegeben(
+    String bestellId,
+    String kundenId,
+    LocalDateTime zeitpunkt
+) {}</code></pre>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>DDD stellt die Fachdomane in den Mittelpunkt</li>
+<li>Ubiquitous Language schafft eine gemeinsame Begriffswelt</li>
+<li>Bounded Context grenzt Modelle voneinander ab</li>
+<li>Entities haben Identitat, Value Objects sind Werte</li>
+<li>Aggregates, Repositories und Domain Events strukturieren das Modell</li>
+<li>Nachste Lektion: ACID — Datenbanktransaktionen</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">01 - Domain-Driven Design</span></div>');});
+</script>
+</body>
+</html>

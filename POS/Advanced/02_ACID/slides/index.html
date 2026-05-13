@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>02 - ACID</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>02 - ACID</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Warum Transaktionen?</h2>
+<ul>
+<li class="fragment">Datenbankoperationen mussen zuverlassig sein</li>
+<li class="fragment">Gleichzeitiger Zugriff vieler Benutzer</li>
+<li class="fragment">Systemabsturze konnen jederzeit auftreten</li>
+<li class="fragment">Transaktionen garantieren Datenintegritat</li>
+</ul>
+<div class="fragment highlight-box">
+<p>Eine Transaktion ist eine logische Einheit von Arbeitsschritten</p>
+</div>
+</section>
+
+<section>
+<h2>Das ACID-Akronym</h2>
+<table>
+<thead><tr><th>Buchstabe</th><th>Eigenschaft</th><th>Bedeutung</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>A</td><td>Atomicity</td><td>Alles oder nichts</td></tr>
+<tr class="fragment"><td>C</td><td>Consistency</td><td>Von einem konsistenten in den nachsten</td></tr>
+<tr class="fragment"><td>I</td><td>Isolation</td><td>Nebenlaufige Transaktionen storen sich nicht</td></tr>
+<tr class="fragment"><td>D</td><td>Durability</td><td>Abgeschlossene Anderungen bleiben erhalten</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Atomicity</h2>
+<ul>
+<li class="fragment">Eine Transaktion wird entweder vollstandig ausgefuhrt (Commit) oder gar nicht (Rollback)</li>
+<li class="fragment">Es gibt keinen Zwischenzustand</li>
+</ul>
+<pre class="fragment"><code class="language-java">BEGIN TRANSACTION;
+  UPDATE Konto SET saldo = saldo - 100 WHERE id = 1;
+  UPDATE Konto SET saldo = saldo + 100 WHERE id = 2;
+COMMIT;
+-- Bei Fehler: ROLLBACK</code></pre>
+</section>
+
+<section>
+<h2>Atomicity — Beispiel</h2>
+<pre><code class="language-java">try {
+    db.beginTransaction();
+    kontoA.auszahlen(100);
+    kontoB.einzahlen(100);  // Fehler hier?
+    db.commit();
+} catch (Exception e) {
+    db.rollback(); // Konto A wird nicht belastet
+}</code></pre>
+<p class="fragment">Entweder beide Konten werden aktualisiert oder keines</p>
+</section>
+
+<section>
+<h2>Consistency</h2>
+<ul>
+<li class="fragment">Vor und nach der Transaktion sind alle Integritatsbedingungen erfullt</li>
+<li class="fragment">Die Datenbank wechselt von einem konsistenten Zustand in den nachsten</li>
+<li class="fragment">Beispiel: Kontostand darf nicht negativ werden</li>
+</ul>
+<pre class="fragment"><code class="language-sql">ALTER TABLE Konto ADD CONSTRAINT
+  CHECK (saldo >= 0);</code></pre>
+</section>
+
+<section>
+<h2>Isolation — Ubersicht</h2>
+<ul>
+<li class="fragment">Nebenlaufige Transaktionen durfen sich gegenseitig nicht beeinflussen</li>
+<li class="fragment">In der Praxis gibt es Abstufungen</li>
+</ul>
+<table class="fragment">
+<thead><tr><th>Stufe</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th></tr></thead>
+<tbody>
+<tr><td>Read Uncommitted</td><td>moglich</td><td>moglich</td><td>moglich</td></tr>
+<tr><td>Read Committed</td><td>verhindert</td><td>moglich</td><td>moglich</td></tr>
+<tr><td>Repeatable Read</td><td>verhindert</td><td>verhindert</td><td>moglich</td></tr>
+<tr><td>Serializable</td><td>verhindert</td><td>verhindert</td><td>verhindert</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Dirty Read</h2>
+<pre><code class="language-java">// Transaktion A
+UPDATE Konto SET saldo = 200 WHERE id = 1;
+// Noch kein Commit!
+
+// Transaktion B (Read Uncommitted)
+SELECT saldo FROM Konto WHERE id = 1;
+// Liest 200 (obwohl A noch nicht committed hat)</code></pre>
+<p class="fragment">Rollback von A -> B hat ungultige Daten gelesen</p>
+</section>
+
+<section>
+<h2>Non-Repeatable Read</h2>
+<pre><code class="language-java">// Transaktion A
+SELECT saldo FROM Konto WHERE id = 1; // 100
+
+// Transaktion B
+UPDATE Konto SET saldo = 50 WHERE id = 1; COMMIT;
+
+// Transaktion A (erneut)
+SELECT saldo FROM Konto WHERE id = 1; // 50 (anders!)</code></pre>
+</section>
+
+<section>
+<h2>Phantom Read</h2>
+<pre><code class="language-java">// Transaktion A
+SELECT COUNT(*) FROM Konto WHERE saldo > 0; // 5
+
+// Transaktion B
+INSERT INTO Konto VALUES (3, 300); COMMIT;
+
+// Transaktion A (erneut)
+SELECT COUNT(*) FROM Konto WHERE saldo > 0; // 6 (Phantom!)</code></pre>
+</section>
+
+<section>
+<h2>Durability</h2>
+<ul>
+<li class="fragment">Nach einem Commit sind die Anderungen dauerhaft gespeichert</li>
+<li class="fragment">Auch bei Stromausfall oder Systemabsturz</li>
+<li class="fragment">Wichtigster Mechanismus: Write-Ahead Logging (WAL)</li>
+</ul>
+<div class="fragment highlight-box">
+<p>WAL: Logeintrage werden VOR den Daten auf die Festplatte geschrieben</p>
+</div>
+</section>
+
+<section>
+<h2>Write-Ahead Logging (WAL)</h2>
+<pre><code class="language-java">// 1. Log-Eintrag schreiben (vor den Daten!)
+log.write("BEGIN T1");
+log.write("T1: Konto 1: 100 -> 0");
+log.write("T1: Konto 2: 200 -> 300");
+log.flush(); // Log auf Festplatte garantieren
+
+// 2. Daten andern
+konto1.saldo = 0;
+konto2.saldo = 300;
+
+// 3. Commit vermerken
+log.write("COMMIT T1");
+log.flush();</code></pre>
+<p class="fragment">Bei Absturz: Log wird beim Neustart abgespielt (Redo/Undo)</p>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>ACID garantiert verlassliche Transaktionsverarbeitung</li>
+<li>Atomicity: Alles oder nichts (Commit/Rollback)</li>
+<li>Consistency: Integritatsbedingungen bleiben erhalten</li>
+<li>Isolation: Vier Stufen mit unterschiedlichen Anomalien</li>
+<li>Durability: WAL sichert Daten gegen Absturze</li>
+<li>Nachste Lektion: Optimistic Locking</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">02 - ACID</span></div>');});
+</script>
+</body>
+</html>

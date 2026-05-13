@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>08 - Facade Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>08 - Facade Pattern</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Problem: Komplexe Subsysteme</h2>
+<pre><code class="language-java">// Client muss viele Klassen kennen und richtig initialisieren
+Amplifier amp = new Amplifier();
+Tuner tuner = new Tuner();
+DvdPlayer dvd = new DvdPlayer();
+Projector projector = new Projector();
+Screen screen = new Screen();
+PopcornMachine popcorn = new PopcornMachine();
+
+amp.on();
+amp.setSource(dvd);
+amp.setVolume(5);
+projector.on();
+projector.setInput(dvd);
+screen.down();
+// ...und so weiter</code></pre>
+<div class="fragment">Der Client ist eng an die Details des Subsystems gekoppelt.</div>
+</section>
+
+<section>
+<h2>Facade Pattern — Konzept</h2>
+<ul>
+<li class="fragment">Bietet eine vereinfachte Schnittstelle zu einem komplexen Subsystem</li>
+<li class="fragment">Kapselt die Interaktion mehrerer Klassen</li>
+<li class="fragment">Reduziert Abhangigkeiten (loose coupling)</li>
+</ul>
+<div class="fragment highlight-box">
+"Provide a unified interface to a set of interfaces in a subsystem." — GoF
+</div>
+</section>
+
+<section>
+<h2>Facade vs Adapter</h2>
+<table>
+<thead><tr><th>Facade</th><th>Adapter</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Vereinfacht ein Subsystem</td><td>Passt ein Interface an ein anderes an</td></tr>
+<tr class="fragment"><td>Neue, einfachere API</td><td>Ubersetzt Aufrufe in bestehende API</td></tr>
+<tr class="fragment"><td>Arbeitet mit vielen Klassen</td><td>Wrapper fur eine Klasse</td></tr>
+<tr class="fragment"><td>Subsystem bleibt nutzbar</td><td>Altes Interface wird verborgen</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Home Cinema — Subsystem-Klassen</h2>
+<pre><code class="language-java">class Amplifier {
+    void on() { }
+    void off() { }
+    void setSource(DvdPlayer dvd) { }
+    void setVolume(int level) { }
+}
+
+class DvdPlayer {
+    void on() { }
+    void play(String movie) { }
+    void stop() { }
+    void off() { }
+}
+
+class Screen {
+    void up() { }
+    void down() { }
+}</code></pre>
+</section>
+
+<section>
+<h2>HomeCinemaFacade</h2>
+<pre><code class="language-java">public class HomeCinemaFacade {
+    private Amplifier amp;
+    private DvdPlayer dvd;
+    private Screen screen;
+    private Projector projector;
+
+    public HomeCinemaFacade(Amplifier amp, DvdPlayer dvd,
+                            Screen screen, Projector projector) {
+        this.amp = amp;
+        this.dvd = dvd;
+        this.screen = screen;
+        this.projector = projector;
+    }
+
+    public void watchMovie(String movie) {
+        screen.down();
+        projector.on();
+        amp.on();
+        amp.setVolume(8);
+        dvd.on();
+        dvd.play(movie);
+    }
+
+    public void endMovie() {
+        dvd.stop();
+        dvd.off();
+        amp.off();
+        projector.off();
+        screen.up();
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Database Facade — Idee</h2>
+<pre><code class="language-java">// Vorher (viel Boilerplate)
+Connection conn = DriverManager.getConnection(url, user, pass);
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+while (rs.next()) { /* ... */ }
+rs.close(); stmt.close(); conn.close();
+
+// Nachher (mit Facade)
+Database db = new Database(url, user, pass);
+List&lt;User&gt; users = db.query("SELECT * FROM users",
+    rs -> new User(rs.getInt("id"), rs.getString("name")));
+</code></pre>
+</section>
+
+<section>
+<h2>Vor- und Nachteile</h2>
+<table>
+<thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
+<tbody>
+<tr class="fragment"><td>Vereinfachte Client-API</td><td>Facade kann zum God Object werden</td></tr>
+<tr class="fragment"><td>Geringere Kopplung</td><td>Zusatzliche Abstraktionsebene</td></tr>
+<tr class="fragment"><td>Subsystem unabhangig wartbar</td><td>Kann Performance-Overhead bedeuten</td></tr>
+<tr class="fragment"><td>Optional fur Clients</td><td>Facade muss bei Subsystem-Anderungen aktualisiert werden</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Facade im realen Einsatz</h2>
+<ul>
+<li class="fragment">Spring Data JPA: Repository-Facade uber EntityManager</li>
+<li class="fragment">SLF4J: Facade uber verschiedene Logging-Frameworks</li>
+<li class="fragment">Java Naming and Directory Interface (JNDI)</li>
+<li class="fragment">REST-Controller als Facade fur Service-Schicht</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Facade vereinfacht komplexe Subsysteme</li>
+<li>Reduziert Kopplung zwischen Client und Subsystem</li>
+<li>Facade != Adapter (vereinfachen vs. anpassen)</li>
+<li>Nachstes Mal: Iterator Pattern</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">08 - Facade Pattern</span></div>');});
+</script>
+</body>
+</html>
