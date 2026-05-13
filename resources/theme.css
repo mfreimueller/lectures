@@ -228,6 +228,10 @@ li.unmarked {
     font-weight: bold;
 }
 
+.reveal ul li ul li {
+    font-size: unset !important;
+}
+
 /*********************************************
  * IMAGES & FIGURES WITH LOGO CAPTIONS
  *********************************************/
