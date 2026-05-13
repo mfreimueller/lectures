@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>25 - Markdown II: Tabellen & mehr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>25 - Markdown II: Tabellen & mehr</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Recap: Markdown I</h2>
+                <ol>
+                    <li class="fragment">Wie schreibt man eine Überschrift Ebene 2?</li>
+                    <li class="fragment">Wie macht man Text fett?</li>
+                    <li class="fragment">Was ist der Unterschied zwischen einem Link und einem Bild?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Tabellen - Grundsyntax</h2>
+                <pre><code class="language-markdown">| Name | Alter | Stadt |
+|------|-------|-------|
+| Anna | 16    | Wien  |
+| Ben  | 17    | Graz  |
+| Clara| 16    | Linz  |</code></pre>
+                <table>
+                    <tr><th>Name</th><th>Alter</th><th>Stadt</th></tr>
+                    <tr><td>Anna</td><td>16</td><td>Wien</td></tr>
+                    <tr><td>Ben</td><td>17</td><td>Graz</td></tr>
+                    <tr><td>Clara</td><td>16</td><td>Linz</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Tabellen - Ausrichtung</h2>
+                <pre><code class="language-markdown">| Links | Zentriert | Rechts |
+|:------|:--------:|-------:|
+| Text  | Text      | Text   |
+| Anna  | 16        | Wien   |</code></pre>
+                <ul>
+                    <li class="fragment">`:---` = linksbündig (Standard)</li>
+                    <li class="fragment">`:---:` = zentriert</li>
+                    <li class="fragment">`---:` = rechtsbündig</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Komplexe Tabellen</h2>
+                <ul>
+                    <li class="fragment">Leere Zellen: Einfach nichts zwischen die Pipe-Zeichen schreiben</li>
+                    <li class="fragment">Formatierung in Zellen: **fett**, *kursiv*, `code`</li>
+                    <li class="fragment">Links in Tabellen: [Text](URL)</li>
+                    <li class="fragment">Zeilenumbrüche in Zellen: <br> (HTML) in manchen Implementierungen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checkboxen (Task-Listen)</h2>
+                <pre><code class="language-markdown">- [ ] Noch offene Aufgabe
+- [x] Erledigte Aufgabe
+- [ ] Wartet auf Rückmeldung</code></pre>
+                <ul>
+                    <li class="fragment">`- [ ]` = nicht erledigt</li>
+                    <li class="fragment">`- [x]` = erledigt</li>
+                    <li class="fragment">Funktioniert auf GitHub, GitLab, VS Code, Obsidian</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checkboxen - Beispiel</h2>
+                <p>To-Do-Liste für ein Projekt:</p>
+                <pre><code class="language-markdown">## Projekt: Webseite
+
+- [x] Repository erstellen
+- [x] README.md schreiben
+- [ ] HTML-Grundgerüst
+- [ ] CSS-Styling
+- [ ] Navigation einbauen
+- [ ] Responsive Design testen</code></pre>
+            </section>
+
+            <section>
+                <h2>Zitate (Blockquotes)</h2>
+                <pre><code class="language-markdown">> Das ist ein Zitat.
+> Es kann über mehrere Zeilen gehen.
+
+> ## Überschrift im Zitat
+> - Auch Listen sind möglich
+> - In Zitaten
+
+>> Verschachtelte Zitate</code></pre>
+                <blockquote class="fragment">
+                    <p>Das ist ein Zitat.</p>
+                </blockquote>
+            </section>
+
+            <section>
+                <h2>Horizontale Linien</h2>
+                <pre><code class="language-markdown">---
+***
+___</code></pre>
+                <p class="fragment">Alle drei Varianten erzeugen eine horizontale Linie</p>
+                <hr>
+                <p class="fragment">Wird verwendet, um Abschnitte voneinander zu trennen</p>
+            </section>
+
+            <section>
+                <h2>Rendering-Unterschiede</h2>
+                <p>Nicht alle Markdown-Features funktionieren überall gleich:</p>
+                <table>
+                    <tr><th>Plattform</th><th>Tabellen</th><th>Checkboxen</th><th>HTML</th></tr>
+                    <tr><td>GitHub</td><td>Ja</td><td>Ja</td><td>Nein</td></tr>
+                    <tr><td>GitLab</td><td>Ja</td><td>Ja</td><td>Nein</td></tr>
+                    <tr><td>VS Code</td><td>Ja</td><td>Ja</td><td>Ja</td></tr>
+                    <tr><td>Obsidian</td><td>Ja</td><td>Ja</td><td>Ja</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Erweiterte Markdown-Features</h2>
+                <p>Je nach Plattform gibt es zusätzliche Features:</p>
+                <ul>
+                    <li class="fragment"><strong>GitHub Flavored Markdown (GFM):</strong> Tabellen, Task-Listen, @-Erwähnungen</li>
+                    <li class="fragment"><strong>Obsidian:</strong> Interne Links [[Wiki-Links]], Diagramme</li>
+                    <li class="fragment"><strong>Typora:</strong> Mathematische Formeln (LaTeX)</li>
+                    <li class="fragment"><strong>MkDocs (Material):</strong> Admonitions, Tabs, Diagramme</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: AsciiDoc I</h3>
+                </div>
+                <p>Eine mächtigere Alternative zu Markdown</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">25 - Markdown II: Tabellen & mehr</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

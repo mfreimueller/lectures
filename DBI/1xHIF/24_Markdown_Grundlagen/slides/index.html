@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>24 - Markdown Grundlagen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>24 - Markdown Grundlagen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Was ist Markdown?</h2>
+                <ul>
+                    <li class="fragment">Eine <strong>einfache Auszeichnungssprache</strong> (Markup Language)</li>
+                    <li class="fragment">Als <strong>reiner Text</strong> lesbar und schreibbar</li>
+                    <li class="fragment">Wird automatisch in <strong>HTML</strong> umgewandelt</li>
+                    <li class="fragment">Erfunden von John Gruber (2004)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wofür wird Markdown verwendet?</h2>
+                <ul>
+                    <li class="fragment">README-Dateien auf GitHub/GitLab</li>
+                    <li class="fragment">Foren (Reddit, Stack Overflow)</li>
+                    <li class="fragment">Dokumentation (MkDocs, Docusaurus)</li>
+                    <li class="fragment">Notizen (Obsidian, Joplin)</li>
+                    <li class="fragment">Static Site Generatoren (Jekyll, Hugo, Astro)</li>
+                    <li class="fragment">Diese Kursmaterialien sind auch in Markdown!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Vorteile von Markdown</h2>
+                <ul>
+                    <li class="fragment">Kein spezielles Programm nötig (jeder Texteditor reicht)</li>
+                    <li class="fragment">Leicht zu lernen (Grundsyntax in 15 Minuten)</li>
+                    <li class="fragment">Plattformunabhängig</li>
+                    <li class="fragment">Perfekt für Git (reiner Text = gute Versionsverwaltung)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Überschriften</h2>
+                <pre><code class="language-markdown"># Überschrift 1 (H1)
+## Überschrift 2 (H2)
+### Überschrift 3 (H3)
+#### Überschrift 4 (H4)
+##### Überschrift 5 (H5)
+###### Überschrift 6 (H6)</code></pre>
+                <p class="fragment"><strong>Regel:</strong> Nur ein H1 pro Dokument (der Titel)</p>
+            </section>
+
+            <section>
+                <h2>Textformatierung</h2>
+                <pre><code class="language-markdown">**fetter Text** oder __fetter Text__
+*kursiver Text* oder _kursiver Text_
+***fett und kursiv***
+~~durchgestrichener Text~~</code></pre>
+                <ul>
+                    <li class="fragment">**<strong>fetter Text</strong>**</li>
+                    <li class="fragment">*<em>kursiver Text</em>*</li>
+                    <li class="fragment">~~<span style="text-decoration: line-through;">durchgestrichener Text</span>~~</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Ungeordnete Listen</h2>
+                <pre><code class="language-markdown">- Punkt 1
+- Punkt 2
+  - Unterpunkt 2.1
+  - Unterpunkt 2.2
+- Punkt 3</code></pre>
+                <ul>
+                    <li>Punkt 1</li>
+                    <li>Punkt 2
+                        <ul>
+                            <li>Unterpunkt 2.1</li>
+                            <li>Unterpunkt 2.2</li>
+                        </ul>
+                    </li>
+                    <li>Punkt 3</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Geordnete Listen</h2>
+                <pre><code class="language-markdown">1. Erster Schritt
+2. Zweiter Schritt
+3. Dritter Schritt</code></pre>
+                <p class="fragment">Markdown zählt automatisch - du kannst überall "1." schreiben:</p>
+                <pre class="fragment"><code class="language-markdown">1. Schritt 1
+1. Schritt 2
+1. Schritt 3</code></pre>
+                <p class="fragment">Ergebnis: 1, 2, 3</p>
+            </section>
+
+            <section>
+                <h2>Links</h2>
+                <pre><code class="language-markdown">[Anzeigetext](https://example.com)
+
+[Link mit Titel](https://example.com "Titel beim Überfahren")
+
+[Relative Links](seite.html)</code></pre>
+                <p class="fragment">Beispiel: [Google](https://google.com)</p>
+            </section>
+
+            <section>
+                <h2>Bilder</h2>
+                <pre><code class="language-markdown">![Alt-Text](bild.jpg)
+
+![Alt-Text](bild.jpg "Bildunterschrift")</code></pre>
+                <p class="fragment"><strong>Unterschied zu Links:</strong> Ein Ausrufezeichen vor der eckigen Klammer macht aus einem Link ein Bild</p>
+            </section>
+
+            <section>
+                <h2>Inline-Code</h2>
+                <p>Für einzelne Befehle oder kurze Code-Schnipsel:</p>
+                <pre><code class="language-markdown">Verwende `print("Hello World")` in Python.</code></pre>
+                <p class="fragment">Ergebnis: Verwende <code>print("Hello World")</code> in Python.</p>
+            </section>
+
+            <section>
+                <h2>Code-Blöcke</h2>
+                <p>Für mehrere Zeilen Code:</p>
+                <pre><code class="language-markdown">```python
+def hallo():
+    print("Hello World")
+```</code></pre>
+                <p class="fragment">Mit Sprachangabe für Syntax-Highlighting</p>
+                <p class="fragment">Ohne Sprachangabe:</p>
+                <pre class="fragment"><code class="language-markdown">```
+echo "Hallo Welt"
+```</code></pre>
+            </section>
+
+            <section>
+                <h2>Live-Demo</h2>
+                <ol>
+                    <li class="fragment">VS Code öffnen</li>
+                    <li class="fragment">Neue Datei: README.md</li>
+                    <li class="fragment">Markdown schreiben und speichern</li>
+                    <li class="fragment">Vorschau: Rechtsklick > "Vorschau" oder Cmd+Shift+V</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Syntax-Übersicht</h2>
+                <table>
+                    <tr><th>Element</th><th>Syntax</th></tr>
+                    <tr><td>Überschrift</td><td># bis ######</td></tr>
+                    <tr><td>Fett</td><td>**Text**</td></tr>
+                    <tr><td>Kursiv</td><td>*Text*</td></tr>
+                    <tr><td>Ungeordnete Liste</td><td>- Text</td></tr>
+                    <tr><td>Geordnete Liste</td><td>1. Text</td></tr>
+                    <tr><td>Link</td><td>[Text](URL)</td></tr>
+                    <tr><td>Bild</td><td>![Alt](URL)</td></tr>
+                    <tr><td>Inline-Code</td><td>`code`</td></tr>
+                    <tr><td>Code-Block</td><td>``` ... ```</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Markdown II</h3>
+                </div>
+                <p>Tabellen, Checkboxen, Zitate, Horizontal Rules</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">24 - Markdown Grundlagen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

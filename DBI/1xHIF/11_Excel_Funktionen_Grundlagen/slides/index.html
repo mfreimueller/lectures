@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>11 - Excel Funktionen Grundlagen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>11 - Excel Funktionen Grundlagen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Bezüge</h2>
+                <ol>
+                    <li class="fragment">Was bedeutet $B$7?</li>
+                    <li class="fragment">Welche Taste schaltet die Bezugsarten durch?</li>
+                    <li class="fragment">Was passiert beim Runterziehen von =A2*B7 ohne $-Zeichen?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Problem: Manuelle Formeln</h2>
+                <pre><code class="language-plaintext">=A1+A2+A3+A4+A5</code></pre>
+                <ul>
+                    <li class="fragment">Was, wenn wir 100 Zellen addieren wollen?</li>
+                    <li class="fragment">Fehleranfällig: Kann leicht eine Zelle vergessen</li>
+                    <li class="fragment">Unübersichtlich bei großen Bereichen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Lösung: Funktionen</h2>
+                <table>
+                    <tr><th>Manuell</th><th>Mit Funktion</th></tr>
+                    <tr><td>=A1+A2+A3+A4+A5</td><td>=SUM(A1:A5)</td></tr>
+                    <tr><td>=(A1+A2+A3+A4+A5)/5</td><td>=AVERAGE(A1:A5)</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment"><strong>Kürzer:</strong> Weniger schreiben</li>
+                    <li class="fragment"><strong>Übersichtlicher:</strong> Leichter zu verstehen</li>
+                    <li class="fragment"><strong>Weniger fehleranfällig</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aufbau einer Funktion</h2>
+                <pre><code class="language-plaintext">=Funktionsname(Argument1; Argument2; ...)</code></pre>
+                <ul>
+                    <li class="fragment">= wie bei jeder Formel</li>
+                    <li class="fragment">Funktionsname z.B. SUM, AVERAGE</li>
+                    <li class="fragment">Klammern () gehören immer dazu!</li>
+                    <li class="fragment">Argumente: Bereiche, Zellen oder Werte</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die wichtigsten Grundfunktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Erklärung</th></tr>
+                    <tr><td>=SUM(Bereich)</td><td>Summe aller Werte</td></tr>
+                    <tr><td>=AVERAGE(Bereich)</td><td>Durchschnitt (Mittelwert)</td></tr>
+                    <tr><td>=COUNT(Bereich)</td><td>Zählt nur Zellen mit Zahlen</td></tr>
+                    <tr><td>=COUNTA(Bereich)</td><td>Zählt alle nicht-leeren Zellen</td></tr>
+                    <tr><td>=MIN(Bereich)</td><td>Kleinster Wert</td></tr>
+                    <tr><td>=MAX(Bereich)</td><td>Größter Wert</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Bereichsnotation</h2>
+                <table>
+                    <tr><th>Schreibweise</th><th>Bedeutung</th></tr>
+                    <tr><td>A1:A5</td><td>Alle Zellen von A1 bis A5</td></tr>
+                    <tr><td>B2:D4</td><td>Alle Zellen im Rechteck B2 bis D4</td></tr>
+                    <tr><td>A1; B3; C5</td><td>Nur diese drei einzelnen Zellen</td></tr>
+                    <tr><td>A1:A5; C1:C5</td><td>Beide Bereiche</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Bereiche mit der Maus markieren</h2>
+                <ol>
+                    <li class="fragment">Schreibe =SUM(</li>
+                    <li class="fragment">Markiere den Bereich mit der Maus</li>
+                    <li class="fragment">Excel trägt den Bereich automatisch ein</li>
+                    <li class="fragment">Klammer schließen und Enter</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>=SUM() - Summe</h2>
+                <pre><code class="language-plaintext">=SUM(A1:A5)</code></pre>
+                <p class="fragment">Addiert alle Zahlen im Bereich A1 bis A5</p>
+                <p class="fragment">Statt: =A1+A2+A3+A4+A5</p>
+            </section>
+
+            <section>
+                <h2>=AVERAGE() - Durchschnitt</h2>
+                <pre><code class="language-plaintext">=AVERAGE(A1:A5)</code></pre>
+                <p class="fragment">Berechnet den arithmetischen Mittelwert</p>
+                <p class="fragment">Statt: =(A1+A2+A3+A4+A5)/5</p>
+            </section>
+
+            <section>
+                <h2>=MIN() und =MAX()</h2>
+                <pre><code class="language-plaintext">=MIN(A1:A5)   // Kleinster Wert
+=MAX(A1:A5)   // Größter Wert</code></pre>
+                <p class="fragment">Spannweite: =MAX(A1:A5) - MIN(A1:A5)</p>
+            </section>
+
+            <section>
+                <h2>=COUNT() vs =COUNTA()</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Zählt...</th></tr>
+                    <tr><td>=COUNT()</td><td>Nur Zellen mit ZAHLEN</td></tr>
+                    <tr><td>=COUNTA()</td><td>Alle nicht-leeren Zellen (auch Text!)</td></tr>
+                </table>
+                <p class="fragment">Beispiel: =COUNT(A1:A5) bei Werten 100, 200, Hallo, 300, (leer) = 3</p>
+                <p class="fragment">=COUNTA(A1:A5) bei denselben Werten = 4</p>
+            </section>
+
+            <section>
+                <h2>Funktionen verschachteln</h2>
+                <pre><code class="language-plaintext">=MAX(A1:A5) - MIN(A1:A5)   // Spannweite</code></pre>
+                <pre><code class="language-plaintext">=AVERAGE(B2:D2) * 2        // Verdoppelter Schnitt</code></pre>
+            </section>
+
+            <section>
+                <h2>AutoSumme-Button</h2>
+                <ul>
+                    <li class="fragment">Start > AutoSumme (Sigma-Zeichen)</li>
+                    <li class="fragment">Oder: Formeln > AutoSumme</li>
+                    <li class="fragment">Kürzel: Alt + =</li>
+                    <li class="fragment">Excel schlägt automatisch einen Bereich vor</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>AutoSumme-Optionen</h2>
+                <ul>
+                    <li class="fragment">Summe</li>
+                    <li class="fragment">Durchschnitt</li>
+                    <li class="fragment">Anzahl</li>
+                    <li class="fragment">Maximum</li>
+                    <li class="fragment">Minimum</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Live-Demo: Noten-Tabelle</h2>
+                <table>
+                    <tr><th>Student</th><th>Test 1</th><th>Test 2</th><th>Test 3</th><th>Summe</th><th>Schnitt</th></tr>
+                    <tr><td>Anna</td><td>85</td><td>90</td><td>88</td><td>=SUM(B2:D2)</td><td>=AVERAGE(B2:D2)</td></tr>
+                    <tr><td>Ben</td><td>75</td><td>82</td><td>78</td><td></td><td></td></tr>
+                    <tr><td>Clara</td><td>92</td><td>88</td><td>95</td><td></td><td></td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Erklärung</th></tr>
+                    <tr><td>=SUM(A1:A5)</td><td>Summe</td></tr>
+                    <tr><td>=AVERAGE(A1:A5)</td><td>Durchschnitt</td></tr>
+                    <tr><td>=COUNT(A1:A5)</td><td>Zählt nur Zahlen</td></tr>
+                    <tr><td>=COUNTA(A1:A5)</td><td>Zählt alle nicht-leeren Zellen</td></tr>
+                    <tr><td>=MIN(A1:A5)</td><td>Kleinster Wert</td></tr>
+                    <tr><td>=MAX(A1:A5)</td><td>Größter Wert</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Logische Funktionen</h3>
+                </div>
+                <p>IF, AND, OR, NOT</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">11 - Excel Funktionen Grundlagen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

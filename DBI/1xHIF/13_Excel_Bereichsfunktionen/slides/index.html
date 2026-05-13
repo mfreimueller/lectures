@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>13 - Excel Bereichsfunktionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>13 - Excel Bereichsfunktionen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Logische Funktionen</h2>
+                <ol>
+                    <li class="fragment">Wie lautet die Syntax von IF?</li>
+                    <li class="fragment">Was ist der Unterschied zwischen AND und OR?</li>
+                    <li class="fragment">Wozu verwendet man IFS?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Problem: Bedingte Summe</h2>
+                <p>"Summiere nur die Verkäufe aus der Kategorie POS"</p>
+                <table>
+                    <tr><th>Kategorie</th><th>Betrag</th></tr>
+                    <tr><td>POS</td><td>1200</td></tr>
+                    <tr><td>DBI</td><td>800</td></tr>
+                    <tr><td>POS</td><td>950</td></tr>
+                    <tr><td>NWT</td><td>500</td></tr>
+                </table>
+                <p class="fragment">Manuell: =B2+B4 → mühsam bei vielen Zeilen</p>
+            </section>
+
+            <section>
+                <h2>Lösung: Bereichsfunktionen</h2>
+                <table>
+                    <tr><th>Normal</th><th>Bedingt</th><th>Macht...</th></tr>
+                    <tr><td>=SUM()</td><td>=SUMIF()</td><td>Summe mit Bedingung</td></tr>
+                    <tr><td>=COUNT()</td><td>=COUNTIF()</td><td>Zählen mit Bedingung</td></tr>
+                    <tr><td>=AVERAGE()</td><td>=AVERAGEIF()</td><td>Durchschnitt mit Bedingung</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>SUMIF - Syntax</h2>
+                <pre><code class="language-plaintext">=SUMIF(Bereich; Kriterium; Summenbereich)</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Bereich:</strong> Wo wird die Bedingung geprüft?</li>
+                    <li class="fragment"><strong>Kriterium:</strong> Was muss gelten? (z.B. "POS", &gt;50)</li>
+                    <li class="fragment"><strong>Summenbereich:</strong> Was soll summiert werden? (optional)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>SUMIF - Beispiel</h2>
+                <pre><code class="language-plaintext">=SUMIF(A2:A10; "POS"; B2:B10)</code></pre>
+                <ul>
+                    <li class="fragment">Prüft in A2:A10, ob der Wert "POS" ist</li>
+                    <li class="fragment">Summiert die passenden Werte aus B2:B10</li>
+                    <li class="fragment">Ergebnis: 1200 + 950 = 2150</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>COUNTIF</h2>
+                <pre><code class="language-plaintext">=COUNTIF(Bereich; Kriterium)</code></pre>
+                <p class="fragment">Zählt, wie oft das Kriterium im Bereich vorkommt</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=COUNTIF(A2:A10; "POS")</code></pre>
+                <p class="fragment">Zählt, wie oft "POS" in A2:A10 vorkommt = 2</p>
+            </section>
+
+            <section>
+                <h2>AVERAGEIF</h2>
+                <pre><code class="language-plaintext">=AVERAGEIF(Bereich; Kriterium; Durchschnittsbereich)</code></pre>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=AVERAGEIF(A2:A10; "POS"; B2:B10)</code></pre>
+                <p class="fragment">Durchschnitt der POS-Beträge: (1200 + 950) / 2 = 1075</p>
+            </section>
+
+            <section>
+                <h2>Vergleich: Normal vs. Bedingt</h2>
+                <table>
+                    <tr><th>Normal</th><th>Bedingt</th></tr>
+                    <tr><td>=SUM(A2:A10)</td><td>=SUMIF(A2:A10; "POS"; B2:B10)</td></tr>
+                    <tr><td>=COUNT(A2:A10)</td><td>=COUNTIF(A2:A10; "POS")</td></tr>
+                    <tr><td>=AVERAGE(A2:A10)</td><td>=AVERAGEIF(A2:A10; "POS"; B2:B10)</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Kriterien-Formate</h2>
+                <table>
+                    <tr><th>Kriterium</th><th>Bedeutung</th></tr>
+                    <tr><td>"POS"</td><td>Genau "POS"</td></tr>
+                    <tr><td>">50"</td><td>Größer als 50</td></tr>
+                    <tr><td>"<100"</td><td>Kleiner als 100</td></tr>
+                    <tr><td>">=90"</td><td>Größer oder gleich 90</td></tr>
+                    <tr><td>"<>0"</td><td>Ungleich 0</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Wildcards in Kriterien</h2>
+                <table>
+                    <tr><th>Kriterium</th><th>Bedeutung</th></tr>
+                    <tr><td>"P*"</td><td>Beginnt mit P (* = beliebig viele Zeichen)</td></tr>
+                    <tr><td>"?OS"</td><td>Genau 3 Zeichen (? = genau 1 Zeichen)</td></tr>
+                    <tr><td>"*POS*"</td><td>Enthält "POS" an beliebiger Stelle</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>SUMIFS - Mehrere Bedingungen</h2>
+                <pre><code class="language-plaintext">=SUMIFS(Summenbereich; Bereich1; Kriterium1; Bereich2; Kriterium2)</code></pre>
+                <p class="fragment"><strong>Wichtig:</strong> Bei SUMIFS kommt der Summenbereich <strong>zuerst</strong>!</p>
+                <p class="fragment">Im Gegensatz zu SUMIF, wo der Summenbereich optional am Ende steht</p>
+            </section>
+
+            <section>
+                <h2>SUMIFS - Beispiel</h2>
+                <pre><code class="language-plaintext">=SUMIFS(C2:C10; A2:A10; "POS"; B2:B10; ">50")</code></pre>
+                <ul>
+                    <li class="fragment">Summiere C2:C10</li>
+                    <li class="fragment">Nur wo A2:A10 = "POS" <strong>UND</strong></li>
+                    <li class="fragment">Nur wo B2:B10 > 50</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>COUNTIFS</h2>
+                <pre><code class="language-plaintext">=COUNTIFS(Bereich1; Kriterium1; Bereich2; Kriterium2)</code></pre>
+                <p class="fragment">Zählt Zeilen, die ALLE Bedingungen erfüllen</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=COUNTIFS(A2:A10; "POS"; B2:B10; ">50")</code></pre>
+                <p class="fragment">Zählt Zeilen wo Kategorie = "POS" UND Betrag > 50</p>
+            </section>
+
+            <section>
+                <h2>Übersicht Bereichsfunktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Beschreibung</th></tr>
+                    <tr><td>=SUMIF(B; K; [S])</td><td>Summe mit 1 Bedingung</td></tr>
+                    <tr><td>=COUNTIF(B; K)</td><td>Zählen mit 1 Bedingung</td></tr>
+                    <tr><td>=AVERAGEIF(B; K; [M])</td><td>Durchschnitt mit 1 Bedingung</td></tr>
+                    <tr><td>=SUMIFS(S; B1; K1; B2; K2)</td><td>Summe mit mehreren Bedingungen</td></tr>
+                    <tr><td>=COUNTIFS(B1; K1; B2; K2)</td><td>Zählen mit mehreren Bedingungen</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Suchen & Referenzieren</h3>
+                </div>
+                <p>VLOOKUP, XLOOKUP, INDEX/MATCH</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">13 - Excel Bereichsfunktionen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

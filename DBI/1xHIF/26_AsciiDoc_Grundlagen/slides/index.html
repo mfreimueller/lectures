@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>26 - AsciiDoc Grundlagen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>26 - AsciiDoc Grundlagen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Recap: Markdown</h2>
+                <ol>
+                    <li class="fragment">Wie erstellt man eine Tabelle in Markdown?</li>
+                    <li class="fragment">Was bedeuten `- [ ]` und `- [x]`?</li>
+                    <li class="fragment">Welche horizontalen Linien kennst du?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Was ist AsciiDoc?</h2>
+                <ul>
+                    <li class="fragment">Eine <strong>Auszeichnungssprache</strong> wie Markdown</li>
+                    <li class="fragment">Aber <strong>mächtiger</strong> und <strong>erweiterbarer</strong></li>
+                    <li class="fragment">Einheitlicher Standard (keine Dialekte wie bei Markdown)</li>
+                    <li class="fragment">Erstellt von Stuart Rackham (2002)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Markdown vs. AsciiDoc</h2>
+                <table>
+                    <tr><th>Feature</th><th>Markdown</th><th>AsciiDoc</th></tr>
+                    <tr><td>Standard</td><td>Viele Dialekte</td><td>Einheitlich</td></tr>
+                    <tr><td>Tabellen</td><td>Umständlich (|)</td><td>Einfach (|===)</td></tr>
+                    <tr><td>Cross-References</td><td>Nicht standardisiert</td><td>&lt;&lt;id,Text&gt;&gt;</td></tr>
+                    <tr><td>TOC</td><td>Via Extension</td><td>:toc:</td></tr>
+                    <tr><td>Includes</td><td>Nicht standardisiert</td><td>include::datei.adoc[]</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Überschriften in AsciiDoc</h2>
+                <pre><code class="language-asciidoc">= Überschrift 1 (H1)
+
+== Überschrift 2 (H2)
+
+=== Überschrift 3 (H3)
+
+==== Überschrift 4 (H4)</code></pre>
+                <p class="fragment">Anders als Markdown: = statt #</p>
+            </section>
+
+            <section>
+                <h2>Textformatierung</h2>
+                <pre><code class="language-asciidoc">*fetter Text*        (anders als Markdown!)
+_kursiver Text_      (anders als Markdown!)
+`code`               (gleich wie Markdown)
+*_fett und kursiv_*</code></pre>
+                <p class="fragment"><strong>Achtung:</strong> In AsciiDoc ist * für fett, in Markdown für kursiv!</p>
+            </section>
+
+            <section>
+                <h2>Listen</h2>
+                <pre><code class="language-asciidoc">* Ungeordnete Liste
+** Verschachtelt
+*** Noch tiefer
+
+. Geordnete Liste
+.. Verschachtelt
+... Noch tiefer</code></pre>
+                <p class="fragment">Ungeordnet: * (wie Markdown), geordnet: . (anders als Markdown)</p>
+            </section>
+
+            <section>
+                <h2>Links</h2>
+                <pre><code class="language-asciidoc">link:https://example.com[Anzeigetext]
+
+link:https://example.com[Text mit "Titel"]
+
+link:seite.html[Relativer Link]</code></pre>
+                <p class="fragment">Anders als Markdown: link:URL[Text] statt [Text](URL)</p>
+            </section>
+
+            <section>
+                <h2>Bilder</h2>
+                <pre><code class="language-asciidoc">image::foto.jpg[Alt-Text]
+
+image::foto.jpg[Alt-Text, 400, 300]
+
+image:logo.png[Logo, 24]</code></pre>
+                <p class="fragment">image:: mit Doppel-Doppelpunkt = Block, image: mit einfachem = Inline</p>
+            </section>
+
+            <section>
+                <h2>Code</h2>
+                <p>Inline-Code (gleich wie Markdown):</p>
+                <pre><code class="language-asciidoc">Verwende `printf()` in C.</code></pre>
+                <p>Code-Block:</p>
+                <pre><code class="language-asciidoc">----
+echo "Hallo Welt"
+----</code></pre>
+                <p>Mit Sprachangabe:</p>
+                <pre><code class="language-asciidoc">[source,java]
+----
+System.out.println("Hallo");
+----</code></pre>
+            </section>
+
+            <section>
+                <h2>Markdown vs. AsciiDoc - Vergleich</h2>
+                <table>
+                    <tr><th>Element</th><th>Markdown</th><th>AsciiDoc</th></tr>
+                    <tr><td>H1</td><td># Text</td><td>= Text</td></tr>
+                    <tr><td>Fett</td><td>**Text**</td><td>*Text*</td></tr>
+                    <tr><td>Kursiv</td><td>*Text*</td><td>_Text_</td></tr>
+                    <tr><td>Ungeordnete Liste</td><td>- Text</td><td>* Text</td></tr>
+                    <tr><td>Link</td><td>[Text](URL)</td><td>link:URL[Text]</td></tr>
+                    <tr><td>Bild</td><td>![Alt](URL)</td><td>image::URL[Alt]</td></tr>
+                    <tr><td>Code-Block</td><td>```</td><td>----</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>AsciiDoctor</h2>
+                <ul>
+                    <li class="fragment">Der Standard-Converter für AsciiDoc</li>
+                    <li class="fragment">Geschrieben in Ruby</li>
+                    <li class="fragment">AsciiDoctor.js für den Browser</li>
+                    <li class="fragment">Wandelt .adoc in HTML, PDF, EPUB, DocBook um</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>VS Code Extension</h2>
+                <ul>
+                    <li class="fragment">"AsciiDoc" Extension von Joao Pinto installieren</li>
+                    <li class="fragment">Live-Vorschau wie bei Markdown</li>
+                    <li class="fragment">Syntax-Highlighting für .adoc-Dateien</li>
+                    <li class="fragment">Export nach HTML/PDF direkt aus VS Code</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Ausgabeformate</h2>
+                <table>
+                    <tr><th>Format</th><th>Befehl</th><th>Verwendung</th></tr>
+                    <tr><td>HTML</td><td>asciidoctor dokument.adoc</td><td>Webseiten, Docs</td></tr>
+                    <tr><td>PDF</td><td>asciidoctor-pdf dokument.adoc</td><td>Druck, Weitergabe</td></tr>
+                    <tr><td>EPUB</td><td>asciidoctor-epub3 dokument.adoc</td><td>E-Books</td></tr>
+                    <tr><td>DocBook</td><td>asciidoctor -b docbook dokument.adoc</td><td>Weiterverarbeitung</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Syntax-Übersicht AsciiDoc</h2>
+                <table>
+                    <tr><th>Element</th><th>Syntax</th></tr>
+                    <tr><td>H1</td><td>= Text</td></tr>
+                    <tr><td>H2</td><td>== Text</td></tr>
+                    <tr><td>H3</td><td>=== Text</td></tr>
+                    <tr><td>Fett</td><td>*Text*</td></tr>
+                    <tr><td>Kursiv</td><td>_Text_</td></tr>
+                    <tr><td>Ungeordnete Liste</td><td>* Punkt</td></tr>
+                    <tr><td>Geordnete Liste</td><td>. Schritt</td></tr>
+                    <tr><td>Link</td><td>link:URL[Text]</td></tr>
+                    <tr><td>Bild</td><td>image::URL[Alt]</td></tr>
+                    <tr><td>Inline-Code</td><td>`code`</td></tr>
+                    <tr><td>Code-Block</td><td>----</td></tr>
+                    <tr><td>Code mit Sprache</td><td>[source,java] ----</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: AsciiDoc II</h3>
+                </div>
+                <p>TOC, Cross-References, Includes, Conditionals, Tabellen</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">26 - AsciiDoc Grundlagen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

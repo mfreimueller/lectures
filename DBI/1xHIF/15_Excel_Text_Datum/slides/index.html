@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>15 - Excel Text & Datum Funktionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>15 - Excel Text & Datum Funktionen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Suchen-Funktionen</h2>
+                <ol>
+                    <li class="fragment">Was sind die Nachteile von VLOOKUP?</li>
+                    <li class="fragment">Welche Vorteile bietet XLOOKUP?</li>
+                    <li class="fragment">Aus welchen zwei Teilen besteht INDEX/MATCH?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>=LEFT() - Zeichen von links</h2>
+                <pre><code class="language-plaintext">=LEFT(Text; Anzahl)</code></pre>
+                <p class="fragment">Gibt die ersten N Zeichen eines Textes zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=LEFT("Hallo"; 2) → "Ha"
+=LEFT("Excel"; 3) → "Exc"</code></pre>
+            </section>
+
+            <section>
+                <h2>=RIGHT() - Zeichen von rechts</h2>
+                <pre><code class="language-plaintext">=RIGHT(Text; Anzahl)</code></pre>
+                <p class="fragment">Gibt die letzten N Zeichen eines Textes zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=RIGHT("Hallo"; 2) → "lo"
+=RIGHT("Excel"; 3) → "cel"</code></pre>
+            </section>
+
+            <section>
+                <h2>=MID() - Zeichen ab Position</h2>
+                <pre><code class="language-plaintext">=MID(Text; Start; Anzahl)</code></pre>
+                <p class="fragment">Gibt N Zeichen ab einer bestimmten Position zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=MID("Hallo"; 2; 3) → "all"
+=MID("Excel"; 3; 2) → "ce"</code></pre>
+            </section>
+
+            <section>
+                <h2>=LEN() - Textlänge</h2>
+                <pre><code class="language-plaintext">=LEN(Text)</code></pre>
+                <p class="fragment">Gibt die Anzahl der Zeichen zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=LEN("Hallo") → 5
+=LEN("")      → 0
+=LEN("Excel ist toll") → 14</code></pre>
+            </section>
+
+            <section>
+                <h2>=TEXT() - Formatieren</h2>
+                <pre><code class="language-plaintext">=TEXT(Wert; Format)</code></pre>
+                <p class="fragment">Formatiert einen Wert als Text</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=TEXT(1234.5; "#.##0,00") → "1.234,50"
+=TEXT(A1; "TT.MM.JJJJ")   → "12.05.2026"</code></pre>
+            </section>
+
+            <section>
+                <h2>Text zusammenfügen</h2>
+                <p>Mit & (Kaufmanns-Und):</p>
+                <pre><code class="language-plaintext">=A2 & " " & B2</code></pre>
+                <p class="fragment">Wenn A2 = "Max" und B2 = "Mustermann":</p>
+                <p class="fragment">Ergebnis: "Max Mustermann"</p>
+                <p class="fragment">Mit TEXTJOIN (Excel 2019+):</p>
+                <pre class="fragment"><code class="language-plaintext">=TEXTJOIN(", "; WAHR; A2:A5)</code></pre>
+            </section>
+
+            <section>
+                <h2>=TODAY() und =NOW()</h2>
+                <pre><code class="language-plaintext">=TODAY()</code></pre>
+                <p class="fragment">Gibt das heutige Datum zurück (aktualisiert sich täglich)</p>
+                <pre class="fragment"><code class="language-plaintext">=NOW()</code></pre>
+                <p class="fragment">Gibt Datum + Uhrzeit zurück (aktualisiert sich bei jeder Änderung)</p>
+            </section>
+
+            <section>
+                <h2>=YEAR(), =MONTH(), =DAY()</h2>
+                <pre><code class="language-plaintext">=YEAR(A1)  → 2026
+=MONTH(A1) → 5
+=DAY(A1)   → 12</code></pre>
+                <p class="fragment">Extrahiert einzelne Bestandteile aus einem Datum</p>
+            </section>
+
+            <section>
+                <h2>=DATEDIF() - Datumsdifferenz</h2>
+                <pre><code class="language-plaintext">=DATEDIF(Start; Ende; "Einheit")</code></pre>
+                <p class="fragment">Berechnet die Differenz zwischen zwei Daten</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=DATEDIF(A1; TODAY(); "y")  → Alter in Jahren</code></pre>
+            </section>
+
+            <section>
+                <h2>DATEDIF-Einheiten</h2>
+                <table>
+                    <tr><th>Einheit</th><th>Bedeutung</th></tr>
+                    <tr><td>"y"</td><td>Volle Jahre</td></tr>
+                    <tr><td>"m"</td><td>Volle Monate</td></tr>
+                    <tr><td>"d"</td><td>Volle Tage</td></tr>
+                    <tr><td>"ym"</td><td>Monate (Jahre ignoriert)</td></tr>
+                    <tr><td>"yd"</td><td>Tage (Jahre ignoriert)</td></tr>
+                    <tr><td>"md"</td><td>Tage (Jahre und Monate ignoriert)</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Datum-Arithmetik</h2>
+                <table>
+                    <tr><th>Operation</th><th>Ergebnis</th></tr>
+                    <tr><td>=A1 + 7</td><td>7 Tage später</td></tr>
+                    <tr><td>=A1 - 7</td><td>7 Tage früher</td></tr>
+                    <tr><td>=B1 - A1</td><td>Differenz in Tagen</td></tr>
+                </table>
+                <p class="fragment">Excel speichert Daten intern als Zahlen (Tage seit 01.01.1900)</p>
+            </section>
+
+            <section>
+                <h2>Live-Demo: Altersberechnung</h2>
+                <pre><code class="language-plaintext">=DATEDIF(A1; TODAY(); "y")</code></pre>
+                <p class="fragment">Geburtsdatum in A1 = 01.01.2010</p>
+                <p class="fragment">Heute = 12.05.2026</p>
+                <p class="fragment">Ergebnis: 16 (Jahre)</p>
+            </section>
+
+            <section>
+                <h2>Übersicht Text-Funktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Beschreibung</th></tr>
+                    <tr><td>=LEFT(Text; N)</td><td>N Zeichen von links</td></tr>
+                    <tr><td>=RIGHT(Text; N)</td><td>N Zeichen von rechts</td></tr>
+                    <tr><td>=MID(Text; Start; N)</td><td>N Zeichen ab Position</td></tr>
+                    <tr><td>=LEN(Text)</td><td>Anzahl Zeichen</td></tr>
+                    <tr><td>=TEXT(Wert; Format)</td><td>Wert als Text formatieren</td></tr>
+                    <tr><td>=A1 & " " & B1</td><td>Text zusammenfügen</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Übersicht Datum-Funktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Beschreibung</th></tr>
+                    <tr><td>=TODAY()</td><td>Heutiges Datum</td></tr>
+                    <tr><td>=NOW()</td><td>Datum + Uhrzeit</td></tr>
+                    <tr><td>=YEAR(Datum)</td><td>Jahr extrahieren</td></tr>
+                    <tr><td>=MONTH(Datum)</td><td>Monat extrahieren</td></tr>
+                    <tr><td>=DAY(Datum)</td><td>Tag extrahieren</td></tr>
+                    <tr><td>=DATEDIF(S; E; "E")</td><td>Differenz zwischen Daten</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Bedingte Formatierung & Diagramme</h3>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">15 - Excel Text & Datum Funktionen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

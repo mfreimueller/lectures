@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>12 - Excel Logische Funktionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>12 - Excel Logische Funktionen</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Funktionen</h2>
+                <ol>
+                    <li class="fragment">Welche Funktion berechnet den Durchschnitt?</li>
+                    <li class="fragment">Was ist der Unterschied zwischen COUNT und COUNTA?</li>
+                    <li class="fragment">Wie berechnet man die Spannweite (Max - Min)?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Vergleichsoperatoren</h2>
+                <table>
+                    <tr><th>Operator</th><th>Bedeutung</th><th>Beispiel</th></tr>
+                    <tr><td>=</td><td>Gleich</td><td>A1=100</td></tr>
+                    <tr><td>&lt;&gt;</td><td>Ungleich</td><td>A1&lt;&gt;0</td></tr>
+                    <tr><td>&gt;</td><td>Größer als</td><td>A1&gt;50</td></tr>
+                    <tr><td>&lt;</td><td>Kleiner als</td><td>A1&lt;50</td></tr>
+                    <tr><td>&gt;=</td><td>Größer oder gleich</td><td>A1&gt;=90</td></tr>
+                    <tr><td>&lt;=</td><td>Kleiner oder gleich</td><td>A1&lt;=50</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Ergebnis ist immer boolean</h2>
+                <ul>
+                    <li class="fragment">Jeder Vergleich liefert <strong>WAHR</strong> oder <strong>FALSCH</strong></li>
+                    <li class="fragment">=A1&gt;50 → WAHR wenn A1 größer als 50 ist</li>
+                    <li class="fragment">=A1=100 → WAHR wenn A1 genau 100 ist</li>
+                    <li class="fragment">=A1&lt;&gt;0 → WAHR wenn A1 ungleich 0 ist</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>IF - Einfache Entscheidung</h2>
+                <pre><code class="language-plaintext">=IF(Bedingung; Wert_wenn_wahr; Wert_wenn_falsch)</code></pre>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=IF(A1>=50; "Bestanden"; "Nicht bestanden")</code></pre>
+                <ul>
+                    <li class="fragment">1. Parameter: Bedingung (Vergleich)</li>
+                    <li class="fragment">2. Parameter: Ergebnis wenn WAHR</li>
+                    <li class="fragment">3. Parameter: Ergebnis wenn FALSCH</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>IF - Beispiel</h2>
+                <table>
+                    <tr><th>Punkte</th><th>Formel</th><th>Ergebnis</th></tr>
+                    <tr><td>75</td><td>=IF(A1>=50; "Bestanden"; "Nicht bestanden")</td><td>Bestanden</td></tr>
+                    <tr><td>30</td><td>=IF(A1>=50; "Bestanden"; "Nicht bestanden")</td><td>Nicht bestanden</td></tr>
+                    <tr><td>50</td><td>=IF(A1>=50; "Bestanden"; "Nicht bestanden")</td><td>Bestanden</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Verschachteltes IF</h2>
+                <pre><code class="language-plaintext">=IF(A1>=90; "Sehr gut"; IF(A1>=80; "Gut";
+    IF(A1>=70; "Befriedigend"; "Nicht genügend")))</code></pre>
+                <p class="fragment">Wichtig: Jedes IF braucht genau 3 Parameter</p>
+                <p class="fragment">Bei 3 Bedingungen: 3 Klammern am Ende schließen</p>
+            </section>
+
+            <section>
+                <h2>IFS - Alternative bei vielen Bedingungen</h2>
+                <pre><code class="language-plaintext">=IFS(A1>=90; "Sehr gut";
+     A1>=80; "Gut";
+     A1>=70; "Befriedigend";
+     A1>=60; "Genügend";
+     WAHR; "Nicht genügend")</code></pre>
+                <ul>
+                    <li class="fragment">Einfacher als verschachteltes IF</li>
+                    <li class="fragment">Letzte Bedingung WAHR = sonst-Fall</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>AND - Alle müssen wahr sein</h2>
+                <pre><code class="language-plaintext">=AND(A1>50; B1>50; C1>50)</code></pre>
+                <ul>
+                    <li class="fragment">Liefert WAHR, wenn ALLE Bedingungen wahr sind</li>
+                    <li class="fragment">Liefert FALSCH, wenn auch nur eine falsch ist</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>A1</th><th>B1</th><th>=AND(A1>50; B1>50)</th></tr>
+                    <tr><td>60</td><td>70</td><td>WAHR</td></tr>
+                    <tr><td>60</td><td>30</td><td>FALSCH</td></tr>
+                    <tr><td>40</td><td>70</td><td>FALSCH</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>OR - Mindestens eine wahr</h2>
+                <pre><code class="language-plaintext">=OR(A1>90; B1>90; C1>90)</code></pre>
+                <ul>
+                    <li class="fragment">Liefert WAHR, wenn MINDESTENS EINE Bedingung wahr ist</li>
+                    <li class="fragment">Liefert FALSCH, wenn alle falsch sind</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>A1</th><th>B1</th><th>=OR(A1>90; B1>90)</th></tr>
+                    <tr><td>95</td><td>70</td><td>WAHR</td></tr>
+                    <tr><td>60</td><td>85</td><td>FALSCH</td></tr>
+                    <tr><td>40</td><td>95</td><td>WAHR</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>NOT - Umkehrung</h2>
+                <pre><code class="language-plaintext">=NOT(A1>50)</code></pre>
+                <ul>
+                    <li class="fragment">Kehrt das Ergebnis um</li>
+                    <li class="fragment">=NOT(A1>50) ist das Gleiche wie A1&lt;=50</li>
+                    <li class="fragment">Wird oft mit IF kombiniert: =IF(NOT(A1>50); "Zu wenig"; "OK")</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>AND vs. OR - Wann verwenden?</h2>
+                <ul>
+                    <li class="fragment"><strong>AND:</strong> Wenn ALLE Bedingungen erfüllt sein müssen</li>
+                    <li class="fragment">"Beide Tests bestanden", "Alle Felder ausgefüllt"</li>
+                    <li class="fragment"><strong>OR:</strong> Wenn MINDESTENS EINE Bedingung reicht</li>
+                    <li class="fragment">"Mindestens ein Test bestanden", "Eines der Kriterien erfüllt"</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>IF + AND kombinieren</h2>
+                <pre><code class="language-plaintext">=IF(AND(A1>=50; B1>=50);
+    "Beide bestanden";
+    "Nicht beide bestanden")</code></pre>
+                <p class="fragment">Nur wenn beide Tests >= 50 sind, gibt es "Beide bestanden"</p>
+            </section>
+
+            <section>
+                <h2>IF + OR kombinieren</h2>
+                <pre><code class="language-plaintext">=IF(OR(A1>=90; B1>=90);
+    "Mindestens eine Eins";
+    "Keine Eins")</code></pre>
+                <p class="fragment">Wenn mindestens einer der Tests >= 90 ist, gibt es "Mindestens eine Eins"</p>
+            </section>
+
+            <section>
+                <h2>Typische Fehler</h2>
+                <ul>
+                    <li class="fragment"><strong>Semikolon vergessen:</strong> =IF(A1>50 "OK") → Fehler</li>
+                    <li class="fragment"><strong>Falsche Klammern:</strong> =IF(A1>50;"OK" → Fehler</li>
+                    <li class="fragment"><strong>Falsche Bedingung:</strong> =IF(A1=50) statt =IF(A1>=50)</li>
+                    <li class="fragment"><strong>Text ohne Anführungszeichen:</strong> =IF(A1>50; OK) → Fehler</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übersicht Logische Funktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Erklärung</th></tr>
+                    <tr><td>=IF(Bedingung; Dann; Sonst)</td><td>Wenn-Dann-Entscheidung</td></tr>
+                    <tr><td>=IFS(Bed1; Dann1; Bed2; Dann2; ...)</td><td>Mehrere Bedingungen</td></tr>
+                    <tr><td>=AND(Bed1; Bed2; ...)</td><td>Alle Bedingungen müssen wahr sein</td></tr>
+                    <tr><td>=OR(Bed1; Bed2; ...)</td><td>Mindestens eine Bedingung muss wahr sein</td></tr>
+                    <tr><td>=NOT(Bedingung)</td><td>Bedingung umkehren</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Bereichsfunktionen</h3>
+                </div>
+                <p>SUMIF, COUNTIF, AVERAGEIF, SUMIFS</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">12 - Excel Logische Funktionen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>14 - Excel Suchen & Referenzieren</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>14 - Excel Suchen & Referenzieren</h1>
+                <p class="institution">DBI - 1AHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Bereichsfunktionen</h2>
+                <ol>
+                    <li class="fragment">Wie lautet die Syntax von SUMIF?</li>
+                    <li class="fragment">Was ist der Unterschied zwischen SUMIF und SUMIFS?</li>
+                    <li class="fragment">Welches Wildcard steht für beliebig viele Zeichen?</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Problem: Zwei Tabellen</h2>
+                <p><strong>Produktliste:</strong></p>
+                <table>
+                    <tr><th>Produkt</th><th>Preis</th></tr>
+                    <tr><td>Notebook</td><td>1200</td></tr>
+                    <tr><td>Maus</td><td>25</td></tr>
+                    <tr><td>Monitor</td><td>350</td></tr>
+                </table>
+                <p><strong>Bestellung:</strong></p>
+                <table>
+                    <tr><th>Produkt</th><th>Menge</th><th>Preis</th></tr>
+                    <tr><td>Notebook</td><td>2</td><td>?</td></tr>
+                    <tr><td>Maus</td><td>5</td><td>?</td></tr>
+                </table>
+                <p class="fragment">Wie bekommen wir die Preise automatisch in die Bestellung?</p>
+            </section>
+
+            <section>
+                <h2>Manuelles Nachschlagen</h2>
+                <ul>
+                    <li class="fragment">In Produktliste nach "Notebook" suchen → Preis 1200</li>
+                    <li class="fragment">In Produktliste nach "Maus" suchen → Preis 25</li>
+                    <li class="fragment">... bei 100 Produkten wird das mühsam</li>
+                    <li class="fragment">Und fehleranfällig (man vertippt sich leicht)</li>
+                </ul>
+                <p class="fragment highlight-box">Lösung: Suchen-Funktionen!</p>
+            </section>
+
+            <section>
+                <h2>VLOOKUP - Syntax</h2>
+                <pre><code class="language-plaintext">=VLOOKUP(Suchwert; Matrix; Spaltenindex; Bereich_Verweis)</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Suchwert:</strong> Wonach suchen? (z.B. Produktname)</li>
+                    <li class="fragment"><strong>Matrix:</strong> In welchem Bereich suchen?</li>
+                    <li class="fragment"><strong>Spaltenindex:</strong> Welche Spalte zurückgeben? (1 = erste Spalte)</li>
+                    <li class="fragment"><strong>Bereich_Verweis:</strong> FALSCH = genaue Suche, WAHR = ungefähr</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>VLOOKUP - Beispiel</h2>
+                <pre><code class="language-plaintext">=VLOOKUP(A2; A5:B7; 2; FALSCH)</code></pre>
+                <ul>
+                    <li class="fragment">Suche den Wert aus A2 in Spalte A (A5:A7)</li>
+                    <li class="fragment">Gib den Wert aus Spalte 2 (Spalte B) zurück</li>
+                    <li class="fragment">FALSCH = genaue Übereinstimmung</li>
+                    <li class="fragment">Ergebnis: Für "Notebook" → 1200</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Nachteile von VLOOKUP</h2>
+                <ul>
+                    <li class="fragment"><strong>Suchspalte muss LINKS sein</strong> - keine Rückwärtssuche</li>
+                    <li class="fragment"><strong>Spaltenindex ist fest</strong> - bricht wenn Spalte eingefügt wird</li>
+                    <li class="fragment">Nur vertikale Suche (daher der Name)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>XLOOKUP - Syntax</h2>
+                <pre><code class="language-plaintext">=XLOOKUP(Suchwert; Suchbereich; Rückgabebereich; [Wenn_nicht_gefunden])</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Suchwert:</strong> Wonach suchen?</li>
+                    <li class="fragment"><strong>Suchbereich:</strong> Nur die Suchspalte</li>
+                    <li class="fragment"><strong>Rückgabebereich:</strong> Nur die Ergebnisspalte</li>
+                    <li class="fragment"><strong>Wenn_nicht_gefunden:</strong> Text falls nicht gefunden (optional)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>XLOOKUP - Beispiel</h2>
+                <pre><code class="language-plaintext">=XLOOKUP(A2; A5:A7; B5:B7; "Nicht gefunden")</code></pre>
+                <ul>
+                    <li class="fragment">Suche A2 in A5:A7</li>
+                    <li class="fragment">Gib passenden Wert aus B5:B7 zurück</li>
+                    <li class="fragment">Wenn nicht gefunden: "Nicht gefunden"</li>
+                    <li class="fragment">Einfacher und flexibler als VLOOKUP</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Vorteile von XLOOKUP</h2>
+                <ul>
+                    <li class="fragment">Suchspalte kann <strong>überall</strong> sein (auch rechts)</li>
+                    <li class="fragment">Rückgabespalte ist <strong>frei wählbar</strong></li>
+                    <li class="fragment">Rückwärtssuche möglich</li>
+                    <li class="fragment">"Wenn nicht gefunden" direkt eingebaut</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>INDEX allein</h2>
+                <pre><code class="language-plaintext">=INDEX(Bereich; Zeile; Spalte)</code></pre>
+                <p class="fragment">Gibt den Wert an einer bestimmten Position zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=INDEX(B5:B7; 2)</code></pre>
+                <p class="fragment">Gibt den 2. Wert aus B5:B7 zurück = 25 (Maus-Preis)</p>
+            </section>
+
+            <section>
+                <h2>MATCH allein</h2>
+                <pre><code class="language-plaintext">=MATCH(Suchwert; Suchbereich; Vergleichstyp)</code></pre>
+                <p class="fragment">Gibt die <strong>Position</strong> des Suchwerts zurück (nicht den Wert!)</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=MATCH(A2; A5:A7; 0)</code></pre>
+                <p class="fragment">Wenn A2 = "Maus", Ergebnis = 2 (Maus ist an 2. Position)</p>
+            </section>
+
+            <section>
+                <h2>INDEX + MATCH kombiniert</h2>
+                <pre><code class="language-plaintext">=INDEX(Rückgabebereich; MATCH(Suchwert; Suchbereich; 0))</code></pre>
+                <p class="fragment">MATCH findet die Position, INDEX gibt den Wert zurück</p>
+                <p class="fragment">Beispiel:</p>
+                <pre class="fragment"><code class="language-plaintext">=INDEX(B5:B7; MATCH(A2; A5:A7; 0))</code></pre>
+                <p class="fragment">Suche A2 in A5:A7, gib passenden Wert aus B5:B7</p>
+            </section>
+
+            <section>
+                <h2>Vorteile von INDEX/MATCH</h2>
+                <ul>
+                    <li class="fragment">Sehr flexibel</li>
+                    <li class="fragment">Funktioniert in <strong>allen</strong> Excel-Versionen</li>
+                    <li class="fragment">Suchspalte kann überall sein</li>
+                    <li class="fragment">Horizontal und vertikal kombinierbar</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>IFERROR - Fehler abfangen</h2>
+                <p>Wenn ein Wert nicht gefunden wird: #N/A</p>
+                <pre class="fragment"><code class="language-plaintext">=IFERROR(VLOOKUP(...); "Nicht gefunden")
+=IFERROR(XLOOKUP(...); "Nicht gefunden")
+=IFERROR(INDEX/MATCH; "Nicht gefunden")</code></pre>
+                <p class="fragment">Oder mit XLOOKUP direkt: =XLOOKUP(...; "Nicht gefunden")</p>
+            </section>
+
+            <section>
+                <h2>Vergleich aller Methoden</h2>
+                <table>
+                    <tr><th>Methode</th><th>Einfachheit</th><th>Flexibilität</th><th>Version</th></tr>
+                    <tr><td>VLOOKUP</td><td>Sehr einfach</td><td>Niedrig</td><td>Alle</td></tr>
+                    <tr><td>XLOOKUP</td><td>Einfach</td><td>Hoch</td><td>Excel 2021+</td></tr>
+                    <tr><td>INDEX/MATCH</td><td>Etwas komplex</td><td>Sehr hoch</td><td>Alle</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Nächste Woche: Text & Datum Funktionen</h3>
+                </div>
+                <p>LEFT, RIGHT, MID, LEN, TEXT, TODAY, DATEDIF</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">14 - Excel Suchen & Referenzieren</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>
