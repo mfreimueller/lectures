@@ -17,7 +17,7 @@ Implementiere eine parallele Datenabfrage mit `StructuredTaskScope`.
 
 2. **Teil 1: ShutdownOnFailure**
    - Rufe parallel getUser, checkStock und getShippingOptions auf
-   - Wenn einer fehlschlagt: alle anderen abbrechen
+   - Wenn einer fehlschlägt: alle anderen abbrechen
    - Gib das Gesamtergebnis aus
 
 3. **Teil 2: ShutdownOnSuccess**

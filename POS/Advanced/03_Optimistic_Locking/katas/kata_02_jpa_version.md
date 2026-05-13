@@ -8,15 +8,15 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie ein vollstandiges Spring Boot Beispiel, das JPA @Version fur optimistisches Locking verwendet. Da keine laufende Datenbank zur Verfugung steht, implementieren Sie eine In-Memory-Version, die demonstriert, wie @Version in JPA funktioniert.
+Implementiere ein vollständiges Spring Boot Beispiel, das JPA @Version für optimistisches Locking verwendet. Da keine laufende Datenbank zur Verfügung steht, implementiere eine In-Memory-Version, die demonstriert, wie @Version in JPA funktioniert.
 
-Erstellen Sie:
+Erstelle:
 1. Eine `Account`-Entity mit einem `@Version`-Feld
 2. Ein `AccountRepository` (extends JpaRepository)
 3. Eine `TransferService`, die zwei Konten aktualisiert (Gutschrift/Lastschrift)
 4. Eine Hauptklasse, die gleichzeitige Transfers simuliert und OptimisticLockException behandelt
 
-Hinweis: Da keine echte JPA-Umgebung im Test verfugbar ist, simulieren Sie das Verhalten mit einer eigenen Annotation und Proxy-basierter Versionierung.
+Hinweis: Da keine echte JPA-Umgebung im Test verfügbar ist, simuliere das Verhalten mit einer eigenen Annotation und Proxy-basierter Versionierung.
 
 ### Beispiel-Output
 
@@ -33,4 +33,4 @@ Final: Account(id=1, owner='Alice', balance=0.0, version=3)
 
 ### Erweiterung
 
-Fugen Sie eine Verteilte-Sperren-Komponente (z.B. Redis basiert) hinzu, die zusatzlich pessimistisches Locking auf Account-Ebene ermoglicht.
+Füge eine Verteilte-Sperren-Komponente (z.B. Redis basiert) hinzu, die zusätzlich pessimistisches Locking auf Account-Ebene ermöglicht.

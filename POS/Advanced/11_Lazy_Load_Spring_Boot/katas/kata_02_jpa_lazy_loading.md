@@ -8,7 +8,7 @@
 
 ### Aufgabenstellung
 
-Erstelle ein JPA-Datenmodell und demonstriere das N+1 Problem mit anschliessender Losung.
+Erstelle ein JPA-Datenmodell und demonstriere das N+1 Problem mit anschliessender Lösung.
 
 1. Definiere die Entitaten:
    - `Author` (id, name, books — @OneToMany LAZY)
@@ -22,7 +22,7 @@ Erstelle ein JPA-Datenmodell und demonstriere das N+1 Problem mit anschliessende
 3. Erstelle eine `CommandLineRunner`-Klasse, die:
    - Testdaten anlegt (3 Autoren mit je 2-3 Buchern)
    - Jede Repository-Methode aufruft
-   - Die Anzahl der ausgefuhrten SQL-Queries zahlt (oder Logger-Ausgaben zeigt)
+   - Die Anzahl der ausgeführten SQL-Queries zählt (oder Logger-Ausgaben zeigt)
 
 ### Beispiel-Output
 
@@ -34,7 +34,7 @@ Author: Author 1
 Authors found: 3
 Executed queries: 4 (1 + 3)
 
-=== Losung mit JOIN FETCH ===
+=== Lösung mit JOIN FETCH ===
 Author: Author 1
   Book: Book 1
   Book: Book 2
@@ -44,4 +44,4 @@ Executed queries: 1 (nur 1 Query mit JOIN)
 
 ### Erweiterung
 
-Fuge eine dritte Methode mit `@EntityGraph` hinzu und vergleiche alle drei Ansatze.
+Füge eine dritte Methode mit `@EntityGraph` hinzu und vergleiche alle drei Ansätze.

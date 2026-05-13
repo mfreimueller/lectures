@@ -19,9 +19,9 @@
 <section>
 <h2>Warum Transaktionen?</h2>
 <ul>
-<li class="fragment">Datenbankoperationen mussen zuverlassig sein</li>
+<li class="fragment">Datenbankoperationen müssen zuverlässig sein</li>
 <li class="fragment">Gleichzeitiger Zugriff vieler Benutzer</li>
-<li class="fragment">Systemabsturze konnen jederzeit auftreten</li>
+<li class="fragment">Systemabstürze können jederzeit auftreten</li>
 <li class="fragment">Transaktionen garantieren Datenintegritat</li>
 </ul>
 <div class="fragment highlight-box">
@@ -36,8 +36,8 @@
 <tbody>
 <tr class="fragment"><td>A</td><td>Atomicity</td><td>Alles oder nichts</td></tr>
 <tr class="fragment"><td>C</td><td>Consistency</td><td>Von einem konsistenten in den nachsten</td></tr>
-<tr class="fragment"><td>I</td><td>Isolation</td><td>Nebenlaufige Transaktionen storen sich nicht</td></tr>
-<tr class="fragment"><td>D</td><td>Durability</td><td>Abgeschlossene Anderungen bleiben erhalten</td></tr>
+<tr class="fragment"><td>I</td><td>Isolation</td><td>Nebenlaufige Transaktionen stören sich nicht</td></tr>
+<tr class="fragment"><td>D</td><td>Durability</td><td>Abgeschlossene Änderungen bleiben erhalten</td></tr>
 </tbody>
 </table>
 </section>
@@ -45,7 +45,7 @@
 <section>
 <h2>Atomicity</h2>
 <ul>
-<li class="fragment">Eine Transaktion wird entweder vollstandig ausgefuhrt (Commit) oder gar nicht (Rollback)</li>
+<li class="fragment">Eine Transaktion wird entweder vollständig ausgeführt (Commit) oder gar nicht (Rollback)</li>
 <li class="fragment">Es gibt keinen Zwischenzustand</li>
 </ul>
 <pre class="fragment"><code class="language-java">BEGIN TRANSACTION;
@@ -71,7 +71,7 @@ COMMIT;
 <section>
 <h2>Consistency</h2>
 <ul>
-<li class="fragment">Vor und nach der Transaktion sind alle Integritatsbedingungen erfullt</li>
+<li class="fragment">Vor und nach der Transaktion sind alle Integritätsbedingungen erfüllt</li>
 <li class="fragment">Die Datenbank wechselt von einem konsistenten Zustand in den nachsten</li>
 <li class="fragment">Beispiel: Kontostand darf nicht negativ werden</li>
 </ul>
@@ -80,7 +80,7 @@ COMMIT;
 </section>
 
 <section>
-<h2>Isolation — Ubersicht</h2>
+<h2>Isolation — Übersicht</h2>
 <ul>
 <li class="fragment">Nebenlaufige Transaktionen durfen sich gegenseitig nicht beeinflussen</li>
 <li class="fragment">In der Praxis gibt es Abstufungen</li>
@@ -88,9 +88,9 @@ COMMIT;
 <table class="fragment">
 <thead><tr><th>Stufe</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th></tr></thead>
 <tbody>
-<tr><td>Read Uncommitted</td><td>moglich</td><td>moglich</td><td>moglich</td></tr>
-<tr><td>Read Committed</td><td>verhindert</td><td>moglich</td><td>moglich</td></tr>
-<tr><td>Repeatable Read</td><td>verhindert</td><td>verhindert</td><td>moglich</td></tr>
+<tr><td>Read Uncommitted</td><td>möglich</td><td>möglich</td><td>möglich</td></tr>
+<tr><td>Read Committed</td><td>verhindert</td><td>möglich</td><td>möglich</td></tr>
+<tr><td>Repeatable Read</td><td>verhindert</td><td>verhindert</td><td>möglich</td></tr>
 <tr><td>Serializable</td><td>verhindert</td><td>verhindert</td><td>verhindert</td></tr>
 </tbody>
 </table>
@@ -105,7 +105,7 @@ UPDATE Konto SET saldo = 200 WHERE id = 1;
 // Transaktion B (Read Uncommitted)
 SELECT saldo FROM Konto WHERE id = 1;
 // Liest 200 (obwohl A noch nicht committed hat)</code></pre>
-<p class="fragment">Rollback von A -> B hat ungultige Daten gelesen</p>
+<p class="fragment">Rollback von A -> B hat ungültige Daten gelesen</p>
 </section>
 
 <section>
@@ -135,7 +135,7 @@ SELECT COUNT(*) FROM Konto WHERE saldo > 0; // 6 (Phantom!)</code></pre>
 <section>
 <h2>Durability</h2>
 <ul>
-<li class="fragment">Nach einem Commit sind die Anderungen dauerhaft gespeichert</li>
+<li class="fragment">Nach einem Commit sind die Änderungen dauerhaft gespeichert</li>
 <li class="fragment">Auch bei Stromausfall oder Systemabsturz</li>
 <li class="fragment">Wichtigster Mechanismus: Write-Ahead Logging (WAL)</li>
 </ul>
@@ -152,7 +152,7 @@ log.write("T1: Konto 1: 100 -> 0");
 log.write("T1: Konto 2: 200 -> 300");
 log.flush(); // Log auf Festplatte garantieren
 
-// 2. Daten andern
+// 2. Daten ändern
 konto1.saldo = 0;
 konto2.saldo = 300;
 
@@ -168,9 +168,9 @@ log.flush();</code></pre>
 <ul>
 <li>ACID garantiert verlassliche Transaktionsverarbeitung</li>
 <li>Atomicity: Alles oder nichts (Commit/Rollback)</li>
-<li>Consistency: Integritatsbedingungen bleiben erhalten</li>
+<li>Consistency: Integritätsbedingungen bleiben erhalten</li>
 <li>Isolation: Vier Stufen mit unterschiedlichen Anomalien</li>
-<li>Durability: WAL sichert Daten gegen Absturze</li>
+<li>Durability: WAL sichert Daten gegen Abstürze</li>
 <li>Nachste Lektion: Optimistic Locking</li>
 </ul>
 </div>

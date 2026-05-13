@@ -15,11 +15,11 @@ Erstelle eine Spring Boot Anwendung, die das Verhalten von Eager vs. Lazy Bean-I
    - `ReportService` (@Lazy)
    - `CacheService` (@Lazy)
 
-2. Erstelle einen `StartupListener`, der nach dem Start eine Ubersicht uber initialisierte Beans ausgibt.
+2. Erstelle einen `StartupListener`, der nach dem Start eine Übersicht über initialisierte Beans ausgibt.
 
 3. Greife in einer `CommandLineRunner`-Implementierung auf `ReportService` zu und beobachte die Initialisierung.
 
-4. Aktiviere globale Lazy-Initialisierung und beobachte, wie sich das Verhalten andert.
+4. Aktiviere globale Lazy-Initialisierung und beobachte, wie sich das Verhalten ändert.
 
 ### Beispiel-Output (Eager)
 
@@ -47,4 +47,4 @@ ReportService: initialized!
 
 ### Erweiterung
 
-Fuge eine `@Configuration`-Klasse mit `@Lazy` hinzu und uberschreibe einzelne Beans mit `@Lazy(false)`.
+Füge eine `@Configuration`-Klasse mit `@Lazy` hinzu und überschreibe einzelne Beans mit `@Lazy(false)`.

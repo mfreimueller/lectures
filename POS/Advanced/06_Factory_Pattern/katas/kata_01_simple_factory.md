@@ -8,9 +8,9 @@
 
 ## Aufgabenstellung
 
-Erstellen Sie ein Interface `Shape` mit der Methode `void draw()`. Implementieren Sie drei konkrete Klassen: `Circle`, `Square` und `Triangle`. Jede Klasse gibt in `draw()` eine entsprechende Form im Terminal aus.
+Erstelle ein Interface `Shape` mit der Methode `void draw()`. Implementiere drei konkrete Klassen: `Circle`, `Square` und `Triangle`. Jede Klasse gibt in `draw()` eine entsprechende Form im Terminal aus.
 
-Erstellen Sie eine `ShapeFactory` mit einer statischen Methode `Shape create(String type)`, die je nach ubergebenem Typ die passende Shape-Instanz erzeugt.
+Erstelle eine `ShapeFactory` mit einer statischen Methode `Shape create(String type)`, die je nach ubergebenem Typ die passende Shape-Instanz erzeugt.
 
 ### Beispiel-Output
 
@@ -27,4 +27,4 @@ t.draw();  // Output: Drawing a triangle
 
 ### Erweiterung
 
-Fugen Sie einen neuen Shape-Typ `Rectangle` hinzu, ohne den Client-Code zu andern. Verwenden Sie eine Map<String, Supplier<Shape>> anstelle von switch/case in der Factory.
+Füge einen neuen Shape-Typ `Rectangle` hinzu, ohne den Client-Code zu ändern. Verwende eine Map<String, Supplier<Shape>> anstelle von switch/case in der Factory.

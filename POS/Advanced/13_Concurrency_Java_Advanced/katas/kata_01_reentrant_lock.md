@@ -33,9 +33,9 @@ Starting count: 0
 Running 10 threads with 2000 operations each...
 All threads completed.
 Final count: 0
-Tasks waiting during execution: 347 (Gesamtwartende uber alle Aufrufe)
+Tasks waiting during execution: 347 (Gesamtwartende über alle Aufrufe)
 ```
 
 ### Erweiterung
 
-Fuge eine `void incrementWithTimeout()`-Methode hinzu die `tryLock(500, TimeUnit.MILLISECONDS)` verwendet. Was passiert, wenn der Lock nicht erworben werden kann?
+Füge eine `void incrementWithTimeout()`-Methode hinzu die `tryLock(500, TimeUnit.MILLISECONDS)` verwendet. Was passiert, wenn der Lock nicht erworben werden kann?

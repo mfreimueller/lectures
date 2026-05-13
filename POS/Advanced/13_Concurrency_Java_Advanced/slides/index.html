@@ -23,7 +23,7 @@
 <li class="fragment">synchronized — gegenseitiger Ausschluss</li>
 <li class="fragment">volatile — Sichtbarkeit</li>
 <li class="fragment">wait/notify — Thread-Koordination</li>
-<li class="fragment">Einschrankungen: synchronized ist starr, kein Timeout, keine feineren Locks</li>
+<li class="fragment">Einschränkungen: synchronized ist starr, kein Timeout, keine feineren Locks</li>
 </ul>
 </section>
 
@@ -31,9 +31,9 @@
 <h2>Motivation</h2>
 <ul>
 <li class="fragment">synchronized ist inflexibel: kein Timeout, kein tryLock, keine getrennten Lese-/Schreib-Locks</li>
-<li class="fragment">Manuelle Thread-Verwaltung ist fehleranfallig und schwer skalierbar</li>
+<li class="fragment">Manuelle Thread-Verwaltung ist fehleranfällig und schwer skalierbar</li>
 <li class="fragment">Thread-Pools trennen Aufgaben von der Thread-Verwaltung</li>
-<li class="fragment">Asynchrone Programmierung mit Futures ermoglicht nicht-blockierende Aufrufe</li>
+<li class="fragment">Asynchrone Programmierung mit Futures ermöglicht nicht-blockierende Aufrufe</li>
 </ul>
 </section>
 
@@ -70,7 +70,7 @@ if (lock.tryLock(1, TimeUnit.SECONDS)) {
 <li class="fragment"><strong>Fairness:</strong> ReentrantLock(true) = langs/langere Wartezeit (fair), ReentrantLock(false) = keine Garantie (Standard)</li>
 <li class="fragment"><strong>tryLock:</strong> Versucht Lock zu erwerben, bricht bei Misserfolg ab (mit/ohne Timeout)</li>
 <li class="fragment"><strong>Condition:</strong> wait/notify-Ersatz mit mehr Kontrolle (await/signal statt wait/notify)</li>
-<li class="fragment">Mit Condition kann man getrennte Wait-Sets fur Produzenten und Konsumenten haben</li>
+<li class="fragment">Mit Condition kann man getrennte Wait-Sets für Produzenten und Konsumenten haben</li>
 </ul>
 </section>
 
@@ -94,7 +94,7 @@ try {
     rwLock.writeLock().unlock();
 }</code></pre>
 <ul>
-<li class="fragment">Optimiert fur: viele Lese-, wenige Schreibzugriffe</li>
+<li class="fragment">Optimiert für: viele Lese-, wenige Schreibzugriffe</li>
 <li class="fragment">Read-Lock: mehrere Threads gleichzeitig</li>
 <li class="fragment">Write-Lock: exklusiv (kein Lesen/Schreiben parallel)</li>
 </ul>
@@ -105,10 +105,10 @@ try {
 <pre><code class="language-java">// Thread-Pool erstellen
 ExecutorService executor = Executors.newFixedThreadPool(4);
 
-// Aufgabe ausfuhren (Runnable)
+// Aufgabe ausführen (Runnable)
 executor.execute(() -> System.out.println("Task in pool"));
 
-// Aufgabe mit Ruckgabe (Callable)
+// Aufgabe mit Rückgabe (Callable)
 Future&lt;Integer&gt; future = executor.submit(() -> {
     Thread.sleep(1000);
     return 42;
@@ -123,10 +123,10 @@ ExecutorService executor.shutdown();</code></pre>
 <section>
 <h2>Thread-Pool Typen</h2>
 <ul>
-<li class="fragment"><strong>newFixedThreadPool(n):</strong> Feste Anzahl Threads, Warteschlange fur Aufgaben</li>
+<li class="fragment"><strong>newFixedThreadPool(n):</strong> Feste Anzahl Threads, Warteschlange für Aufgaben</li>
 <li class="fragment"><strong>newCachedThreadPool():</strong> Dynamisch wachsende Anzahl (Idle-Threads werden nach 60s beendet)</li>
-<li class="fragment"><strong>newSingleThreadExecutor():</strong> Ein Thread, Aufgaben werden sequenziell ausgefuhrt</li>
-<li class="fragment"><strong>newScheduledThreadPool(n):</strong> Fur verzogerte/wiederholte Ausfuhrung</li>
+<li class="fragment"><strong>newSingleThreadExecutor():</strong> Ein Thread, Aufgaben werden sequenziell ausgeführt</li>
+<li class="fragment"><strong>newScheduledThreadPool(n):</strong> Fur verzögerte/wiederholte Ausführung</li>
 </ul>
 </section>
 
@@ -140,7 +140,7 @@ ExecutorService executor.shutdown();</code></pre>
 ExecutorService executor = Executors.newFixedThreadPool(2);
 Future&lt;String&gt; future = executor.submit(task);
 
-// Andere Arbeit wahrend Task lauft
+// Andere Arbeit während Task lauft
 System.out.println("Warte auf Ergebnis...");
 
 // Ergebnis abholen (blockiert bis Task fertig)
@@ -176,10 +176,10 @@ Integer firstResult = executor.invokeAny(tasks, 3, TimeUnit.SECONDS);</code></pr
 CompletableFuture&lt;String&gt; future = new CompletableFuture<>();
 future.complete("fertig");  // Setzt Ergebnis
 
-// Asynchrone Ausfuhrung
+// Asynchrone Ausführung
 CompletableFuture&lt;Integer&gt; future = CompletableFuture
     .supplyAsync(() -> {
-        // Wird in ForkJoinPool.commonPool() ausgefuhrt
+        // Wird in ForkJoinPool.commonPool() ausgeführt
         return 42;
     });
 
@@ -188,7 +188,7 @@ Integer result = future.join();  // wirft keine checked Exception
 Integer result2 = future.get();  // wirft InterruptedException, ExecutionException</code></pre>
 <ul>
 <li class="fragment">CompletableFuture implementiert CompletionStage und Future</li>
-<li class="fragment">Ermoglicht funktionale Verkettung von asynchronen Operationen</li>
+<li class="fragment">Ermöglicht funktionale Verkettung von asynchronen Operationen</li>
 </ul>
 </section>
 
@@ -218,7 +218,7 @@ CompletableFuture
 
 <section>
 <h2>CompletableFuture - Kombination</h2>
-<pre><code class="language-java">// Zwei unabhangige Futures kombinieren
+<pre><code class="language-java">// Zwei unabhängige Futures kombinieren
 CompletableFuture&lt;String&gt; user = CompletableFuture.supplyAsync(() -> getUser(1));
 CompletableFuture&lt;String&gt; address = CompletableFuture.supplyAsync(() -> getAddress(1));
 
@@ -243,7 +243,7 @@ class SumTask extends RecursiveTask&lt;Long&gt; {
     @Override
     protected Long compute() {
         if (end - start <= THRESHOLD) {
-            // Direkte Berechnung fur kleine Arrays
+            // Direkte Berechnung für kleine Arrays
             long sum = 0;
             for (int i = start; i < end; i++) sum += array[i];
             return sum;
@@ -252,7 +252,7 @@ class SumTask extends RecursiveTask&lt;Long&gt; {
         int mid = start + (end - start) / 2;
         SumTask left = new SumTask(array, start, mid);
         SumTask right = new SumTask(array, mid, end);
-        left.fork();  // Asynchrone Ausfuhrung
+        left.fork();  // Asynchrone Ausführung
         return right.compute() + left.join();
     }
 }
@@ -267,8 +267,8 @@ Long result = pool.invoke(new SumTask(array, 0, array.length));</code></pre>
 <ul>
 <li class="fragment">Jeder Thread hat eine eigene Aufgabenschlange (Deque)</li>
 <li class="fragment">Leerlaufende Threads stehlen Aufgaben von anderen Threads (Work Stealing)</li>
-<li class="fragment">Optimal fur Divide-and-Conquer: fork() = Aufgabe in eigene Schlange, compute() = selbst ausfuhren, join() = Ergebnis abholen</li>
-<li class="fragment">ForkJoinPool.commonPool() == standardmassig verfugbar</li>
+<li class="fragment">Optimal für Divide-and-Conquer: fork() = Aufgabe in eigene Schlange, compute() = selbst ausführen, join() = Ergebnis abholen</li>
+<li class="fragment">ForkJoinPool.commonPool() == standardmäßig verfügbar</li>
 </ul>
 </section>
 
@@ -278,8 +278,8 @@ Long result = pool.invoke(new SumTask(array, 0, array.length));</code></pre>
 <ul>
 <li>ReentrantLock: Flexiblere Alternative zu synchronized (tryLock, Timeout, Fairness)</li>
 <li>ReadWriteLock: Getrennte Lese-/Schreib-Locks</li>
-<li>ExecutorService: Thread-Pools fur Aufgabenverwaltung</li>
-<li>Callable/Future: Aufgaben mit Ruckgabewert</li>
+<li>ExecutorService: Thread-Pools für Aufgabenverwaltung</li>
+<li>Callable/Future: Aufgaben mit Rückgabewert</li>
 <li>CompletableFuture: Asynchrone Verkettung und Kombination</li>
 <li>Fork/Join: Divide-and-Conquer mit Work Stealing</li>
 </ul>

@@ -8,13 +8,13 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie das Strategy Pattern fur verschiedene Sortieralgorithmen.
+Implementiere das Strategy Pattern für verschiedene Sortieralgorithmen.
 
-Erstellen Sie:
+Erstelle:
 1. Ein `SortStrategy`-Interface mit `void sort(int[] data)`
 2. Mindestens drei konkrete Strategien: `BubbleSortStrategy`, `QuickSortStrategy`, `MergeSortStrategy`
 3. Eine `Sorter`-Context-Klasse, die eine Strategie verwendet
-4. Eine `SortBenchmark`-Klasse, die alle Strategien auf demselben Array ausfuhrt und die Laufzeit misst
+4. Eine `SortBenchmark`-Klasse, die alle Strategien auf demselben Array ausführt und die Laufzeit misst
 5. Ein Hauptprogramm zur Demonstration
 
 ### Beispiel-Output
@@ -37,4 +37,4 @@ Time:     0.15 ms
 
 ### Erweiterung
 
-Fugen Sie eine `JavaSortStrategy` hinzu, die `Arrays.sort()` verwendet und vergleichen Sie die Laufzeiten mit einem Array von 10.000 Elementen.
+Füge eine `JavaSortStrategy` hinzu, die `Arrays.sort()` verwendet und vergleiche die Laufzeiten mit einem Array von 10.000 Elementen.

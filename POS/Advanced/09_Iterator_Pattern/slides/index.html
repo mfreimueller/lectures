@@ -20,8 +20,8 @@
 <h2>Motivation</h2>
 <ul>
 <li class="fragment">Verschiedene Datenstrukturen (Liste, Set, Baum, Graph) sollen einheitlich durchlaufen werden</li>
-<li class="fragment">Der Client soll nicht die interne Struktur kennen mussen</li>
-<li class="fragment">Verschiedene Traversal-Arten (vorwarts, ruckwarts, inorder, ...)</li>
+<li class="fragment">Der Client soll nicht die interne Struktur kennen müssen</li>
+<li class="fragment">Verschiedene Traversal-Arten (vorwärts, rückwärts, inorder, ...)</li>
 </ul>
 <div class="fragment highlight-box">
 "Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation." — GoF
@@ -38,8 +38,8 @@
     default Spliterator&lt;T&gt; spliterator() { ... }
 }</code></pre>
 <ul>
-<li class="fragment">iterator() ist die Factory-Methode fur Iteratoren</li>
-<li class="fragment">Ermoglicht die for-each-Schleife: <code>for (T item : iterable)</code></li>
+<li class="fragment">iterator() ist die Factory-Methode für Iteratoren</li>
+<li class="fragment">Ermöglicht die for-each-Schleife: <code>for (T item : iterable)</code></li>
 </ul>
 </section>
 
@@ -167,9 +167,9 @@ for (int n : range) {
 <table>
 <thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
 <tbody>
-<tr class="fragment"><td>Einheitliche API fur alle Datenstrukturen</td><td>Overhead durch Iterator-Objekt</td></tr>
+<tr class="fragment"><td>Einheitliche API für alle Datenstrukturen</td><td>Overhead durch Iterator-Objekt</td></tr>
 <tr class="fragment"><td>Trennung von Struktur und Traversal</td><td>Nicht immer der effizienteste Weg</td></tr>
-<tr class="fragment"><td>Mehrere Iteratoren gleichzeitig moglich</td><td>zustandsbehaftet (nicht thread-safe)</td></tr>
+<tr class="fragment"><td>Mehrere Iteratoren gleichzeitig möglich</td><td>zustandsbehaftet (nicht thread-safe)</td></tr>
 <tr class="fragment"><td>For-Each-Schleife als syntaktischer Zucker</td><td>remove() wird selten unterstutzt</td></tr>
 </tbody>
 </table>
@@ -181,7 +181,7 @@ for (int n : range) {
 <ul>
 <li>Iterable + Iterator = standardisierte Iteration in Java</li>
 <li>For-Each funktioniert mit allem, was Iterable implementiert</li>
-<li>Custom Iterators fur spezielle Traversal-Arten (Inorder, ...)</li>
+<li>Custom Iterators für spezielle Traversal-Arten (Inorder, ...)</li>
 <li>Iterator ist eines der meistgenutzten GoF Patterns</li>
 </ul>
 </div>

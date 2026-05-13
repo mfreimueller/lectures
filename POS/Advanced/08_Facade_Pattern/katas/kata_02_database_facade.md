@@ -8,16 +8,16 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie eine `Database`-Facade, die den gesamten JDBC-Boilerplate-Code kapselt. Die Facade soll folgende Methoden bereitstellen:
+Implementiere eine `Database`-Facade, die den gesamten JDBC-Boilerplate-Code kapselt. Die Facade soll folgende Methoden bereitstellen:
 
 1. `Database(String url, String user, String password)` — Verbindungskonfiguration
-2. `<T> List<T> query(String sql, RowMapper<T> mapper, Object... params)` — fuhrt ein SELECT aus und mappt Ergebnisse
-3. `int executeUpdate(String sql, Object... params)` — fuhrt INSERT/UPDATE/DELETE aus
+2. `<T> List<T> query(String sql, RowMapper<T> mapper, Object... params)` — führt ein SELECT aus und mappt Ergebnisse
+3. `int executeUpdate(String sql, Object... params)` — führt INSERT/UPDATE/DELETE aus
 4. `void close()` — schliest die Verbindung
 
-Erstellen Sie ein funktionales Interface `RowMapper<T>` mit der Methode `T mapRow(ResultSet rs)`.
+Erstelle ein funktionales Interface `RowMapper<T>` mit der Methode `T mapRow(ResultSet rs)`.
 
-Verwenden Sie H2 im In-Memory-Modus fur einen funktionsfahigen Test (oder simulieren Sie die Datenbankzugriffe mit System.out.println).
+Verwende H2 im In-Memory-Modus für einen funktionsfahigen Test (oder simuliere die Datenbankzugriffe mit System.out.println).
 
 ### Beispiel-Output
 
@@ -38,4 +38,4 @@ db.close();
 
 ### Erweiterung
 
-Fugen Sie `transactional(Supplier<T> operation)` hinzu, die eine Operation in einer Transaktion ausfuhrt und bei Erfolg committed, bei Fehler rollbackt.
+Füge `transactional(Supplier<T> operation)` hinzu, die eine Operation in einer Transaktion ausführt und bei Erfolg committed, bei Fehler rollbackt.

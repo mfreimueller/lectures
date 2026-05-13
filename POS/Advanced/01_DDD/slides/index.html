@@ -22,7 +22,7 @@
 <li class="fragment">Software bildet reale Geschaftsprozesse ab</li>
 <li class="fragment">Fachliche Komplexitat ist die groste Herausforderung</li>
 <li class="fragment">Fachexperten und Entwickler sprechen oft verschiedene Sprachen</li>
-<li class="fragment">DDD bringt den Fokus auf die Domane (Fachlichkeit)</li>
+<li class="fragment">DDD bringt den Fokus auf die Domäne (Fachlichkeit)</li>
 </ul>
 <aside class="fragment highlight-box">
 <p>"The heart of software is its ability to solve domain-related problems" — Eric Evans</p>
@@ -32,7 +32,7 @@
 <section>
 <h2>Ubiquitous Language</h2>
 <ul>
-<li class="fragment">Eine gemeinsame, verbindliche Sprache fur alle Beteiligten</li>
+<li class="fragment">Eine gemeinsame, verbindliche Sprache für alle Beteiligten</li>
 <li class="fragment">Fachbegriffe werden im Code, in Dokumenten und in Gesprachen einheitlich verwendet</li>
 <li class="fragment">Beispiel: "Ausleihe" statt "Transaction" oder "BorrowProcess"</li>
 </ul>
@@ -51,15 +51,15 @@
 <li class="fragment">Beispiel: "Produkt" im Verkaufskontext vs. im Lagerkontext</li>
 </ul>
 <div class="fragment highlight-box">
-<p>Ein Bounded Context grenzt die Gultigkeit der Ubiquitous Language ein</p>
+<p>Ein Bounded Context grenzt die Gültigkeit der Ubiquitous Language ein</p>
 </div>
 </section>
 
 <section>
 <h2>Entities</h2>
 <ul>
-<li class="fragment">Haben eine eindeutige Identitat (ID), die uber die Zeit stabil bleibt</li>
-<li class="fragment">Konnen ihren Zustand andern, behalten aber ihre Identitat</li>
+<li class="fragment">Haben eine eindeutige Identitat (ID), die über die Zeit stabil bleibt</li>
+<li class="fragment">Können ihren Zustand ändern, behalten aber ihre Identitat</li>
 </ul>
 <pre class="fragment"><code class="language-java">public class Kunde {
     private final String kundenId; // Identitat
@@ -105,7 +105,7 @@
 <ul>
 <li class="fragment">Eine Gruppe zusammengehoriger Objekte, die als Einheit behandelt werden</li>
 <li class="fragment">Haben eine Aggregate Root (eine Entity) als Einstiegspunkt</li>
-<li class="fragment">Auere Objekte durfen nur uber die Root auf das Aggregate zugreifen</li>
+<li class="fragment">Auere Objekte durfen nur über die Root auf das Aggregate zugreifen</li>
 </ul>
 <pre class="fragment"><code class="language-java">public class Bestellung {          // Aggregate Root
     private final List&lt;Bestellposition&gt; positionen;
@@ -133,7 +133,7 @@
 <section>
 <h2>Domain Events</h2>
 <ul>
-<li class="fragment">Dokumentieren etwas Bedeutendes, das in der Domane passiert ist</li>
+<li class="fragment">Dokumentieren etwas Bedeutendes, das in der Domäne passiert ist</li>
 <li class="fragment">Typisch als vergangenes Ereignis benannt: "OrderPlaced", "PaymentReceived"</li>
 <li class="fragment">Ermoglichen lose Kopplung zwischen Bounded Contexts</li>
 </ul>

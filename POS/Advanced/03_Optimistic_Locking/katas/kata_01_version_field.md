@@ -8,14 +8,14 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie ein optimistisches Locking-System fur ein in-memory Inventory-System. Ein `Product`-Objekt hat einen Namen, einen Lagerbestand (stock) und eine Versionsnummer.
+Implementiere ein optimistisches Locking-System für ein in-memory Inventory-System. Ein `Product`-Objekt hat einen Namen, einen Lagerbestand (stock) und eine Versionsnummer.
 
-Implementieren Sie:
+Implementiere:
 1. Eine `InventoryRepository`-Klasse mit den Methoden `findById` und `update`
-2. Die `update`-Methode fuhrt einen Compare-and-Swap durch: Sie aktualisiert nur, wenn die Version noch aktuell ist
+2. Die `update`-Methode führt einen Compare-and-Swap durch: Sie aktualisiert nur, wenn die Version noch aktuell ist
 3. Eine `OptimisticLockException`-Klasse
-4. Eine Retry-Logik fur den Fall einer fehlschlagenden Aktualisierung
-5. Simulieren Sie zwei gleichzeitige Benutzer, die versuchen, den Lagerbestand zu andern
+4. Eine Retry-Logik für den Fall einer fehlschlagenden Aktualisierung
+5. Simuliere zwei gleichzeitige Benutzer, die versuchen, den Lagerbestand zu ändern
 
 ### Beispiel-Output
 
@@ -33,4 +33,4 @@ Final: Product{id=1, name='Laptop', stock=3, version=3}
 
 ### Erweiterung
 
-Implementieren Sie zusatzlich eine optimistische Transaktion uber mehrere Produkte hinweg (z.B. Warenkorb mit 2 Produkten).
+Implementiere zusätzlich eine optimistische Transaktion über mehrere Produkte hinweg (z.B. Warenkorb mit 2 Produkten).

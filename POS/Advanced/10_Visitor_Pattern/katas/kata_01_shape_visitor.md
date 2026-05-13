@@ -8,9 +8,9 @@
 
 ### Aufgabenstellung
 
-Implementiere das Visitor Pattern fur eine Shape-Hierarchie.
+Implementiere das Visitor Pattern für eine Shape-Hierarchie.
 
-1. Definiere das Interface `ShapeVisitor` mit Methoden fur:
+1. Definiere das Interface `ShapeVisitor` mit Methoden für:
    - `visitCircle(Circle c)`
    - `visitRectangle(Rectangle r)`
 
@@ -36,4 +36,4 @@ Total perimeter: 63.41
 
 ### Erweiterung
 
-Fuge einen dritten Elementtyp `Triangle` (mit Seiten a, b, c) hinzu und erweitere beide Visitor entsprechend. Beobachte, welche Code-Stellen geandert werden mussen.
+Füge einen dritten Elementtyp `Triangle` (mit Seiten a, b, c) hinzu und erweitere beide Visitor entsprechend. Beobachte, welche Code-Stellen geändert werden müssen.

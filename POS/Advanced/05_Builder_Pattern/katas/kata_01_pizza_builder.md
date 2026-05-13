@@ -8,7 +8,7 @@
 
 ## Aufgabenstellung
 
-Erstellen Sie eine Klasse `Pizza` mit einem inneren `Builder`. Die Pizza soll folgende Eigenschaften haben:
+Erstelle eine Klasse `Pizza` mit einem inneren `Builder`. Die Pizza soll folgende Eigenschaften haben:
 
 - `size` (String, erforderlich, Werte: "small", "medium", "large")
 - `cheese` (boolean, optional, default: false)
@@ -29,4 +29,4 @@ Pizza{size='large', cheese=true, pepperoni=true, mushrooms=false, olives=true}
 
 ### Erweiterung
 
-Fugen Sie ein weiteres Feld `extraToppings` (List<String>) hinzu, das uber Varargs im Builder gesetzt werden kann: `.addToppings("ham", "pineapple")`.
+Füge ein weiteres Feld `extraToppings` (List<String>) hinzu, das über Varargs im Builder gesetzt werden kann: `.addToppings("ham", "pineapple")`.

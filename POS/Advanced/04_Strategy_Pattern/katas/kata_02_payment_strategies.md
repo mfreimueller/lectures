@@ -8,12 +8,12 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie das Strategy Pattern fur ein Zahlungssystem mit verschiedenen Zahlungsmethoden.
+Implementiere das Strategy Pattern für ein Zahlungssystem mit verschiedenen Zahlungsmethoden.
 
-Erstellen Sie:
+Erstelle:
 1. Ein `PaymentStrategy`-Interface mit `void pay(double amount)` und `String getMethodName()`
 2. Drei konkrete Strategien: `CreditCardStrategy`, `PayPalStrategy`, `BitcoinStrategy`
-3. Eine `ShoppingCart`-Context-Klasse, die Artikel sammelt und mit einer gewahlten Strategie bezahlt
+3. Eine `ShoppingCart`-Context-Klasse, die Artikel sammelt und mit einer gewählten Strategie bezahlt
 4. Ein Hauptprogramm, das verschiedene Zahlungsmethoden demonstriert
 
 ### Beispiel-Output
@@ -35,4 +35,4 @@ Zahlung von 1109.97 EUR mit PayPal (user@example.com) erfolgreich
 
 ### Erweiterung
 
-Fugen Sie eine Strategie `GiftCardStrategy` hinzu, die zusatzlich den Gutscheincode validiert und den Gutscheinbetrag vom Gesamtbetrag abzieht.
+Füge eine Strategie `GiftCardStrategy` hinzu, die zusätzlich den Gutscheincode validiert und den Gutscheinbetrag vom Gesamtbetrag abzieht.

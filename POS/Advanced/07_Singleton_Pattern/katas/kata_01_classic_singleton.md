@@ -8,13 +8,13 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie ein thread-sicheres Singleton auf drei verschiedene Arten. Alle Varianten sollen dieselbe Funktionalitat bieten: einen Zähler, der bei jedem Aufruf von `incrementAndGet()` erhoht wird.
+Implementiere ein thread-sicheres Singleton auf drei verschiedene Arten. Alle Varianten sollen dieselbe Funktionalität bieten: einen Zähler, der bei jedem Aufruf von `incrementAndGet()` erhöht wird.
 
 1. **synchronized Singleton** — Klassisches Singleton mit synchronized getInstance()
 2. **Bill Pugh Singleton** — Holder-Pattern mit privater statischer innerer Klasse
 3. **Enum Singleton** — Singleton als Enum-Konstante
 
-Testen Sie alle drei Varianten, indem Sie in einer main()-Methode die getInstance()-Methode mehrfach aufrufen und uberprufen, dass immer dieselbe Instanz zuruckgegeben wird (== Vergleich).
+Teste alle drei Varianten, indem du in einer main()-Methode die getInstance()-Methode mehrfach aufrufen und überprüfen, dass immer dieselbe Instanz zurückgegeben wird (== Vergleich).
 
 ### Beispiel-Output
 
@@ -38,4 +38,4 @@ Same instance: true
 
 ### Erweiterung
 
-Fugen Sie eine `reset()`-Methode hinzu und testen Sie das Singleton-Verhalten in einem Multi-Threading-Szenario mit 10 Threads.
+Füge eine `reset()`-Methode hinzu und teste das Singleton-Verhalten in einem Multi-Threading-Szenario mit 10 Threads.

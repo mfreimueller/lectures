@@ -46,4 +46,4 @@ All tasks completed.
 
 ### Erweiterung
 
-Fuge einen zweiten Producer hinzu. Stelle sicher, dass die Gesamtzahl der produzierten Werte (100) und der konsumierten Werte (100) ubereinstimmt. Verwende `volatile` fur eine shared counter-Variable.
+Füge einen zweiten Producer hinzu. Stelle sicher, dass die Gesamtzahl der produzierten Werte (100) und der konsumierten Werte (100) übereinstimmt. Verwende `volatile` für eine shared counter-Variable.

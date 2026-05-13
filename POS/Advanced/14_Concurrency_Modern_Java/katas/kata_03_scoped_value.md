@@ -16,14 +16,14 @@ Implementiere eine Middleware-artige Request-Verarbeitung mit `ScopedValue`.
 
 2. Implementiere eine `RequestContext`-Klasse mit:
    - `static void processRequest(String requestId, String user, Runnable handler)`
-     - Setzt die ScopedValues und fuhrt den Handler aus
+     - Setzt die ScopedValues und führt den Handler aus
    - Logger-Methoden, die auf die ScopedValues zugreifen
 
 3. Implementiere einen simulierten Request-Handler:
    - Ruft `log()` auf (gibt Request-ID und User aus)
    - Macht eine simulierte async DB-Abfrage (Thread.sleep + Ausgabe)
    - Macht eine simulierte async API- Anfrage (Thread.sleep + Ausgabe)
-   - Die Abfragen sollen die ScopedValues ebenfalls verwenden konnen
+   - Die Abfragen sollen die ScopedValues ebenfalls verwenden können
 
 4. Starte mehrere Requests parallel mit Virtual Threads.
 
@@ -42,4 +42,4 @@ Implementiere eine Middleware-artige Request-Verarbeitung mit `ScopedValue`.
 
 ### Erweiterung
 
-Zeige, dass ScopedValue im Gegensatz zu ThreadLocal nicht geandert werden kann (final/immutable). Versuche `REQUEST_ID.set("neue-id")` und zeige den Compiler-Fehler (oder die Laufzeitausnahme).
+Zeige, dass ScopedValue im Gegensatz zu ThreadLocal nicht geändert werden kann (final/immutable). Versuche `REQUEST_ID.set("neue-id")` und zeige den Compiler-Fehler (oder die Laufzeitausnahme).

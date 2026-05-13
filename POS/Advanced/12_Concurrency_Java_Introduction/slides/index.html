@@ -19,10 +19,10 @@
 <section>
 <h2>Motivation</h2>
 <ul>
-<li class="fragment">Moderne CPUs haben mehrere Kerne — echte Parallelitat moglich</li>
-<li class="fragment">Nebenlaufigkeit verbessert Durchsatz und Responsivitat</li>
+<li class="fragment">Moderne CPUs haben mehrere Kerne — echte Parallelitat möglich</li>
+<li class="fragment">Nebenläufigkeit verbessert Durchsatz und Responsivität</li>
 <li class="fragment">Beispiele: Webserver (viele Clients gleichzeitig), UI-Apps (Hintergrundthreads), Big Data</li>
-<li class="fragment">Aber: Nebenlaufigkeit ist fehleranfallig (Race Conditions, Deadlocks)</li>
+<li class="fragment">Aber: Nebenläufigkeit ist fehleranfällig (Race Conditions, Deadlocks)</li>
 </ul>
 </section>
 
@@ -41,7 +41,7 @@
 <ul>
 <li>Teilt Adressraum mit anderen Threads</li>
 <li>Leichtgewichtiger Kontextwechsel</li>
-<li>Direkter Speicherzugriff uber gemeinsame Variablen</li>
+<li>Direkter Speicherzugriff über gemeinsame Variablen</li>
 </ul>
 </div>
 </section>
@@ -111,7 +111,7 @@ t2.start();</code></pre>
  TERMINATED</code></pre>
 <ul>
 <li class="fragment"><strong>NEW:</strong> erzeugt, noch nicht gestartet</li>
-<li class="fragment"><strong>RUNNABLE:</strong> bereit zur Ausfuhrung (im Scheduler)</li>
+<li class="fragment"><strong>RUNNABLE:</strong> bereit zur Ausführung (im Scheduler)</li>
 <li class="fragment"><strong>BLOCKED/WAITING:</strong> wartet auf Monitor oder Bedingung</li>
 <li class="fragment"><strong>TERMINATED:</strong> run() ist beendet</li>
 </ul>
@@ -144,15 +144,15 @@ Counter counter = new Counter();
 
 Thread 1: liest count (0)
 Thread 2: liest count (0)
-Thread 1: erhoht auf 1, schreibt count = 1
-Thread 2: erhoht auf 1, schreibt count = 1
+Thread 1: erhöht auf 1, schreibt count = 1
+Thread 2: erhöht auf 1, schreibt count = 1
 
 Ergebnis: 1 (statt 2!)</code></pre>
 <p class="fragment">Ursache: Gleichzeitiger Zugriff auf gemeinsamen Zustand ohne Synchronisation</p>
 </section>
 
 <section>
-<h2>Losung: synchronized</h2>
+<h2>Lösung: synchronized</h2>
 <pre><code class="language-java">class SynchronizedCounter {
     private int count = 0;
 
@@ -182,10 +182,10 @@ public void increment() {
 <pre><code class="language-plaintext">Thread 1: betritt synchronized(increment) -> erwirbt Lock
 Thread 2: wartet an der synchronized-Grenze (BLOCKED)
 Thread 1: verlasst synchronized -> gibt Lock frei
-Thread 2: erwirbt Lock, fuhrt aus, gibt Lock frei</code></pre>
+Thread 2: erwirbt Lock, führt aus, gibt Lock frei</code></pre>
 <ul>
 <li class="fragment">Nur ein Thread kann gleichzeitig in einem synchronized-Block auf demselben Objekt sein</li>
-<li class="fragment">Andere Threads mussen warten (BLOCKED-Zustand)</li>
+<li class="fragment">Andere Threads müssen warten (BLOCKED-Zustand)</li>
 </ul>
 </section>
 
@@ -203,7 +203,7 @@ Thread 2: erwirbt Lock, fuhrt aus, gibt Lock frei</code></pre>
     }
 }</code></pre>
 <ul>
-<li class="fragment"><strong>Problem ohne volatile:</strong> Thread konnte running im CPU-Cache puffern (nie die Anderung sehen)</li>
+<li class="fragment"><strong>Problem ohne volatile:</strong> Thread könnte running im CPU-Cache puffern (nie die Änderung sehen)</li>
 <li class="fragment"><strong>volatile:</strong> Schreibzugriff wird sofort in den Hauptspeicher geschrieben, Lesezugriff liest aus Hauptspeicher</li>
 <li class="fragment">Lost das Sichtbarkeitsproblem, aber NICHT das Atomaritatsproblem</li>
 </ul>
@@ -304,7 +304,7 @@ synchronized (lockB) {
 <h2>Best Practices</h2>
 <ul>
 <li class="fragment"><strong>Runnable bevorzugen</strong> statt Thread zu erweitern</li>
-<li class="fragment"><strong>Synchronisation so klein wie moglich</strong> halten (Performance)</li>
+<li class="fragment"><strong>Synchronisation so klein wie möglich</strong> halten (Performance)</li>
 <li class="fragment"><strong>wait() immer in while-Schleife</strong> (Spurious Wakeups)</li>
 <li class="fragment"><strong>Immer notifyAll() statt notify()</strong> verwenden (Signalverlust vermeiden)</li>
 <li class="fragment"><strong>Geteilte mutable State minimieren</strong> — bessere Alternative: immutable Objekte</li>

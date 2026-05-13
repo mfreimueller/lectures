@@ -8,10 +8,10 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie eine Klasse `Range`, die das Interface `Iterable<Integer>` implementiert. Die Klasse soll einen Zahlenbereich von start (inklusive) bis end (exklusive) reprasentieren.
+Implementiere eine Klasse `Range`, die das Interface `Iterable<Integer>` implementiert. Die Klasse soll einen Zahlenbereich von start (inklusive) bis end (exklusive) reprasentieren.
 
 - `Range(int start, int end)` — Konstruktor
-- Die for-each-Schleife soll uber alle Zahlen von start bis end-1 iterieren
+- Die for-each-Schleife soll über alle Zahlen von start bis end-1 iterieren
 - Optional: `Range(int end)` — start ist default 0
 
 ### Beispiel-Output
@@ -32,4 +32,4 @@ for (int n : range2) {
 
 ### Erweiterung
 
-Fugen Sie einen zweiten Iterator hinzu, der ruckwarts iteriert. Implementieren Sie dafur eine Methode `Iterable<Integer> reversed()`, die ein Iterable zuruckgibt, das von end-1 bis start lauft.
+Füge einen zweiten Iterator hinzu, der rückwärts iteriert. Implementiere dafur eine Methode `Iterable<Integer> reversed()`, die ein Iterable zurückgibt, das von end-1 bis start lauft.

@@ -10,15 +10,15 @@
 
 Simuliere einen asynchronen Bestellungsablauf mit `CompletableFuture`.
 
-1. Erstelle drei Dienste, die asynchrone Aufrufe simulieren (jeweils 500-1500ms Verzogerung):
-   - `UserService.getUser(int userId)` -> gibt User-Objekt mit id, name, email zuruck
-   - `OrderService.getOrders(int userId)` -> gibt Liste von Order-Objekten zuruck
-   - `PaymentService.getPaymentStatus(int orderId)` -> gibt "PAID" oder "PENDING" zuruck
+1. Erstelle drei Dienste, die asynchrone Aufrufe simulieren (jeweils 500-1500ms Verzögerung):
+   - `UserService.getUser(int userId)` -> gibt User-Objekt mit id, name, email zurück
+   - `OrderService.getOrders(int userId)` -> gibt Liste von Order-Objekten zurück
+   - `PaymentService.getPaymentStatus(int orderId)` -> gibt "PAID" oder "PENDING" zurück
 
 2. Implementiere folgende Ablaufe mit CompletableFuture:
    - **Abfrage 1:** Hole User-Daten, dann dessen Bestellungen (thenCompose)
    - **Abfrage 2:** Hole User-Daten und parallel dazu dessen Bestellungen (thenCombine)
-   - **Abfrage 3:** Hole fur jede Bestellung den Zahlungsstatus (mehrere parallele Futures)
+   - **Abfrage 3:** Hole für jede Bestellung den Zahlungsstatus (mehrere parallele Futures)
 
 3. Gib die Ergebnisse strukturiert aus.
 
@@ -45,4 +45,4 @@ Time: 1540 ms
 
 ### Erweiterung
 
-Fuge Fehlerbehandlung mit `exceptionally()` hinzu. Simuliere einen Fehler im PaymentService (z.B. bei Order 999: Exception werfen) und fange diesen ab.
+Füge Fehlerbehandlung mit `exceptionally()` hinzu. Simuliere einen Fehler im PaymentService (z.B. bei Order 999: Exception werfen) und fange diesen ab.

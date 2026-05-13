@@ -8,7 +8,7 @@
 
 ### Aufgabenstellung
 
-Implementiere ein einfaches Dateisystem mit dem Composite Pattern und wende das Visitor Pattern fur verschiedene Operationen an.
+Implementiere ein einfaches Dateisystem mit dem Composite Pattern und wende das Visitor Pattern für verschiedene Operationen an.
 
 1. Definiere das Interface `FileSystemElement` mit:
    - `String getName()`
@@ -22,10 +22,10 @@ Implementiere ein einfaches Dateisystem mit dem Composite Pattern und wende das 
    - `File` mit Attributen `name, sizeInBytes`
    - `Directory` mit Attributen `name, children` (Liste von `FileSystemElement`)
 
-   Wichtig: In `Directory.accept()` musst du zuerst den Visitor fur das Directory selbst aufrufen und dann bei allen Kindern `accept` aufrufen.
+   Wichtig: In `Directory.accept()` musst du zuerst den Visitor für das Directory selbst aufrufen und dann bei allen Kindern `accept` aufrufen.
 
 4. Implementiere drei konkrete Visitor:
-   - `SizeCalculator` — berechnet die Gesamtgroße (summiert alle File-Großen)
+   - `SizeCalculator` — berechnet die Gesamtgröße (summiert alle File-Größen)
    - `ListingVisitor` — gibt einen baumartigen Verzeichnisbaum aus (mit Einruckung)
    - `SearchVisitor` — sucht nach Dateien mit einem bestimmten Namen
 

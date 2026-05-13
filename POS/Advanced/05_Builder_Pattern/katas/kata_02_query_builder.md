@@ -8,13 +8,13 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie einen SQL-Query-Builder `QueryBuilder` mit Method Chaining. Der Builder soll folgende Methoden unterstutzen:
+Implementiere einen SQL-Query-Builder `QueryBuilder` mit Method Chaining. Der Builder soll folgende Methoden unterstutzen:
 
 - `select(String... columns)` — Spalten auswahlen (Default: "*")
 - `from(String table)` — Tabelle angeben
 - `where(String condition)` — WHERE-Klausel
 - `orderBy(String column, String direction)` — ORDER BY-Klausel (ASC/DESC)
-- `build()` — gibt den fertigen SQL-String zuruck
+- `build()` — gibt den fertigen SQL-String zurück
 
 ### Beispiel-Output
 
@@ -32,4 +32,4 @@ System.out.println(query);
 
 ### Erweiterung
 
-Fugen Sie Unterstutzung fur `limit(int n)` und `offset(int n)` hinzu. Die Methoden sollen ebenfalls Chaining unterstutzen und die Klauseln an der richtigen Position in der SQL-Abfrage einfugen.
+Füge Unterstützung für `limit(int n)` und `offset(int n)` hinzu. Die Methoden sollen ebenfalls Chaining unterstutzen und die Klauseln an der richtigen Position in der SQL-Abfrage einfügen.

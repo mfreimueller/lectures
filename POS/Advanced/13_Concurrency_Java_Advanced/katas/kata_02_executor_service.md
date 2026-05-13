@@ -8,16 +8,16 @@
 
 ### Aufgabenstellung
 
-Implementiere eine parallele Summenberechnung fur ein grosses Array mit `ExecutorService`.
+Implementiere eine parallele Summenberechnung für ein grosses Array mit `ExecutorService`.
 
-1. Erstelle ein Array mit 1.000.000 zufalligen Integer-Werten (1-100).
+1. Erstelle ein Array mit 1.000.000 zufälligen Integer-Werten (1-100).
 
 2. Teile das Array in gleich grosse Segmente auf (z.B. 100.000 Elemente pro Segment).
 
 3. Erstelle eine `SumTask implements Callable<Long>`:
    - Nimmt ein Sub-Array (oder Start/End-Index) entgegen
    - Berechnet die Summe des Segments
-   - Gibt das Ergebnis als Long zuruck
+   - Gibt das Ergebnis als Long zurück
 
 4. Reiche alle Tasks bei einem `ExecutorService` mit 4 Threads ein.
 
@@ -42,4 +42,4 @@ Sequential computation:
 
 ### Erweiterung
 
-Probiere verschiedene Pool-Groessen (1, 2, 4, 8, 16) aus und miss die Zeiten. Wann ist der Thread-Pool schneller als sequenziell? Wann wird er langsamer?
+Probiere verschiedene Pool-Größen (1, 2, 4, 8, 16) aus und miss die Zeiten. Wann ist der Thread-Pool schneller als sequenziell? Wann wird er langsamer?

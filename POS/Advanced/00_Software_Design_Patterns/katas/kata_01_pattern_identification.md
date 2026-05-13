@@ -8,7 +8,7 @@
 
 ## Aufgabenstellung
 
-Gegeben sind die folgenden Code-Snippets. Ordnen Sie jedes Snippet einer GoF-Pattern-Kategorie zu (Creational, Structural oder Behavioral) und begrunden Sie Ihre Entscheidung.
+Gegeben sind die folgenden Code-Snippets. Ordne jedes Snippet einer GoF-Pattern-Kategorie zu (Creational, Structural oder Behavioral) und begrunde deine Entscheidung.
 
 **Snippet A:**
 ```java
@@ -69,4 +69,4 @@ Snippet D: Creational (Factory Method)
 
 ### Erweiterung
 
-Fugen Sie zu jeder Kategorie ein weiteres selbst gewahltes Beispiel hinzu und implementieren Sie einen kurzen Code-Ausschnitt.
+Füge zu jeder Kategorie ein weiteres selbst gewähltes Beispiel hinzu und implementiere einen kurzen Code-Ausschnitt.

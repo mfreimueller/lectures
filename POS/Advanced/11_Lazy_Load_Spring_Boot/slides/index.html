@@ -20,7 +20,7 @@
 <h2>Motivation</h2>
 <ul>
 <li class="fragment">Eine Spring-Anwendung kann Dutzende oder Hunderte von Beans haben</li>
-<li class="fragment">Nicht alle Beans werden beim Start benotigt</li>
+<li class="fragment">Nicht alle Beans werden beim Start benötigt</li>
 <li class="fragment">Manche Beans sind teuer in der Initialisierung (Datenbankverbindungen, externe APIs, Caches)</li>
 <li class="fragment">Lazy Loading = Initialisierung nur bei Bedarf</li>
 </ul>
@@ -105,7 +105,7 @@ public class Application {
 }</code></pre>
 <p class="fragment">Oder in application.properties:</p>
 <pre class="fragment"><code class="language-properties">spring.main.lazy-initialization=true</code></pre>
-<p class="fragment">Uberschreibbar pro Bean mit <code>@Lazy(false)</code></p>
+<p class="fragment">Überschreibbar pro Bean mit <code>@Lazy(false)</code></p>
 </section>
 
 <section>
@@ -126,7 +126,7 @@ public class AppConfig {
 }</code></pre>
 <ul>
 <li class="fragment">Alle Beans in dieser @Configuration-Klasse werden lazy</li>
-<li class="fragment">Einzelne Beans konnen mit <code>@Lazy(false)</code> uberschrieben werden</li>
+<li class="fragment">Einzelne Beans können mit <code>@Lazy(false)</code> überschrieben werden</li>
 </ul>
 </section>
 
@@ -177,13 +177,13 @@ public class OrderItem {
 <ul>
 <li class="fragment">Bei FetchType.LAZY erzeugt Hibernate einen Proxy</li>
 <li class="fragment">Der Proxy ist eine Unterklasse der Entitat (z.B. Order$HibernateProxy$...)</li>
-<li class="fragment">Beim ersten Methodenaufruf auf dem Proxy wird die SQL-Query ausgefuhrt</li>
+<li class="fragment">Beim ersten Methodenaufruf auf dem Proxy wird die SQL-Query ausgeführt</li>
 </ul>
 <pre class="fragment"><code class="language-java">Order order = em.find(Order.class, 1L);
 // order.getItems() ist ein Proxy (noch nicht geladen)
 
 List&lt;OrderItem&gt; items = order.getItems();
-// Beim Zugriff: Hibernate fuhrt SELECT ... FROM order_item WHERE order_id = 1 aus</code></pre>
+// Beim Zugriff: Hibernate führt SELECT ... FROM order_item WHERE order_id = 1 aus</code></pre>
 </section>
 
 <section>
@@ -199,7 +199,7 @@ for (Order o : orders) {
 }
 // Gesamt: 1 + N Queries!</code></pre>
 <div class="fragment highlight-box">
-<p>N+1 = 1 Query fur die Haupt-Entitaten + N Queries fur jede Assoziation</p>
+<p>N+1 = 1 Query für die Haupt-Entitaten + N Queries für jede Assoziation</p>
 </div>
 </section>
 
@@ -217,7 +217,7 @@ spring.jpa.show-sql=true</code></pre>
 </section>
 
 <section>
-<h2>Losung: JOIN FETCH</h2>
+<h2>Lösung: JOIN FETCH</h2>
 <pre><code class="language-java">// Statt:
 // SELECT o FROM Order o
 
@@ -228,12 +228,12 @@ List&lt;Order&gt; orders = em.createQuery(
 // 1 Query: SELECT o.*, i.* FROM orders o JOIN order_item i ON o.id = i.order_id</code></pre>
 <ul>
 <li class="fragment">Ladt alle Daten in einer einzigen Query</li>
-<li class="fragment">FetchType.LAZY wird fur diese Query uberschrieben</li>
+<li class="fragment">FetchType.LAZY wird für diese Query überschrieben</li>
 </ul>
 </section>
 
 <section>
-<h2>Losung: @EntityGraph</h2>
+<h2>Lösung: @EntityGraph</h2>
 <pre><code class="language-java">@Entity
 @NamedEntityGraph(name = "Order.withItems",
     attributeNodes = @NamedAttributeNode("items"))
@@ -247,7 +247,7 @@ public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
 }</code></pre>
 <ul>
 <li class="fragment">Deklarativer Ansatz statt JPQL</li>
-<li class="fragment">Flexibler: mehrere EntityGraphs pro Entitat moglich</li>
+<li class="fragment">Flexibler: mehrere EntityGraphs pro Entitat möglich</li>
 </ul>
 </section>
 
@@ -255,12 +255,12 @@ public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
 <div class="highlight-box">
 <h2>Zusammenfassung</h2>
 <ul>
-<li>@Lazy: Verzogerte Bean-Initialisierung in Spring</li>
+<li>@Lazy: Verzögerte Bean-Initialisierung in Spring</li>
 <li>Global: spring.main.lazy-initialization=true</li>
 <li>FetchType.LAZY: Assoziationen werden erst bei Bedarf geladen</li>
-<li>Hibernate verwendet Proxys fur Lazy Loading</li>
+<li>Hibernate verwendet Proxys für Lazy Loading</li>
 <li>N+1 Problem: zu viele Queries durch Lazy Loading</li>
-<li>Losungen: JOIN FETCH, EntityGraph, Batch-Fetching</li>
+<li>Lösungen: JOIN FETCH, EntityGraph, Batch-Fetching</li>
 </ul>
 </div>
 </section>

@@ -40,7 +40,7 @@ List&lt;String&gt; result = people.stream()
 <li class="fragment"><code>parallelStream()</code> statt <code>stream()</code> — nutzt den gemeinsamen ForkJoinPool</li>
 <li class="fragment">Daten werden in Teilaufgaben zerlegt (Spliterator)</li>
 <li class="fragment">Teilaufgaben werden parallel in mehreren Threads bearbeitet</li>
-<li class="fragment">Ergebnisse werden wieder zusammengefuhrt</li>
+<li class="fragment">Ergebnisse werden wieder zusammengeführt</li>
 </ul>
 <pre class="fragment"><code class="language-java">// Sequentiell
 long count1 = words.stream()
@@ -72,8 +72,8 @@ long count3 = words.stream()
 <td>I/O-intensive Operationen (Datenbank, Files)</td>
 </tr>
 <tr class="fragment">
-<td>Unabhangige Elemente (keine gemeinsame mutable State)</td>
-<td>Diese Abhangigkeit zwischen Elementen (sorted, distinct)</td>
+<td>Unabhängige Elemente (keine gemeinsame mutable State)</td>
+<td>Diese Abhängigkeit zwischen Elementen (sorted, distinct)</td>
 </tr>
 <tr class="fragment">
 <td>Gut splittbare Quellen (ArrayList, IntStream.range)</td>
@@ -172,15 +172,15 @@ Map&lt;String, List&lt;String&gt;&gt; wordsByCity = people.stream()
         )
     ));
 
-// Ohne flatMapping ware eine ZwischenMap notig:
+// Ohne flatMapping ware eine ZwischenMap nötig:
 // person -> [wohnort, [woerter]] -> flatMap -> group</code></pre>
 </section>
 
 <section>
 <h2>takeWhile / dropWhile</h2>
 <ul>
-<li class="fragment"><strong>takeWhile:</strong> Nimm Elemente, solange das Pradikat true ist, dann brich ab</li>
-<li class="fragment"><strong>dropWhile:</strong> Uberspringe Elemente, solange das Pradikat true ist, dann nimm den Rest</li>
+<li class="fragment"><strong>takeWhile:</strong> Nimm Elemente, solange das Prädikat true ist, dann brich ab</li>
+<li class="fragment"><strong>dropWhile:</strong> Überspringe Elemente, solange das Prädikat true ist, dann nimm den Rest</li>
 </ul>
 <pre class="fragment"><code class="language-java">// takeWhile: Nimm solange Werte kleiner 10 sind
 Stream.of(2, 4, 6, 8, 9, 12, 3)
@@ -188,7 +188,7 @@ Stream.of(2, 4, 6, 8, 9, 12, 3)
     .toList();
 // Ergebnis: [2, 4, 6, 8, 9]
 
-// dropWhile: Uberspringe Werte kleiner 10, nimm den Rest
+// dropWhile: Überspringe Werte kleiner 10, nimm den Rest
 Stream.of(2, 4, 6, 8, 9, 12, 3)
     .dropWhile(n -> n < 10)
     .toList();
@@ -206,7 +206,7 @@ Stream.ofNullable(getMiddleName())
       .forEach(System.out::println);
 // Liefert leeren Stream bei null, sonst Stream mit einem Element
 
-// iterate mit Predicate (Java 9): Bedingung fur Abbruch
+// iterate mit Predicate (Java 9): Bedingung für Abbruch
 Stream.iterate(0, n -> n < 100, n -> n + 1)
       .filter(n -> n % 2 == 0)
       .toList();
@@ -222,7 +222,7 @@ Stream.concat(abc, xyz).toList();  // [a, b, c, x, y, z]</code></pre>
 <section>
 <h2>Primitive Streams</h2>
 <ul>
-<li class="fragment">IntStream, LongStream, DoubleStream — spezialisiert fur primitive Typen</li>
+<li class="fragment">IntStream, LongStream, DoubleStream — spezialisiert für primitive Typen</li>
 <li class="fragment">Vermeiden Boxing/Unboxing — performanter</li>
 </ul>
 <pre class="fragment"><code class="language-java">// IntStream.range: inklusive/exklusive Grenzen
@@ -250,11 +250,11 @@ int totalAge = people.stream()
 <h2>Gatherers (Java 22+)</h2>
 <ul>
 <li class="fragment">Neues Feature (Preview in Java 22, finalized in Java 23+)</li>
-<li class="fragment">Ermoglicht <strong>custom Intermediate Operations</strong> (bisher nur terminale Custom Collectors)</li>
+<li class="fragment">Ermöglicht <strong>custom Intermediate Operations</strong> (bisher nur terminale Custom Collectors)</li>
 </ul>
 <pre class="fragment"><code class="language-java">// Integrierte Gatherer:
-// - Gatherers.windowFixed(n): Fenster fester Groesse
-// - Gatherers.windowSliding(n): Uberlappende Fenster
+// - Gatherers.windowFixed(n): Fenster fester Größe
+// - Gatherers.windowSliding(n): Überlappende Fenster
 // - Gatherers.mapConcurrent(n): Parallele Verarbeitung mit max n Threads
 
 // Beispiel: Feste Fenster
@@ -267,7 +267,7 @@ List&lt;List&lt;Integer&gt;&gt; windows = IntStream.rangeClosed(1, 10)
 // Beispiel: Eigener Gatherer (vereinfacht)
 // Gatherer&lt;T, A, R&gt; mit initializer, integrator, combiner, finisher</code></pre>
 <div class="highlight-box fragment">
-<p>Gatherers schlie&szlig;en die Lucke: Bisher nur custom Collectors (terminal), jetzt auch custom Intermediate Operations!</p>
+<p>Gatherers schlie&szlig;en die Lücke: Bisher nur custom Collectors (terminal), jetzt auch custom Intermediate Operations!</p>
 </div>
 </section>
 
@@ -285,7 +285,7 @@ stream.toList();  // IllegalStateException: stream has already been operated upo
 <pre class="fragment"><code class="language-java">// SCHLECHT: mutable externer State
 List&lt;String&gt; result = new ArrayList&lt;&gt;();
 stream.filter(s -> s.length() > 3)
-      .forEach(result::add);  // Nicht threadsicher, nebenlaufiges Problem!
+      .forEach(result::add);  // Nicht threadsicher, nebenläufiges Problem!
 
 // GUT: Collectors verwenden
 List&lt;String&gt; result = stream

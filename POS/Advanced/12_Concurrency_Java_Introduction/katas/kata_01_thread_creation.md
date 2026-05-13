@@ -18,11 +18,11 @@ Implementiere einen Countdown-Timer auf zwei verschiedene Arten:
 
 2. **Variante B: implements Runnable**
    - Erstelle eine Klasse `CountdownTask implements Runnable`
-   - Gleiche Funktionalitat wie Variante A
+   - Gleiche Funktionalität wie Variante A
 
 3. **main-Methode:**
    - Starte 3 CountdownThreads mit verschiedenen Startwerten (10, 8, 5)
-   - Starte 3 CountdownTasks uber Thread-Objekte mit Startwerten (7, 6, 3)
+   - Starte 3 CountdownTasks über Thread-Objekte mit Startwerten (7, 6, 3)
    - Beobachte die verschrankte Ausgabe
 
 ### Beispiel-Output

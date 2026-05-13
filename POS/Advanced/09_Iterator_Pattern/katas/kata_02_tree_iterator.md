@@ -8,12 +8,12 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie einen Binarbaum `BinaryTree<T>`, der `Iterable<T>` implementiert und einen Inorder-Iterator (Links, Wurzel, Rechts) bereitstellt.
+Implementiere einen Binarbaum `BinaryTree<T>`, der `Iterable<T>` implementiert und einen Inorder-Iterator (Links, Wurzel, Rechts) bereitstellt.
 
-1. Erstellen Sie eine verschachtelte Klasse `Node<T>` mit den Feldern value, left, right.
-2. Implementieren Sie `BinaryTree<T>` mit Methoden:
-   - `void insert(T value)` — fugt einen Wert sortiert ein (fur Comparable<T>)
-   - `Iterator<T> iterator()` — gibt einen Inorder-Iterator zuruck
+1. Erstelle eine verschachtelte Klasse `Node<T>` mit den Feldern value, left, right.
+2. Implementiere `BinaryTree<T>` mit Methoden:
+   - `void insert(T value)` — fügt einen Wert sortiert ein (für Comparable<T>)
+   - `Iterator<T> iterator()` — gibt einen Inorder-Iterator zurück
 3. Der Iterator soll mit einem Stack arbeiten und eine Laufzeit von O(1) amortisiert pro next() haben.
 
 ### Beispiel-Output
@@ -36,4 +36,4 @@ for (int val : tree) {
 
 ### Erweiterung
 
-Implementieren Sie einen Preorder-Iterator (Wurzel, Links, Rechts) und einen Postorder-Iterator (Links, Rechts, Wurzel). Machen Sie den Traversal-Modus uber einen Parameter im Konstruktor oder uber separate Methoden wahllbar (`Iterable<T> preOrder()`, `Iterable<T> postOrder()`).
+Implementiere einen Preorder-Iterator (Wurzel, Links, Rechts) und einen Postorder-Iterator (Links, Rechts, Wurzel). Mache den Traversal-Modus über einen Parameter im Konstruktor oder über separate Methoden wählbar (`Iterable<T> preOrder()`, `Iterable<T> postOrder()`).

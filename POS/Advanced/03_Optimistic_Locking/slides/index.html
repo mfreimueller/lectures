@@ -29,7 +29,7 @@ repo.update(p1.setStock(8));
 
 // B schreibt: stock = 10 - 5 = 5  (Lost Update!)
 repo.update(p2.setStock(5));</code></pre>
-<p class="fragment">Anderung von A wurde uberschrieben! Endstand: 5 statt 8 oder 3</p>
+<p class="fragment">Änderung von A wurde überschrieben! Endstand: 5 statt 8 oder 3</p>
 </section>
 
 <section>
@@ -40,8 +40,8 @@ repo.update(p2.setStock(5));</code></pre>
 <tr class="fragment"><td>Annahme</td><td>Wenig Konflikte</td><td>Viele Konflikte</td></tr>
 <tr class="fragment"><td>Sperrmechanismus</td><td>Version prufen beim Schreiben</td><td>Ressource gleich sperren</td></tr>
 <tr class="fragment"><td>Durchsatz</td><td>Hoch bei wenig Konflikten</td><td>Niedriger (Wartezeiten)</td></tr>
-<tr class="fragment"><td>Deadlocks</td><td>Nicht moglich</td><td>moglich</td></tr>
-<tr class="fragment"><td>Typisch fur</td><td>Webanwendungen, Leselastig</td><td>Batch-Verarbeitung, Schreibintensiv</td></tr>
+<tr class="fragment"><td>Deadlocks</td><td>Nicht möglich</td><td>möglich</td></tr>
+<tr class="fragment"><td>Typisch für</td><td>Webanwendungen, Leselastig</td><td>Batch-Verarbeitung, Schreibintensiv</td></tr>
 </tbody>
 </table>
 </section>
@@ -49,7 +49,7 @@ repo.update(p2.setStock(5));</code></pre>
 <section>
 <h2>Version Field Pattern</h2>
 <ul>
-<li class="fragment">Jede Tabelle bekommt eine zusatzliche Versionsspalte</li>
+<li class="fragment">Jede Tabelle bekommt eine zusätzliche Versionsspalte</li>
 <li class="fragment">Version wird bei jedem Update inkrementiert</li>
 <li class="fragment">Beim Update wird gepruft: Ist die Version noch aktuell?</li>
 </ul>
@@ -121,7 +121,7 @@ public class Product {
     private int version;
 }</code></pre>
 <ul>
-<li class="fragment">JPA erhoht die Version automatisch bei jedem Update</li>
+<li class="fragment">JPA erhöht die Version automatisch bei jedem Update</li>
 <li class="fragment">Bei Konflikt: <code>OptimisticLockException</code> (oder <code>StaleObjectStateException</code>)</li>
 <li class="fragment">Funktioniert mit <code>EntityManager.merge()</code> und <code>flush()</code></li>
 </ul>
@@ -136,7 +136,7 @@ public class ProductService {
         Product p = repo.findById(productId)
             .orElseThrow();
         p.setStock(p.getStock() - quantity);
-        // JPA erhoht @Version beim flush()
+        // JPA erhöht @Version beim flush()
     }
 }
 
@@ -155,7 +155,7 @@ catch (OptimisticLockException e) {
 <li>Version-Felder und CAS ermoglichen Konflikterkennung beim Schreiben</li>
 <li>Retry-Logik behandelt OptimisticLockExceptions</li>
 <li>JPA @Version automatisiert das Version-Management</li>
-<li>Geeignet fur Systeme mit wenigen Schreibkonflikten</li>
+<li>Geeignet für Systeme mit wenigen Schreibkonflikten</li>
 <li>Nachste Lektion: Strategy Pattern</li>
 </ul>
 </div>

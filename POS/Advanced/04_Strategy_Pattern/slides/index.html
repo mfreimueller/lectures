@@ -35,7 +35,7 @@
 </section>
 
 <section>
-<h2>Losung: Strategy Pattern</h2>
+<h2>Lösung: Strategy Pattern</h2>
 <ul>
 <li class="fragment">Kapselt Algorithmen in eigenen Klassen</li>
 <li class="fragment">Macht sie austauschbar (zur Laufzeit)</li>
@@ -115,7 +115,7 @@ sorter.executeSort(data);
 // Einfach wechseln:
 sorter = new Sorter(new QuickSortStrategy(), "Quick Sort");
 sorter.executeSort(data);</code></pre>
-<p class="fragment">Keine if/else — einfach neue Strategie ubergeben</p>
+<p class="fragment">Keine if/else — einfach neue Strategie übergeben</p>
 </section>
 
 <section>
@@ -135,7 +135,7 @@ public class CreditCardStrategy implements PaymentStrategy {
 public class PayPalStrategy implements PaymentStrategy {
     private String email;
     public void pay(double amount) {
-        System.out.println(email + ": " + amount + " EUR uber PayPal");
+        System.out.println(email + ": " + amount + " EUR über PayPal");
     }
 }</code></pre>
 </section>
@@ -177,7 +177,7 @@ public class PayPalStrategy implements PaymentStrategy {
 <ul>
 <li>Strategy = austauschbare Algorithmen (Behavioral Pattern)</li>
 <li>Drei Rollen: Strategy Interface, Concrete Strategies, Context</li>
-<li>Ermoglicht Erweiterung ohne Modifikation (OCP)</li>
+<li>Ermöglicht Erweiterung ohne Modifikation (OCP)</li>
 <li>Typische Anwendungen: Sortieren, Bezahlen, Validieren, Komprimieren</li>
 <li>Nachste Lektion: Builder Pattern</li>
 </ul>

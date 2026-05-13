@@ -8,13 +8,13 @@
 
 ## Aufgabenstellung
 
-Bauen Sie einen einfachen Logging-Service `Logger` als Singleton mit folgenden Features:
+Baue einen einfachen Logging-Service `Logger` als Singleton mit folgenden Features:
 
 1. Verwalten Sie Log-Level: DEBUG, INFO, WARN, ERROR (als Enum)
 2. Methode `void log(Level level, String message)` gibt formatierte Nachrichten aus
 3. Hilfsmethoden: `info()`, `debug()`, `warn()`, `error()` delegieren an log()
 4. Der Logger soll konfigurierbar sein: `setMinLevel(Level level)` unterdruckt Nachrichten unterhalb des Schwellwerts
-5. Alle Log-Nachrichten werden in einer internen `List<String>` gespeichert und sind uber `getLogHistory()` abrufbar
+5. Alle Log-Nachrichten werden in einer internen `List<String>` gespeichert und sind über `getLogHistory()` abrufbar
 
 ### Beispiel-Output
 
@@ -39,4 +39,4 @@ for (String entry : logger.getLogHistory()) {
 
 ### Erweiterung
 
-Fugen Sie einen timestamp zu jedem Log-Eintrag hinzu (Instant.now()) und formatieren Sie die Ausgabe als `[2026-05-13 10:30:00] [INFO] Application started`.
+Füge einen timestamp zu jedem Log-Eintrag hinzu (Instant.now()) und formatieren Sie die Ausgabe als `[2026-05-13 10:30:00] [INFO] Application started`.

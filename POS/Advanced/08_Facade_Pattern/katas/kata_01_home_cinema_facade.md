@@ -8,7 +8,7 @@
 
 ## Aufgabenstellung
 
-Erstellen Sie ein Home-Entertainment-Subsystem mit folgenden Klassen:
+Erstelle ein Home-Entertainment-Subsystem mit folgenden Klassen:
 
 1. `Amplifier` — on(), off(), setVolume(int), setSource(Player)
 2. `DvdPlayer` — on(), off(), play(String movie), stop()
@@ -19,7 +19,7 @@ Erstellen Sie ein Home-Entertainment-Subsystem mit folgenden Klassen:
 
 Jede Methode gibt eine beschreibende System.out.println()-Ausgabe aus.
 
-Implementieren Sie eine `HomeCinemaFacade`, die folgende Methoden bereitstellt:
+Implementiere eine `HomeCinemaFacade`, die folgende Methoden bereitstellt:
 - `watchMovie(String movie, boolean isBluRay)` — schaltet alles ein, fahrt die Leinwand herunter, startet den Film
 - `endMovie()` — stoppt den Film, schaltet alles aus, fahrt Leinwand hoch
 
@@ -44,4 +44,4 @@ homeCinema.watchMovie("Inception", true);
 
 ### Erweiterung
 
-Fugen Sie eine Methode `setVolume(int level)` in der Facade hinzu, die die Lautstarke wahrend des Films andert. Stellen Sie sicher, dass die Lautstarke nicht uber 10 gesetzt werden kann.
+Füge eine Methode `setVolume(int level)` in der Facade hinzu, die die Lautstärke während des Films ändert. Stelle sicher, dass die Lautstärke nicht über 10 gesetzt werden kann.

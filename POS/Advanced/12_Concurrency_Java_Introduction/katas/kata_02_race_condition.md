@@ -12,7 +12,7 @@ Implementiere ein Bankkonto und demonstriere eine Race Condition.
 
 1. Erstelle eine Klasse `BankAccount` mit:
    - Privatem Feld `int balance`
-   - Methode `void deposit(int amount)` (erhoht Kontostand)
+   - Methode `void deposit(int amount)` (erhöht Kontostand)
    - Methode `void withdraw(int amount)` (verringert Kontostand)
    - Methode `int getBalance()`
 

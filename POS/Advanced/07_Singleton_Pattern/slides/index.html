@@ -42,7 +42,7 @@
         return instance;
     }
 }</code></pre>
-<div class="fragment">Problem: <strong>Nicht thread-safe</strong> — zwei Threads konnten gleichzeitig <code>new</code> aufrufen</div>
+<div class="fragment">Problem: <strong>Nicht thread-safe</strong> — zwei Threads könnten gleichzeitig <code>new</code> aufrufen</div>
 </section>
 
 <section>
@@ -56,7 +56,7 @@
 }</code></pre>
 <ul>
 <li class="fragment">Einfach, aber teuer: jeder Aufruf wird synchronisiert</li>
-<li class="fragment">Synchronisation nur beim ersten Aufruf notig</li>
+<li class="fragment">Synchronisation nur beim ersten Aufruf nötig</li>
 </ul>
 </section>
 
@@ -114,7 +114,7 @@ public static Singleton getInstance() {
 Singleton.INSTANCE.doSomething();</code></pre>
 <ul>
 <li class="fragment">Von Haus aus serialisierbar und reflection-sicher</li>
-<li class="fragment">Die eleganteste Losung laut Effective Java</li>
+<li class="fragment">Die eleganteste Lösung laut Effective Java</li>
 </ul>
 </section>
 
@@ -123,10 +123,10 @@ Singleton.INSTANCE.doSomething();</code></pre>
 <table>
 <thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
 <tbody>
-<tr class="fragment"><td>Eine Instanz garantiert</td><td>Versteckte Abhangigkeiten (globaler Zustand)</td></tr>
-<tr class="fragment"><td>Lazy Initialization moglich</td><td>Testbarkeit erschwert ( schwer zu mocken)</td></tr>
+<tr class="fragment"><td>Eine Instanz garantiert</td><td>Versteckte Abhängigkeiten (globaler Zustand)</td></tr>
+<tr class="fragment"><td>Lazy Initialization möglich</td><td>Testbarkeit erschwert ( schwer zu mocken)</td></tr>
 <tr class="fragment"><td>Speicherschonend</td><td>Verletzt Single Responsibility Principle</td></tr>
-<tr class="fragment"><td>Thread-Safety implementierbar</td><td>Oft uberflussig ( DI ersetzt Singleton)</td></tr>
+<tr class="fragment"><td>Thread-Safety implementierbar</td><td>Oft überflüssig ( DI ersetzt Singleton)</td></tr>
 </tbody>
 </table>
 </section>
@@ -134,10 +134,10 @@ Singleton.INSTANCE.doSomething();</code></pre>
 <section>
 <h2>Wann Singleton, wann nicht?</h2>
 <div class="fragment highlight-box">
-<b>Geeignet fur:</b> Logger, Config-Manager, Connection-Pools, Caches
+<b>Geeignet für:</b> Logger, Config-Manager, Connection-Pools, Caches
 </div>
 <div class="fragment highlight-box">
-<b>Nicht geeignet fur:</b> Services mit vielen Abhangigkeiten, Stateful Components, wo Testbarkeit wichtig ist
+<b>Nicht geeignet für:</b> Services mit vielen Abhängigkeiten, Stateful Components, wo Testbarkeit wichtig ist
 </div>
 </section>
 

@@ -21,9 +21,9 @@
 <ul>
 <li class="fragment">Lektion 12: Threads, Runnable, synchronized, volatile, wait/notify</li>
 <li class="fragment">Lektion 13: Locks, Executors, Callable/Future, CompletableFuture, ForkJoin</li>
-<li class="fragment">Einschrankung: Platform Threads sind teuer (1 MB Stack pro Thread)</li>
-<li class="fragment">Einschrankung: Manuelle Future-Verwaltung ist fehleranfallig (vergessene join(), ausreissende Tasks)</li>
-<li class="fragment">Einschrankung: ThreadLocal hat Probleme mit Virtual Threads und Speicherlecks</li>
+<li class="fragment">Einschränkung: Platform Threads sind teuer (1 MB Stack pro Thread)</li>
+<li class="fragment">Einschränkung: Manuelle Future-Verwaltung ist fehleranfällig (vergessene join(), ausreißende Tasks)</li>
+<li class="fragment">Einschränkung: ThreadLocal hat Probleme mit Virtual Threads und Speicherlecks</li>
 </ul>
 </section>
 
@@ -32,7 +32,7 @@
 <ul>
 <li class="fragment">Ein Platform Thread = ~1 MB Stack + OS-Thread = teuer</li>
 <li class="fragment">Server mit 16 GB RAM: max ~16.000 Platform Threads</li>
-<li class="fragment">Virtual Thread: ~einige KB, Millionen gleichzeitig moglich</li>
+<li class="fragment">Virtual Thread: ~einige KB, Millionen gleichzeitig möglich</li>
 <li class="fragment">"Einfach zu codierende, hochskalierbare Server-Anwendungen" (JEP 444)</li>
 </ul>
 </section>
@@ -69,11 +69,11 @@ Carrier Thread 2 (Platform Thread) ---+--- VT-D, VT-E
 
 Wenn VT-A blockiert (z.B. I/O):
    VT-A wird ausgehangt (unmount)
-   Carrier-1 fuhrt VT-B weiter aus
+   Carrier-1 führt VT-B weiter aus
    Wenn I/O fertig: VT-A wird wieder auf einen freien Carrier gemountet</code></pre>
 <ul>
 <li class="fragment">Blockierende I/O-Operationen blockieren NICHT den Carrier Thread</li>
-<li class="fragment">Keine Thread-Pools mehr notig — einfach fur jede Aufgabe einen neuen Virtual Thread</li>
+<li class="fragment">Keine Thread-Pools mehr nötig — einfach für jede Aufgabe einen neuen Virtual Thread</li>
 </ul>
 </section>
 
@@ -99,7 +99,7 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 <section>
 <h2>100.000 Virtual Threads</h2>
 <pre><code class="language-java">// Platform Threads: inakzeptabel (100.000 * 1 MB = ~100 GB)
-// Virtual Threads: problemlos moglich
+// Virtual Threads: problemlos möglich
 
 try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
     for (int i = 0; i < 100_000; i++) {
@@ -113,21 +113,21 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 </section>
 
 <section>
-<h2>Virtual Threads - Einschrankungen</h2>
+<h2>Virtual Threads - Einschränkungen</h2>
 <ul>
 <li class="fragment"><strong>synchronized:</strong> Virtual Thread wird beim Eintritt in synchronized blockiert und belegt den Carrier (Pinning) — vermeiden!</li>
 <li class="fragment"><strong>CPU-intensive Tasks:</strong> Virtual Threads bringen keinen Vorteil, da sie keine I/O-Wartezeit haben</li>
-<li class="fragment"><strong>Native Code / JNI:</strong> Kann zu Pinning fuhren</li>
-<li class="fragment">Losung: synchronized durch ReentrantLock ersetzen (kein Pinning)</li>
+<li class="fragment"><strong>Native Code / JNI:</strong> Kann zu Pinning führen</li>
+<li class="fragment">Lösung: synchronized durch ReentrantLock ersetzen (kein Pinning)</li>
 </ul>
 </section>
 
 <section>
 <h2>Structured Concurrency - Konzept</h2>
 <ul>
-<li class="fragment">Ziel: "Strukturierte Nebenlaufigkeit" mit klaren Lebenszyklen</li>
+<li class="fragment">Ziel: "Strukturierte Nebenläufigkeit" mit klaren Lebenszyklen</li>
 <li class="fragment">Ein Task erzeugt Sub-Tasks, deren Lebensdauer an den umgebenden Block gebunden ist</li>
-<li class="fragment">Wenn ein Sub-Task fehlschlagt: alle anderen werden abgebrochen</li>
+<li class="fragment">Wenn ein Sub-Task fehlschlägt: alle anderen werden abgebrochen</li>
 <li class="fragment">Keine "ausreissenden" Tasks (runaway tasks)</li>
 <li class="fragment">Fehlerpropagation: Entweder alle erfolgreich ODER Fehler</li>
 </ul>
@@ -135,13 +135,13 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 
 <section>
 <h2>StructuredTaskScope - ShutdownOnFailure</h2>
-<pre><code class="language-java">// Alle Subtasks mussen erfolgreich sein
+<pre><code class="language-java">// Alle Subtasks müssen erfolgreich sein
 try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
     Future&lt;String&gt; user = scope.fork(() -> fetchUser(1));
     Future&lt;String&gt; address = scope.fork(() -> fetchAddress(1));
 
     scope.join();             // warte auf alle
-    scope.throwIfFailed();    // wenn einer fehlschlagt -> Exception
+    scope.throwIfFailed();    // wenn einer fehlschlägt -> Exception
 
     // Alle erfolgreich:
     return user.resultNow() + ", " + address.resultNow();
@@ -170,22 +170,22 @@ try (var scope = new StructuredTaskScope.ShutdownOnSuccess&lt;String&gt;()) {
         Future&lt;List&lt;Order&gt;&gt; orders = scope.fork(() -> orderService.getOrders(id));
 
         scope.join();           // warte auf beide
-        scope.throwIfFailed();  // wenn einer fehlschlagt -> beide abbrechen
+        scope.throwIfFailed();  // wenn einer fehlschlägt -> beide abbrechen
 
         return new Response(user.resultNow(), orders.resultNow());
     }
 }
 
-// Vorteil: Wenn getUser() fehlschlagt ->
+// Vorteil: Wenn getUser() fehlschlägt ->
 // orders-Task wird automatisch abgebrochen
-// Kein manuelles future.cancel() notig!</code></pre>
+// Kein manuelles future.cancel() nötig!</code></pre>
 </section>
 
 <section>
 <h2>ScopedValue - Motivation</h2>
 <ul>
 <li class="fragment">Problem mit ThreadLocal: Jeder Thread hat eigene Kopie, Speicherlecks, mutable, Probleme mit Virtual Threads</li>
-<li class="fragment">Losung: ScopedValue (JEP 446) — immutable, scope-gebunden, sicher fur Virtual Threads</li>
+<li class="fragment">Lösung: ScopedValue (JEP 446) — immutable, scope-gebunden, sicher für Virtual Threads</li>
 <li class="fragment">Anwendungsfalle: Request-ID, User-Context, Transaktions-ID</li>
 </ul>
 </section>
@@ -223,7 +223,7 @@ ScopedValue.where(REQUEST_ID, "abc-123")
 
     private static void handle() {
         System.out.println("Request " + REQUEST_ID.get() + " by " + USER.get());
-        // weiterer Code ohne explizite Parameterubergabe
+        // weiterer Code ohne explizite Parameterübergabe
     }
 }
 
@@ -237,9 +237,9 @@ Thread.startVirtualThread(() ->
 <div class="highlight-box">
 <h2>Zusammenfassung</h2>
 <ul>
-<li>Virtual Threads: leichtgewichtige Threads (M:N), Millionen gleichzeitig moglich</li>
+<li>Virtual Threads: leichtgewichtige Threads (M:N), Millionen gleichzeitig möglich</li>
 <li>I/O-blockierende Operationen blockieren keine Platform Threads</li>
-<li>Structured Concurrency: Strukturierte Lebenszyklen fur Sub-Tasks</li>
+<li>Structured Concurrency: Strukturierte Lebenszyklen für Sub-Tasks</li>
 <li>StructuredTaskScope: ShutdownOnFailure / ShutdownOnSuccess</li>
 <li>ScopedValue: Scope-gebundene, immutable Kontextwerte (Alternative zu ThreadLocal)</li>
 </ul>

@@ -8,12 +8,12 @@
 
 ## Aufgabenstellung
 
-Implementieren Sie das Factory Method Pattern fur verschiedene Dokumenttypen.
+Implementiere das Factory Method Pattern für verschiedene Dokumenttypen.
 
-1. Erstellen Sie ein Interface `Document` mit den Methoden `void open()`, `void save()` und `void close()`.
-2. Implementieren Sie drei konkrete Dokumente: `PdfDocument`, `WordDocument` und `HtmlDocument`.
-3. Erstellen Sie eine abstrakte Klasse `DocumentCreator` mit der Factory-Methode `Document createDocument()` und einer Vorlagenmethode `void newDocument()`, die createDocument() aufruft und dann open(), Inhalt schreiben, save() und close() ausfuhrt.
-4. Implementieren Sie die konkreten Creator: `PdfCreator`, `WordCreator` und `HtmlCreator`.
+1. Erstelle ein Interface `Document` mit den Methoden `void open()`, `void save()` und `void close()`.
+2. Implementiere drei konkrete Dokumente: `PdfDocument`, `WordDocument` und `HtmlDocument`.
+3. Erstelle eine abstrakte Klasse `DocumentCreator` mit der Factory-Methode `Document createDocument()` und einer Vorlagenmethode `void newDocument()`, die createDocument() aufruft und dann open(), Inhalt schreiben, save() und close() ausführt.
+4. Implementiere die konkreten Creator: `PdfCreator`, `WordCreator` und `HtmlCreator`.
 
 ### Beispiel-Output
 
@@ -30,4 +30,4 @@ creator.newDocument();
 
 ### Erweiterung
 
-Fugen Sie einen `MarkdownCreator` hinzu. Stellen Sie sicher, dass das Open/Closed-Prinzip eingehalten wird — der bestehende Code darf nicht geandert werden mussen.
+Füge einen `MarkdownCreator` hinzu. Stelle sicher, dass das Open/Closed-Prinzip eingehalten wird — der bestehende Code darf nicht geändert werden müssen.

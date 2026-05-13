@@ -41,7 +41,7 @@ screen.down();
 <ul>
 <li class="fragment">Bietet eine vereinfachte Schnittstelle zu einem komplexen Subsystem</li>
 <li class="fragment">Kapselt die Interaktion mehrerer Klassen</li>
-<li class="fragment">Reduziert Abhangigkeiten (loose coupling)</li>
+<li class="fragment">Reduziert Abhängigkeiten (loose coupling)</li>
 </ul>
 <div class="fragment highlight-box">
 "Provide a unified interface to a set of interfaces in a subsystem." — GoF
@@ -54,8 +54,8 @@ screen.down();
 <thead><tr><th>Facade</th><th>Adapter</th></tr></thead>
 <tbody>
 <tr class="fragment"><td>Vereinfacht ein Subsystem</td><td>Passt ein Interface an ein anderes an</td></tr>
-<tr class="fragment"><td>Neue, einfachere API</td><td>Ubersetzt Aufrufe in bestehende API</td></tr>
-<tr class="fragment"><td>Arbeitet mit vielen Klassen</td><td>Wrapper fur eine Klasse</td></tr>
+<tr class="fragment"><td>Neue, einfachere API</td><td>Übersetzt Aufrufe in bestehende API</td></tr>
+<tr class="fragment"><td>Arbeitet mit vielen Klassen</td><td>Wrapper für eine Klasse</td></tr>
 <tr class="fragment"><td>Subsystem bleibt nutzbar</td><td>Altes Interface wird verborgen</td></tr>
 </tbody>
 </table>
@@ -141,8 +141,8 @@ List&lt;User&gt; users = db.query("SELECT * FROM users",
 <tbody>
 <tr class="fragment"><td>Vereinfachte Client-API</td><td>Facade kann zum God Object werden</td></tr>
 <tr class="fragment"><td>Geringere Kopplung</td><td>Zusatzliche Abstraktionsebene</td></tr>
-<tr class="fragment"><td>Subsystem unabhangig wartbar</td><td>Kann Performance-Overhead bedeuten</td></tr>
-<tr class="fragment"><td>Optional fur Clients</td><td>Facade muss bei Subsystem-Anderungen aktualisiert werden</td></tr>
+<tr class="fragment"><td>Subsystem unabhängig wartbar</td><td>Kann Performance-Overhead bedeuten</td></tr>
+<tr class="fragment"><td>Optional für Clients</td><td>Facade muss bei Subsystem-Änderungen aktualisiert werden</td></tr>
 </tbody>
 </table>
 </section>
@@ -150,10 +150,10 @@ List&lt;User&gt; users = db.query("SELECT * FROM users",
 <section>
 <h2>Facade im realen Einsatz</h2>
 <ul>
-<li class="fragment">Spring Data JPA: Repository-Facade uber EntityManager</li>
-<li class="fragment">SLF4J: Facade uber verschiedene Logging-Frameworks</li>
+<li class="fragment">Spring Data JPA: Repository-Facade über EntityManager</li>
+<li class="fragment">SLF4J: Facade über verschiedene Logging-Frameworks</li>
 <li class="fragment">Java Naming and Directory Interface (JNDI)</li>
-<li class="fragment">REST-Controller als Facade fur Service-Schicht</li>
+<li class="fragment">REST-Controller als Facade für Service-Schicht</li>
 </ul>
 </section>
 
