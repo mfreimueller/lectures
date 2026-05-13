@@ -149,7 +149,7 @@ Dasselbe für Abschnitt 3!
 | 1 | Cursor ans Ende der Seite vor dem neuen Abschnitt |
 | 2 | Layout → Umbrüche → Nächste Seite |
 | 3 | In den neuen Abschnitt klicken (Kopf-/Fußzeile) |
-| 4 | ⚠️ **"Mit vorherigem verknüpfen" DEAKTIVIEREN** ⚠️ |
+| 4 |  **"Mit vorherigem verknüpfen" DEAKTIVIEREN**  |
 | 5 | Erst jetzt Seitenzahlen formatieren, Kopfzeile ändern etc. |
 
 ---
@@ -189,7 +189,7 @@ Kata-Blätter zeigen.
 | Konzept | Erklärung |
 |---------|-----------|
 | Layout → Umbrüche → Nächste Seite | Neuer Abschnitt erstellen |
-| "Mit vorherigem verknüpfen" | ⚠️ AUSSCHALTEN bevor Änderungen im neuen Abschnitt! |
+| "Mit vorherigem verknüpfen" |  AUSSCHALTEN bevor Änderungen im neuen Abschnitt! |
 | Doppelklick in Rand | Kopf-/Fußzeile öffnen |
 | Seitenzahlen formatieren | Römisch/Arabisch, Startzahl |
 | Verschieden auf erster Seite | Titelblatt ohne Kopfzeile |

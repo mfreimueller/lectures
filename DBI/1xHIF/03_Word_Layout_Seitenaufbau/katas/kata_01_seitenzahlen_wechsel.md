@@ -82,11 +82,11 @@ Zuerst brauchst du 3 **Abschnitte** (nicht nur Seiten!).
 
 ### Schritt 3: Abschnitt 2 (Inhaltsverzeichnis) - Römische Zahlen
 
-⚠️ **DAS IST DER WICHTIGSTE SCHRITT!** ⚠️
+ **DAS IST DER WICHTIGSTE SCHRITT!** 
 
 1. Klicke auf Seite 2 (Inhaltsverzeichnis)
 2. Doppelklick in die Fußzeile
-3. ⚠️ **SOFORT:** Klicke im Menü auf den Button **"Mit vorherigem verknüpfen"**
+3.  **SOFORT:** Klicke im Menü auf den Button **"Mit vorherigem verknüpfen"**
    - Der Button darf **NICHT** hervorgehoben sein!
    - Wenn er hervorgehoben ist, klicke ihn an, damit er ausgeht
    - **Warum?** Sonst änderst du mit Abschnitt 2 gleichzeitig auch Abschnitt 1!
@@ -106,11 +106,11 @@ Zuerst brauchst du 3 **Abschnitte** (nicht nur Seiten!).
 
 ### Schritt 4: Abschnitt 3 (Hauptteil) - Arabische Zahlen
 
-⚠️ **WIEDER DER WICHTIGSTE SCHRITT!** ⚠️
+ **WIEDER DER WICHTIGSTE SCHRITT!** 
 
 1. Klicke auf Seite 4 (Hauptteil)
 2. Doppelklick in die Fußzeile
-3. ⚠️ **WIEDER:** Klicke auf **"Mit vorherigem verknüpfen"**, damit er NICHT hervorgehoben ist!
+3.  **WIEDER:** Klicke auf **"Mit vorherigem verknüpfen"**, damit er NICHT hervorgehoben ist!
 
 4. Seitenzahlen einfügen:
    - **Einfügen → Seitenzahlen → Seitenende → Einfaches**
@@ -118,7 +118,7 @@ Zuerst brauchst du 3 **Abschnitte** (nicht nur Seiten!).
 5. Seitenzahlen formatieren:
    - **Einfügen → Seitenzahlen → Seitenzahlen formatieren**
    - Wähle: `1, 2, 3...` (arabisch)
-   - ⚠️ **Start bei: 1** (NICHT "Fortfahren von vorherigem Abschnitt"!)
+   -  **Start bei: 1** (NICHT "Fortfahren von vorherigem Abschnitt"!)
 
 ---
 

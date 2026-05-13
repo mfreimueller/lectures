@@ -188,9 +188,9 @@ Create a one-page "Media License Guide" for your classmates that includes:
 
 ## Teaching Tips for Instructor
 
-⚠️ **Common Misconceptions to Address Early**:
+ **Common Misconceptions to Address Early**:
 - "Google Images = free to use" (incorrect)
 - "Giving credit means I don't need permission" (incorrect for many licenses)
 - "CC0 is the same as public domain" (technically different but functionally similar in practice)
 
-⚠️ **HTL-Specific Considerations**: Many HTL students will pursue technical careers where they'll manage digital assets, create presentations, or develop websites. Emphasize practical application over theoretical legal knowledge.
+ **HTL-Specific Considerations**: Many HTL students will pursue technical careers where they'll manage digital assets, create presentations, or develop websites. Emphasize practical application over theoretical legal knowledge.
