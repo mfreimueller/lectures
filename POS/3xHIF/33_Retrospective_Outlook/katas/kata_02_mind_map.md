@@ -8,7 +8,7 @@
 
 ### Task
 
-Create a mind map (text-based or drawn) of all topics covered in POS3. Organize them into groups and show connections. Include:
+Create a mind map (text-based or drawn) of all topics covered in POS. Organize them into groups and show connections. Include:
 1. Java Language Features
 2. Testing and Design
 3. Streams and Functional Programming
@@ -20,7 +20,7 @@ Create a mind map (text-based or drawn) of all topics covered in POS3. Organize 
 ### Example Output
 
 ```
-POS3
+POS
 ├── Modern Java
 │   ├── var, Records, Text Blocks
 │   ├── Pattern Matching, Sealed Classes

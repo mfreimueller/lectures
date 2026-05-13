@@ -8,7 +8,7 @@
 
 ### Task
 
-Write a personal reflection on the POS3 year. Answer these questions:
+Write a personal reflection on the POS year. Answer these questions:
 1. What was the most interesting topic you learned?
 2. What was the most challenging topic?
 3. What was your favorite exercise or kata?
@@ -18,7 +18,7 @@ Write a personal reflection on the POS3 year. Answer these questions:
 ### Example Output
 
 ```
-POS3 Year Reflection
+POS Year Reflection
 =====================
 Most interesting: JPA and database mapping - I enjoyed designing the ER diagram.
 Most challenging: Stream collectors were tricky at first.

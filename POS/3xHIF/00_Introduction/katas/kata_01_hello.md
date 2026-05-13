@@ -16,7 +16,7 @@ Write a Java program that:
 ### Example Output
 
 ```
-Hello, POS3!
+Hello, POS!
 Current time: 2026-05-13T10:30:00
 ```
 

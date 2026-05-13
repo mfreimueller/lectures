@@ -1,6 +1,6 @@
 # Kata 02: Mini-Reflexion
 
-Schreibe eine persoenliche Reflexion ueber das Schuljahr in POS1.
+Schreibe eine persoenliche Reflexion ueber das Schuljahr in POS.
 
 ## Leitfragen
 - Was hast du in diesem Jahr gelernt?

@@ -12,7 +12,7 @@ Research Spring Boot online and compile a list of key topics to learn over the s
 1. What is Spring Boot and why is it used in industry?
 2. List 5 key Spring Boot concepts
 3. Find 3 good resources for learning Spring Boot
-4. What is the difference between Javalin (POS3) and Spring Boot (4th grade)?
+4. What is the difference between Javalin (POS) and Spring Boot (4th grade)?
 
 ### Example Output
 
