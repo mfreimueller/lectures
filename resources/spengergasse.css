@@ -7,30 +7,18 @@
  * GLOBAL STYLES
  *********************************************/
 :root {
-    /* Primary Colors - Austrian Red/White inspired */
-    --spenger-red: #000;
-    /* #D32F2F; */
-    --spenger-red-dark: #000;
-    /* #B71C1C; */
-    --spenger-red-light: #000;
-    /* #EF5350; */
-
-    /* Secondary/Accent Colors */
-    --spenger-blue: #000;
-    /* #1976D2; */
-    --spenger-blue-dark: #000;
-    /* #0D47A1; */
+    --color-black: #000;
 
     /* Neutral Colors */
-    --spenger-gray-dark: #212121;
-    --spenger-gray-medium: #616161;
-    --spenger-gray-light: #BDBDBD;
-    --spenger-white: #FFFFFF;
-    --spenger-offwhite: #FAFAFA;
+    --color-gray-dark: #212121;
+    --color-gray-medium: #616161;
+    --color-gray-light: #BDBDBD;
+    --color-white: #FFFFFF;
+    --color-offwhite: #FAFAFA;
 
     /* Typography */
-    --spenger-font-primary: 'Sommet Regular', 'Helvetica Neue', Arial, sans-serif;
-    --spenger-font-heading: 'Sommet Fett' 'Arial Black', 'Impact', sans-serif;
+    --font-primary: 'Sommet Regular', 'Helvetica Neue', Arial, sans-serif;
+    --font-heading: 'Sommet Fett' 'Arial Black', 'Impact', sans-serif;
 
     /* ============================================
      * LOGO CONFIGURATION - CUSTOMIZE THESE PATHS
@@ -62,9 +50,9 @@ li.unmarked {
  * REVEAL.JS CORE OVERRIDES
  *********************************************/
 .reveal {
-    font-family: var(--spenger-font-primary);
-    color: var(--spenger-gray-dark);
-    background-color: var(--spenger-offwhite);
+    font-family: var(--font-primary);
+    color: var(--color-gray-dark);
+    background-color: var(--color-offwhite);
 
     /* Optional: Add logo as watermark background */
     /* Uncomment the line below to add a subtle logo watermark */
@@ -102,7 +90,7 @@ li.unmarked {
 }
 
 .reveal .title-slide h1 {
-    color: var(--spenger-red);
+    color: var(--color-black);
     font-size: 4em;
     text-shadow: none;
     border-bottom: 4px solid rgba(0, 0, 0, 0.7);
@@ -110,7 +98,7 @@ li.unmarked {
 }
 
 .reveal .title-slide h2 {
-    color: var(--spenger-red);
+    color: var(--color-black);
     font-size: 2.5em;
     opacity: 0.9;
 }
@@ -126,9 +114,9 @@ li.unmarked {
  * HEADINGS STYLES WITH LOGO ACCENTS
  *********************************************/
 .reveal h1 {
-    color: var(--spenger-red-dark);
+    color: var(--color-black);
     text-transform: none;
-    border-left: 6px solid var(--spenger-red);
+    border-left: 6px solid var(--color-black);
     padding-left: 20px;
     margin-bottom: 30px;
 
@@ -146,17 +134,17 @@ li.unmarked {
 }
 
 .reveal h2 {
-    color: var(--spenger-blue-dark);
+    color: var(--color-black);
     font-weight: bold;
     text-transform: none;
-    border-bottom: 2px solid var(--spenger-gray-light);
+    border-bottom: 2px solid var(--color-gray-light);
     padding-bottom: 15px;
     margin-top: 40px;
     font-size: 3em;
 }
 
 .reveal h3 {
-    color: var(--spenger-red);
+    color: var(--color-black);
     font-weight: bold;
     text-transform: none;
     padding-left: 15px;
@@ -165,7 +153,7 @@ li.unmarked {
 }
 
 .reveal h4 {
-    color: var(--spenger-gray-dark);
+    color: var(--color-gray-dark);
     font-weight: bold;
     text-transform: none;
     padding-left: 12px;
@@ -177,19 +165,19 @@ li.unmarked {
  *********************************************/
 .reveal p,
 .reveal li {
-    color: var(--spenger-gray-dark);
+    color: var(--color-gray-dark);
     font-size: 2.1em;
     line-height: 1.6;
     /*list-style-type: none;*/
 }
 
 .reveal strong {
-    color: var(--spenger-red-dark);
+    color: var(--color-black);
     font-weight: bold;
 }
 
 .reveal em {
-    color: var(--spenger-blue-dark);
+    color: var(--color-black);
     font-style: italic;
 }
 
@@ -198,7 +186,7 @@ li.unmarked {
 }
 
 .reveal a:hover {
-    color: var(--spenger-red);
+    color: var(--color-black);
     text-decoration: underline;
 }
 
@@ -214,7 +202,7 @@ li.unmarked {
 .reveal code {
     font-family: 'Consolas', 'Monaco', monospace;
     background-color: #FEFCFF;
-    color: var(--spenger-red);
+    color: var(--color-black);
     padding: 3px 6px;
     border-radius: 4px;
 }
@@ -236,7 +224,7 @@ li.unmarked {
 }
 
 .reveal li::before {
-    color: var(--spenger-blue) !important;
+    color: var(--color-black) !important;
     font-weight: bold;
 }
 
@@ -244,7 +232,7 @@ li.unmarked {
  * IMAGES & FIGURES WITH LOGO CAPTIONS
  *********************************************/
 .reveal figure {
-    background-color: var(--spenger-white);
+    background-color: var(--color-white);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -257,7 +245,7 @@ li.unmarked {
 }
 
 .reveal figcaption {
-    color: var(--spenger-gray-medium);
+    color: var(--color-gray-medium);
     font-size: 0.7em;
     margin-top: 15px;
     text-align: center;
@@ -282,23 +270,23 @@ li.unmarked {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 20px;
-    background-color: var(--spenger-white);
+    background-color: var(--color-white);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .reveal th {
-    background-color: var(--spenger-red-dark);
-    color: var(--spenger-white);
+    background-color: var(--color-black);
+    color: var(--color-white);
     padding: 12px;
     text-align: left;
     font-weight: bold;
-    border-bottom: 3px solid var(--spenger-gray-light);
+    border-bottom: 3px solid var(--color-gray-light);
 }
 
 .reveal td {
     padding: 10px;
-    border-bottom: 1px solid var(--spenger-gray-light);
-    color: var(--spenger-gray-dark);
+    border-bottom: 1px solid var(--color-gray-light);
+    color: var(--color-gray-dark);
 }
 
 .reveal tr:nth-child(even) {
@@ -309,7 +297,7 @@ li.unmarked {
  * BLOCKQUOTES WITH LOGO ACCENTS
  *********************************************/
 .reveal blockquote {
-    border-left: 6px solid var(--spenger-red);
+    border-left: 6px solid var(--color-black);
     margin: 30px auto;
     padding: 20px 30px;
     border-radius: 8px;
@@ -334,14 +322,14 @@ li.unmarked {
 .reveal blockquote p {
     font-size: 1em !important;
     font-style: italic;
-    color: var(--spenger-gray-dark);
+    color: var(--color-gray-dark);
 }
 
 .reveal blockquote cite {
     display: block;
     margin-top: 15px;
     font-size: 0.7em;
-    color: var(--spenger-blue);
+    color: var(--color-black);
     font-style: normal;
 }
 
@@ -349,13 +337,13 @@ li.unmarked {
  * NOTES & HINTS WITH LOGO INDICATORS
  *********************************************/
 .reveal .notes {
-    border-left: 4px solid var(--spenger-blue);
+    border-left: 4px solid var(--color-black);
     padding: 15px;
     margin-top: 20px;
 }
 
 .reveal .hint {
-    border-left: 4px solid var(--spenger-red);
+    border-left: 4px solid var(--color-black);
     padding: 15px;
     margin-top: 20px;
 }
@@ -391,12 +379,12 @@ li.unmarked {
 
 .reveal .footer .school-name {
     font-weight: bold;
-    color: var(--spenger-red-dark);
+    color: var(--color-black);
     font-size: 0.8em;
 }
 
 .reveal .footer .slide-number {
-    background-color: var(--spenger-blue);
+    background-color: var(--color-black);
     color: white;
     padding: 5px 12px;
     border-radius: 20px;
@@ -405,7 +393,7 @@ li.unmarked {
 }
 
 .reveal .footer .date {
-    color: var(--spenger-gray-medium);
+    color: var(--color-gray-medium);
     font-size: 0.8em;
 }
 
@@ -429,7 +417,7 @@ li.unmarked {
 
 .reveal .header .school-name {
     font-weight: bold;
-    color: var(--spenger-red-dark);
+    color: var(--color-black);
     font-size: 0.9em;
 }
 
@@ -437,7 +425,7 @@ li.unmarked {
  * HIGHLIGHT BOXES WITH LOGO ICONS
  *********************************************/
 .reveal .highlight-box {
-    border-left: 6px solid var(--spenger-red);
+    border-left: 6px solid var(--color-black);
     padding: 25px;
     margin: 30px auto;
     border-radius: 8px;
@@ -460,7 +448,7 @@ li.unmarked {
 }
 
 .reveal .important {
-    color: var(--spenger-red-dark) !important;
+    color: var(--color-black) !important;
     font-weight: bold !important;
 }
 
@@ -476,11 +464,11 @@ li.unmarked {
  * NAVIGATION ARROWS WITH LOGO THEME
  *********************************************/
 .reveal .controls button::after {
-    background-color: var(--spenger-red);
+    background-color: var(--color-black);
 }
 
 .reveal .progress bar {
-    background-color: var(--spenger-blue);
+    background-color: var(--color-black);
 }
 
 /*********************************************
@@ -489,8 +477,8 @@ li.unmarked {
 @media print {
     .reveal .title-slide {
         background: linear-gradient(135deg,
-                var(--spenger-red) 0%,
-                var(--spenger-red-dark) 100%);
+                var(--color-black) 0%,
+                var(--color-black) 100%);
     }
 
     /* Include logo in printed output */
