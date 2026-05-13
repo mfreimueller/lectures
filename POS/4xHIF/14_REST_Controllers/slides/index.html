@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>14 - REST_Controllers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>14 - REST Controllers</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Was ist REST?</h2>
+                <ul>
+                    <li class="fragment"><strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer</li>
+                    <li class="fragment">Architekturstil für verteilte Systeme</li>
+                    <li class="fragment">Ressourcen werden über URIs identifiziert</li>
+                    <li class="fragment">HTTP-Methoden definieren Aktionen auf Ressourcen</li>
+                    <li class="fragment">Zustandslos: Jeder Request enthält alle nötigen Informationen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>HTTP-Methoden im Überblick</h2>
+                <table>
+                    <tr><th>Methode</th><th>Aktion</th><th>Erfolgsstatus</th></tr>
+                    <tr class="fragment"><td><code>GET</code></td><td>Ressource lesen</td><td><code>200 OK</code></td></tr>
+                    <tr class="fragment"><td><code>POST</code></td><td>Ressource erstellen</td><td><code>201 Created</code></td></tr>
+                    <tr class="fragment"><td><code>PUT</code></td><td>Ressource ersetzen</td><td><code>200 OK</code></td></tr>
+                    <tr class="fragment"><td><code>PATCH</code></td><td>Ressource teilweise aktualisieren</td><td><code>200 OK</code></td></tr>
+                    <tr class="fragment"><td><code>DELETE</code></td><td>Ressource löschen</td><td><code>204 No Content</code></td></tr>
+                </table>
+                <p class="fragment highlight-box">Idempotent: GET, PUT, DELETE, PATCH — Mehrfachausführung gleiches Ergebnis</p>
+            </section>
+
+            <section>
+                <h2>@RestController vs @Controller</h2>
+                <pre><code class="language-java">// @Controller + @ResponseBody = @RestController
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+    // ...
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>@Controller</code> — gibt View-Namen (Thymeleaf) zurück</li>
+                    <li class="fragment"><code>@RestController</code> — gibt Daten (JSON/XML) direkt zurück</li>
+                    <li class="fragment"><code>@RestController</code> ist <strong>kurz</strong> für <code>@Controller + @ResponseBody</code></li>
+                    <li class="fragment">Jackson serialisiert Rückgabewerte automatisch zu JSON</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@GetMapping — Lesen von Ressourcen</h2>
+                <pre><code class="language-java">@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final BookRepository repository;
+
+    // GET /api/books — alle Bücher
+    @GetMapping
+    public List&lt;Book&gt; getAll() {
+        return repository.findAll();
+    }
+
+    // GET /api/books/42 — ein Buch
+    @GetMapping("/{id}")
+    public Book getById(@PathVariable Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Book not found"));
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>@PostMapping — Ressourcen erstellen</h2>
+                <pre><code class="language-java">// POST /api/books — neues Buch anlegen
+@PostMapping
+public Book create(@RequestBody Book book) {
+    return repository.save(book);
+}</code></pre>
+                <pre><code class="language-json">// Request Body
+{
+    "isbn": "9783161484100",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "publicationYear": 2008
+}</code></pre>
+                <p class="fragment">Der Client sendet JSON → Jackson wandelt in <code>Book</code>-Record um.</p>
+            </section>
+
+            <section>
+                <h2>@PutMapping / @DeleteMapping / @PatchMapping</h2>
+                <pre><code class="language-java">// PUT /api/books/42 — komplett ersetzen
+@PutMapping("/{id}")
+public Book update(@PathVariable Long id, @RequestBody Book book) {
+    return repository.update(id, book);
+}
+
+// DELETE /api/books/42 — löschen
+@DeleteMapping("/{id}")
+public void delete(@PathVariable Long id) {
+    repository.deleteById(id);
+}
+
+// PATCH /api/books/42 — teilweise aktualisieren
+@PatchMapping("/{id}")
+public Book partialUpdate(@PathVariable Long id, @RequestBody Map&lt;String, Object&gt; fields) {
+    return repository.partialUpdate(id, fields);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>@RequestParam — Query-Parameter</h2>
+                <pre><code class="language-java">// GET /api/books?author=Martin&year=2008
+@GetMapping
+public List&lt;Book&gt; search(
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+
+    return repository.search(author, year, page, size);
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>required = false</code> — Parameter ist optional</li>
+                    <li class="fragment"><code>defaultValue</code> — Standardwert falls nicht angegeben</li>
+                    <li class="fragment">Automatische Typkonvertierung (String → int, Integer, etc.)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@PathVariable — Pfadvariablen</h2>
+                <pre><code class="language-java">// GET /api/books/42/reviews/5
+@GetMapping("/{bookId}/reviews/{reviewId}")
+public Review getReview(
+        @PathVariable Long bookId,
+        @PathVariable Long reviewId) {
+
+    return reviewService.findReview(bookId, reviewId);
+}</code></pre>
+                <ul>
+                    <li class="fragment">Werte aus dem URI-Pfad (geschweifte Klammern)</li>
+                    <li class="fragment">Variablenname muss mit dem Pfadplatzhalter übereinstimmen</li>
+                    <li class="fragment">Oder explizit: <code>@PathVariable("book-id") Long bookId</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@RequestBody — JSON empfangen</h2>
+                <pre><code class="language-java">// POST /api/books
+@PostMapping
+public ResponseEntity&lt;Book&gt; create(@Valid @RequestBody Book book) {
+    Book saved = repository.save(book);
+    URI location = URI.create("/api/books/" + saved.id());
+    return ResponseEntity.created(location).body(saved);
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>@RequestBody</code> bindet JSON Payload an Java-Objekt</li>
+                    <li class="fragment">Jackson konfiguriert: Datumsformate, Ignorieren unbekannter Felder</li>
+                    <li class="fragment"><code>@Valid</code> aktiviert Bean-Validation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>ResponseEntity — Volle Kontrolle</h2>
+                <pre><code class="language-java">@GetMapping("/{id}")
+public ResponseEntity&lt;Book&gt; getById(@PathVariable Long id) {
+    return repository.findById(id)
+        .map(book -> ResponseEntity.ok(book))
+        .orElse(ResponseEntity.notFound().build());
+}
+
+@PostMapping
+public ResponseEntity&lt;Book&gt; create(@Valid @RequestBody Book book) {
+    if (repository.existsByIsbn(book.isbn())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+    Book saved = repository.save(book);
+    return ResponseEntity
+        .created(URI.create("/api/books/" + saved.id()))
+        .body(saved);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Wichtige HTTP-Statuscodes</h2>
+                <table>
+                    <tr><th>Code</th><th>Bedeutung</th><th>Verwendung</th></tr>
+                    <tr class="fragment"><td><code>200</code></td><td>OK</td><td>Erfolgreiche GET/PUT/PATCH-Requests</td></tr>
+                    <tr class="fragment"><td><code>201</code></td><td>Created</td><td>Ressource wurde angelegt (POST)</td></tr>
+                    <tr class="fragment"><td><code>204</code></td><td>No Content</td><td>Erfolgreich gelöscht (DELETE)</td></tr>
+                    <tr class="fragment"><td><code>400</code></td><td>Bad Request</td><td>Validierungsfehler, ungültige Eingabe</td></tr>
+                    <tr class="fragment"><td><code>404</code></td><td>Not Found</td><td>Ressource existiert nicht</td></tr>
+                    <tr class="fragment"><td><code>409</code></td><td>Conflict</td><td>Duplicate, inkonsistenter Zustand</td></tr>
+                    <tr class="fragment"><td><code>500</code></td><td>Internal Server Error</td><td>Unerwarteter Fehler (nie absichtlich!)</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Jackson — JSON Serialisierung</h2>
+                <pre><code class="language-java">public record Book(
+    Long id,
+
+    @JsonProperty("isbn13")
+    @NotBlank String isbn,
+
+    String title,
+    String author,
+
+    @JsonProperty("year")
+    int publicationYear,
+
+    @JsonIgnore
+    String internalNotes
+) {}</code></pre>
+                <pre><code class="language-json">{
+    "id": 1,
+    "isbn13": "9783161484100",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "year": 2008
+    // internalNotes wird ignoriert
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: REST-API für deine Domäne</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Wähle eine Entität aus deiner Domäne (z.B. Book, Customer, Product)</li>
+                        <li>Erstelle einen <code>@RestController</code> mit vollem CRUD</li>
+                        <li>Verwende <code>ResponseEntity</code> mit korrekten Statuscodes</li>
+                        <li>Füge <code>@Valid</code> und Query-Parameter-Filter hinzu</li>
+                        <li>Teste alle Endpoints mit curl, httpie oder Postman</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>REST-Prinzipien und HTTP-Methoden</li>
+                        <li>@RestController vs @Controller</li>
+                        <li>Request Mapping (@GetMapping, @PostMapping, etc.)</li>
+                        <li>@RequestParam, @PathVariable, @RequestBody</li>
+                        <li>ResponseEntity und HTTP-Statuscodes</li>
+                        <li>Jackson-Serialisierung (@JsonIgnore, @JsonProperty)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>MapStruct — DTOs, Mapper, Custom-Mappings</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">14 - REST_Controllers</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>21 - TestingREST_CodeReview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>21 - Testing REST APIs & Code Review</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Testing-Strategien</h2>
+                <ul>
+                    <li class="fragment"><strong>Unit-Tests</strong> — Service-Layer (mit Mockito)</li>
+                    <li class="fragment"><strong>Slice-Tests</strong> — Nur ein Teil (z.B. Controller mit @WebMvcTest)</li>
+                    <li class="fragment"><strong>Integrationstests</strong> — Ganze Applikation (@SpringBootTest)</li>
+                </ul>
+                <p class="fragment highlight-box">Für REST APIs: @WebMvcTest + @SpringBootTest kombinieren</p>
+            </section>
+
+            <section>
+                <h2>@WebMvcTest — Controller Slice</h2>
+                <pre><code class="language-java">@WebMvcTest(BookController.class)
+class BookControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private BookService bookService;
+
+    @Test
+    void getAllBooks_shouldReturn200() throws Exception {
+        when(bookService.getAll(any(Pageable.class)))
+            .thenReturn(new PageImpl<>(List.of()));
+
+        mockMvc.perform(get("/api/books"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray());
+    }
+}</code></pre>
+                <p class="fragment">Nur der Controller wird geladen — Services werden gemockt.</p>
+            </section>
+
+            <section>
+                <h2>JSON-Path Assertions</h2>
+                <pre><code class="language-java">mockMvc.perform(get("/api/books/1"))
+    .andExpect(status().isOk())
+    .andExpect(jsonPath("$.id").value(1))
+    .andExpect(jsonPath("$.title").value("Clean Code"))
+    .andExpect(jsonPath("$.author").isString())
+    .andExpect(jsonPath("$.author").value("Robert C. Martin"))
+    .andExpect(jsonPath("$.publicationYear").value(2008));
+
+// Mit Listen:
+mockMvc.perform(get("/api/books"))
+    .andExpect(jsonPath("$.content").isArray())
+    .andExpect(jsonPath("$.content.length()").value(3))
+    .andExpect(jsonPath("$.content[0].title").value("Clean Code"))
+    .andExpect(jsonPath("$.totalElements").value(42));</code></pre>
+            </section>
+
+            <section>
+                <h2>@SpringBootTest — Integrationstest</h2>
+                <pre><code class="language-java">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+class BookControllerIntegrationTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    void createAndRetrieveBook() {
+        // Arrange
+        var newBook = new BookDTO(null, "9783161484100",
+            "Clean Code", "Robert C. Martin", 2008);
+
+        // Act
+        var created = restTemplate.postForEntity(
+            "/api/books", newBook, BookDTO.class);
+
+        // Assert
+        assertThat(created.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(created.getBody().id()).isNotNull();
+
+        // Follow-up: Buch abrufen
+        var retrieved = restTemplate.getForEntity(
+            "/api/books/" + created.getBody().id(), BookDTO.class);
+        assertThat(retrieved.getBody().title()).isEqualTo("Clean Code");
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Code Review Checkliste</h2>
+                <div class="highlight-box">
+                    <h3>REST-APIs</h3>
+                    <ul>
+                        <li>Sind alle Statuscodes korrekt? (201, 404, 409)</li>
+                        <li>Sind Fehlerantworten konsistent?</li>
+                        <li>Gibt es HATEOAS-Links?</li>
+                        <li>Ist Pagination implementiert?</li>
+                        <li>Sind DTOs von Entities getrennt?</li>
+                    </ul>
+                    <h3>Tests</h3>
+                    <ul>
+                        <li>Gibt es Controller-Tests mit MockMvc?</li>
+                        <li>Werden Edge Cases getestet? (404, 400, 409)</li>
+                        <li>Gibt es Integrationstests?</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Peer Review Ablauf</h2>
+                <ol>
+                    <li class="fragment">Teams tauschen Repository-Links</li>
+                    <li class="fragment">Jedes Team reviewed das Projekt eines anderen Teams (30 min)</li>
+                    <li class="fragment">Issues als GitHub-Issues dokumentieren oder in einer Tabelle festhalten</li>
+                    <li class="fragment">Besprechung: Jedes Team gibt kurzes Feedback (5 min/Team)</li>
+                    <li class="fragment">Fixes aus dem Code Review in der nächsten Projektarbeit einspielen</li>
+                </ol>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">21 - TestingREST_CodeReview</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

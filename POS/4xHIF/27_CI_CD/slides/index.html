@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>27 - CI_CD</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
+<body><div class="reveal"><div class="slides">
+<section class="center title-slide"><h1>27 - CI/CD</h1><p class="institution">POS - 4xHIF</p></section>
+<section><h2>Was ist CI/CD?</h2><ul><li class="fragment"><strong>Continuous Integration:</strong> Jeder Push wird gebaut + getestet</li><li class="fragment"><strong>Continuous Delivery:</strong> Automatischer Deploy in Test/Staging</li><li class="fragment"><strong>Continuous Deployment:</strong> Automatischer Deploy in Production</li></ul></section>
+<section><h2>GitHub Actions Workflow</h2><pre><code class="language-yaml">name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '17', distribution: 'temurin' }
+      - run: mvn -B verify</code></pre></section>
+<section><h2>Docker Build + Push</h2><pre><code class="language-yaml">- name: Build and push Docker image
+  uses: docker/build-push-action@v5
+  with:
+    context: .
+    push: true
+    tags: user/app:latest</code></pre></section>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});document.addEventListener('DOMContentLoaded',function(){document.querySelector('.reveal').insertAdjacentHTML('beforeend','<div class=\"footer\"><div class=\"logo-container\"><img src=\"https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png\" alt=\"HTL Spengergasse Logo\" class=\"school-logo\"></div><span class=\"date\">27 - CI_CD</span></div>');});</script>
+</body></html>

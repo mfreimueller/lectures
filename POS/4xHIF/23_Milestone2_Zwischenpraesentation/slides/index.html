@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>23 - Milestone 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>23 - Milestone 2: Zwischenpräsentation</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Präsentationsformat</h2>
+                <ul>
+                    <li class="fragment"><strong>Dauer:</strong> 10-15 Minuten pro Team</li>
+                    <li class="fragment"><strong>Format:</strong> Live-Demo + Architektur-Überblick</li>
+                    <li class="fragment"><strong>Alle Teammitglieder</strong> sollten etwas sagen</li>
+                    <li class="fragment">Im Anschluss: 5 Minuten Feedback</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Erwartete Inhalte</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li><strong>Domain Model</strong> — Kurzer Recap (Entity-Relationship-Diagramm)</li>
+                        <li><strong>REST APIs</strong> — Endpoints demonstrieren (Swagger UI oder curl)</li>
+                        <li><strong>Thymeleaf UI</strong> — Live-Demo der Web-Oberfläche</li>
+                        <li><strong>Architektur</strong> — Schichten, Patterns, Entscheidungen</li>
+                        <li><strong>Testing</strong> — Testabdeckung zeigen</li>
+                        <li><strong>Lessons Learned</strong> — Was hat gut funktioniert? Was nicht?</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section>
+                <h2>Bewertungskriterien</h2>
+                <table>
+                    <tr><th>Kriterium</th><th>Gewicht</th></tr>
+                    <tr class="fragment"><td>Domain Model + JPA-Mapping</td><td>20%</td></tr>
+                    <tr class="fragment"><td>Service-Layer + Geschäftslogik</td><td>15%</td></tr>
+                    <tr class="fragment"><td>REST-APIs (inkl. Statuscodes, HATEOAS, Paging)</td><td>25%</td></tr>
+                    <tr class="fragment"><td>Thymeleaf-UI</td><td>15%</td></tr>
+                    <tr class="fragment"><td>Testing (JPA, Service, Controller)</td><td>15%</td></tr>
+                    <tr class="fragment"><td>Präsentation + Demo</td><td>10%</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Zeitplan</h2>
+                <p>Wird zu Beginn der Stunde bekannt gegeben.</p>
+                <p class="fragment">Vorbereitung: Stellt sicher, dass eure App lokal läuft und alle Features demonstrierbar sind!</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">23 - Milestone2_Zwischenpraesentation</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>15 - MapStruct</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>15 - MapStruct</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum DTOs?</h2>
+                <ul>
+                    <li class="fragment"><strong>API ≠ Domain</strong> — Die REST-API soll nicht das interne Datenmodell exposed</li>
+                    <li class="fragment"><strong>Sicherheit</strong> — Felder wie Passwörter, interne IDs, Versionen ausblenden</li>
+                    <li class="fragment"><strong>Versionierung</strong> — API kann sich unabhängig vom Domain-Modell entwickeln</li>
+                    <li class="fragment"><strong>Performance</strong> — Nur benötigte Felder übertragen (Lazy Loading vermeiden)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>DTOs vs. Entities</h2>
+                <table>
+                    <tr><th>Entity</th><th>DTO</th></tr>
+                    <tr class="fragment"><td>JPA-annotiert (<code>@Entity</code>)</td><td>Einfaches POJO/Record</td></tr>
+                    <tr class="fragment"><td>Hat Datenbank-Identität (<code>@Id</code>)</td><td>Nur Datencontainer, keine Identität</td></tr>
+                    <tr class="fragment"><td>Kann Lazy-Loading-Proxies haben</td><td>Alle Werte sind eager geladen</td></tr>
+                    <tr class="fragment"><td>Darf zirkuläre Referenzen haben</td><td>Flache, serialisierbare Struktur</td></tr>
+                    <tr class="fragment"><td>Nicht für JSON-Serialisierung optimiert</td><td>Optimiert für API-Verträge</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Manuelles Mapping — Boilerplate</h2>
+                <pre><code class="language-java">// Ohne MapStruct: viel Code, fehleranfällig
+public BookDTO toDto(Book book) {
+    if (book == null) return null;
+    String authorName = book.getAuthor() != null
+        ? book.getAuthor().getName() : null;
+    return new BookDTO(
+        book.getId(),
+        book.getIsbn(),
+        book.getTitle(),
+        authorName,
+        book.getPublicationYear()
+    );
+}</code></pre>
+                <p class="fragment">Pro Entity = ~10-15 Zeilen Boilerplate. Bei 10 Entities = 100+ Zeilen.</p>
+            </section>
+
+            <section>
+                <h2>MapStruct — Setup</h2>
+                <pre><code class="language-xml">&lt;!-- pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+    &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+    &lt;version&gt;1.5.5.Final&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;annotationProcessorPaths&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+                &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+                &lt;version&gt;1.5.5.Final&lt;/version&gt;
+            &lt;/path&gt;
+        &lt;/annotationProcessorPaths&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+                <p class="fragment">MapStruct generiert zur Compile-Zeit die Implementierung.</p>
+            </section>
+
+            <section>
+                <h2>@Mapper — Der einfache Fall</h2>
+                <pre><code class="language-java">// Entity
+@Entity
+public class Book {
+    @Id Long id;
+    String isbn;
+    String title;
+    String author;
+    int publicationYear;
+}
+
+// DTO
+public record BookDTO(
+    Long id, String isbn13,
+    String title, String author, int year
+) {}
+
+// Mapper (Interface — MapStruct generiert die Impl!)
+@Mapper(componentModel = "spring")
+public interface BookMapper {
+    BookDTO toDto(Book book);
+}</code></pre>
+                <p class="fragment">MapStruct matched Felder automatisch nach Namen.</p>
+            </section>
+
+            <section>
+                <h2>@Mapping — Felder umbenennen</h2>
+                <pre><code class="language-java">@Mapper(componentModel = "spring")
+public interface BookMapper {
+
+    @Mapping(source = "isbn", target = "isbn13")
+    @Mapping(source = "publicationYear", target = "year")
+    @Mapping(target = "version", ignore = true)
+    BookDTO toDto(Book book);
+
+    // Rückwärts: DTO → Entity
+    @Mapping(source = "isbn13", target = "isbn")
+    @Mapping(source = "year", target = "publicationYear")
+    Book toEntity(BookDTO dto);
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>source</code> — Feld im Quellobjekt</li>
+                    <li class="fragment"><code>target</code> — Feld im Zielobjekt</li>
+                    <li class="fragment"><code>ignore = true</code> — Feld nicht mappen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beziehungen Mappen — Flattened</h2>
+                <pre><code class="language-java">// Ziel: book.author.name → bookDTO.authorName
+@Mapper(componentModel = "spring")
+public interface BookMapper {
+
+    @Mapping(source = "author.name", target = "authorName")
+    @Mapping(source = "author.birthYear", target = "authorBirthYear")
+    BookDTO toDto(Book book);
+}
+
+// Resultierendes JSON
+{
+    "id": 1,
+    "title": "Clean Code",
+    "authorName": "Robert C. Martin",
+    "authorBirthYear": 1952
+}</code></pre>
+                <p class="fragment">Punkt-Notation für verschachtelte Felder — MapStruct navigiert automatisch.</p>
+            </section>
+
+            <section>
+                <h2>Beziehungen Mappen — Nested</h2>
+                <pre><code class="language-java">// AuthorDTO
+public record AuthorDTO(Long id, String name, int birthYear) {}
+
+// Mapper mit verschachteltem DTO
+@Mapper(componentModel = "spring", uses = AuthorMapper.class)
+public interface BookMapper {
+
+    @Mapping(source = "author", target = "author")
+    BookDTO toDto(Book book);
+}
+
+// Resultierendes JSON
+{
+    "id": 1,
+    "title": "Clean Code",
+    "author": {
+        "id": 1,
+        "name": "Robert C. Martin",
+        "birthYear": 1952
+    }
+}</code></pre>
+                <p class="fragment"><code>uses = AuthorMapper.class</code> — MapStruct delegiert automatisch.</p>
+            </section>
+
+            <section>
+                <h2>Custom Mappings — @Named</h2>
+                <pre><code class="language-java">@Mapper(componentModel = "spring")
+public abstract class BookMapper {
+
+    @Mapping(source = "createdAt", target = "createdAtFormatted",
+             qualifiedByName = "formatTimestamp")
+    public abstract BookDTO toDto(Book book);
+
+    @Named("formatTimestamp")
+    protected String formatLocalDateTime(LocalDateTime dt) {
+        if (dt == null) return null;
+        return dt.format(
+            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    }
+}</code></pre>
+                <p class="fragment">Alternativ: <code>@Mapping(expression = "java(...)")</code> für einfache Ausdrücke.</p>
+            </section>
+
+            <section>
+                <h2>MapStruct im Service-Layer</h2>
+                <pre><code class="language-java">@Service
+@Transactional
+public class BookService {
+
+    private final BookRepository repository;
+    private final BookMapper mapper;
+
+    public BookService(BookRepository repository, BookMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper; // MapStruct-Impl wird injiziert
+    }
+
+    public BookDTO getById(Long id) {
+        return repository.findById(id)
+            .map(mapper::toDto)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND));
+    }
+
+    public List&lt;BookDTO&gt; getAll() {
+        return mapper.toDtoList(repository.findAll());
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: DTO-Schicht für deine Domäne</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Erstelle für jede Entity ein passendes DTO (Record)</li>
+                        <li>Lege Mapper-Interfaces mit <code>@Mapper(componentModel = "spring")</code> an</li>
+                        <li>Optimiere Feldnamen für die API (<code>@Mapping</code>)</li>
+                        <li>Entscheide: Flattened oder Nested für Beziehungen?</li>
+                        <li>Ersetze manuelle Mapping-Methoden im Service durch MapStruct</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Warum DTOs wichtig sind (Sicherheit, Versionierung, Performance)</li>
+                        <li>MapStruct Setup mit Maven/Gradle</li>
+                        <li>@Mapper und automatisches Field-Matching</li>
+                        <li>@Mapping für Feld-Umbenennungen und Ignorieren</li>
+                        <li>Flattened vs. Nested Relationship Mapping</li>
+                        <li>Custom Mappings mit @Named und expression</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>HATEOAS — Hypermedia als Engine of Application State</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">15 - MapStruct</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

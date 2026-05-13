@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>18 - Paging_Sorting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>18 - Paging & Sorting</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum Pagination?</h2>
+                <ul>
+                    <li class="fragment">10.000 Bücher auf einmal laden = langsam, speicherintensiv, schlechte UX</li>
+                    <li class="fragment">Mobile Clients brauchen kleine Antworten</li>
+                    <li class="fragment">Pagination = effizient, skalierbar, benutzerfreundlich</li>
+                    <li class="fragment">Spring Data bietet <code>Pageable</code> und <code>Page</code> out-of-the-box</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Pageable — Das Interface</h2>
+                <pre><code class="language-java">public interface Pageable {
+    int getPageNumber();    // aktuelle Seite (0-indexed)
+    int getPageSize();      // Elemente pro Seite
+    Sort getSort();         // Sortierung
+    long getOffset();       // Berechneter Offset
+    Pageable next();        // Nächste Seite
+    Pageable previousOrFirst(); // Vorherige Seite
+}</code></pre>
+                <p class="fragment">Spring extrahiert <code>page</code>, <code>size</code>, <code>sort</code> aus Query-Parametern.</p>
+            </section>
+
+            <section>
+                <h2>@PageableDefault — Standardwerte</h2>
+                <pre><code class="language-java">@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    @GetMapping
+    public Page&lt;BookDTO&gt; getAll(
+            @PageableDefault(
+                page = 0,
+                size = 20,
+                sort = "title",
+                direction = Sort.Direction.ASC)
+            Pageable pageable) {
+
+        return service.getAll(pageable);
+    }
+}</code></pre>
+                <p class="fragment">Wenn der Client keine Parameter schickt: Seite 0, 20 Einträge, sortiert nach title aufsteigend.</p>
+            </section>
+
+            <section>
+                <h2>Page&lt;T&gt; — Response mit Metadaten</h2>
+                <pre><code class="language-json">{
+    "content": [
+        { "id": 1, "title": "Clean Code", ... },
+        { "id": 2, "title": "Pragmatic Programmer", ... }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 5,
+        "sort": { "sorted": true, "unsorted": false }
+    },
+    "totalElements": 42,
+    "totalPages": 9,
+    "first": true,
+    "last": false,
+    "number": 0,
+    "size": 5,
+    "numberOfElements": 5,
+    "empty": false
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Sort — Sortierung definieren</h2>
+                <pre><code class="language-java">// Im Controller: sort Parameter
+// GET /api/books?sort=title,asc
+
+// Im Code:
+Sort sort = Sort.by("title").ascending();
+
+// Mehrere Kriterien:
+Sort sort = Sort.by("author").ascending()
+                .and(Sort.by("publicationYear").descending());
+
+// Über Sort.Order:
+Sort sort = Sort.by(
+    new Sort.Order(Sort.Direction.ASC, "author"),
+    new Sort.Order(Sort.Direction.DESC, "publicationYear")
+);</code></pre>
+                <p class="fragment">Client: <code>?sort=author,asc&sort=publicationYear,desc</code></p>
+            </section>
+
+            <section>
+                <h2>Sort Injection verhindern</h2>
+                <pre><code class="language-java">@RestController
+public class BookController {
+
+    private static final Set&lt;String&gt; ALLOWED_SORT_FIELDS =
+        Set.of("id", "title", "author", "publicationYear");
+
+    private Sort sanitize(Sort sort) {
+        return sort.stream()
+            .filter(o -> ALLOWED_SORT_FIELDS.contains(o.getProperty()))
+            .map(o -> Sort.by(o.getDirection(), o.getProperty()))
+            .reduce(Sort::and)
+            .orElse(Sort.by("id"));
+    }
+
+    @GetMapping
+    public Page&lt;BookDTO&gt; getAll(Pageable pageable) {
+        Pageable safe = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            sanitize(pageable.getSort()));
+        return service.getAll(safe);
+    }
+}</code></pre>
+                <p class="fragment highlight-box">Nie blind <code>sort</code> akzeptieren — whitelist erlaubte Felder!</p>
+            </section>
+
+            <section>
+                <h2>Pagination im Service-Layer</h2>
+                <pre><code class="language-java">@Service
+@Transactional(readOnly = true)
+public class BookService {
+
+    private final BookRepository repository;
+    private final BookMapper mapper;
+
+    public Page&lt;BookDTO&gt; getAll(Pageable pageable) {
+        return repository.findAll(pageable)
+            .map(mapper::toDto);
+    }
+
+    public Page&lt;BookDTO&gt; search(
+            String author, Integer year, Pageable pageable) {
+        return repository.searchBooks(author, year, pageable)
+            .map(mapper::toDto);
+    }
+}</code></pre>
+                <p class="fragment">Service leitet Pageable an Repository weiter — Query wird mit LIMIT/OFFSET ausgeführt.</p>
+            </section>
+
+            <section>
+                <h2>Custom Page DTO</h2>
+                <pre><code class="language-java">public record PagedResponse&lt;T&gt;(
+    List&lt;T&gt; content,
+    int page,
+    int size,
+    long totalElements,
+    int totalPages,
+    boolean first,
+    boolean last,
+    Map&lt;String, String&gt; links
+) {
+    public static &lt;T&gt; PagedResponse&lt;T&gt; of(Page&lt;T&gt; page) {
+        return new PagedResponse&lt;&gt;(
+            page.getContent(),
+            page.getNumber(),
+            page.getSize(),
+            page.getTotalElements(),
+            page.getTotalPages(),
+            page.isFirst(),
+            page.isLast(),
+            new HashMap&lt;&gt;()
+        );
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Pagination + HATEOAS</h2>
+                <pre><code class="language-java">@GetMapping
+public PagedResponse&lt;BookDTO&gt; getAll(
+        @PageableDefault(size = 5) Pageable pageable,
+        UriComponentsBuilder uriBuilder) {
+
+    Page&lt;BookDTO&gt; page = service.getAll(pageable);
+    PagedResponse&lt;BookDTO&gt; response = PagedResponse.of(page);
+
+    String baseUri = uriBuilder.path("/api/books").toUriString();
+    response.links().put("self",
+        baseUri + "?page=" + pageable.getPageNumber()
+        + "&size=" + pageable.getPageSize());
+
+    if (!page.isFirst()) {
+        response.links().put("first",
+            baseUri + "?page=0&size=" + pageable.getPageSize());
+        response.links().put("prev",
+            baseUri + "?page=" + (pageable.getPageNumber() - 1)
+            + "&size=" + pageable.getPageSize());
+    }
+    if (!page.isLast()) {
+        response.links().put("next",
+            baseUri + "?page=" + (pageable.getPageNumber() + 1)
+            + "&size=" + pageable.getPageSize());
+        response.links().put("last",
+            baseUri + "?page=" + (page.getTotalPages() - 1)
+            + "&size=" + pageable.getPageSize());
+    }
+    return response;
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: Paging für deine Endpoints</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Füge <code>Pageable</code> zu allen Listen-Endpoints hinzu</li>
+                        <li>Konfiguriere sinnvolle Defaults (size=10 oder 20)</li>
+                        <li>Erlaube Sortierung nur für whitelistete Felder</li>
+                        <li>Erstelle einen Custom Page DTO für saubere API-Responses</li>
+                        <li>Füge Navigation-Links (first/prev/next/last) hinzu</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Pageable und @PageableDefault</li>
+                        <li>Page&lt;T&gt; als standardisierte Response</li>
+                        <li>Sort.by() und multiple Sortierkriterien</li>
+                        <li>Sort Injection verhindern (Whitelist)</li>
+                        <li>Pagination im Service-Layer</li>
+                        <li>Custom Page DTO + HATEOAS Navigation</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>GraphQL — Alternative zu REST für flexible APIs</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">18 - Paging_Sorting</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

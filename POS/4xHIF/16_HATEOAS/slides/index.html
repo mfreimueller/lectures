@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>16 - HATEOAS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>16 - HATEOAS</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Richardson Maturity Model</h2>
+                <ul>
+                    <li class="fragment"><strong>Level 0</strong> — Swamp of POX (Plain Old XML): Ein Endpoint, eine Methode</li>
+                    <li class="fragment"><strong>Level 1</strong> — Resources: Verschiedene URIs für verschiedene Ressourcen</li>
+                    <li class="fragment"><strong>Level 2</strong> — HTTP Verbs: Nutzung von GET, POST, PUT, DELETE</li>
+                    <li class="fragment"><strong>Level 3</strong> — Hypermedia Controls: Die API sagt dem Client, was er als nächstes tun kann</li>
+                </ul>
+                <p class="fragment highlight-box">Level 3 = HATEOAS — Der Goldstandard für REST-APIs</p>
+            </section>
+
+            <section>
+                <h2>Was ist HATEOAS?</h2>
+                <blockquote class="fragment">
+                    "Hypertext as the Engine of Application State" — Roy Fielding
+                </blockquote>
+                <ul>
+                    <li class="fragment">Der Server liefert <strong>Links</strong> mit jeder Response</li>
+                    <li class="fragment">Der Client navigiert ausschließlich über diese Links</li>
+                    <li class="fragment">Keine hardcodierten URIs im Client!</li>
+                    <li class="fragment">Die API ist <strong>selbstbeschreibend</strong> und <strong>entkoppelt</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Ohne HATEOAS — Hartcodierte Clients</h2>
+                <pre><code class="language-java">// Client muss URIs kennen — bricht bei API-Änderungen
+ResponseEntity&lt;Book&gt; response = restTemplate.getForEntity(
+    "http://api.example.com/books/42", Book.class);
+
+// Nächster Schritt manuell:
+Long authorId = response.getBody().getAuthorId();
+restTemplate.getForEntity(
+    "http://api.example.com/authors/" + authorId, Author.class);</code></pre>
+                <p class="fragment">Problem: Ändert sich die URI-Struktur, ist der Client kaputt.</p>
+            </section>
+
+            <section>
+                <h2>Mit HATEOAS — Navigierbar</h2>
+                <pre><code class="language-java">ResponseEntity&lt;EntityModel&lt;BookDTO&gt;&gt; response = restTemplate
+    .getForEntity("http://api.example.com/books/42", ...);
+
+// Client folgt dem "author"-Link
+Link authorLink = response.getBody()
+    .getLink("author").orElseThrow();
+ResponseEntity&lt;AuthorDTO&gt; authorResponse = restTemplate
+    .getForEntity(authorLink.getUri(), AuthorDTO.class);</code></pre>
+                <p class="fragment">Der Client kennt nur Link-Relation-Namen — URIs sind austauschbar.</p>
+            </section>
+
+            <section>
+                <h2>Spring HATEOAS Dependency</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-hateoas&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <p class="fragment">Enthält: EntityModel, CollectionModel, Link, WebMvcLinkBuilder — alles was man braucht.</p>
+            </section>
+
+            <section>
+                <h2>EntityModel — Self-Links</h2>
+                <pre><code class="language-java">@GetMapping("/{id}")
+public EntityModel&lt;BookDTO&gt; getById(@PathVariable Long id) {
+    BookDTO dto = service.getById(id);
+    return EntityModel.of(dto,
+        linkTo(methodOn(BookController.class).getById(id))
+            .withSelfRel());
+}</code></pre>
+                <pre><code class="language-json">{
+    "id": 1,
+    "title": "Clean Code",
+    "_links": {
+        "self": { "href": "http://localhost:8080/api/books/1" }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>CollectionModel — Ressourcensammlungen</h2>
+                <pre><code class="language-java">@GetMapping
+public CollectionModel&lt;BookDTO&gt; getAll() {
+    List&lt;BookDTO&gt; books = service.getAll();
+    return CollectionModel.of(books,
+        linkTo(methodOn(BookController.class).getAll())
+            .withSelfRel());
+}</code></pre>
+                <pre><code class="language-json">{
+    "_embedded": {
+        "bookDTOList": [
+            { "id": 1, "title": "Clean Code", "_links": {...} },
+            { "id": 2, "title": "Pragmatic Programmer", "_links": {...} }
+        ]
+    },
+    "_links": {
+        "self": { "href": "http://localhost:8080/api/books" }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>WebMvcLinkBuilder — Links bauen</h2>
+                <pre><code class="language-java">import static org.springframework.hateoas.server.mvc
+    .WebMvcLinkBuilder.*;
+
+// Typischer Weg: linkTo + methodOn
+linkTo(methodOn(BookController.class).getById(1L)).withSelfRel();
+
+// Ohne methodOn (manuelle Pfadangabe)
+linkTo(BookController.class).slash(1L).withSelfRel();
+
+// Link zu einer anderen Controller-Methode
+linkTo(methodOn(AuthorController.class).getById(1L))
+    .withRel("author");
+
+// Externer Link
+Link.of("https://api.example.com/docs", "profile");</code></pre>
+                <p class="fragment"><code>methodOn</code> ist typsicher und nutzt die <code>@RequestMapping</code>-Annotationen.</p>
+            </section>
+
+            <section>
+                <h2>Pagination + HATEOAS</h2>
+                <pre><code class="language-java">@GetMapping
+public CollectionModel&lt;BookDTO&gt; getPage(
+        @RequestParam int page,
+        @RequestParam int size) {
+
+    Page&lt;BookDTO&gt; bookPage = service.getPage(page, size);
+
+    List&lt;Link&gt; links = new ArrayList&lt;&gt;();
+    links.add(linkTo(methodOn(BookController.class)
+        .getPage(page, size)).withSelfRel());
+
+    if (bookPage.hasNext())
+        links.add(linkTo(methodOn(BookController.class)
+            .getPage(page + 1, size)).withRel("next"));
+    if (bookPage.hasPrevious())
+        links.add(linkTo(methodOn(BookController.class)
+            .getPage(page - 1, size)).withRel("prev"));
+
+    return CollectionModel.of(bookPage.getContent(), links);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>API Root Endpoint</h2>
+                <pre><code class="language-java">@RestController
+@RequestMapping("/api")
+public class ApiRootController {
+
+    @GetMapping
+    public CollectionModel&lt;Void&gt; root() {
+        return CollectionModel.of(List.of(),
+            linkTo(methodOn(ApiRootController.class).root())
+                .withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll())
+                .withRel("books"),
+            linkTo(methodOn(AuthorController.class).getAll())
+                .withRel("authors"),
+            linkTo(methodOn(LoanController.class).getAll())
+                .withRel("loans")
+        );
+    }
+}</code></pre>
+                <p class="fragment">Ein einziger Einstiegspunkt — der Client findet alles über Links.</p>
+            </section>
+
+            <section>
+                <h2>HATEOAS + DTOs mit MapStruct</h2>
+                <pre><code class="language-java">@Mapper(componentModel = "spring")
+public interface BookMapper {
+
+    @Mapping(target = "links", ignore = true)
+    BookDTO toDto(Book book);
+
+    // Im Service: DTO erzeugen, dann Links hinzufügen
+    default EntityModel&lt;BookDTO&gt; toEntityModel(Book book) {
+        BookDTO dto = toDto(book);
+        return EntityModel.of(dto,
+            linkTo(methodOn(BookController.class)
+                .getById(book.getId())).withSelfRel());
+    }
+}</code></pre>
+                <p class="fragment">Die Links werden erst im Service/Controller hinzugefügt — der Mapper bleibt fokussiert.</p>
+            </section>
+
+            <section>
+                <h2>Projekt: HATEOAS für deine API</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Füge Spring HATEOAS als Dependency hinzu</li>
+                        <li>Erweitere deine DTOs mit <code>RepresentationModel</code></li>
+                        <li>Füge Self-Links zu allen Einzelressourcen-Endpoints hinzu</li>
+                        <li>Erstelle einen <code>/api</code> Root-Endpoint</li>
+                        <li>Teste die Navigierbarkeit: Starte bei <code>/api</code> und folge den Links</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Richardson Maturity Model (Level 0-3)</li>
+                        <li>HATEOAS-Prinzip — API als Hypertext</li>
+                        <li>EntityModel und CollectionModel</li>
+                        <li>WebMvcLinkBuilder und methodOn</li>
+                        <li>Pagination-Links (next/prev/first/last)</li>
+                        <li>API Root Endpoint für vollständige Navigierbarkeit</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>RestClient & Load Balancing — Server-seitige API-Integration</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">16 - HATEOAS</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

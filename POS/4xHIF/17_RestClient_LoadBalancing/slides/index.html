@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>17 - RestClient_LoadBalancing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>17 - RestClient & Load Balancing</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum externe APIs?</h2>
+                <ul>
+                    <li class="fragment">Keine App ist eine Insel — Integration von Drittanbietern</li>
+                    <li class="fragment">Beispiele: Zahlungsdienstleister, Wetterdaten, Karten, Auth-Anbieter</li>
+                    <li class="fragment">Microservices kommunizieren untereinander über HTTP</li>
+                    <li class="fragment">Spring bietet: <code>RestClient</code>, <code>WebClient</code>, <code>RestTemplate</code> (deprecated)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>RestTemplate vs RestClient</h2>
+                <table>
+                    <tr><th>RestTemplate (alt)</th><th>RestClient (neu)</th></tr>
+                    <tr class="fragment"><td>Seit Spring 3 (2009)</td><td>Seit Spring 6 / Boot 3 (2022)</td></tr>
+                    <tr class="fragment"><td>Synchron, blockierend</td><td>Synchron, aber modernere API</td></tr>
+                    <tr class="fragment"><td>Schwer testbar (viele Overloads)</td><td>Builder-Pattern, einfach testbar</td></tr>
+                    <tr class="fragment"><td>Fehlerbehandlung umständlich</td><td><code>onStatus()</code> — fließend</td></tr>
+                    <tr class="fragment"><td>Wird in Zukunft entfernt</td><td>Ersatz für RestTemplate</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>RestClient Setup</h2>
+                <pre><code class="language-java">@Configuration
+public class RestClientConfig {
+
+    @Bean
+    public RestClient restClient(RestClient.Builder builder) {
+        return builder
+            .baseUrl("https://jsonplaceholder.typicode.com")
+            .defaultHeader(HttpHeaders.CONTENT_TYPE,
+                MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader("X-API-Key", "${api.key}")
+            .requestInterceptor((request, body, execution) -> {
+                log.info("Request: {} {}", request.getMethod(),
+                    request.getURI());
+                return execution.execute(request, body);
+            })
+            .build();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>GET mit RestClient</h2>
+                <pre><code class="language-java">// Einfaches Objekt
+Todo todo = restClient.get()
+    .uri("/todos/{id}", 1L)
+    .retrieve()
+    .body(Todo.class);
+
+// Liste (mit TypeReference)
+List&lt;Todo&gt; todos = restClient.get()
+    .uri("/todos")
+    .retrieve()
+    .body(new ParameterizedTypeReference&lt;&gt;() {});
+
+// Query-Parameter
+List&lt;Todo&gt; filtered = restClient.get()
+    .uri("/todos?userId={userId}", 1)
+    .retrieve()
+    .body(new ParameterizedTypeReference&lt;&gt;() {});</code></pre>
+            </section>
+
+            <section>
+                <h2>POST / PUT / DELETE</h2>
+                <pre><code class="language-java">// POST — neuen Todo erstellen
+Todo created = restClient.post()
+    .uri("/todos")
+    .body(new Todo(null, 1L, "New task", false))
+    .retrieve()
+    .body(Todo.class);
+
+// PUT — komplett ersetzen
+restClient.put()
+    .uri("/todos/{id}", 1L)
+    .body(updatedTodo)
+    .retrieve()
+    .toBodilessEntity();
+
+// DELETE — löschen
+restClient.delete()
+    .uri("/todos/{id}", 1L)
+    .retrieve()
+    .toBodilessEntity();</code></pre>
+            </section>
+
+            <section>
+                <h2>Fehlerbehandlung mit onStatus</h2>
+                <pre><code class="language-java">Todo result = restClient.get()
+    .uri("/todos/{id}", id)
+    .retrieve()
+    .onStatus(HttpStatusCode::is4xxClientError,
+        (request, response) -> {
+            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Todo " + id + " nicht gefunden");
+            }
+            throw new ExternalServiceException(
+                "Fehler: " + response.getStatusCode());
+        })
+    .onStatus(HttpStatusCode::is5xxServerError,
+        (request, response) -> {
+            throw new ExternalServiceException(
+                "Serverfehler: " + response.getStatusCode());
+        })
+    .body(Todo.class);</code></pre>
+            </section>
+
+            <section>
+                <h2>Retry mit Spring Retry</h2>
+                <pre><code class="language-java">@Service
+public class ResilientTodoService {
+
+    private final RestClient restClient;
+
+    @Retryable(
+        retryFor = ExternalServiceException.class,
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 1000, multiplier = 2))
+    public Todo findById(Long id) {
+        return restClient.get()
+            .uri("/todos/{id}", id)
+            .retrieve()
+            .onStatus(HttpStatusCode::is5xxServerError,
+                (req, res) -> {
+                    throw new ExternalServiceException("API error");
+                })
+            .body(Todo.class);
+    }
+
+    @Recover
+    public Todo fallback(Long id, ExternalServiceException e) {
+        log.warn("Fallback für Todo {} nach Fehler", id);
+        return new Todo(null, null, "Fallback-Todo", false);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Timeouts konfigurieren</h2>
+                <pre><code class="language-java">@Bean
+public RestClient restClient() {
+    return RestClient.builder()
+        .requestFactory(new JdkClientHttpRequestFactory(
+            HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(5))
+                .build()))
+        .build();
+}
+
+// Alternativ mit Apache HTTP Client:
+// @Bean
+// public RestClient restClient() {
+//     return RestClient.builder()
+//         .requestFactory(new HttpComponentsClientHttpRequestFactory(
+//             HttpClientBuilder.create()
+//                 .setConnectionTimeToLive(5, TimeUnit.SECONDS)
+//                 .build()))
+//         .build();
+// }</code></pre>
+            </section>
+
+            <section>
+                <h2>Load Balancing — Konzepte</h2>
+                <ul>
+                    <li class="fragment"><strong>Client-Side LB:</strong> Der Client wählt die Zielinstanz aus</li>
+                    <li class="fragment"><strong>Server-Side LB:</strong> Ein Load Balancer (z.B. Nginx) verteilt Anfragen</li>
+                    <li class="fragment"><strong>Round-Robin:</strong> Anfragen werden der Reihe nach verteilt</li>
+                    <li class="fragment"><strong>Weighted:</strong> Instanzen mit mehr Kapazität bekommen mehr Traffic</li>
+                    <li class="fragment"><strong>Health Check:</strong> Ausfallende Instanzen werden aus dem Pool entfernt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Client-Side Load Balancing</h2>
+                <pre><code class="language-java">@Service
+public class LoadBalancingClient {
+
+    private final List&lt;String&gt; instances = List.of(
+        "http://localhost:8081",
+        "http://localhost:8082"
+    );
+    private final AtomicInteger counter = new AtomicInteger(0);
+
+    public Map&lt;String, Object&gt; fetchFromInstance() {
+        int index = Math.abs(
+            counter.getAndIncrement() % instances.size());
+        String url = instances.get(index) + "/api/instance";
+
+        return restClient.get()
+            .uri(url)
+            .retrieve()
+            .body(new ParameterizedTypeReference&lt;&gt;() {});
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: Externe API integrieren</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Wähle eine öffentliche API (z.B. OpenWeather, GitHub, JSONPlaceholder)</li>
+                        <li>Integriere sie mit RestClient in dein Projekt</li>
+                        <li>Füge Fehlerbehandlung mit onStatus + Retry hinzu</li>
+                        <li>Mappe die externen DTOs auf deine eigenen Records</li>
+                        <li>Optional: Caching für die externe API (nächste Wochen)</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>RestClient als moderne Alternative zu RestTemplate</li>
+                        <li>GET, POST, PUT, DELETE mit RestClient</li>
+                        <li>Fehlerbehandlung mit onStatus</li>
+                        <li>Retry-Logik mit Spring Retry</li>
+                        <li>Timeouts und Connection-Pool-Konfiguration</li>
+                        <li>Client-Side Load Balancing (Round-Robin)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Paging & Sorting — Effiziente Listen-Endpoints mit Pageable</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">17 - RestClient_LoadBalancing</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

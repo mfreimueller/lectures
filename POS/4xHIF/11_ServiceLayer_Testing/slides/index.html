@@ -67,14 +67,14 @@ class LibraryServiceTest {
                 <h2>Stubbing — when/thenReturn</h2>
                 <pre><code class="language-java">@Test
 void findAllBooks_shouldReturnAllBooks() {
-    List<Book> expected = List.of(
+    List&lt;Book&gt; expected = List.of(
         new Book("978-3-16-148410-0", "DDD", 2003),
         new Book("978-0-13-468599-1", "Clean Code", 2008)
     );
 
     when(bookRepository.findAll()).thenReturn(expected);
 
-    List<Book> actual = libraryService.findAllBooks();
+    List&lt;Book&gt; actual = libraryService.findAllBooks();
 
     assertEquals(2, actual.size());
     assertEquals(expected, actual);

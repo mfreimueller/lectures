@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>19 - GraphQL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>19 - GraphQL</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>GraphQL vs REST</h2>
+                <table>
+                    <tr><th>REST</th><th>GraphQL</th></tr>
+                    <tr class="fragment"><td>Mehrere Endpoints (resources)</td><td>Ein Endpoint (<code>/graphql</code>)</td></tr>
+                    <tr class="fragment"><td>Server bestimmt Response-Struktur</td><td>Client bestimmt, welche Felder er braucht</td></tr>
+                    <tr class="fragment"><td>Over- / Under-Fetching möglich</td><td>Nur angeforderte Felder werden geliefert</td></tr>
+                    <tr class="fragment"><td>Versionierung über URI (v1, v2)</td><td>Evolution ohne Versionierung</td></tr>
+                    <tr class="fragment"><td>HTTP-Caching einfach</td><td>Caching komplexer</td></tr>
+                </table>
+                <p class="fragment highlight-box">GraphQL ist kein REST-Ersatz, sondern eine Alternative für bestimmte Anwendungsfälle.</p>
+            </section>
+
+            <section>
+                <h2>Schema First — Typen definieren</h2>
+                <pre><code class="language-graphql">type Book {
+    id: ID!
+    isbn: String!
+    title: String!
+    author: Author!
+    publicationYear: Int!
+}
+
+type Author {
+    id: ID!
+    name: String!
+    birthYear: Int
+    books: [Book!]
+}
+
+type Query {
+    books: [Book!]!
+    bookById(id: ID!): Book
+}
+
+type Mutation {
+    createBook(input: BookInput!): Book!
+}
+
+input BookInput {
+    isbn: String!
+    title: String!
+    authorId: ID!
+    publicationYear: Int!
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Queries — Daten lesen</h2>
+                <pre><code class="language-graphql"># Der Client wählt genau die Felder, die er braucht
+query {
+    books {
+        id
+        title
+        author {
+            name
+        }
+    }
+}
+
+# Verschachtelte Queries
+query {
+    bookById(id: 1) {
+        title
+        author {
+            name
+            birthYear
+            books {
+                title
+            }
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Mutations — Daten schreiben</h2>
+                <pre><code class="language-graphql">mutation {
+    createBook(input: {
+        isbn: "9783161484100"
+        title: "Clean Code"
+        authorId: 1
+        publicationYear: 2008
+    }) {
+        id
+        title
+        author { name }
+    }
+}</code></pre>
+                <p class="fragment">Mutations können auch Daten zurückgeben — nützlich für den aktualisierten Zustand.</p>
+            </section>
+
+            <section>
+                <h2>GraphQL in Spring Boot</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-graphql&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <pre><code class="language-java">@Controller
+public class BookController {
+
+    @QueryMapping
+    public List&lt;BookDTO&gt; books() { ... }
+
+    @QueryMapping
+    public BookDTO bookById(@Argument Long id) { ... }
+
+    @MutationMapping
+    public BookDTO createBook(@Valid @Argument BookInput input) { ... }
+
+    @SchemaMapping(typeName = "Book", field = "author")
+    public AuthorDTO getAuthor(BookDTO book) { ... }
+}</code></pre>
+                <p class="fragment">GraphiQL (Web-IDE) unter <code>/graphiql</code> verfügbar.</p>
+            </section>
+
+            <section>
+                <h2>Katas + Projektarbeit</h2>
+                <div class="highlight-box">
+                    <p>Die zweite Hälfte der Stunde gehört der Projektarbeit:</p>
+                    <ol>
+                        <li>Schließe fehlende REST-Endpoints ab</li>
+                        <li>Integriere Paging + HATEOAS</li>
+                        <li>Optional: Probiere GraphQL für deine Domäne</li>
+                    </ol>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">19 - GraphQL</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

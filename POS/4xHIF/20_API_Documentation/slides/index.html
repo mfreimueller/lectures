@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>20 - API_Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>20 - API Documentation</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum API-Dokumentation?</h2>
+                <ul>
+                    <li class="fragment">Entwickler müssen deine API verstehen und nutzen können</li>
+                    <li class="fragment">Reduziert Support-Fragen ("Welchen Endpoint muss ich aufrufen?")</li>
+                    <li class="fragment">Ermöglicht automatisierte Client-Generierung</li>
+                    <li class="fragment">Wichtig für APIs, die von externen Teams genutzt werden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>OpenAPI / Swagger</h2>
+                <ul>
+                    <li class="fragment"><strong>OpenAPI</strong> = Spezifikation (Standard)</li>
+                    <li class="fragment"><strong>Swagger</strong> = Tooling (UI, Editor, Codegen)</li>
+                    <li class="fragment"><strong>springdoc-openapi</strong> = Spring Boot Integration</li>
+                    <li class="fragment">Auto-generiert aus Annotationen (<code>@RestController</code>, <code>@GetMapping</code>, etc.)</li>
+                    <li class="fragment">Interaktive UI zum Testen der Endpoints</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>springdoc-openapi — Zero-Config</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.5.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                <p class="fragment">Nach dem Hinzufügen: Swagger UI unter <code>/swagger-ui.html</code> und OpenAPI JSON unter <code>/v3/api-docs</code> verfügbar.</p>
+            </section>
+
+            <section>
+                <h2>OpenAPI Customization</h2>
+                <pre><code class="language-java">@Configuration
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Library Management API",
+        version = "1.0.0",
+        description = "REST API for our library project",
+        contact = @Contact(name = "4xHIF", email = "team@spengergasse.at")
+    )
+)
+public class OpenApiConfig {}
+
+@RestController
+@Tag(name = "Books", description = "CRUD for books")
+public class BookController {
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Find book by ID")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "404", description = "Not found")
+    public BookDTO getById(@PathVariable Long id) { ... }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Spring REST Docs</h2>
+                <ul>
+                    <li class="fragment">Test-getriebene Dokumentation</li>
+                    <li class="fragment">Erzeugt Snippets aus <strong>passierten</strong> Tests (nie veraltet!)</li>
+                    <li class="fragment">Snippets werden in AsciiDoc-Dokumente eingebunden</li>
+                    <li class="fragment">Vorteil: Dokumentation ist immer korrekt (sonst fliegt der Test)</li>
+                    <li class="fragment">Nachteil: Aufwändiger, kein interaktives UI</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>REST Docs vs OpenAPI</h2>
+                <table>
+                    <tr><th>Kriterium</th><th>Spring REST Docs</th><th>OpenAPI (springdoc)</th></tr>
+                    <tr class="fragment"><td>Setup</td><td>Aufwändig</td><td>Minimal (1 Dependency)</td></tr>
+                    <tr class="fragment"><td>Korrektheit</td><td>100% (test-basiert)</td><td>90% (annotation-basiert)</td></tr>
+                    <tr class="fragment"><td>Interaktivität</td><td>Keine</td><td>Swagger UI</td></tr>
+                    <tr class="fragment"><td>Client-Generierung</td><td>Nicht direkt</td><td>OpenAPI Generator</td></tr>
+                    <tr class="fragment"><td>Wartungsaufwand</td><td>Höher</td><td>Geringer</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Projekt: API-Dokumentation</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Füge springdoc-openapi zu deinem Projekt hinzu</li>
+                        <li>Konfiguriere Titel, Version, und Beschreibung</li>
+                        <li>Dekoriere Endpoints mit @Operation und @ApiResponse</li>
+                        <li>Gruppiere Endpoints mit @Tag</li>
+                        <li>Teste die interaktive Swagger UI</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>OpenAPI/Swagger als API-Dokumentationsstandard</li>
+                        <li>springdoc-openapi Integration</li>
+                        <li>Swagger UI Customization</li>
+                        <li>Spring REST Docs (Test-getrieben)</li>
+                        <li>REST Docs vs OpenAPI — Vergleich</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Testing REST APIs + Code Review — @WebMvcTest, MockMvc</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">20 - API_Documentation</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

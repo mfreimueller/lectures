@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>25 - Docker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>25 - Docker</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum Container?</h2>
+                <ul>
+                    <li class="fragment">"It works on my machine" — nie wieder!</li>
+                    <li class="fragment">Reproduzierbare Umgebungen (dev = test = prod)</li>
+                    <li class="fragment">Isolation: App + DB + Services getrennt</li>
+                    <li class="fragment">Einfacher Deploy, Skalierung, Rollbacks</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dockerfile Basics</h2>
+                <pre><code class="language-dockerfile">FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+            </section>
+
+            <section>
+                <h2>Multi-Stage Build</h2>
+                <pre><code class="language-dockerfile"># Stage 1: Build
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn package -DskipTests
+
+# Stage 2: Runtime (kleineres Image!)
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+                <p class="fragment">Ergebnis: ~200MB statt 800MB (Maven + JDK nur im Build-Stage)</p>
+            </section>
+
+            <section>
+                <h2>docker-compose — App + DB</h2>
+                <pre><code class="language-yaml">services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/library
+    depends_on:
+      db: { condition: service_healthy }
+
+  db:
+    image: postgres:16-alpine
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck: { test: ["CMD", "pg_isready"] }
+
+volumes: { pgdata: }</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: Containerisierung</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Dockerfile mit Multi-Stage-Build erstellen</li>
+                        <li>.dockerignore anlegen</li>
+                        <li>docker-compose.yml für App + PostgreSQL</li>
+                        <li>docker-compose Profiles für dev/prod</li>
+                        <li>Mit .env Datei für Secrets</li>
+                    </ol>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({ controls: true, progress: true, center: false, hash: true, slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade', plugins: [RevealHighlight] });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">25 - Docker</span></div>`);
+        });
+    </script>
+</body>
+</html>

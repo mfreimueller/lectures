@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>22 - Thymeleaf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>22 - Thymeleaf</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Server-Side Rendering</h2>
+                <ul>
+                    <li class="fragment">Thymeleaf = HTML-Templates auf dem Server</li>
+                    <li class="fragment">Einfach: Designer können HTML direkt bearbeiten</li>
+                    <li class="fragment">Natürliches Templating: Templates funktionieren auch im Browser ohne Server</li>
+                    <li class="fragment">Ideale Wahl für einfache WebUIs, Admins, Prototypen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Thymeleaf Setup</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <p class="fragment">Templates in <code>src/main/resources/templates/</code>, statische Dateien in <code>static/</code>.</p>
+            </section>
+
+            <section>
+                <h2>@Controller für Thymeleaf</h2>
+                <pre><code class="language-java">@Controller
+@RequestMapping("/ui/books")
+public class BookWebController {
+
+    private final BookService bookService;
+
+    @GetMapping
+    public String listBooks(Model model) {
+        model.addAttribute("books", bookService.getAll());
+        model.addAttribute("pageTitle", "Book Library");
+        return "books/list"; // templates/books/list.html
+    }
+}</code></pre>
+                <p class="fragment"><code>@Controller</code> (nicht <code>@RestController</code>) gibt Template-Namen zurück.</p>
+            </section>
+
+            <section>
+                <h2>th:each — Listen durchlaufen</h2>
+                <pre><code class="language-html">&lt;table&gt;
+    &lt;tr th:each="book : ${books}"&gt;
+        &lt;td th:text="${book.id}"&gt;1&lt;/td&gt;
+        &lt;td th:text="${book.title}"&gt;Title&lt;/td&gt;
+        &lt;td th:text="${book.author}"&gt;Author&lt;/td&gt;
+        &lt;td th:text="${book.year}"&gt;2025&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p th:if="${#lists.isEmpty(books)}"&gt;No books found.&lt;/p&gt;</code></pre>
+            </section>
+
+            <section>
+                <h2>th:if / th:unless — Bedingungen</h2>
+                <pre><code class="language-html">&lt;div th:if="${book.publicationYear} &gt; 2000"&gt;
+    &lt;p&gt;Dieses Buch ist aus dem 21. Jahrhundert.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div th:unless="${book.publicationYear} &gt; 2000"&gt;
+    &lt;p&gt;Klassiker!&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div th:switch="${book.publicationYear}"&gt;
+    &lt;p th:case="1949"&gt;1984 - Ein besonderes Jahr!&lt;/p&gt;
+    &lt;p th:case="*"&gt;Normales Jahr&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+
+            <section>
+                <h2>th:object + th:field — Form Binding</h2>
+                <pre><code class="language-html">&lt;form th:action="@{/ui/books}" th:object="${book}"
+      method="post"&gt;
+    &lt;div&gt;
+        &lt;label&gt;ISBN:&lt;/label&gt;
+        &lt;input type="text" th:field="*{isbn}" /&gt;
+        &lt;span th:if="${#fields.hasErrors('isbn')}"
+              th:errors="*{isbn}"&gt;Error&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label&gt;Title:&lt;/label&gt;
+        &lt;input type="text" th:field="*{title}" /&gt;
+    &lt;/div&gt;
+    &lt;button type="submit"&gt;Save&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                <p class="fragment"><code>th:field</code> setzt name, id, value und zeigt Validation-Fehler an.</p>
+            </section>
+
+            <section>
+                <h2>Fragment-Layouts — Wiederverwendbarkeit</h2>
+                <pre><code class="language-html">&lt;!-- fragments/layout.html --&gt;
+&lt;nav th:fragment="header"&gt;
+    &lt;a th:href="@{/ui/books}"&gt;Books&lt;/a&gt;
+    &lt;a th:href="@{/ui/authors}"&gt;Authors&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;footer th:fragment="footer"&gt;
+    &lt;p&gt;&amp;copy; 2025 4xHIF Library App&lt;/p&gt;
+&lt;/footer&gt;
+
+&lt;!-- Nutzung in einer Seite --&gt;
+&lt;div th:replace="~{fragments/layout :: header}"&gt;&lt;/div&gt;
+&lt;div th:replace="~{fragments/layout :: footer}"&gt;&lt;/div&gt;</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: WebUI für deine Domäne</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Erstelle @Controller für deine Hauptentitäten</li>
+                        <li>Baue eine Listenseite mit th:each und Filter</li>
+                        <li>Erstelle Create/Edit-Formulare mit th:object</li>
+                        <li>Erstelle ein wiederverwendbares Layout mit Navigation</li>
+                        <li>Füge CSS für ein ansprechendes Design hinzu</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Thymeleaf als Server-Side Template Engine</li>
+                        <li>@Controller für View-Rendering</li>
+                        <li>th:each, th:if, th:switch für Logik</li>
+                        <li>th:object + th:field für Formulare</li>
+                        <li>Fragment-Layouts mit th:replace</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Milestone 2: Zwischenpräsentation (Projektstand)</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">22 - Thymeleaf</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>
