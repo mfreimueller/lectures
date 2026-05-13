@@ -1,24 +1,24 @@
-# Kata 2: Klasse Wuerfel
+# Kata 2: Klasse Würfel
 
 | Feld | Wert |
 |------|------|
-| Konzepte | Random, Methoden mit Rueckgabewert |
+| Konzepte | Random, Methoden mit Rückgabewert |
 | Schwierigkeit | 1/5 |
 | Dauer | ca. 15 min |
 
 ### Aufgabenstellung
 
-Erstelle eine Klasse `Wuerfel`:
+Erstelle eine Klasse `Würfel`:
 
 1. Attribut: `seitenAnzahl` (int)
-2. Methode: `wuerfeln()` gibt einen zufaelligen Wert zwischen 1 und seitenAnzahl zurueck
+2. Methode: `wuerfeln()` gibt einen zufälligen Wert zwischen 1 und seitenAnzahl zurück
 
-Erstelle eine Test-Klasse, die einen Wuerfel mit 6 Seiten erzeugt, 10 Mal wuerfelt und die Ergebnisse ausgibt.
+Erstelle eine Test-Klasse, die einen Würfel mit 6 Seiten erzeugt, 10 Mal würfelt und die Ergebnisse ausgibt.
 
 ### Beispiel-Output
 
 ```
-Wuerfel mit 6 Seiten:
+Würfel mit 6 Seiten:
 Wurf 1: 4
 Wurf 2: 2
 Wurf 3: 6

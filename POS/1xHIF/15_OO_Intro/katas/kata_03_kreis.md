@@ -2,7 +2,7 @@
 
 | Feld | Wert |
 |------|------|
-| Konzepte | Attribute, Methoden mit Berechnung und Rueckgabewert |
+| Konzepte | Attribute, Methoden mit Berechnung und Rückgabewert |
 | Schwierigkeit | 2/5 |
 | Dauer | ca. 20 min |
 
@@ -11,16 +11,16 @@
 Erstelle eine Klasse `Kreis`:
 
 1. Attribut: `radius` (double)
-2. Methode: `berechneFlaeche()` - gibt die Flaeche (pi * r * r) als double zurueck
-3. Methode: `berechneUmfang()` - gibt den Umfang (2 * pi * r) als double zurueck
-4. Methode: `printInfo()` - gibt Radius, Flaeche und Umfang formatiert aus
+2. Methode: `berechneFlaeche()` - gibt die Fläche (pi * r * r) als double zurück
+3. Methode: `berechneUmfang()` - gibt den Umfang (2 * pi * r) als double zurück
+4. Methode: `printInfo()` - gibt Radius, Fläche und Umfang formatiert aus
 
-Verwende Math.PI fuer den Wert von Pi.
+Verwende Math.PI für den Wert von Pi.
 
 ### Beispiel-Output
 
 ```
 Kreis mit Radius: 5.0
-Flaeche: 78.53981633974483
+Fläche: 78.53981633974483
 Umfang: 31.41592653589793
 ```

@@ -23,7 +23,7 @@
 <pre><code class="language-java">while (bedingung) {
     // wiederholter Code
 }</code></pre>
-<p class="fragment">Die Bedingung wird vor jedem Durchlauf geprueft.</p>
+<p class="fragment">Die Bedingung wird vor jedem Durchlauf geprüft.</p>
 <p class="fragment">Wird die Bedingung nie false -> Endlosschleife!</p>
 <pre class="fragment"><code class="language-java">int i = 0;
 while (i < 5) {
@@ -47,9 +47,9 @@ System.out.println("Ziffernsumme: " + summe);</code></pre>
 
 <section><h2>do-while-Schleife</h2>
 <pre><code class="language-java">do {
-    // wird mindestens einmal ausgefuehrt
+    // wird mindestens einmal ausgeführt
 } while (bedingung);</code></pre>
-<p class="fragment">Der Code wird AUSGEFUEHRT, DANN die Bedingung geprueft.</p>
+<p class="fragment">Der Code wird AUSGEFÜHRT, DANN die Bedingung geprüft.</p>
 <pre class="fragment"><code class="language-java">int eingabe;
 do {
     System.out.println("Bitte Zahl > 0 eingeben:");
@@ -60,7 +60,7 @@ do {
 <section><h2>for vs. while vs. do-while</h2>
 <table>
 <tr><th>Schleife</th><th>Wann verwenden?</th></tr>
-<tr class="fragment"><td>for</td><td>Bekannte Anzahl Durchlaeufe</td></tr>
+<tr class="fragment"><td>for</td><td>Bekannte Anzahl Durchläufe</td></tr>
 <tr class="fragment"><td>while</td><td>Bedingung vor dem ersten Durchlauf</td></tr>
 <tr class="fragment"><td>do-while</td><td>Mindestens ein Durchlauf</td></tr>
 </table>
@@ -93,7 +93,7 @@ while (true) {
 boolean entkommen = false;
 
 while (hp > 0 && !entkommen) {
-    System.out.println("1: Kaempfen  2: Fliehen  3: Status");
+    System.out.println("1: Kämpfen  2: Fliehen  3: Status");
     int wahl = scanner.nextInt();
 
     if (wahl == 1) {
@@ -109,7 +109,7 @@ while (hp > 0 && !entkommen) {
 <section><h2>Dungeon Escape - Aufgabe</h2>
 <ul>
 <li>Implementiere die Hauptspielschleife mit while</li>
-<li>Verwende do-while fuer das Menue</li>
+<li>Verwende do-while für das Menü</li>
 <li>Spielende bei hp <= 0 oder entkommen = true</li>
 </ul>
 </section>
@@ -124,7 +124,7 @@ while (hp > 0 && !entkommen) {
 </ul>
 </section>
 
-<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Methoden und Scanner</h3></div></section>
+<section class="center"><div class="highlight-box"><h3 class="centered">Nächste Woche: Methoden und Scanner</h3></div></section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

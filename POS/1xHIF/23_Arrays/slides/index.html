@@ -69,7 +69,7 @@ Index:   0   1   2   3   4
 // Empfohlen (Typ gefolgt von []):
 int[] noten;
 
-// Auch moeglich ([] nach dem Namen):
+// Auch möglich ([] nach dem Namen):
 int noten[];
 </code></pre>
 </div>
@@ -114,7 +114,7 @@ String[] namen = {"Anna", "Ben", "Clara"};
 </section>
 
 <section>
-<h2>Index-Zugriff: noten[0] bis noten[laenge-1]</h2>
+<h2>Index-Zugriff: noten[0] bis noten[länge-1]</h2>
 <div class="highlight-box fragment">
 <pre><code class="language-java">
 int[] noten = {2, 3, 1, 4, 5};
@@ -127,7 +127,7 @@ noten[1] = 2; // Andern: noten[1] ist jetzt 2 statt 3
 </code></pre>
 </div>
 <div class="highlight-box fragment">
-<p>Achtung: Index von 0 bis laenge-1! <code>noten[5]</code> -> ArrayIndexOutOfBoundsException!</p>
+<p>Achtung: Index von 0 bis länge-1! <code>noten[5]</code> -> ArrayIndexOutOfBoundsException!</p>
 </div>
 </section>
 
@@ -136,7 +136,7 @@ noten[1] = 2; // Andern: noten[1] ist jetzt 2 statt 3
 <div class="highlight-box fragment">
 <pre><code class="language-java">
 int[] noten = {2, 3, 1, 4, 5};
-int laenge = noten.length; // 5
+int länge = noten.length; // 5
 
 // Letztes Element:
 int letztes = noten[noten.length - 1]; // 5
@@ -254,7 +254,7 @@ public class ArrayUtils {
 <p>Bisher: Vier einzelne Attribute</p>
 <pre><code class="language-java">
 private Raum norden;
-private Raum sueden;
+private Raum süden;
 private Raum osten;
 private Raum westen;
 </code></pre>
@@ -264,18 +264,18 @@ private Raum westen;
 <pre><code class="language-java">
 public class Raum {
     public static final int NORDEN = 0;
-    public static final int SUEDEN = 1;
+    public static final int SÜDEN = 1;
     public static final int OSTEN = 2;
     public static final int WESTEN = 3;
 
-    private Raum[] ausgaenge = new Raum[4];
+    private Raum[] ausgänge = new Raum[4];
 
     public void setAusgang(int richtung, Raum raum) {
-        ausgaenge[richtung] = raum;
+        ausgänge[richtung] = raum;
     }
 
     public Raum getAusgang(int richtung) {
-        return ausgaenge[richtung];
+        return ausgänge[richtung];
     }
 }
 </code></pre>
@@ -287,9 +287,9 @@ public class Raum {
 <div class="highlight-box fragment">
 <ul>
 <li>Ersetze die vier Richtungs-Attribute durch ein Raum[4]-Array</li>
-<li>Definiere Index-Konstanten: NORDEN=0, SUEDEN=1, OSTEN=2, WESTEN=3</li>
+<li>Definiere Index-Konstanten: NORDEN=0, SÜDEN=1, OSTEN=2, WESTEN=3</li>
 <li>Passe alle Bewegungsmethoden im Spieler an</li>
-<li>Implementiere getAusgaenge() zuruck einen String mit allen Richtungen</li>
+<li>Implementiere getAusgänge() zuruck einen String mit allen Richtungen</li>
 <li>Teste, ob alles noch funktioniert wie vorher</li>
 </ul>
 </div>
@@ -302,7 +302,7 @@ public class Raum {
 <li>Array = Sammlung gleichartiger Elemente mit fester Lange</li>
 <li>Deklaration: <code>int[] arr;</code></li>
 <li>Initialisierung: <code>new int[5]</code> oder <code>{1, 2, 3}</code></li>
-<li>Index von 0 bis laenge-1</li>
+<li>Index von 0 bis länge-1</li>
 <li><code>.length</code> fur die Lange (ohne Klammern!)</li>
 <li>For-Schleife: <code>for (int i = 0; i &lt; arr.length; i++)</code></li>
 <li>Arrays als Parameter und Ruckgabewert von Methoden</li>

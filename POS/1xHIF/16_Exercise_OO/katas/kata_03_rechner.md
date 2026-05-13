@@ -2,7 +2,7 @@
 
 | Feld | Wert |
 |------|------|
-| Konzepte | Methoden mit Parametern und Rueckgabewert |
+| Konzepte | Methoden mit Parametern und Rückgabewert |
 | Schwierigkeit | 1/5 |
 | Dauer | ca. 20 min |
 
@@ -10,12 +10,12 @@
 
 Erstelle eine Klasse `Rechner` (ohne main-Methode):
 
-- `int addieren(int a, int b)` - gibt die Summe zurueck
-- `int subtrahieren(int a, int b)` - gibt die Differenz zurueck
-- `int multiplizieren(int a, int b)` - gibt das Produkt zurueck
-- `double dividieren(int a, int b)` - gibt den Quotienten zurueck (mit Pruefung auf Division durch 0)
+- `int addieren(int a, int b)` - gibt die Summe zurück
+- `int subtrahieren(int a, int b)` - gibt die Differenz zurück
+- `int multiplizieren(int a, int b)` - gibt das Produkt zurück
+- `double dividieren(int a, int b)` - gibt den Quotienten zurück (mit Prüfung auf Division durch 0)
 
-Erstelle eine Test-Klasse, die ein Rechner-Objekt erzeugt und alle vier Operationen mit selbst gewaehlten Zahlen ausfuehrt.
+Erstelle eine Test-Klasse, die ein Rechner-Objekt erzeugt und alle vier Operationen mit selbst gewählten Zahlen ausführt.
 
 ### Beispiel-Output
 

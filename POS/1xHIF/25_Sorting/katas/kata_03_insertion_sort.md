@@ -14,5 +14,5 @@ System.out.println(java.util.Arrays.toString(zahlen));
 Hinweise:
 - Beginne bei Index 1 (das erste Element ist bereits sortiert)
 - Speichere das aktuelle Element in einer Variablen
-- Verschiebe groessere Elemente nach rechts
-- Fuege das aktuelle Element an der richtigen Stelle ein
+- Verschiebe größere Elemente nach rechts
+- Füge das aktuelle Element an der richtigen Stelle ein

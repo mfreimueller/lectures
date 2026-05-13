@@ -1,6 +1,6 @@
-# Kata 01: Muenzwurf
+# Kata 01: Münzwurf
 
-Simuliere 100 Muen zwuerfe. Zaehle wie oft Kopf und Zahl vorkommen. Gib das Ergebnis aus.
+Simuliere 100 Münzwürfe. Zähle wie oft Kopf und Zahl vorkommen. Gib das Ergebnis aus.
 
 ## Anforderungen
 - Verwende Math.random() oder die Random-Klasse

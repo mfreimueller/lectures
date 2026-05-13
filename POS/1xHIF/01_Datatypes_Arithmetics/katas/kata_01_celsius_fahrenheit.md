@@ -25,9 +25,9 @@ Bei `celsius = 25.0`:
 
 - Achte auf die Ganzzahldivision: `9/5` ergibt in Java 1, nicht 1.8!
   Verwende stattdessen `9.0 / 5.0`.
-- Verwende `printf` mit `%.1f` fuer eine Nachkommastelle.
+- Verwende `printf` mit `%.1f` für eine Nachkommastelle.
 
 ## Erweiterung (optional)
 
-Rechne zusaetzlich eine Fahrenheit-Temperatur zurueck in Celsius um.
+Rechne zusätzlich eine Fahrenheit-Temperatur zurück in Celsius um.
 Formel: C = (F - 32) * 5/9

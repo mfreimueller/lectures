@@ -19,7 +19,7 @@ Schreibe ein Programm, das alle Primzahlen von 2 bis n (Eingabe in main hartkodi
 ```
 
 ## Regeln
-- Das Programm muss vollstaendig lauffaehig sein
+- Das Programm muss vollständig lauffähig sein
 - Keine externen Bibliotheken (ausser java.util)
 - Die main-Methode muss enthalten sein
-- Leerzeichen und Zeilenumbrueche zaehlen nicht mit
+- Leerzeichen und Zeilenumbrüche zählen nicht mit

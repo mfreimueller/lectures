@@ -1,8 +1,8 @@
-# Kata 2: Person mit Konstruktor-Ueberladung
+# Kata 2: Person mit Konstruktor-Überladung
 
 | Feld | Wert |
 |------|------|
-| Konzepte | Konstruktor-Ueberladung, this() |
+| Konzepte | Konstruktor-Überladung, this() |
 | Schwierigkeit | 2/5 |
 | Dauer | ca. 20 min |
 

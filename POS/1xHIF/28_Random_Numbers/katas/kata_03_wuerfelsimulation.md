@@ -1,12 +1,12 @@
-# Kata 03: 3d6-Wuerfelsimulation
+# Kata 03: 3d6-Würfelsimulation
 
-Simuliere 3 Wuerfel (1-6), summiere sie. Wiederhole dies 1000 Mal.
-Gib die Haeufigkeit jeder Summe (3 bis 18) aus.
+Simuliere 3 Würfel (1-6), summiere sie. Wiederhole dies 1000 Mal.
+Gib die Häufigkeit jeder Summe (3 bis 18) aus.
 
 ## Anforderungen
 - Verwende Math.random() oder Random-Klasse
-- Speichere die Haeufigkeiten in einem Array
-- Gib die Tabelle der Summen und ihrer Haeufigkeiten aus
+- Speichere die Häufigkeiten in einem Array
+- Gib die Tabelle der Summen und ihrer Häufigkeiten aus
 
 ## Beispielausgabe
 ```

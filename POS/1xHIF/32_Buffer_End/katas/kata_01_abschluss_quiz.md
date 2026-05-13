@@ -3,7 +3,7 @@
 Beantworte die folgenden Fragen zu allen Themen des Jahres.
 
 ### Frage 1 (Multiple Choice)
-Welcher Datentyp wird fuer ganze Zahlen in Java verwendet?
+Welcher Datentyp wird für ganze Zahlen in Java verwendet?
 
 - [ ] double
 - [x] int
@@ -11,7 +11,7 @@ Welcher Datentyp wird fuer ganze Zahlen in Java verwendet?
 - [ ] String
 
 ### Frage 2 (Multiple Choice)
-Welche Schleife wird mindestens einmal ausgefuehrt?
+Welche Schleife wird mindestens einmal ausgeführt?
 
 - [ ] for-Schleife
 - [x] do-while-Schleife
@@ -25,7 +25,7 @@ Ein Array in Java kann Elemente verschiedener Datentypen enthalten.
 - [x] False
 
 ### Frage 4 (Multiple Choice)
-Was gibt der Ausdruck `(int)(Math.random() * 6) + 1` zurueck?
+Was gibt der Ausdruck `(int)(Math.random() * 6) + 1` zurück?
 
 - [ ] 0 bis 5
 - [x] 1 bis 6
@@ -36,11 +36,11 @@ Was gibt der Ausdruck `(int)(Math.random() * 6) + 1` zurueck?
 Was ist der Unterschied zwischen einer Klasse und einem Objekt?
 
 ### Frage 6 (Multiple Choice)
-Wozu dient der this-Schluessel in Java?
+Wozu dient der this-Schlüssel in Java?
 
 - [ ] Eine neue Instanz erzeugen
 - [x] Auf das aktuelle Objekt verweisen
-- [ ] Eine Methode ueberschreiben
+- [ ] Eine Methode überschreiben
 - [ ] Eine Klasse importieren
 
 ### Frage 7 (True/False)

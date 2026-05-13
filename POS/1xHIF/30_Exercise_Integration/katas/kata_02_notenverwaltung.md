@@ -1,14 +1,14 @@
 # Kata 02: Notenverwaltung OO
 
-Verwalte Schuelernoten mit einer Klasse.
+Verwalte Schülernoten mit einer Klasse.
 
 ## Anforderungen
-- Klasse Schueler mit Attributen: name (String), noten (int[])
+- Klasse Schüler mit Attributen: name (String), noten (int[])
 - Methode durchschnitt(): berechnet den Notendurchschnitt
-- Methode besteNote(): gibt die beste Note zurueck
-- Methode schlechtesteNote(): gibt die schlechteste Note zurueck
-- Methode anzahlDurchgefallen(): zaehlt Noten &gt; 4 (im oesterreichischen System)
-- Erstelle mehrere Schueler und gib ihre Statistiken aus
+- Methode besteNote(): gibt die beste Note zurück
+- Methode schlechtesteNote(): gibt die schlechteste Note zurück
+- Methode anzahlDurchgefallen(): zählt Noten &gt; 4 (im österreichischen System)
+- Erstelle mehrere Schüler und gib ihre Statistiken aus
 
 ## Beispiel
 ```java

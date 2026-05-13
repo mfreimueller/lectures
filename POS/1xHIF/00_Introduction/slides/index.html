@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>00 - Einfuehrung in Java</title>
+    <title>00 - Einführung in Java</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/spengergasse.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
@@ -14,7 +14,7 @@
 
             <!-- Slide 1: Title Page -->
             <section class="center title-slide">
-                <h1>00 - Einfuehrung in Java & Programmieren</h1>
+                <h1>00 - Einführung in Java & Programmieren</h1>
                 <p class="institution">POS - 1AHIF</p>
             </section>
 
@@ -23,7 +23,7 @@
                 <h2>Was ist Programmieren?</h2>
                 <ul>
                     <li class="fragment">Ein Programm ist eine Folge von Befehlen</li>
-                    <li class="fragment">Der Computer fuehrt diese Befehle Schritt fuer Schritt aus</li>
+                    <li class="fragment">Der Computer führt diese Befehle Schritt für Schritt aus</li>
                     <li class="fragment">Analogie: Ein Kochrezept</li>
                     <ul>
                         <li class="fragment">Zutaten = Daten</li>
@@ -36,7 +36,7 @@
             <!-- Slide 3: Algorithmen -->
             <section>
                 <h2>Algorithmen</h2>
-                <p>Ein Algorithmus ist eine eindeutige, schrittweise Anleitung zur Loesung eines Problems.</p>
+                <p>Ein Algorithmus ist eine eindeutige, schrittweise Anleitung zur Lösung eines Problems.</p>
                 <div class="fragment highlight-box">
                     <p><strong>Beispiel: Tee kochen</strong></p>
                     <ol>
@@ -54,16 +54,16 @@
                 <h2>Java - was ist das?</h2>
                 <ul>
                     <li class="fragment"><strong>Java</strong> ist eine Programmiersprache</li>
-                    <li class="fragment">Einmal schreiben, ueberall ausfuehren (Write Once, Run Anywhere)</li>
-                    <li class="fragment">Ermoeglicht durch die <strong>JVM</strong> (Java Virtual Machine)</li>
+                    <li class="fragment">Einmal schreiben, überall ausführen (Write Once, Run Anywhere)</li>
+                    <li class="fragment">Ermöglicht durch die <strong>JVM</strong> (Java Virtual Machine)</li>
                     <li class="fragment">Quellcode (.java) wird zu Bytecode (.class) compiliert</li>
-                    <li class="fragment">Die JVM fuehrt den Bytecode aus</li>
+                    <li class="fragment">Die JVM führt den Bytecode aus</li>
                 </ul>
             </section>
 
-            <!-- Slide 5: Grundgeruest eines Java-Programms -->
+            <!-- Slide 5: Grundgerüst eines Java-Programms -->
             <section>
-                <h2>Grundgeruest eines Java-Programms</h2>
+                <h2>Grundgerüst eines Java-Programms</h2>
                 <pre><code class="language-java">public class HalloWelt {
     public static void main(String[] args) {
         // Hier stehen unsere Befehle
@@ -80,9 +80,9 @@
                 <h2>Die main-Methode</h2>
                 <pre><code class="language-java">public static void main(String[] args)</code></pre>
                 <ul>
-                    <li class="fragment"><strong>public</strong>: fuer die JVM von aussen erreichbar</li>
-                    <li class="fragment"><strong>static</strong>: ohne Objekt aufrufbar (Details spaeter)</li>
-                    <li class="fragment"><strong>void</strong>: gibt nichts zurueck</li>
+                    <li class="fragment"><strong>public</strong>: für die JVM von aussen erreichbar</li>
+                    <li class="fragment"><strong>static</strong>: ohne Objekt aufrufbar (Details später)</li>
+                    <li class="fragment"><strong>void</strong>: gibt nichts zurück</li>
                     <li class="fragment"><strong>String[] args</strong>: Kommandozeilen-Argumente (erstmal ignorieren)</li>
                 </ul>
             </section>
@@ -92,7 +92,7 @@
                 <h2>Anweisungen</h2>
                 <ul>
                     <li class="fragment">Jede Anweisung endet mit einem <strong>Semikolon (;)</strong></li>
-                    <li class="fragment">Einrueckung verbessert die Lesbarkeit</li>
+                    <li class="fragment">Einrückung verbessert die Lesbarkeit</li>
                     <li class="fragment">Java ist <strong>case-sensitive</strong> (Gross-/Kleinschreibung wichtig)</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">System.out.println("Hallo Welt!"); // korrekt
@@ -118,9 +118,9 @@ system.out.println("Hallo Welt!"); // Fehler!</code></pre>
                     <li class="fragment">Neues Projekt in IntelliJ anlegen</li>
                     <li class="fragment">Neue Klasse HalloWelt erstellen</li>
                     <li class="fragment">Code abtippen (nicht kopieren!)</li>
-                    <li class="fragment">Compilieren und ausfuehren (Run-Button)</li>
+                    <li class="fragment">Compilieren und ausführen (Run-Button)</li>
                     <li class="fragment">Console-Ausgabe betrachten</li>
-                    <li class="fragment">Text aendern und erneut ausfuehren</li>
+                    <li class="fragment">Text ändern und erneut ausführen</li>
                 </ol>
             </section>
 
@@ -130,10 +130,10 @@ system.out.println("Hallo Welt!"); // Fehler!</code></pre>
                 <ul>
                     <li class="fragment"><strong>IDE</strong> = Integrated Development Environment</li>
                     <li class="fragment">Ein Texteditor mit vielen Hilfsfunktionen</li>
-                    <li class="fragment">IntelliJ ist unsere IDE fuer dieses Jahr</li>
+                    <li class="fragment">IntelliJ ist unsere IDE für dieses Jahr</li>
                 </ul>
                 <div class="fragment highlight-box">
-                    <p><strong>Vorteile:</strong> Syntax-Highlighting, Auto-Vervollstaendigung, Debugger, integrierte Compiler-Ausfuehrung</p>
+                    <p><strong>Vorteile:</strong> Syntax-Highlighting, Auto-Vervollständigung, Debugger, integrierte Compiler-Ausführung</p>
                 </div>
             </section>
 
@@ -142,9 +142,9 @@ system.out.println("Hallo Welt!"); // Fehler!</code></pre>
                 <h2>IntelliJ installieren</h2>
                 <ol>
                     <li class="fragment">Download von jetbrains.com (Community Edition, kostenlos)</li>
-                    <li class="fragment">Installation ausfuehren</li>
-                    <li class="fragment">Beim ersten Start: Einstellungen uebernehmen</li>
-                    <li class="fragment">JDK auswaehlen (Java Development Kit)</li>
+                    <li class="fragment">Installation ausführen</li>
+                    <li class="fragment">Beim ersten Start: Einstellungen übernehmen</li>
+                    <li class="fragment">JDK auswählen (Java Development Kit)</li>
                 </ol>
                 <p class="fragment">Sollte bereits installiert sein - bei Fragen melden!</p>
             </section>
@@ -154,16 +154,16 @@ system.out.println("Hallo Welt!"); // Fehler!</code></pre>
                 <h2>Erstes Projekt anlegen</h2>
                 <ol>
                     <li class="fragment">File -> New -> Project</li>
-                    <li class="fragment">Java auswaehlen, JDK festlegen</li>
+                    <li class="fragment">Java auswählen, JDK festlegen</li>
                     <li class="fragment">Projektnamen vergeben (z.B. "ErstesProgramm")</li>
                     <li class="fragment">Finish klicken</li>
                     <li class="fragment">src/ -> New -> Java Class: "HalloWelt"</li>
                 </ol>
             </section>
 
-            <!-- Slide 13: Code schreiben & ausfuehren -->
+            <!-- Slide 13: Code schreiben & ausführen -->
             <section>
-                <h2>Code schreiben & ausfuehren</h2>
+                <h2>Code schreiben & ausführen</h2>
                 <ul>
                     <li class="fragment">Code in der Klasse schreiben</li>
                     <li class="fragment">Gruner Pfeil (Run) neben der main-Methode klicken</li>
@@ -214,8 +214,8 @@ System.out.printf("Die Antwort ist %d.", zahl);</code></pre>
                 <pre class="fragment"><code>Hallo, Welt!
 Die Antwort ist 42.</code></pre>
                 <ul>
-                    <li class="fragment">%s = Platzhalter fuer einen String</li>
-                    <li class="fragment">%d = Platzhalter fuer eine ganze Zahl</li>
+                    <li class="fragment">%s = Platzhalter für einen String</li>
+                    <li class="fragment">%d = Platzhalter für eine ganze Zahl</li>
                 </ul>
             </section>
 
@@ -224,20 +224,20 @@ Die Antwort ist 42.</code></pre>
                 <h2>Escape-Sequenzen</h2>
                 <p>Spezielle Zeichen mit Backslash (\)</p>
                 <pre><code class="language-java">System.out.println("Erste Zeile\nZweite Zeile");
-System.out.println("Tab:\tEingerueckt");
+System.out.println("Tab:\tEingerückt");
 System.out.println("Backslash: \\");
-System.out.println("Anfuehrungszeichen: \"");</code></pre>
+System.out.println("Anführungszeichen: \"");</code></pre>
                 <p class="fragment">Ausgabe:</p>
                 <pre class="fragment"><code>Erste Zeile
 Zweite Zeile
-Tab:    Eingerueckt
+Tab:    Eingerückt
 Backslash: \
-Anfuehrungszeichen: "</code></pre>
+Anführungszeichen: "</code></pre>
             </section>
 
             <!-- Slide 18: Syntax-Fehler -->
             <section>
-                <h2>Haeufige Syntax-Fehler</h2>
+                <h2>Häufige Syntax-Fehler</h2>
                 <div class="highlight-box">
                     <p><strong>Fehlendes Semikolon</strong></p>
                     <pre><code class="language-java">System.out.println("Hallo") // FEHLT ;</code></pre>
@@ -262,9 +262,9 @@ system.out.println("Hallo"); // Fehler!</code></pre>
                 <ul>
                     <li class="fragment"><strong>Dateiname.java:Zeile</strong> - Wo ist der Fehler?</li>
                     <li class="fragment"><strong>error: ...</strong> - Was fehlt?</li>
-                    <li class="fragment"><strong>^</strong> - Genaue Position in der Zeile</li>
+                    <li class="fragment"><strong>^</strong> - Genaü Position in der Zeile</li>
                 </ul>
-                <p class="fragment">Keine Panik! Fehler sind normal - jeder Programmierer hat sie taeglich.</p>
+                <p class="fragment">Keine Panik! Fehler sind normal - jeder Programmierer hat sie täglich.</p>
             </section>
 
             <!-- Slide 20: Debugging-Strategien -->
@@ -273,8 +273,8 @@ system.out.println("Hallo"); // Fehler!</code></pre>
                 <ul>
                     <li class="fragment"><strong>Console lesen</strong> - Die Fehlermeldung sagt genau, was falsch ist</li>
                     <li class="fragment"><strong>Zeile kommentieren</strong> - Finde heraus, welche Zeile den Fehler verursacht</li>
-                    <li class="fragment"><strong>Nachfragen</strong> - Keine Scheu, den Lehrer oder Mitschueler zu fragen</li>
-                    <li class="fragment"><strong>Ausgangslage vergleichen</strong> - Was hat sich seit dem letzten Durchlauf geaendert?</li>
+                    <li class="fragment"><strong>Nachfragen</strong> - Keine Scheu, den Lehrer oder Mitschüler zu fragen</li>
+                    <li class="fragment"><strong>Ausgangslage vergleichen</strong> - Was hat sich seit dem letzten Durchlauf geändert?</li>
                 </ul>
             </section>
 
@@ -294,7 +294,7 @@ system.out.println("Hallo"); // Fehler!</code></pre>
             <!-- Slide 22: Ausblick -->
             <section class="center">
                 <div class="highlight-box">
-                    <h3 class="centered">Naechste Woche: Datentypen, Variablen und Operatoren</h3>
+                    <h3 class="centered">Nächste Woche: Datentypen, Variablen und Operatoren</h3>
                 </div>
                 <ul>
                     <li class="fragment">int, double, boolean, char</li>
@@ -329,7 +329,7 @@ system.out.println("Hallo"); // Fehler!</code></pre>
                         <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
                              alt="HTL Spengergasse Logo" class="school-logo">
                     </div>
-                    <span class="date">00 - Einfuehrung in Java</span>
+                    <span class="date">00 - Einführung in Java</span>
                 </div>
             `;
             reveal.insertAdjacentHTML('beforeend', footerHTML);

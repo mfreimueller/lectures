@@ -3,9 +3,9 @@
 Der folgende Code muss mit JavaDoc versehen werden.
 
 ## Aufgaben
-1. Ergaenze JavaDoc fuer die Klasse Rechner
-2. Ergaenze JavaDoc fuer jede Methode
-3. Lass einen Partner deine Dokumentation ueberpruefen
+1. Ergänze JavaDoc für die Klasse Rechner
+2. Ergänze JavaDoc für jede Methode
+3. Lass einen Partner deine Dokumentation überprüfen
 
 ## Code
 ```java
@@ -31,5 +31,5 @@ class Rechner {
 ## Review-Checkliste
 - [ ] Ist die Klasse dokumentiert?
 - [ ] Haben alle Methoden @param und @return?
-- [ ] Ist der Text verstaendlich?
-- [ ] Werden Sonderfaelle (z.B. Division durch 0) erwahnt?
+- [ ] Ist der Text verständlich?
+- [ ] Werden Sonderfälle (z.B. Division durch 0) erwahnt?

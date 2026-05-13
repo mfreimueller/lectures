@@ -25,7 +25,7 @@
     String marke;     // Attribut
 
     void fahre() {    // Methode
-        System.out.println(marke + " faehrt!");
+        System.out.println(marke + " fährt!");
     }
 }
 
@@ -36,7 +36,7 @@ a.fahre();</code></pre>
                 <ul>
                     <li class="fragment">Klasse = Bauplan, Objekt = Instanz</li>
                     <li class="fragment">new erzeugt ein Objekt</li>
-                    <li class="fragment">Punkt-Operator (.) fuer Zugriff</li>
+                    <li class="fragment">Punkt-Operator (.) für Zugriff</li>
                 </ul>
             </section>
 
@@ -55,39 +55,39 @@ a.fahre();</code></pre>
     }
 }</code></pre>
                 <ul>
-                    <li class="fragment">Parameter werden beim Aufruf uebergeben</li>
+                    <li class="fragment">Parameter werden beim Aufruf übergeben</li>
                     <li class="fragment">Die Methode arbeitet mit dem Parameter</li>
                 </ul>
             </section>
 
-            <!-- Slide 4: Methoden mit Rueckgabewert -->
+            <!-- Slide 4: Methoden mit Rückgabewert -->
             <section>
-                <h2>Methoden mit Rueckgabewert</h2>
-                <pre><code class="language-java">public class Wuerfel {
+                <h2>Methoden mit Rückgabewert</h2>
+                <pre><code class="language-java">public class Würfel {
     int seiten;
 
-    int wuerfeln() {
+    int würfeln() {
         Random rand = new Random();
         return rand.nextInt(seiten) + 1;
     }
 }
 
 // Verwendung:
-Wuerfel w = new Wuerfel();
+Würfel w = new Würfel();
 w.seiten = 6;
-int ergebnis = w.wuerfeln();</code></pre>
+int ergebnis = w.würfeln();</code></pre>
                 <ul>
-                    <li class="fragment"><strong>return</strong> gibt einen Wert zurueck</li>
-                    <li class="fragment">Der Rueckgabetyp steht vor dem Methodennamen</li>
+                    <li class="fragment"><strong>return</strong> gibt einen Wert zurück</li>
+                    <li class="fragment">Der Rückgabetyp steht vor dem Methodennamen</li>
                 </ul>
             </section>
 
-            <!-- Slide 5: Kata-Uebersicht -->
+            <!-- Slide 5: Kata-Übersicht -->
             <section>
                 <h2>Katas heute</h2>
                 <ul>
-                    <li class="fragment"><strong>Bankkonto:</strong> einzahlen/auszahlen mit Pruefung, kontostand anzeigen</li>
-                    <li class="fragment"><strong>Wuerfel:</strong> Klasse mit wuerfeln()-Methode, return int</li>
+                    <li class="fragment"><strong>Bankkonto:</strong> einzahlen/auszahlen mit Prüfung, kontostand anzeigen</li>
+                    <li class="fragment"><strong>Würfel:</strong> Klasse mit würfeln()-Methode, return int</li>
                     <li class="fragment"><strong>Rechner:</strong> vier Grundrechenarten als Methoden</li>
                 </ul>
                 <p class="fragment highlight-box">Ziel: Sicher im Umgang mit eigenen Klassen werden</p>

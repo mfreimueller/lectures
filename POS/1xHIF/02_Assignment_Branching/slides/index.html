@@ -39,23 +39,23 @@ x = x + 3;    // x ist jetzt 8
 x = y;        // x ist jetzt 10 (Kopieren)</code></pre>
                 <ul>
                     <li class="fragment">Rechts vom = steht der Wert/Ausdruck</li>
-                    <li class="fragment">Links vom = steht die Variable, die den Wert erhaelt</li>
-                    <li class="fragment">Der alte Wert wird ueberschrieben</li>
+                    <li class="fragment">Links vom = steht die Variable, die den Wert erhält</li>
+                    <li class="fragment">Der alte Wert wird überschrieben</li>
                 </ul>
             </section>
 
             <!-- Slide 4: a = a + 1 -->
             <section>
-                <h2>Variable erhoehen</h2>
-                <pre><code class="language-java">int zaehler = 0;
+                <h2>Variable erhöhen</h2>
+                <pre><code class="language-java">int zähler = 0;
 
-zaehler = zaehler + 1;   // zaehler ist 1
-zaehler = zaehler + 1;   // zaehler ist 2</code></pre>
-                <p class="fragment">Dieses Muster kommt sehr haeufig vor!</p>
+zähler = zähler + 1;   // zähler ist 1
+zähler = zähler + 1;   // zähler ist 2</code></pre>
+                <p class="fragment">Dieses Muster kommt sehr häufig vor!</p>
                 <div class="fragment highlight-box">
                     <p><strong>Kurzformen:</strong></p>
-                    <pre><code class="language-java">zaehler += 1;    // gleiche Wirkung wie zaehler = zaehler + 1
-zaehler++;       // noch kuerzer!</code></pre>
+                    <pre><code class="language-java">zähler += 1;    // gleiche Wirkung wie zähler = zähler + 1
+zähler++;       // noch kürzer!</code></pre>
                 </div>
             </section>
 
@@ -69,7 +69,7 @@ x -= 3;    // x = x - 3  -> 12
 x *= 2;    // x = x * 2  -> 24
 x /= 4;    // x = x / 4  -> 6
 x %= 3;    // x = x % 3  -> 0</code></pre>
-                <p class="fragment">Gilt auch fuer double:</p>
+                <p class="fragment">Gilt auch für double:</p>
                 <pre class="fragment"><code class="language-java">double preis = 10.0;
 preis *= 1.2;    // +20% -> 12.0</code></pre>
             </section>
@@ -82,9 +82,9 @@ preis *= 1.2;    // +20% -> 12.0</code></pre>
                     <tr class="fragment"><td>==</td><td>gleich</td></tr>
                     <tr class="fragment"><td>!=</td><td>ungleich</td></tr>
                     <tr class="fragment"><td>&lt;</td><td>kleiner</td></tr>
-                    <tr class="fragment"><td>&gt;</td><td>groesser</td></tr>
+                    <tr class="fragment"><td>&gt;</td><td>grösser</td></tr>
                     <tr class="fragment"><td>&lt;=</td><td>kleiner oder gleich</td></tr>
-                    <tr class="fragment"><td>&gt;=</td><td>groesser oder gleich</td></tr>
+                    <tr class="fragment"><td>&gt;=</td><td>grösser oder gleich</td></tr>
                 </table>
             </section>
 
@@ -93,7 +93,7 @@ preis *= 1.2;    // +20% -> 12.0</code></pre>
                 <h2>Ergebnis ist ein boolean</h2>
                 <pre><code class="language-java">int alter = 17;
 
-boolean volljaehrig = alter >= 18;   // false
+boolean volljährig = alter >= 18;   // false
 boolean ist17 = alter == 17;         // true
 boolean ungleich = alter != 18;      // true</code></pre>
                 <p class="fragment">Ein Vergleich <strong>ergibt immer true oder false</strong>.</p>
@@ -121,7 +121,7 @@ if (x == 5) {      // Vergleich (korrekt)
             <section>
                 <h2>if-Anweisung</h2>
                 <pre><code class="language-java">if (bedingung) {
-    // Code der ausgefuehrt wird, wenn bedingung true ist
+    // Code der ausgeführt wird, wenn bedingung true ist
 }</code></pre>
                 <p class="fragment">Die <strong>Bedingung</strong> ist ein boolean-Ausdruck.</p>
                 <pre class="fragment"><code class="language-java">int temperatur = 35;
@@ -135,16 +135,16 @@ if (temperatur > 30) {
             <section>
                 <h2>if-else</h2>
                 <pre><code class="language-java">if (bedingung) {
-    // Code fuer true
+    // Code für true
 } else {
-    // Code fuer false
+    // Code für false
 }</code></pre>
                 <pre class="fragment"><code class="language-java">int alter = 16;
 
 if (alter >= 18) {
-    System.out.println("Volljaehrig");
+    System.out.println("Volljährig");
 } else {
-    System.out.println("Minderjaehrig");
+    System.out.println("Minderjährig");
 }</code></pre>
             </section>
 
@@ -159,10 +159,10 @@ if (temperatur > 30) {
     System.out.println("Angenehme Temperatur.");
 }</code></pre>
                 <p class="fragment">Was passiert bei temperatur = 25?</p>
-                <p class="fragment">Die else-Zweig wird ausgefuehrt.</p>
+                <p class="fragment">Die else-Zweig wird ausgeführt.</p>
             </section>
 
-            <!-- Slide 12: Zusammenhaengende Befehle -->
+            <!-- Slide 12: Zusammenhängende Befehle -->
             <section>
                 <h2>Mehrere Befehle in if/else</h2>
                 <pre><code class="language-java">if (x > 0) {
@@ -188,8 +188,8 @@ if (temperatur > 30) {
 } else {
     // Wenn beide false
 }</code></pre>
-                <p class="fragment">Es koennen beliebig viele else-if-Zweige sein.</p>
-                <p class="fragment">Der erste true-Zweig wird ausgefuehrt, der Rest uebersprungen.</p>
+                <p class="fragment">Es können beliebig viele else-if-Zweige sein.</p>
+                <p class="fragment">Der erste true-Zweig wird ausgeführt, der Rest übersprungen.</p>
             </section>
 
             <!-- Slide 14: else if Beispiel -->
@@ -236,9 +236,9 @@ if (punkte >= 90) {
 } else if (punkte >= 65) {
     note = "Befriedigend";
 } else if (punkte >= 51) {
-    note = "Genuegend";
+    note = "Genügend";
 } else {
-    note = "Nicht genuegend";
+    note = "Nicht genügend";
 }
 
 System.out.println(punkte + " Punkte: " + note);</code></pre>
@@ -263,9 +263,9 @@ if (istSchaltjahr) {
 
             <!-- Slide 18: Dungeon Escape -->
             <section>
-                <h2>Dungeon Escape: Tuer-Entscheidung</h2>
-                <p>Der Spieler steht vor zwei Tueren.</p>
-                <pre class="fragment"><code class="language-java">int wahl = 1;  // 1 = linke Tuer, 2 = rechte Tuer
+                <h2>Dungeon Escape: Tür-Entscheidung</h2>
+                <p>Der Spieler steht vor zwei Türen.</p>
+                <pre class="fragment"><code class="language-java">int wahl = 1;  // 1 = linke Tür, 2 = rechte Tür
 
 if (wahl == 1) {
     System.out.println("Du betrittst den Schatzraum!");
@@ -278,10 +278,10 @@ if (wahl == 1) {
             <section>
                 <h2>Dungeon Escape - Aufgabe der Woche</h2>
                 <ul>
-                    <li class="fragment">Lege eine Variable fuer die Tuerwahl an (1 oder 2)</li>
-                    <li class="fragment">Mit if/else den gewaehlten Raum bestimmen</li>
+                    <li class="fragment">Lege eine Variable für die Türwahl an (1 oder 2)</li>
+                    <li class="fragment">Mit if/else den gewählten Raum bestimmen</li>
                     <li class="fragment">Unterschiedliche Ausgabe je nach Wahl</li>
-                    <li class="fragment"><strong>Erweiterung:</strong> HP veraendern bei Schatz (+10) oder Gegner (-20)</li>
+                    <li class="fragment"><strong>Erweiterung:</strong> HP verändern bei Schatz (+10) oder Gegner (-20)</li>
                 </ul>
             </section>
 
@@ -300,10 +300,10 @@ if (wahl == 1) {
             <!-- Slide 21: Ausblick -->
             <section class="center">
                 <div class="highlight-box">
-                    <h3 class="centered">Naechste Woche: Logische Operatoren</h3>
+                    <h3 class="centered">Nächste Woche: Logische Operatoren</h3>
                 </div>
-                <p class="fragment">Verknuepfen von Bedingungen mit &&, ||, !</p>
-                <p class="fragment">"Wenn der Spieler einen Schlussel HAT UND die Tuer links ist..."</p>
+                <p class="fragment">Verknüpfen von Bedingungen mit &&, ||, !</p>
+                <p class="fragment">"Wenn der Spieler einen Schlussel HAT UND die Tür links ist..."</p>
             </section>
 
         </div>

@@ -16,7 +16,7 @@
 <section><h2>Wiederholung</h2>
 <p>Wie wandelt man "42" in eine int-Zahl um?</p>
 <p class="fragment">Integer.parseInt("42")</p>
-<p class="fragment">Was gibt Boolean.parseBoolean("true") zurueck?</p>
+<p class="fragment">Was gibt Boolean.parseBoolean("true") zurück?</p>
 </section>
 
 <section><h2>Das Problem mit vielen if-else</h2>
@@ -27,19 +27,19 @@
 } else if (tag == 3) {
     System.out.println("Mittwoch");
 } // ... bis Sonntag</code></pre>
-<p class="fragment">Viel Code, unuebersichtlich.</p>
+<p class="fragment">Viel Code, unübersichtlich.</p>
 </section>
 
 <section><h2>switch-case - Syntax</h2>
 <pre><code class="language-java">switch (variable) {
     case wert1:
-        // Code fuer wert1
+        // Code für wert1
         break;
     case wert2:
-        // Code fuer wert2
+        // Code für wert2
         break;
     default:
-        // Code fuer alle anderen Werte
+        // Code für alle anderen Werte
         break;
 }</code></pre>
 </section>
@@ -56,7 +56,7 @@ switch (tag) {
     case 5: name = "Freitag";   break;
     case 6: name = "Samstag";   break;
     case 7: name = "Sonntag";   break;
-    default: name = "Ungueltig";break;
+    default: name = "Ungültig";break;
 }
 
 System.out.println(name);  // Mittwoch</code></pre>
@@ -71,7 +71,7 @@ switch (x) {
     default: System.out.println("Sonst"); break;
 }
 // Ausgabe: Eins Zwei (Fall-through!)</code></pre>
-<p class="fragment">Ohne break wird der naechste case ausgefuehrt -> Fall-through.</p>
+<p class="fragment">Ohne break wird der nächste case ausgeführt -> Fall-through.</p>
 </section>
 
 <section><h2>Fall-through nutzen</h2>
@@ -95,8 +95,8 @@ switch (monat) {
 <table>
 <tr><th>if-else</th><th>switch</th></tr>
 <tr><td>Beliebige Bedingungen</td><td>Nur == mit Konstanten</td></tr>
-<tr><td>Komplexe Ausdruecke</td><td>Einfache Werte (int, char, String)</td></tr>
-<tr><td>Unuebersichtlich bei vielen Zweigen</td><td>Uebersichtlich bei vielen Zweigen</td></tr>
+<tr><td>Komplexe Ausdrücke</td><td>Einfache Werte (int, char, String)</td></tr>
+<tr><td>Unübersichtlich bei vielen Zweigen</td><td>Übersichtlich bei vielen Zweigen</td></tr>
 </table>
 </section>
 
@@ -104,7 +104,7 @@ switch (monat) {
 <pre><code class="language-java">String befehl = "status";
 
 switch (befehl) {
-    case "kaempfen":
+    case "kämpfen":
         System.out.println("Angriff!");
         break;
     case "fliehen":
@@ -121,9 +121,9 @@ switch (befehl) {
 
 <section><h2>Dungeon Escape - Aufgabe</h2>
 <ul>
-<li>Ersetze die if-else-Kette fuer Befehle durch switch</li>
-<li>Befehle: kaempfen, fliehen, inventar, hilfe, status</li>
-<li>Fuege default fuer unbekannte Befehle hinzu</li>
+<li>Ersetze die if-else-Kette für Befehle durch switch</li>
+<li>Befehle: kämpfen, fliehen, inventar, hilfe, status</li>
+<li>Füge default für unbekannte Befehle hinzu</li>
 <li>Nutze switch mit String</li>
 </ul>
 </section>
@@ -137,7 +137,7 @@ switch (befehl) {
 </ul>
 </section>
 
-<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Ubung REPL</h3></div></section>
+<section class="center"><div class="highlight-box"><h3 class="centered">Nächste Woche: Ubung REPL</h3></div></section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

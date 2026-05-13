@@ -4,7 +4,7 @@ Schreibe ein Programm zur Notenverwaltung mit folgenden Methoden:
 
 - `double durchschnitt(int[] noten)` - berechnet den Durchschnitt
 - `int minimum(int[] noten)` - findet die kleinste Note
-- `int maximum(int[] noten)` - findet die groesste Note
+- `int maximum(int[] noten)` - findet die größte Note
 - `void selectionSort(int[] noten)` - sortiert die Noten mit Selection Sort
 
 Die Noten sind fest im Code vorgeben.

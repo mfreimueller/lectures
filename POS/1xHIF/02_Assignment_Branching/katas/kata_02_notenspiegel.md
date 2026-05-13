@@ -2,18 +2,18 @@
 
 ## Ziel
 
-Uebe die Verwendung von if/else if/else mit Vergleichsoperatoren.
+Übe die Verwendung von if/else if/else mit Vergleichsoperatoren.
 
 ## Aufgabenstellung
 
 Schreibe ein Programm `Notenspiegel.java`, das zu einer erreichten Prozentzahl die Note ausgibt.
 
-Notenschluessel:
+Notenschlüssel:
 - 90 bis 100: Note 1 (Sehr gut)
 - 78 bis 89: Note 2 (Gut)
 - 65 bis 77: Note 3 (Befriedigend)
-- 51 bis 64: Note 4 (Genuegend)
-- 0 bis 50: Note 5 (Nicht genuegend)
+- 51 bis 64: Note 4 (Genügend)
+- 0 bis 50: Note 5 (Nicht genügend)
 
 1. Deklariere `punkte` als int mit einem Wert deiner Wahl
 2. Verwende else if, um die Note zu bestimmen
@@ -28,10 +28,10 @@ Bei `punkte = 85`:
 
 ## Hinweise
 
-- Beginne mit der hoechsten Note (90)
+- Beginne mit der höchsten Note (90)
 - Die Reihenfolge der Bedingungen ist wichtig!
-- Denke daran: Der erste true-Zweig wird ausgefuehrt
+- Denke daran: Der erste true-Zweig wird ausgeführt
 
 ## Erweiterung (optional)
 
-Gib zusaetzlich aus, ob die Note positiv (1-4) oder negativ (5) ist.
+Gib zusätzlich aus, ob die Note positiv (1-4) oder negativ (5) ist.

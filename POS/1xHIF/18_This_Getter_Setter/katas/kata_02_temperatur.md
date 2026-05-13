@@ -11,9 +11,9 @@
 Erstelle eine gekapselte Klasse `Temperatur`:
 
 1. Attribut `private double celsius`
-2. Getter `getCelsius()` gibt celsius zurueck
+2. Getter `getCelsius()` gibt celsius zurück
 3. Setter `setCelsius(double celsius)` setzt celsius
-4. Getter `getFahrenheit()` berechnet und gibt Fahrenheit zurueck (Formel: celsius * 9.0 / 5.0 + 32.0)
+4. Getter `getFahrenheit()` berechnet und gibt Fahrenheit zurück (Formel: celsius * 9.0 / 5.0 + 32.0)
 5. Methode `printInfo()` gibt beide Werte formatiert aus
 6. Konstruktor `Temperatur(double celsius)`
 

@@ -8,22 +8,22 @@
 
 ### Aufgabenstellung
 
-Erstelle eine vollstaendig gekapselte Klasse `Konto`:
+Erstelle eine vollständig gekapselte Klasse `Konto`:
 
 1. Attribut `private long kontostand`
-2. Getter `getKontostand()` gibt den aktuellen Kontostand zurueck
+2. Getter `getKontostand()` gibt den aktuellen Kontostand zurück
 3. Methode `einzahlen(long betrag)`:
-   - Nur positive Betraege erlaubt
+   - Nur positive Beträge erlaubt
    - Bei Erfolg: Betrag zum Kontostand addieren
    - Bei Fehler: Fehlermeldung ausgeben
 4. Methode `auszahlen(long betrag)`:
-   - Nur positive Betraege erlaubt
+   - Nur positive Beträge erlaubt
    - Kontostand muss ausreichend sein
    - Bei Erfolg: Betrag abziehen
    - Bei Fehler: Fehlermeldung ausgeben
-5. Konstruktor: `Konto(long startbetrag)` mit Pruefung (kein negativer Startbetrag)
+5. Konstruktor: `Konto(long startbetrag)` mit Prüfung (kein negativer Startbetrag)
 
-Erstelle eine Test-Klasse, die alle Funktionen testet, inklusive Fehlerfaelle.
+Erstelle eine Test-Klasse, die alle Funktionen testet, inklusive Fehlerfälle.
 
 ### Beispiel-Output
 

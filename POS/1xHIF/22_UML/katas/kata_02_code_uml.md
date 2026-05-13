@@ -2,7 +2,7 @@
 
 | Feld | Wert |
 |------|------|
-| Konzepte | Reverse Engineering aus Code, Textuelle UML-Notation |
+| Konzepte | Reverse Engineering aus Code, Textülle UML-Notation |
 | Schwierigkeit | 3/5 |
 | Dauer | ca. 20 min |
 

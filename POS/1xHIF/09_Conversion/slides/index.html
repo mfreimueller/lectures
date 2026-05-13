@@ -23,7 +23,7 @@
 <section><h2>Das Problem</h2>
 <p>Scanner.nextInt() liefert eine Zahl.</p>
 <p>Aber: Scanner.next() liefert einen String.</p>
-<p class="fragment">Was, wenn wir aus einem String eine Zahl machen muessen?</p>
+<p class="fragment">Was, wenn wir aus einem String eine Zahl machen müssen?</p>
 </section>
 
 <section><h2>Integer.parseInt()</h2>
@@ -53,34 +53,34 @@ boolean b3 = Boolean.parseBoolean(wert3);  // false (nur "true" wird true)</code
 
 <section><h2>Fehlerbehandlung (Vorschau)</h2>
 <pre><code class="language-java">String eingabe = "abc";
-// int zahl = Integer.parseInt(eingabe);  // Programm stuerzt ab!
+// int zahl = Integer.parseInt(eingabe);  // Programm stürzt ab!
 
 // Bessere Variante (Vorschau auf Exception-Handling):
 try {
     int zahl = Integer.parseInt(eingabe);
     System.out.println(zahl);
 } catch (NumberFormatException e) {
-    System.out.println("Keine gueltige Zahl!");
+    System.out.println("Keine gültige Zahl!");
 }</code></pre>
 </section>
 
-<section><h2>Kata 2: Binaer zu Dezimal</h2>
-<pre><code class="language-java">String binaer = "1010";
+<section><h2>Kata 2: Binär zu Dezimal</h2>
+<pre><code class="language-java">String binär = "1010";
 int dezimal = 0;
 
-for (int i = 0; i < binaer.length(); i++) {
-    char c = binaer.charAt(i);
+for (int i = 0; i < binär.length(); i++) {
+    char c = binär.charAt(i);
     int ziffer = Integer.parseInt(String.valueOf(c));
     dezimal = dezimal * 2 + ziffer;
 }
 
-System.out.println(binaer + " = " + dezimal);  // 1010 = 10</code></pre>
+System.out.println(binär + " = " + dezimal);  // 1010 = 10</code></pre>
 </section>
 
 <section><h2>Dungeon Escape: Heiltranke</h2>
 <pre><code class="language-java">Scanner scanner = new Scanner(System.in);
 
-System.out.print("Wie viele Heiltraenke? ");
+System.out.print("Wie viele Heiltränke? ");
 String eingabe = scanner.nextLine();
 int anzahl = Integer.parseInt(eingabe);
 
@@ -100,7 +100,7 @@ System.out.println("Du heilst " + heilung + " HP. Neue HP: " + hp);</code></pre>
 </ul>
 </section>
 
-<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: switch-case</h3></div></section>
+<section class="center"><div class="highlight-box"><h3 class="centered">Nächste Woche: switch-case</h3></div></section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

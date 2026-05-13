@@ -13,5 +13,5 @@ System.out.println(java.util.Arrays.toString(zahlen));
 
 Hinweise:
 - Vergleiche benachbarte Elemente
-- Bei jedem Durchgang steigt das groesste Element nach oben
+- Bei jedem Durchgang steigt das größte Element nach oben
 - Die innere Schleife wird mit jedem Durchgang um 1 kleiner

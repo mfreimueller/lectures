@@ -1,11 +1,11 @@
 # Kata 01: Bankkonto dokumentieren
 
-Dokumentiere die Klasse Bankkonto vollstaendig mit JavaDoc.
+Dokumentiere die Klasse Bankkonto vollständig mit JavaDoc.
 
 ## Anforderungen
 - Dokumentiere die Klasse mit @author
 - Dokumentiere alle Methoden mit @param und @return
-- Verwende @version fuer die Version
+- Verwende @version für die Version
 
 ## Vorlage
 ```java
@@ -29,4 +29,4 @@ class Bankkonto {
 ## Hinweise
 - Beschreibe WAS die Methode tut, nicht WIE
 - Gib an, ob der Betrag positiv sein muss
-- Beschreibe moegliche Fehlerfaelle
+- Beschreibe mögliche Fehlerfälle

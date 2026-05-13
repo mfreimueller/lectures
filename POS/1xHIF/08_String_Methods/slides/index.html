@@ -14,7 +14,7 @@
 <section class="center title-slide"><h1>08 - String-Methoden</h1><p class="institution">POS - 1AHIF</p></section>
 
 <section><h2>Wiederholung</h2>
-<p>Was ist eine Methode? Wozu Parameter und Rueckgabe?</p>
+<p>Was ist eine Methode? Wozu Parameter und Rückgabe?</p>
 <p class="fragment">Beispiel: Wie ruft man int max(int a, int b) auf?</p>
 </section>
 
@@ -25,7 +25,7 @@
 
 <section><h2>length() und equals()</h2>
 <pre><code class="language-java">String name = "Anna";
-int laenge = name.length();      // 4
+int länge = name.length();      // 4
 
 String pw = "geheim";
 if (pw.equals("geheim")) {
@@ -43,7 +43,7 @@ char zweiter = text.charAt(1);  // 'a'
 char dritter = text.charAt(2);  // 'v'
 char vierter = text.charAt(3);  // 'a'
 
-// charAt(laenge - 1) = letztes Zeichen
+// charAt(länge - 1) = letztes Zeichen
 char letzter = text.charAt(text.length() - 1);  // 'a'</code></pre>
 </section>
 
@@ -58,7 +58,7 @@ String url = "https://schule.at";
 boolean istHttps = url.startsWith("https");       // true</code></pre>
 </section>
 
-<section><h2>Weitere nuetzliche Methoden</h2>
+<section><h2>Weitere nützliche Methoden</h2>
 <pre><code class="language-java">String s = "  Hallo Welt!  ";
 
 s.toLowerCase();    // "  hallo welt!  "
@@ -70,31 +70,31 @@ s.substring(7);     // "Welt!"
 s.substring(2, 7);  // "llo W"</code></pre>
 </section>
 
-<section><h2>Kata 1: Woerter zaehlen</h2>
-<pre><code class="language-java">String satz = "Heute ist ein schoener Tag";
-int woerter = 1;
+<section><h2>Kata 1: Wörter zählen</h2>
+<pre><code class="language-java">String satz = "Heute ist ein schöner Tag";
+int wörter = 1;
 
 for (int i = 0; i < satz.length(); i++) {
     if (satz.charAt(i) == ' ') {
-        woerter++;
+        wörter++;
     }
 }
 
-System.out.println("Woerter: " + woerter);  // 5</code></pre>
+System.out.println("Wörter: " + wörter);  // 5</code></pre>
 </section>
 
-<section><h2>Kata 3: Caesar-Verschluesselung</h2>
+<section><h2>Kata 3: Caesar-Verschlüsselung</h2>
 <pre><code class="language-java">String text = "HALLO";
 int verschiebung = 3;
-String verschluesselt = "";
+String verschlüsselt = "";
 
 for (int i = 0; i < text.length(); i++) {
     char c = text.charAt(i);
     c = (char) (c + verschiebung);
-    verschluesselt += c;
+    verschlüsselt += c;
 }
 
-System.out.println(verschluesselt);  // KDOOR</code></pre>
+System.out.println(verschlüsselt);  // KDOOR</code></pre>
 </section>
 
 <section><h2>Dungeon Escape: Befehlsparsing</h2>
@@ -121,7 +121,7 @@ if (befehl.equals("norden")) {
 </ul>
 </section>
 
-<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: Konvertierung (String zu Zahl)</h3></div></section>
+<section class="center"><div class="highlight-box"><h3 class="centered">Nächste Woche: Konvertierung (String zu Zahl)</h3></div></section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

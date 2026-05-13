@@ -25,7 +25,7 @@ MWST:      20,00
 
 ## Hinweise
 
-- Verwende `printf` mit `%.2f` fuer zwei Nachkommastellen
+- Verwende `printf` mit `%.2f` für zwei Nachkommastellen
 - Denke an den Unterschied zwischen int und double bei der Division
 
 ## Erweiterung (optional)

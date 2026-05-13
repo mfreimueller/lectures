@@ -27,5 +27,5 @@ Erwartete Ausgabe:
 
 Hinweise:
 - Verwende zwei verschachtelte for-Schleifen
-- Gib fuer 0 ein Leerzeichen aus, fuer 1 ein #
+- Gib für 0 ein Leerzeichen aus, für 1 ein #
 - Nach jeder Zeile einen Zeilenumbruch

@@ -33,7 +33,7 @@
                 <ul>
                     <li class="fragment"><strong>this</strong> verweist auf das aktuelle Objekt</li>
                     <li class="fragment">this.marke = Attribut, marke = Parameter</li>
-                    <li class="fragment">Heute: this genauer, plus Kapselung mit private</li>
+                    <li class="fragment">Heute: this genaür, plus Kapselung mit private</li>
                 </ul>
             </section>
 
@@ -55,8 +55,8 @@
     }
 }</code></pre>
                 <ul>
-                    <li class="fragment">Ohne this: muessen verschiedene Namen erfinden (m statt marke)</li>
-                    <li class="fragment">Mit this: koennen gleiche Namen verwenden</li>
+                    <li class="fragment">Ohne this: müssen verschiedene Namen erfinden (m statt marke)</li>
+                    <li class="fragment">Mit this: können gleiche Namen verwenden</li>
                 </ul>
             </section>
 
@@ -71,8 +71,8 @@
 
     public void setName(String name) {
         this.name = name;
-        // this.name = Attribut (gehoert zum Objekt)
-        // name     = Parameter (wird uebergeben)
+        // this.name = Attribut (gehört zum Objekt)
+        // name     = Parameter (wird übergeben)
     }
 }</code></pre>
                 <ul>
@@ -85,7 +85,7 @@
             <section>
                 <h2>Kapselung: private vs. public</h2>
                 <ul>
-                    <li class="fragment"><strong>public</strong> - von ueberall zugreifbar (auch aus anderen Klassen)</li>
+                    <li class="fragment"><strong>public</strong> - von überall zugreifbar (auch aus anderen Klassen)</li>
                     <li class="fragment"><strong>private</strong> - nur innerhalb derselben Klasse zugreifbar</li>
                 </ul>
                 <div class="fragment highlight-box">
@@ -104,13 +104,13 @@
             <section>
                 <h2>Warum private Attribute?</h2>
                 <ul>
-                    <li class="fragment"><strong>Daten schuetzen:</strong> Niemand soll direkt fremde Attribute aendern koennen</li>
-                    <li class="fragment"><strong>Kontrolle:</strong> Nur die Klasse selbst entscheidet, wie Daten gelesen/geschaetzt werden</li>
-                    <li class="fragment"><strong>Aenderbarkeit:</strong> Interne Aenderungen wirken sich nicht auf andere Klassen aus</li>
-                    <li class="fragment"><strong>Validierung:</strong> Ungueltige Werte koennen verhindert werden</li>
+                    <li class="fragment"><strong>Daten schützen:</strong> Niemand soll direkt fremde Attribute ändern können</li>
+                    <li class="fragment"><strong>Kontrolle:</strong> Nur die Klasse selbst entscheidet, wie Daten gelesen/geschätzt werden</li>
+                    <li class="fragment"><strong>Änderbarkeit:</strong> Interne Änderungen wirken sich nicht auf andere Klassen aus</li>
+                    <li class="fragment"><strong>Validierung:</strong> Ungültige Werte können verhindert werden</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">// OHNE private: jeder kann kontostand auf -1000 setzen
-// MIT private: nur ueber Methoden mit Pruefung</code></pre>
+// MIT private: nur über Methoden mit Prüfung</code></pre>
             </section>
 
             <!-- Slide 7: Getter = lesender Zugriff -->
@@ -130,7 +130,7 @@ Konto k = new Konto();
 long stand = k.getKontostand(); // legal
 // k.kontostand = 1000; // ILLEGAL (private)</code></pre>
                 <ul>
-                    <li class="fragment">Getter sind <strong>public</strong> - sie ermoeglichen kontrollierten Lese-Zugriff</li>
+                    <li class="fragment">Getter sind <strong>public</strong> - sie ermöglichen kontrollierten Lese-Zugriff</li>
                     <li class="fragment">Namenskonvention: <strong>get</strong> + Attributname (Grossbuchstabe)</li>
                 </ul>
             </section>
@@ -186,11 +186,11 @@ long stand = k.getKontostand(); // legal
                 <pre><code class="language-java">public class Konto {
     private long kontostand;
 
-    // Setter mit Pruefung
+    // Setter mit Prüfung
     public void setKontostand(long kontostand) {
         if (kontostand < 0) {
             System.out.println("Negativer Betrag nicht erlaubt!");
-            return; // Methode beenden, nichts aendern
+            return; // Methode beenden, nichts ändern
         }
         this.kontostand = kontostand;
     }
@@ -200,23 +200,23 @@ long stand = k.getKontostand(); // legal
 konto.setKontostand(-100); // "Negativer Betrag nicht erlaubt!"
 konto.setKontostand(500);  // OK</code></pre>
                 <ul>
-                    <li class="fragment">Pruefe eingehende Werte <strong>bevor</strong> sie gesetzt werden</li>
-                    <li class="fragment">Verhindere ungueltige Zustaende</li>
+                    <li class="fragment">Prüfe eingehende Werte <strong>bevor</strong> sie gesetzt werden</li>
+                    <li class="fragment">Verhindere ungültige Zustände</li>
                 </ul>
             </section>
 
-            <!-- Slide 11: Getter fuer kontostand -->
+            <!-- Slide 11: Getter für kontostand -->
             <section>
-                <h2>Getter - nur lesen, nicht aendern</h2>
+                <h2>Getter - nur lesen, nicht ändern</h2>
                 <pre><code class="language-java">public class Konto {
     private long kontostand;
 
-    // Getter: gibt den Wert zurueck
+    // Getter: gibt den Wert zurück
     public long getKontostand() {
         return kontostand;
     }
 
-    // KEIN Setter fuer kontostand - Aenderungen nur ueber
+    // KEIN Setter für kontostand - Änderungen nur über
     // einzahlen() und auszahlen() mit eigener Logik
     public void einzahlen(long betrag) { ... }
     public void auszahlen(long betrag) { ... }
@@ -266,14 +266,14 @@ konto.setKontostand(500);  // OK</code></pre>
     public int getHp() { return hp; }
     public int getAngriff() { return angriff; }
 
-    // Setter mit Pruefung
+    // Setter mit Prüfung
     public void setHp(int hp) {
         if (hp < 0) this.hp = 0;
         else if (hp > maxHp) this.hp = maxHp;
         else this.hp = hp;
     }
 }</code></pre>
-                <p class="fragment">HP nie kleiner 0, nie groesser als maxHp!</p>
+                <p class="fragment">HP nie kleiner 0, nie grösser als maxHp!</p>
             </section>
 
             <!-- Slide 14: Dungeon Escape Aufgabe -->
@@ -281,8 +281,8 @@ konto.setKontostand(500);  // OK</code></pre>
                 <h2>Dungeon Escape Aufgabe</h2>
                 <ul>
                     <li class="fragment">Mache alle Attribute <strong>private</strong></li>
-                    <li class="fragment">Erstelle Getter fuer name, hp, angriff, verteidigung</li>
-                    <li class="fragment">Erstelle <strong>setHp(int)</strong> mit Pruefung: HP nie < 0 oder > maxHp</li>
+                    <li class="fragment">Erstelle Getter für name, hp, angriff, verteidigung</li>
+                    <li class="fragment">Erstelle <strong>setHp(int)</strong> mit Prüfung: HP nie < 0 oder > maxHp</li>
                     <li class="fragment">Konstruktor setzt name, hp=100, maxHp=100, angriff=15, verteidigung=8</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">Spieler held = new Spieler("Held");
@@ -297,7 +297,7 @@ held.setHp(-10); // wird auf 0 gesetzt</code></pre>
                 <ul>
                     <li class="fragment"><strong>this</strong> - Verweis auf das aktuelle Objekt, unterscheidet Attribut von Parameter</li>
                     <li class="fragment"><strong>private</strong> - Zugriff nur innerhalb der eigenen Klasse</li>
-                    <li class="fragment"><strong>public</strong> - Zugriff von ueberall</li>
+                    <li class="fragment"><strong>public</strong> - Zugriff von überall</li>
                     <li class="fragment"><strong>Getter</strong> - kontrollierter Lese-Zugriff (public int getX())</li>
                     <li class="fragment"><strong>Setter</strong> - kontrollierter Schreib-Zugriff mit Validierung (public void setX(int x))</li>
                 </ul>
@@ -307,7 +307,7 @@ held.setHp(-10); // wird auf 0 gesetzt</code></pre>
             <section class="center">
                 <div class="highlight-box">
                     <h3>Ausblick: Referenzen</h3>
-                    <p>Objekte als Parameter uebergeben</p>
+                    <p>Objekte als Parameter übergeben</p>
                     <p>Objekt-Variablen sind Referenzen (keine Kopien)</p>
                 </div>
             </section>

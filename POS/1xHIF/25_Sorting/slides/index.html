@@ -32,7 +32,7 @@ System.out.println(Arrays.toString(zahlen));</code></pre>
 <section>
 <h2>Warum sortieren?</h2>
 <ul>
-<li class="fragment">Suchen: sortierte Daten sind schneller durchsuchbar (Binaere Suche)</li>
+<li class="fragment">Suchen: sortierte Daten sind schneller durchsuchbar (Binäre Suche)</li>
 <li class="fragment">Darstellen: geordnete Ausgabe (Highscores, Ranglisten)</li>
 <li class="fragment">Rankings: der Beste/Erste steht ganz vorne</li>
 <li class="fragment">Datenanalyse: Muster erkennen in sortierten Daten</li>
@@ -97,8 +97,8 @@ System.out.println(Arrays.toString(zahlen));
 <ol>
 <li class="fragment">Beginne mit dem zweiten Element</li>
 <li class="fragment">Vergleiche es mit den Elementen davor</li>
-<li class="fragment">Verschiebe groessere Elemente nach rechts</li>
-<li class="fragment">Fuege das aktuelle Element an der richtigen Stelle ein</li>
+<li class="fragment">Verschiebe grössere Elemente nach rechts</li>
+<li class="fragment">Füge das aktuelle Element an der richtigen Stelle ein</li>
 <li class="fragment">Wiederhole bis zum Ende des Arrays</li>
 </ol>
 </section>
@@ -123,13 +123,13 @@ System.out.println(Arrays.toString(zahlen));
         int aktuell = arr[i];
         int j = i - 1;
 
-        // Groessere Elemente nach rechts verschieben
+        // Grössere Elemente nach rechts verschieben
         while (j &gt;= 0 && arr[j] &gt; aktuell) {
             arr[j + 1] = arr[j];
             j--;
         }
 
-        // Aktuelles Element einfuegen
+        // Aktuelles Element einfügen
         arr[j + 1] = aktuell;
     }
 }</code></pre>
@@ -160,10 +160,10 @@ System.out.println(Arrays.toString(zahlen));
 </section>
 
 <section>
-<h2>Zeitkomplexitaet</h2>
+<h2>Zeitkomplexität</h2>
 <ul>
 <li class="fragment">Beide Algorithmen haben im Durchschnitt O(n^2)</li>
-<li class="fragment">Fuer n Elemente: ca. n^2/2 Vergleiche</li>
+<li class="fragment">Für n Elemente: ca. n^2/2 Vergleiche</li>
 <li class="fragment">Bei n=10: ca. 50 Vergleiche</li>
 <li class="fragment">Bei n=1000: ca. 500.000 Vergleiche</li>
 <li class="fragment">Insertion Sort ist bei fast sortierten Arrays schneller (O(n))</li>
@@ -195,7 +195,7 @@ for (int i = 0; i &lt; scores.length - 1; i++) {
 
 <section>
 <h2>Dungeon Escape: Aufgabe</h2>
-<p>Implementiere eine Highscore-Liste fuer Dungeon Escape:</p>
+<p>Implementiere eine Highscore-Liste für Dungeon Escape:</p>
 <ul>
 <li class="fragment">Zwei Arrays: int[] scores und String[] namen</li>
 <li class="fragment">Sortiere beide Arrays parallel mit Selection Sort</li>
@@ -207,7 +207,7 @@ for (int i = 0; i &lt; scores.length - 1; i++) {
 <h2>Zusammenfassung</h2>
 <ul>
 <li class="fragment">Selection Sort: Minimum suchen und an Position i tauschen</li>
-<li class="fragment">Insertion Sort: Elemente einordnen, groessere nach rechts verschieben</li>
+<li class="fragment">Insertion Sort: Elemente einordnen, grössere nach rechts verschieben</li>
 <li class="fragment">Beide Algorithmen: O(n^2) im Durchschnitt</li>
 <li class="fragment">Insertion Sort ist bei fast sortierten Arrays effizienter</li>
 <li class="fragment">Paralleles Sortieren: beide Arrays gleichzeitig umsortieren</li>
@@ -215,8 +215,8 @@ for (int i = 0; i &lt; scores.length - 1; i++) {
 </section>
 
 <section>
-<h2>Ausblick: Bubblesort-Uebung</h2>
-<p>In der naechsten Woche: Bubblesort als Ubung</p>
+<h2>Ausblick: Bubblesort-Übung</h2>
+<p>In der nächsten Woche: Bubblesort als Ubung</p>
 <ul>
 <li class="fragment">Bubblesort Algorithmus</li>
 <li class="fragment">Optimierung mit early break</li>

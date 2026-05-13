@@ -28,8 +28,8 @@
 }</code></pre>
                 <ul>
                     <li class="fragment">Bisher: alle Methoden waren <strong>static</strong></li>
-                    <li class="fragment">static = die Methode gehoert zur Klasse, nicht zu einem Objekt</li>
-                    <li class="fragment">Heute lernen wir: Methoden OHNE static - sie gehoeren zu Objekten</li>
+                    <li class="fragment">static = die Methode gehört zur Klasse, nicht zu einem Objekt</li>
+                    <li class="fragment">Heute lernen wir: Methoden OHNE static - sie gehören zu Objekten</li>
                 </ul>
             </section>
 
@@ -41,7 +41,7 @@
                 </div>
                 <ul>
                     <li class="fragment">Ein Programm besteht aus <strong>Objekten</strong>, die miteinander kommunizieren</li>
-                    <li class="fragment">Jedes Objekt hat <strong>Eigenschaften</strong> (Attribute) und <strong>Faehigkeiten</strong> (Methoden)</li>
+                    <li class="fragment">Jedes Objekt hat <strong>Eigenschaften</strong> (Attribute) und <strong>Fähigkeiten</strong> (Methoden)</li>
                     <li class="fragment">Analogie: LEGO-Steine - viele kleine Bausteine ergeben ein grosses Ganzes</li>
                     <li class="fragment">Java ist eine <strong>objektorientierte</strong> Programmiersprache</li>
                 </ul>
@@ -57,7 +57,7 @@
                 <ul>
                     <li class="fragment">Eine Klasse definiert den Aufbau (Attribute und Methoden)</li>
                     <li class="fragment">Mit <strong>new</strong> erzeugen wir konkrete Objekte (Instanzen)</li>
-                    <li class="fragment">Von einer Klasse koennen <strong>viele Objekte</strong> erzeugt werden</li>
+                    <li class="fragment">Von einer Klasse können <strong>viele Objekte</strong> erzeugt werden</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">// Klasse = Bauplan
 // Auto meinAuto = new Auto();  // Objekt = Haus</code></pre>
@@ -74,7 +74,7 @@
                 <ul>
                     <li class="fragment"><strong>Attribute</strong> sind Eigenschaften eines Objekts</li>
                     <li class="fragment">Sie werden als Variablen <strong>innerhalb der Klasse</strong> deklariert</li>
-                    <li class="fragment">Jedes Auto-Objekt hat seine eigenen Werte fuer marke, baujahr, farbe</li>
+                    <li class="fragment">Jedes Auto-Objekt hat seine eigenen Werte für marke, baujahr, farbe</li>
                 </ul>
             </section>
 
@@ -86,7 +86,7 @@
     int baujahr;
 
     void fahre() {
-        System.out.println(marke + " faehrt los!");
+        System.out.println(marke + " fährt los!");
     }
 
     void hupen() {
@@ -94,8 +94,8 @@
     }
 }</code></pre>
                 <ul>
-                    <li class="fragment">Methoden ohne <strong>static</strong> gehoeren zu einem Objekt</li>
-                    <li class="fragment">Sie koennen auf die <strong>Attribute des Objekts</strong> zugreifen</li>
+                    <li class="fragment">Methoden ohne <strong>static</strong> gehören zu einem Objekt</li>
+                    <li class="fragment">Sie können auf die <strong>Attribute des Objekts</strong> zugreifen</li>
                 </ul>
             </section>
 
@@ -103,16 +103,16 @@
             <section>
                 <h2>Attribut vs. Parameter vs. Variable</h2>
                 <pre><code class="language-java">public class Auto {
-    String marke;             // ATTRIBUT (gehoert zum Objekt)
+    String marke;             // ATTRIBUT (gehört zum Objekt)
 
-    void fahre(int tempo) {   // PARAMETER (wird beim Aufruf uebergeben)
+    void fahre(int tempo) {   // PARAMETER (wird beim Aufruf übergeben)
         String msg = "Start"; // LOKALE VARIABLE (nur in dieser Methode)
-        System.out.println(marke + " faehrt mit " + tempo + " km/h");
+        System.out.println(marke + " fährt mit " + tempo + " km/h");
     }
 }</code></pre>
                 <ul>
-                    <li class="fragment"><strong>Attribute:</strong> gelten fuer das ganze Objekt</li>
-                    <li class="fragment"><strong>Parameter:</strong> werden beim Methodenaufruf uebergeben</li>
+                    <li class="fragment"><strong>Attribute:</strong> gelten für das ganze Objekt</li>
+                    <li class="fragment"><strong>Parameter:</strong> werden beim Methodenaufruf übergeben</li>
                     <li class="fragment"><strong>Lokale Variablen:</strong> existieren nur innerhalb einer Methode</li>
                 </ul>
             </section>
@@ -144,7 +144,7 @@ meinAuto.fahre();</code></pre>
     int baujahr;
 
     void fahre() {
-        System.out.println(marke + " faehrt los!");
+        System.out.println(marke + " fährt los!");
     }
 }</code></pre>
                 <pre class="fragment"><code class="language-java">public class AutoTest {
@@ -157,8 +157,8 @@ meinAuto.fahre();</code></pre>
         a2.marke = "BMW";
         a2.baujahr = 2023;
 
-        a1.fahre(); // VW faehrt los!
-        a2.fahre(); // BMW faehrt los!
+        a1.fahre(); // VW fährt los!
+        a2.fahre(); // BMW fährt los!
     }
 }</code></pre>
             </section>
@@ -179,7 +179,7 @@ meinAuto.fahre();</code></pre>
 b.titel = "Der Hobbit";
 b.autor = "J.R.R. Tolkien";
 b.printInfo();</code></pre>
-                <p class="fragment">Eigenes Beispiel: Welche Klasse koenntet ihr modellieren?</p>
+                <p class="fragment">Eigenes Beispiel: Welche Klasse könntet ihr modellieren?</p>
             </section>
 
             <!-- Slide 11: Attribut vs. Parameter vs. Variable - Tabelle -->
@@ -187,7 +187,7 @@ b.printInfo();</code></pre>
                 <h2>Attribut vs. Parameter vs. Variable</h2>
                 <table>
                     <thead>
-                        <tr><th>Typ</th><th>Wo deklariert?</th><th>Gueltigkeitsbereich</th></tr>
+                        <tr><th>Typ</th><th>Wo deklariert?</th><th>Gültigkeitsbereich</th></tr>
                     </thead>
                     <tbody>
                         <tr class="fragment"><td>Attribut</td><td>In der Klasse (ausserhalb Methoden)</td><td>Das ganze Objekt</td></tr>
@@ -227,7 +227,7 @@ b.printInfo();</code></pre>
         System.out.println(name + " - HP: " + hp);
     }
 }</code></pre>
-                <p class="fragment">Erstelle eine eigene Klasse fuer den Spieler mit Attributen</p>
+                <p class="fragment">Erstelle eine eigene Klasse für den Spieler mit Attributen</p>
             </section>
 
             <!-- Slide 14: Dungeon Escape - Raum-Klasse -->
@@ -241,17 +241,17 @@ b.printInfo();</code></pre>
         System.out.println(beschreibung);
     }
 }</code></pre>
-                <p class="fragment">Erstelle eine Raum-Klasse fuer die verschiedenen Raeume im Dungeon</p>
+                <p class="fragment">Erstelle eine Raum-Klasse für die verschiedenen Räume im Dungeon</p>
             </section>
 
             <!-- Slide 15: Zusammenfassung -->
             <section>
                 <h2>Zusammenfassung</h2>
                 <ul>
-                    <li class="fragment"><strong>Klasse</strong> = Bauplan fuer Objekte</li>
+                    <li class="fragment"><strong>Klasse</strong> = Bauplan für Objekte</li>
                     <li class="fragment"><strong>Objekt</strong> = konkrete Instanz einer Klasse (erzeugt mit new)</li>
                     <li class="fragment"><strong>Attribute</strong> = Eigenschaften des Objekts</li>
-                    <li class="fragment"><strong>Methoden</strong> = Faehigkeiten des Objekts (ohne static)</li>
+                    <li class="fragment"><strong>Methoden</strong> = Fähigkeiten des Objekts (ohne static)</li>
                     <li class="fragment">Zugriff auf Attribute/Methoden mit dem Punkt-Operator (.)</li>
                 </ul>
             </section>
@@ -263,7 +263,7 @@ b.printInfo();</code></pre>
                     <p>Aktuell setzen wir Attribute manuell nach new:</p>
                     <pre><code class="language-java">Auto a = new Auto();
 a.marke = "VW"; // mu hs e lig</code></pre>
-                    <p>Besser: Werte direkt bei der Erzeugung uebergeben</p>
+                    <p>Besser: Werte direkt bei der Erzeugung übergeben</p>
                     <pre class="fragment"><code class="language-java">Auto a = new Auto("VW", 2020); // elegant!</code></pre>
                     <p class="fragment">Konstruktoren kommen in Woche 17</p>
                 </div>
@@ -274,7 +274,7 @@ a.marke = "VW"; // mu hs e lig</code></pre>
                 <div class="highlight-box">
                     <h3>Heute gelernt: Klassen und Objekte</h3>
                     <p>Klasse = Bauplan | Objekt = Instanz | new = Erzeugung</p>
-                    <p>Attribute = Eigenschaften | Methoden = Faehigkeiten</p>
+                    <p>Attribute = Eigenschaften | Methoden = Fähigkeiten</p>
                 </div>
             </section>
 

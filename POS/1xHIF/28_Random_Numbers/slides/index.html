@@ -26,11 +26,11 @@ System.out.println(Arrays.toString(zahlen));
 </section>
 
 <section>
-<h2>Wofuer Zufallszahlen?</h2>
+<h2>Wofür Zufallszahlen?</h2>
 <ul>
-<li class="fragment">Spiele: Wuerfel, Gegnerverhalten, Karten</li>
+<li class="fragment">Spiele: Würfel, Gegnerverhalten, Karten</li>
 <li class="fragment">Simulationen: Wetter, Verkehr, Physik</li>
-<li class="fragment">Kryptographie: Schluesselerzeugung</li>
+<li class="fragment">Kryptographie: Schlüsselerzeugung</li>
 <li class="fragment">Statistik: Stichproben, Monte-Carlo-Simulation</li>
 </ul>
 </section>
@@ -67,9 +67,9 @@ System.out.println(zufall); // z.B. 0.4738291
 </section>
 
 <section>
-<h2>Live-Coding: Wuerfel 1-6</h2>
-<pre><code class="language-java">int wuerfel = (int)(Math.random() * 6) + 1;
-System.out.println("Gewuerfelt: " + wuerfel);
+<h2>Live-Coding: Würfel 1-6</h2>
+<pre><code class="language-java">int würfel = (int)(Math.random() * 6) + 1;
+System.out.println("Gewürfelt: " + würfel);
 </code></pre>
 <p><code>Math.random() * 6</code> liefert 0.0 bis 5.999...,<br>
 <code>(int)</code> schneidet Nachkommastellen ab -> 0 bis 5,<br>
@@ -105,10 +105,10 @@ int zahl = rand.nextInt(10); // 0-9
 </section>
 
 <section>
-<h2>Live-Coding: Wuerfel mit Random</h2>
+<h2>Live-Coding: Würfel mit Random</h2>
 <pre><code class="language-java">Random rand = new Random();
-int wuerfel = rand.nextInt(6) + 1; // 1-6
-System.out.println("Gewuerfelt: " + wuerfel);
+int würfel = rand.nextInt(6) + 1; // 1-6
+System.out.println("Gewürfelt: " + würfel);
 </code></pre>
 <div class="fragment">
 <p><code>nextInt(6)</code> -> 0 bis 5<br>
@@ -122,8 +122,8 @@ System.out.println("Gewuerfelt: " + wuerfel);
 <tr><th>Math.random()</th><th>Random-Klasse</th></tr>
 <tr><td>statisch, einfach</td><td>mehr Methoden</td></tr>
 <tr><td>immer double</td><td>nextInt, nextBoolean, ...</td></tr>
-<tr><td>kein Seed moeglich</td><td>Seed fuer Tests</td></tr>
-<tr><td>fuer einfache Faelle</td><td>fuer komplexe Faelle</td></tr>
+<tr><td>kein Seed möglich</td><td>Seed für Tests</td></tr>
+<tr><td>für einfache Fälle</td><td>für komplexe Fälle</td></tr>
 </table>
 </section>
 
@@ -143,9 +143,9 @@ System.out.println(rand.nextInt(100));
 <section>
 <h2>Dungeon Escape</h2>
 <ul>
-<li class="fragment">Zufallsgegner mit unterschiedlichen Staerken</li>
+<li class="fragment">Zufallsgegner mit unterschiedlichen Stärken</li>
 <li class="fragment">Kritische Treffer (20% -> doppelter Schaden)</li>
-<li class="fragment">Zufaellige Schaetze in Raeumen</li>
+<li class="fragment">Zufällige Schätze in Räumen</li>
 </ul>
 </section>
 
@@ -153,9 +153,9 @@ System.out.println(rand.nextInt(100));
 <h2>Dungeon Escape Aufgabe</h2>
 <p>Integriere Zufallszahlen in dein Dungeon Escape Spiel:</p>
 <ul>
-<li>Gegner mit zufaelligen Werten erzeugen</li>
+<li>Gegner mit zufälligen Werten erzeugen</li>
 <li>Kritische Treffer mit 20% Wahrscheinlichkeit</li>
-<li>Zufaellige Schaetze in Raeumen</li>
+<li>Zufällige Schätze in Räumen</li>
 </ul>
 </section>
 
@@ -165,7 +165,7 @@ System.out.println(rand.nextInt(100));
 <li>Math.random() - einfache Zufallszahlen</li>
 <li>Random-Klasse - flexibler und typsicher</li>
 <li>Berechnung verschiedener Wertebereiche</li>
-<li>Naechste Woche: JavaDoc - Dokumentation von Code</li>
+<li>Nächste Woche: JavaDoc - Dokumentation von Code</li>
 </ul>
 </section>
 

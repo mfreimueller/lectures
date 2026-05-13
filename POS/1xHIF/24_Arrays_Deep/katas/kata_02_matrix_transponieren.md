@@ -18,7 +18,7 @@ int[][] transponiert = transponieren(matrix);
 ```
 
 Hinweise:
-- Die neue Matrix hat so viele Zeilen wie die urspruengliche Spalten hat
-- Die neue Matrix hat so viele Spalten wie die urspruengliche Zeilen hat
+- Die neue Matrix hat so viele Zeilen wie die ursprüngliche Spalten hat
+- Die neue Matrix hat so viele Spalten wie die ursprüngliche Zeilen hat
 - Verwende verschachtelte Schleifen
 - Zugriff: ergebnis[spalte][zeile] = matrix[zeile][spalte]

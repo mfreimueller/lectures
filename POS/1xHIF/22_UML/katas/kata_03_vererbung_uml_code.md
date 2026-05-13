@@ -48,11 +48,11 @@ Gegeben ist folgendes UML-Klassendiagramm mit Vererbung. Schreibe den Java-Code.
 Tier tier = new Tier("Tier", 5);
 System.out.println(tier.lautGeben()); // "..."
 
-Hund hund = new Hund("Rex", 3, "Schaeferhund");
+Hund hund = new Hund("Rex", 3, "Schäferhund");
 System.out.println(hund.lautGeben()); // "Wuff!"
 System.out.println(hund.bewachen()); // "Rex bewacht das Haus!"
 
-Katze katze = new Katze("Minka", 2, "Maeusee");
+Katze katze = new Katze("Minka", 2, "Mäusee");
 System.out.println(katze.lautGeben()); // "Miau!"
-System.out.println(katze.jagen()); // "Minka jagt Maeusee!"
+System.out.println(katze.jagen()); // "Minka jagt Mäusee!"
 ```

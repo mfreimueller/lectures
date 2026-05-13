@@ -10,8 +10,8 @@
 
 Erweitere das Zahlenratespiel aus Woche 05. Lagere die Spiellogik in Methoden aus.
 
-1. Schreibe eine Methode `generiereZahl()` die eine Zufallszahl zwischen 1 und 100 zurueckgibt
-2. Schreibe eine Methode `rateZahl(int tip, int ziel)` die zurueckgibt, ob der Tip zu niedrig, zu hoch oder richtig ist (z.B. -1, 0, 1)
+1. Schreibe eine Methode `generiereZahl()` die eine Zufallszahl zwischen 1 und 100 zurückgibt
+2. Schreibe eine Methode `rateZahl(int tip, int ziel)` die zurückgibt, ob der Tip zu niedrig, zu hoch oder richtig ist (z.B. -1, 0, 1)
 3. Schreibe eine Methode `zeigeErgebnis(int versuche)`, die die Anzahl der Versuche ausgibt
 4. Die main-Methode steuert den Spielfluss
 

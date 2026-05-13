@@ -57,17 +57,17 @@ public class Eingabe {
 </section>
 
 <section><h2>Methoden - Definition</h2>
-<pre><code class="language-java">// Methode ohne Rueckgabe, ohne Parameter
+<pre><code class="language-java">// Methode ohne Rückgabe, ohne Parameter
 public static void sayHello() {
     System.out.println("Hallo!");
 }
 
-// Methode mit Parameter, ohne Rueckgabe
+// Methode mit Parameter, ohne Rückgabe
 public static void sayHelloTo(String name) {
     System.out.println("Hallo " + name + "!");
 }
 
-// Methode mit Parameter und Rueckgabe
+// Methode mit Parameter und Rückgabe
 public static int add(int a, int b) {
     return a + b;
 }</code></pre>
@@ -98,7 +98,7 @@ public static int add(int a, int b) {
 <ul>
 <li class="fragment"><strong>Parameter:</strong> Werte, die die Methode bekommt</li>
 <li class="fragment"><strong>Ruckgabetyp:</strong> void = nichts, sonst Typ des Ruckgabewerts</li>
-<li class="fragment"><strong>return:</strong> beendet die Methode und gibt Wert zurueck</li>
+<li class="fragment"><strong>return:</strong> beendet die Methode und gibt Wert zurück</li>
 </ul>
 </section>
 
@@ -112,16 +112,16 @@ public static int add(int a, int b) {
 }
 
 public static void main(String[] args) {
-    int groesser = max(15, 8);
-    System.out.println(groesser);  // 15
+    int grösser = max(15, 8);
+    System.out.println(grösser);  // 15
 }</code></pre>
 </section>
 
 <section><h2>Kata 2: boolean istPalindrom</h2>
 <pre><code class="language-java">public static boolean istPalindrom(String wort) {
-    int laenge = wort.length();
-    for (int i = 0; i < laenge / 2; i++) {
-        if (wort.charAt(i) != wort.charAt(laenge - 1 - i)) {
+    int länge = wort.length();
+    for (int i = 0; i < länge / 2; i++) {
+        if (wort.charAt(i) != wort.charAt(länge - 1 - i)) {
             return false;
         }
     }
@@ -139,15 +139,15 @@ public static void zeigeRaum(String raumName) {
     System.out.println("Du bist im: " + raumName);
 }
 
-public static int kaempfe(int hp, int schaden) {
+public static int kämpfe(int hp, int schaden) {
     return hp - schaden;
 }</code></pre>
 </section>
 
 <section><h2>Dungeon Escape - Aufgabe</h2>
 <ul>
-<li>Lagere Code in Methoden aus: zeigeRaum(), zeigeStatus(), kaempfe()</li>
-<li>Verwende Scanner fuer die Benutzereingabe</li>
+<li>Lagere Code in Methoden aus: zeigeRaum(), zeigeStatus(), kämpfe()</li>
+<li>Verwende Scanner für die Benutzereingabe</li>
 <li>Der Spieler gibt seine Entscheidung ein (1, 2, 3)</li>
 </ul>
 </section>
@@ -161,7 +161,7 @@ public static int kaempfe(int hp, int schaden) {
 </ul>
 </section>
 
-<section class="center"><div class="highlight-box"><h3 class="centered">Naechste Woche: String-Methoden</h3></div></section>
+<section class="center"><div class="highlight-box"><h3 class="centered">Nächste Woche: String-Methoden</h3></div></section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

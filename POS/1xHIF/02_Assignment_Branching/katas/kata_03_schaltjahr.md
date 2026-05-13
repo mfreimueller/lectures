@@ -1,4 +1,4 @@
-# Kata 3: Schaltjahr-Pruefung
+# Kata 3: Schaltjahr-Prüfung
 
 ## Ziel
 
@@ -6,7 +6,7 @@ Lerne komplexe Bedingungen mit logischen Operatoren (&&, ||) zu formulieren.
 
 ## Aufgabenstellung
 
-Schreibe ein Programm `Schaltjahr.java`, das prueft, ob ein gegebenes Jahr ein Schaltjahr ist.
+Schreibe ein Programm `Schaltjahr.java`, das prüft, ob ein gegebenes Jahr ein Schaltjahr ist.
 
 Schaltjahr-Regel:
 Ein Jahr ist ein Schaltjahr, wenn
@@ -32,7 +32,7 @@ Bei `jahr = 1900`:
 ## Hinweise
 
 - Teilerkennung mit Modulo: `jahr % 400 == 0`
-- Die vollstaendige Bedingung: `(jahr % 400 == 0) || (jahr % 4 == 0 && jahr % 100 != 0)`
+- Die vollständige Bedingung: `(jahr % 400 == 0) || (jahr % 4 == 0 && jahr % 100 != 0)`
 
 ## Erweiterung (optional)
 

@@ -35,13 +35,13 @@
             <section>
                 <h2>Compiler vs. Interpreter</h2>
                 <ul>
-                    <li class="fragment"><strong>Compiler</strong> uebersetzt den gesamten Quellcode auf einmal in Maschinensprache</li>
-                    <li class="fragment"><strong>Interpreter</strong> fuehrt den Quellcode Zeile fuer Zeile aus</li>
+                    <li class="fragment"><strong>Compiler</strong> übersetzt den gesamten Quellcode auf einmal in Maschinensprache</li>
+                    <li class="fragment"><strong>Interpreter</strong> führt den Quellcode Zeile für Zeile aus</li>
                     <li class="fragment">Java verwendet <strong>beides</strong>: Compiler + Interpreter (JVM)</li>
                 </ul>
                 <div class="fragment highlight-box">
                     <p><strong>Compiler:</strong> javac HalloWelt.java -> HalloWelt.class</p>
-                    <p><strong>Interpreter:</strong> java HalloWelt -> fuehrt Bytecode aus</p>
+                    <p><strong>Interpreter:</strong> java HalloWelt -> führt Bytecode aus</p>
                 </div>
             </section>
 
@@ -49,11 +49,11 @@
             <section>
                 <h2>JVM - Java Virtual Machine</h2>
                 <ul>
-                    <li class="fragment">Java-Code wird in <strong>Bytecode</strong> uebersetzt (.class-Datei)</li>
-                    <li class="fragment">Die JVM fuehrt den Bytecode aus</li>
-                    <li class="fragment">Vorteil: <strong>Plattformunabhaengigkeit</strong></li>
+                    <li class="fragment">Java-Code wird in <strong>Bytecode</strong> übersetzt (.class-Datei)</li>
+                    <li class="fragment">Die JVM führt den Bytecode aus</li>
+                    <li class="fragment">Vorteil: <strong>Plattformunabhängigkeit</strong></li>
                     <ul>
-                        <li class="fragment">Einmal schreiben, ueberall ausfuehren</li>
+                        <li class="fragment">Einmal schreiben, überall ausführen</li>
                         <li class="fragment">Windows, Mac, Linux - die JVM macht den Unterschied</li>
                     </ul>
                 </ul>
@@ -62,7 +62,7 @@
             <!-- Slide 5: Der Prozess -->
             <section>
                 <h2>Der Java-Prozess</h2>
-                <pre><code class="language-java">// 1. Quelltext schreiben (.java)
+                <pre><code class="language-java">// 1. Qülltext schreiben (.java)
 public class HalloWelt {
     public static void main(String[] args) {
         System.out.println("Hallo!");
@@ -70,7 +70,7 @@ public class HalloWelt {
 }
 
 // 2. Compilieren: javac HalloWelt.java -> HalloWelt.class
-// 3. Ausfuehren:  java HalloWelt -> "Hallo!"</code></pre>
+// 3. Ausführen:  java HalloWelt -> "Hallo!"</code></pre>
                 <p class="fragment">In IntelliJ passieren Schritt 2 und 3 automatisch beim Klick auf Run.</p>
             </section>
 
@@ -78,7 +78,7 @@ public class HalloWelt {
             <section>
                 <h2>Was sind Variablen?</h2>
                 <div class="fragment highlight-box">
-                    <p><strong>Eine Variable ist ein named Platzhalter im Speicher fuer einen Wert.</strong></p>
+                    <p><strong>Eine Variable ist ein named Platzhalter im Speicher für einen Wert.</strong></p>
                 </div>
                 <ul>
                     <li class="fragment">Jede Variable hat einen <strong>Typ</strong> und einen <strong>Namen</strong></li>
@@ -94,11 +94,11 @@ public class HalloWelt {
                 <p><strong>int</strong> = ganze Zahlen (ohne Nachkommastellen)</p>
                 <pre><code class="language-java">int alter = 17;
 int jahr = 2026;
-int anzahlSchueler = 28;
+int anzahlSchüler = 28;
 int minus = -5;</code></pre>
                 <ul>
                     <li class="fragment">Wertebereich: ca. -2,1 Mrd. bis +2,1 Mrd.</li>
-                    <li class="fragment">Typisch fuer Zaehlungen, Indizes, Alter, etc.</li>
+                    <li class="fragment">Typisch für Zählungen, Indizes, Alter, etc.</li>
                 </ul>
             </section>
 
@@ -111,7 +111,7 @@ double pi = 3.14159;
 double temperatur = -5.5;
 double prozent = 0.15;</code></pre>
                 <ul>
-                    <li class="fragment">Genauer als float (double = doppelte Genauigkeit)</li>
+                    <li class="fragment">Genaür als float (double = doppelte Genauigkeit)</li>
                     <li class="fragment">Punkt (.) als Dezimaltrenner, NICHT Komma (,)</li>
                 </ul>
             </section>
@@ -124,13 +124,13 @@ double prozent = 0.15;</code></pre>
 boolean istGeburtstag = false;</code></pre>
                 <ul>
                     <li class="fragment">Nur zwei Werte: true oder false</li>
-                    <li class="fragment">Wichtig fuer Bedingungen (naechste Woche)</li>
+                    <li class="fragment">Wichtig für Bedingungen (nächste Woche)</li>
                 </ul>
                 <h3>char</h3>
                 <pre><code class="language-java">char buchstabe = 'A';
 char ziffer = '7';</code></pre>
                 <ul>
-                    <li class="fragment">Ein einzelnes Zeichen in <strong>Hochkomma</strong> (''), nicht in Anfuerhrungszeichen ("")</li>
+                    <li class="fragment">Ein einzelnes Zeichen in <strong>Hochkomma</strong> (''), nicht in Anfürhrungszeichen ("")</li>
                 </ul>
             </section>
 
@@ -164,21 +164,21 @@ double ergebnisExakt2 = (double) 7 / 2;  // 3.5 (Cast)</code></pre>
             <!-- Slide 12: Modulo -->
             <section>
                 <h2>Modulo-Operator %</h2>
-                <p>Der %-Operator gibt den <strong>Rest</strong> einer Division zurueck.</p>
+                <p>Der %-Operator gibt den <strong>Rest</strong> einer Division zurück.</p>
                 <pre><code class="language-java">int rest = 7 % 2;    // 1 (7 / 2 = 3 Rest 1)
 int rest2 = 10 % 3;  // 1 (10 / 3 = 3 Rest 1)
 int rest3 = 12 % 4;  // 0 (12 / 4 = 3 Rest 0)</code></pre>
                 <p class="fragment"><strong>Anwendung:</strong> Ist eine Zahl gerade? <code>zahl % 2 == 0</code></p>
             </section>
 
-            <!-- Slide 13: Ausdruecke -->
+            <!-- Slide 13: Ausdrücke -->
             <section>
-                <h2>Komplexe Ausdruecke</h2>
+                <h2>Komplexe Ausdrücke</h2>
                 <pre><code class="language-java">int ergebnis = 5 + 3 * 2;        // 11 (Punkt vor Strich)
-int ergebnis2 = (5 + 3) * 2;     // 16 (Klammern zuerst)
+int ergebnis2 = (5 + 3) * 2;     // 16 (Klammern zürst)
 
 double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
-// Achtung: (10 + 20 + 30) / 3 waere 20 (int!), aber 10+20+30 / 3 waere...?</code></pre>
+// Achtung: (10 + 20 + 30) / 3 wäre 20 (int!), aber 10+20+30 / 3 wäre...?</code></pre>
                 <ul>
                     <li class="fragment">Klammern <strong>immer</strong> verwenden, wenn es unklar ist</li>
                     <li class="fragment">Bei Division lieber double verwenden</li>
@@ -193,10 +193,10 @@ double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
         double celsius = 25.0;
         double fahrenheit = celsius * 9.0 / 5.0 + 32.0;
 
-        System.out.printf("%.1f°C = %.1f°F\n", celsius, fahrenheit);
+        System.out.printf("%.1fÂ°C = %.1fÂ°F\n", celsius, fahrenheit);
     }
 }</code></pre>
-                <p class="fragment">Ausgabe: <code>25,0°C = 77,0°F</code></p>
+                <p class="fragment">Ausgabe: <code>25,0Â°C = 77,0Â°F</code></p>
             </section>
 
             <!-- Slide 15: Beispiel 2 - Rechteck -->
@@ -204,15 +204,15 @@ double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
                 <h2>Live-Coding: Rechteck</h2>
                 <pre><code class="language-java">public class Rechteck {
     public static void main(String[] args) {
-        int laenge = 8;
+        int länge = 8;
         int breite = 5;
 
-        int flaeche = laenge * breite;
-        int umfang = 2 * (laenge + breite);
+        int fläche = länge * breite;
+        int umfang = 2 * (länge + breite);
 
-        System.out.println("Laenge: " + laenge);
+        System.out.println("Länge: " + länge);
         System.out.println("Breite: " + breite);
-        System.out.println("Flaeche: " + flaeche);
+        System.out.println("Fläche: " + fläche);
         System.out.println("Umfang: " + umfang);
     }
 }</code></pre>
@@ -242,7 +242,7 @@ double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
                 <p>Wir bauen dieses Jahr gemeinsam ein <strong>Textadventure</strong>!</p>
                 <ul>
                     <li class="fragment">Du steuerst einen Helden durch einen Dungeon</li>
-                    <li class="fragment">Traeume Entscheidungen, kaempfe gegen Gegner, sammle Schaetze</li>
+                    <li class="fragment">Träume Entscheidungen, kämpfe gegen Gegner, sammle Schätze</li>
                     <li class="fragment">Jede Woche wird das Spiel erweitert</li>
                 </ul>
             </section>
@@ -250,7 +250,7 @@ double mittelwert = (10.0 + 20.0 + 30.0) / 3;  // 20.0
             <!-- Slide 18: Dungeon Escape - Aufgabe -->
             <section>
                 <h2>Dungeon Escape - Aufgabe der Woche</h2>
-                <p>Lege Variablen fuer den Spieler an und gib den Status aus.</p>
+                <p>Lege Variablen für den Spieler an und gib den Status aus.</p>
                 <pre><code class="language-java">String name = "Heldenname";
 int hp = 100;
 double angriff = 15.5;
@@ -267,7 +267,7 @@ System.out.println("HP: " + hp);
             <section>
                 <h2>Was wir heute gelernt haben</h2>
                 <ul>
-                    <li class="fragment">JVM: Compiler + Interpreter, Bytecode, Plattformunabhaengigkeit</li>
+                    <li class="fragment">JVM: Compiler + Interpreter, Bytecode, Plattformunabhängigkeit</li>
                     <li class="fragment">Variablen: Deklaration, Initialisierung, Zuweisung</li>
                     <li class="fragment">Datentypen: int, double, boolean, char</li>
                     <li class="fragment">Arithmetische Operatoren: +, -, *, /, %</li>
@@ -278,10 +278,10 @@ System.out.println("HP: " + hp);
             <!-- Slide 20: Ausblick -->
             <section class="center">
                 <div class="highlight-box">
-                    <h3 class="centered">Naechste Woche: Verzweigungen (if/else)</h3>
+                    <h3 class="centered">Nächste Woche: Verzweigungen (if/else)</h3>
                 </div>
-                <p class="fragment">Dein Held wird Entscheidungen treffen muessen...</p>
-                <p class="fragment">"Wenn der Spieler die linke Tuer waehlt, geht er in den Schatzraum."</p>
+                <p class="fragment">Dein Held wird Entscheidungen treffen müssen...</p>
+                <p class="fragment">"Wenn der Spieler die linke Tür wählt, geht er in den Schatzraum."</p>
                 <p class="fragment">"Sonst (else) betritt er den Drachensaal."</p>
             </section>
 

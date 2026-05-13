@@ -27,8 +27,8 @@ a.baujahr = 2020;
 a.fahre();</code></pre>
                 <ul>
                     <li class="fragment"><strong>new Auto()</strong> erzeugt ein Objekt</li>
-                    <li class="fragment">Danach muessen wir Attribute <strong>manuell setzen</strong></li>
-                    <li class="fragment">Das ist <strong>umstaendlich</strong> - besonders bei vielen Attributen</li>
+                    <li class="fragment">Danach müssen wir Attribute <strong>manuell setzen</strong></li>
+                    <li class="fragment">Das ist <strong>umständlich</strong> - besonders bei vielen Attributen</li>
                 </ul>
             </section>
 
@@ -36,14 +36,14 @@ a.fahre();</code></pre>
             <section>
                 <h2>Das Problem</h2>
                 <div class="highlight-box">
-                    <p>Drei Schritte fuer ein Objekt: erzeugen, Attribute setzen, verwenden</p>
+                    <p>Drei Schritte für ein Objekt: erzeugen, Attribute setzen, verwenden</p>
                 </div>
                 <pre><code class="language-java">Auto a = new Auto();     // 1. Erzeugen
 a.marke = "VW";          // 2. Attribute setzen
 a.baujahr = 2020;        // 2. Attribute setzen
 a.fahre();               // 3. Verwenden</code></pre>
                 <p class="fragment">Was, wenn wir vergessen, ein Attribut zu setzen?<br>Was, wenn wir 10 Attribute haben?</p>
-                <p class="fragment highlight-box">Loesung: <strong>Konstruktor</strong> - Initialisierung direkt bei der Erzeugung</p>
+                <p class="fragment highlight-box">Lösung: <strong>Konstruktor</strong> - Initialisierung direkt bei der Erzeugung</p>
             </section>
 
             <!-- Slide 4: Was ist ein Konstruktor? -->
@@ -52,7 +52,7 @@ a.fahre();               // 3. Verwenden</code></pre>
                 <ul>
                     <li class="fragment">Ein Konstruktor ist eine <strong>spezielle Methode</strong> zur Initialisierung</li>
                     <li class="fragment">Er hat <strong>denselben Namen</strong> wie die Klasse</li>
-                    <li class="fragment">Er hat <strong>keinen Rueckgabetyp</strong> (nicht einmal void)</li>
+                    <li class="fragment">Er hat <strong>keinen Rückgabetyp</strong> (nicht einmal void)</li>
                     <li class="fragment">Er wird <strong>automatisch</strong> bei new aufgerufen</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Auto {
@@ -95,9 +95,9 @@ public Auto() {
     }
 }</code></pre>
                 <ul>
-                    <li class="fragment">Uebergibt Werte <strong>direkt bei der Erzeugung</strong></li>
+                    <li class="fragment">Übergibt Werte <strong>direkt bei der Erzeugung</strong></li>
                     <li class="fragment"><strong>this.marke</strong> = Attribut, <strong>marke</strong> = Parameter</li>
-                    <li class="fragment">Kein manuelles Setzen mehr noetig!</li>
+                    <li class="fragment">Kein manuelles Setzen mehr nötig!</li>
                 </ul>
             </section>
 
@@ -108,9 +108,9 @@ public Auto() {
     // Initialisierung
 }</code></pre>
                 <ul>
-                    <li class="fragment"><strong>public</strong> - damit wir von ueberall darauf zugreifen koennen</li>
+                    <li class="fragment"><strong>public</strong> - damit wir von überall darauf zugreifen können</li>
                     <li class="fragment"><strong>Klassenname</strong> - muss exakt dem Klassennamen entsprechen</li>
-                    <li class="fragment"><strong>Parameter</strong> - Werte, die beim Erzeugen uebergeben werden</li>
+                    <li class="fragment"><strong>Parameter</strong> - Werte, die beim Erzeugen übergeben werden</li>
                     <li class="fragment"><strong>this.attribut = parameter</strong> - Attribut mit Parameterwert setzen</li>
                 </ul>
             </section>
@@ -128,22 +128,22 @@ public Auto() {
     }
 
     void fahre() {
-        System.out.println(marke + " faehrt!");
+        System.out.println(marke + " fährt!");
     }
 }
 
 // Verwendung:
 Auto a = new Auto("VW", 2020);
-a.fahre();  // VW faehrt!</code></pre>
+a.fahre();  // VW fährt!</code></pre>
             </section>
 
-            <!-- Slide 9: Konstruktor-Ueberladung -->
+            <!-- Slide 9: Konstruktor-Überladung -->
             <section>
-                <h2>Konstruktor-Ueberladung</h2>
+                <h2>Konstruktor-Überladung</h2>
                 <ul>
                     <li class="fragment">Eine Klasse kann <strong>mehrere Konstruktoren</strong> haben</li>
                     <li class="fragment">Sie unterscheiden sich in der <strong>Parameterliste</strong> (Anzahl oder Typ)</li>
-                    <li class="fragment">Java waehlt automatisch den passenden Konstruktor aus</li>
+                    <li class="fragment">Java wählt automatisch den passenden Konstruktor aus</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Auto {
     String marke;
@@ -163,7 +163,7 @@ a.fahre();  // VW faehrt!</code></pre>
 
             <!-- Slide 10: Beispiel Person -->
             <section>
-                <h2>Beispiel: Person mit Ueberladung</h2>
+                <h2>Beispiel: Person mit Überladung</h2>
                 <pre><code class="language-java">public class Person {
     String name;
     int alter;
@@ -271,10 +271,10 @@ public class Raum {
                 <h2>Zusammenfassung</h2>
                 <ul>
                     <li class="fragment"><strong>Konstruktor</strong> = Initialisierung beim Objekt-Erzeugen</li>
-                    <li class="fragment">Gleicher Name wie die Klasse, <strong>kein Rueckgabetyp</strong></li>
+                    <li class="fragment">Gleicher Name wie die Klasse, <strong>kein Rückgabetyp</strong></li>
                     <li class="fragment"><strong>Standardkonstruktor</strong> - automatisch, wenn keiner definiert</li>
-                    <li class="fragment"><strong>Parametrisierter Konstruktor</strong> - Werte direkt uebergeben</li>
-                    <li class="fragment"><strong>Ueberladung</strong> - mehrere Konstruktoren mit unterschiedlichen Parametern</li>
+                    <li class="fragment"><strong>Parametrisierter Konstruktor</strong> - Werte direkt übergeben</li>
+                    <li class="fragment"><strong>Überladung</strong> - mehrere Konstruktoren mit unterschiedlichen Parametern</li>
                     <li class="fragment"><strong>this(parameter)</strong> - Konstruktor ruft anderen Konstruktor auf</li>
                 </ul>
             </section>
@@ -282,8 +282,8 @@ public class Raum {
             <!-- Slide 15: Ausblick -->
             <section class="center">
                 <div class="highlight-box">
-                    <h3>Naechste Woche: this, Getter und Setter</h3>
-                    <p>this genauer, Kapselung (private/public), Getter und Setter</p>
+                    <h3>Nächste Woche: this, Getter und Setter</h3>
+                    <p>this genaür, Kapselung (private/public), Getter und Setter</p>
                 </div>
             </section>
 

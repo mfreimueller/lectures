@@ -1,11 +1,11 @@
 # Kata 02: Telefonbuch
 
-Schreibe ein Programm fuer ein Telefonbuch mit zwei parallelen Arrays:
+Schreibe ein Programm für ein Telefonbuch mit zwei parallelen Arrays:
 
 - `String[] namen` - die Namen der Personen
 - `String[] nummern` - die Telefonnummern
 
-Implementiere eine Methode `String sucheNummer(String name)`, die einen Namen sucht und die zugehoerige Telefonnummer zurueckgibt.
+Implementiere eine Methode `String sucheNummer(String name)`, die einen Namen sucht und die zugehörige Telefonnummer zurückgibt.
 
 Beispiel:
 
@@ -19,5 +19,5 @@ sucheNummer("Sauron");  // Nicht gefunden
 
 Hinweise:
 - Verwende sequenzielle Suche (for-Schleife)
-- Vergleiche mit `equalsIgnoreCase()` fuer Gross-/Kleinschreibung
-- Gib "Nicht gefunden" zurueck, wenn der Name nicht existiert
+- Vergleiche mit `equalsIgnoreCase()` für Gross-/Kleinschreibung
+- Gib "Nicht gefunden" zurück, wenn der Name nicht existiert

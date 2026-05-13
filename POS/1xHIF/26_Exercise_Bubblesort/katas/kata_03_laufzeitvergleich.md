@@ -4,7 +4,7 @@ Schreibe ein Programm, das die Laufzeit von Selection Sort, Insertion Sort und B
 
 Aufgabenstellung:
 
-1. Generiere drei Arrays mit 10.000 zufaelligen Zahlen
+1. Generiere drei Arrays mit 10.000 zufälligen Zahlen
 2. Sortiere jedes Array mit einem anderen Algorithmus
 3. Messe die Zeit mit `System.currentTimeMillis()`
 4. Gib die Ergebnisse in Millisekunden aus

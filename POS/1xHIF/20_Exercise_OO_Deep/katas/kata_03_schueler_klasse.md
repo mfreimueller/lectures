@@ -16,7 +16,7 @@ Erstelle die Klassen `Schueler` und `Klasse` fur eine Notenverwaltung.
 
 2. **Klasse `Klasse`**:
    - Attribute: `name` (String), `schueler` (Schueler[20]), `anzahl` (int)
-   - Methode `addSchueler(Schueler s)`: Fuge einen Schuler hinzu
+   - Methode `addSchueler(Schüler s)`: Fuge einen Schuler hinzu
    - Methode `printNoten()`: Gib alle Schuler mit Noten aus
    - Methode `getDurchschnitt()`: Berechne den Notendurchschnitt (double)
    - Methode `getBesteNote()`: Gib die beste Note (kleinster Wert) zuruck

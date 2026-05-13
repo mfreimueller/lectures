@@ -4,9 +4,9 @@ Modelliere ein Pferderennen mit OOP und Zufallszahlen.
 
 ## Anforderungen
 - Klasse Pferd mit Attributen: name, speed (Grundgeschwindigkeit), ausdauer
-- Methode rennen(): berechnet die aktuelle Geschwindigkeit mit zufaelligen Schwankungen
+- Methode rennen(): berechnet die aktuelle Geschwindigkeit mit zufälligen Schwankungen
 - Erstelle ein Array von Pferden und lasse sie gegeneinander antreten
-- Das Pferd mit der hoechsten Gesamtgeschwindigkeit gewinnt
+- Das Pferd mit der höchsten Gesamtgeschwindigkeit gewinnt
 
 ## Beispiel
 ```java

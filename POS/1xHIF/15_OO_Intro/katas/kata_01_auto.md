@@ -11,7 +11,7 @@
 Erstelle eine Klasse `Auto` in einer eigenen Datei `Auto.java`:
 
 1. Die Klasse hat die Attribute `marke` (String) und `baujahr` (int)
-2. Die Methode `fahre()` gibt "Die Marke faehrt los!" auf der Konsole aus
+2. Die Methode `fahre()` gibt "Die Marke fährt los!" auf der Konsole aus
 3. Die Methode `zeigeInfo()` gibt Marke und Baujahr aus
 
 Erstelle eine zweite Datei `AutoTest.java` mit einer main-Methode. Darin:
@@ -23,5 +23,5 @@ Erstelle eine zweite Datei `AutoTest.java` mit einer main-Methode. Darin:
 
 ```
 Marke: VW, Baujahr: 2020
-VW faehrt los!
+VW fährt los!
 ```

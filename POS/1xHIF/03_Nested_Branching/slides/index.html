@@ -21,7 +21,7 @@
 <p>Was ist der Unterschied zwischen = und ==?</p>
 <p class="fragment">= weist zu, == vergleicht.</p>
 <p class="fragment">Was gibt if (x > 5) bei x = 7 aus?</p>
-<p class="fragment">true - der Code im if-Block wird ausgefuehrt.</p>
+<p class="fragment">true - der Code im if-Block wird ausgeführt.</p>
 </section>
 
 <section>
@@ -61,26 +61,26 @@
 <section>
 <h2>Geschachtelte ifs</h2>
 <p>Ein if innerhalb eines anderen if:</p>
-<pre><code class="language-java">if (hatSchluessel) {
+<pre><code class="language-java">if (hatSchlüssel) {
     if (codeRichtig) {
-        System.out.println("Tuer geoeffnet!");
+        System.out.println("Tür geöffnet!");
     }
 }</code></pre>
-<p class="fragment">Erst die aeussere, dann die innere Bedingung pruefen.</p>
+<p class="fragment">Erst die äussere, dann die innere Bedingung prüfen.</p>
 </section>
 
 <section>
 <h2>Geschachtelt vs. &&</h2>
 <pre><code class="language-java">// Geschachtelt
-if (hatSchluessel) {
+if (hatSchlüssel) {
     if (codeRichtig) {
-        System.out.println("Tuer geoeffnet!");
+        System.out.println("Tür geöffnet!");
     }
 }
 
 // Gleichwertig mit &&
-if (hatSchluessel && codeRichtig) {
-    System.out.println("Tuer geoeffnet!");
+if (hatSchlüssel && codeRichtig) {
+    System.out.println("Tür geöffnet!");
 }</code></pre>
 </section>
 
@@ -101,9 +101,9 @@ if (hatSchluessel && codeRichtig) {
 boolean langGenug = pw.length() >= 8;
 boolean hatZiffer = false;
 
-// Pruefe auf Ziffer (vereinfacht)
+// Prüfe auf Ziffer (vereinfacht)
 if (langGenug && pw.contains("1")) {
-    System.out.println("Passwort ist gueltig!");
+    System.out.println("Passwort ist gültig!");
 } else {
     System.out.println("Passwort zu schwach.");
 }</code></pre>
@@ -140,25 +140,25 @@ if (a == b && b == c) {
 </section>
 
 <section>
-<h2>Dungeon Escape: Verschlossene Tuer</h2>
-<p>Der Spieler findet eine Tuer mit einem magischen Schloss.</p>
-<pre><code class="language-java">boolean hatSchluessel = true;
+<h2>Dungeon Escape: Verschlossene Tür</h2>
+<p>Der Spieler findet eine Tür mit einem magischen Schloss.</p>
+<pre><code class="language-java">boolean hatSchlüssel = true;
 int code = 2462;
 int eingabeCode = 2462;
 
-if (hatSchluessel && code == eingabeCode) {
-    System.out.println("Die Tuer schwingt auf!");
+if (hatSchlüssel && code == eingabeCode) {
+    System.out.println("Die Tür schwingt auf!");
 } else {
-    System.out.println("Die Tuer bleibt verschlossen.");
+    System.out.println("Die Tür bleibt verschlossen.");
 }</code></pre>
 </section>
 
 <section>
 <h2>Dungeon Escape - Aufgabe</h2>
 <ul>
-<li class="fragment">Boolean: hatSchluessel, kenntZauber</li>
-<li class="fragment">Tuer oeffnet sich nur wenn beide Bedingungen erfuellt sind</li>
-<li class="fragment">Verwende && fuer die Kombination</li>
+<li class="fragment">Boolean: hatSchlüssel, kenntZauber</li>
+<li class="fragment">Tür öffnet sich nur wenn beide Bedingungen erfüllt sind</li>
+<li class="fragment">Verwende && für die Kombination</li>
 <li class="fragment">Tipp: mit ! (NOT) Bedingungen umkehren</li>
 </ul>
 </section>
@@ -175,7 +175,7 @@ if (hatSchluessel && code == eingabeCode) {
 </section>
 
 <section class="center">
-<div class="highlight-box"><h3 class="centered">Naechste Woche: for-Schleife</h3></div>
+<div class="highlight-box"><h3 class="centered">Nächste Woche: for-Schleife</h3></div>
 <p>Wiederholungen automatisieren!</p>
 </section>
 

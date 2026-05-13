@@ -50,7 +50,7 @@ public class Auto {
 <ul>
 <li><code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code></li>
 <li>Speichern direkt den Wert</li>
-<li>Keine Methodenaufrufe moeglich</li>
+<li>Keine Methodenaufrufe möglich</li>
 </ul>
 </div>
 <div class="highlight-box fragment">
@@ -58,7 +58,7 @@ public class Auto {
 <ul>
 <li><code>String</code>, <code>Auto</code>, <code>Person</code>, ...</li>
 <li>Speichern eine Referenz (Adresse) auf das Objekt</li>
-<li>Methodenaufrufe moeglich: <code>person.getName()</code></li>
+<li>Methodenaufrufe möglich: <code>person.getName()</code></li>
 </ul>
 </div>
 <pre class="fragment"><code class="language-java">
@@ -103,14 +103,14 @@ p2.setName("Maria");
 System.out.println(p1.getName()); // "Maria"
 </code></pre>
 <div class="highlight-box fragment">
-<p>Zwei Referenzen koennen auf dasselbe Objekt zeigen. Aenderungen uber eine Referenz sind auch uber die andere sichtbar.</p>
+<p>Zwei Referenzen können auf dasselbe Objekt zeigen. Änderungen uber eine Referenz sind auch uber die andere sichtbar.</p>
 </div>
 <pre class="fragment"><code class="language-java">
 // Anders bei primitiven Typen:
 int x = 5;
 int y = x;
 y = 10;
-System.out.println(x); // 5 (unabhaengig!)
+System.out.println(x); // 5 (unabhängig!)
 </code></pre>
 </section>
 
@@ -196,7 +196,7 @@ System.out.println(p);
 <section>
 <h2>Objekte als Parameter</h2>
 <div class="highlight-box fragment">
-<p>Objekte koennen als Parameter an Methoden ubergeben werden.</p>
+<p>Objekte können als Parameter an Methoden ubergeben werden.</p>
 </div>
 <pre class="fragment"><code class="language-java">
 public class Person {
@@ -248,13 +248,13 @@ public class Raum {
     private String name;
     private String beschreibung;
     private Raum norden;
-    private Raum sueden;
+    private Raum süden;
     private Raum osten;
     private Raum westen;
 
     public void setNorden(Raum raum) { this.norden = raum; }
     public Raum getNorden() { return norden; }
-    // analog fuer sueden, osten, westen
+    // analog für süden, osten, westen
 }
 </code></pre>
 </section>
@@ -292,10 +292,10 @@ public class Spieler {
 <p>Baue ein kleines Dungeon mit 4 Raumen:</p>
 <ul>
 <li>Startraum, Wald, Turm, Schatzraum</li>
-<li>Verlinke die Raume mit setNorden(), setSueden(), etc.</li>
+<li>Verlinke die Raume mit setNorden(), setSüden(), etc.</li>
 <li>Der Spieler startet im Startraum</li>
 <li>Gib die aktuellen Ausgange aus: "Du kannst nach: norden, osten"</li>
-<li>Implementiere geheNorden(), geheSueden(), geheOsten(), geheWesten()</li>
+<li>Implementiere geheNorden(), geheSüden(), geheOsten(), geheWesten()</li>
 </ul>
 </div>
 </section>
@@ -307,7 +307,7 @@ public class Spieler {
 <li>Referenz-Typen speichern Adressen von Objekten, primitive Typen speichern Werte</li>
 <li>Stack: lokale Variablen (primitiv) + Referenzen; Heap: Objekte</li>
 <li><code>null</code> = keine Referenz - vor dem Zugriff prufen</li>
-<li>Objekte koennen andere Objekte als Attribute enthalten (Assoziation)</li>
+<li>Objekte können andere Objekte als Attribute enthalten (Assoziation)</li>
 <li>Objekte werden als Referenz an Methoden ubergeben</li>
 </ul>
 </div>

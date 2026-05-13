@@ -26,7 +26,7 @@ Dein Programm soll diesen Baum ausgeben:
 
 - Der Baum wird nur mit println-Befehlen gebaut - noch keine Schleifen.
 - Jede Zeile hat eine bestimmte Anzahl von Leerzeichen am Anfang.
-- Uberlege dir zuerst, wie viele Leerzeichen und Sterne jede Zeile braucht.
+- Überlege dir zuerst, wie viele Leerzeichen und Sterne jede Zeile braucht.
 - Zeile 1: 4 Leerzeichen, 1 Stern
 - Zeile 2: 3 Leerzeichen, 3 Sterne
 - Zeile 3: 2 Leerzeichen, 5 Sterne

@@ -6,10 +6,10 @@ Lerne den Modulo-Operator (%) in Kombination mit if/else anzuwenden.
 
 ## Aufgabenstellung
 
-Schreibe ein Programm `GeradeUngerade.java`, das eine ganze Zahl darauf prueft, ob sie gerade oder ungerade ist.
+Schreibe ein Programm `GeradeUngerade.java`, das eine ganze Zahl darauf prüft, ob sie gerade oder ungerade ist.
 
 1. Deklariere eine int-Variable `zahl` und weise einen Wert zu (z.B. 42)
-2. Pruefe mit `zahl % 2 == 0`, ob die Zahl gerade ist
+2. Prüfe mit `zahl % 2 == 0`, ob die Zahl gerade ist
 3. Gib das entsprechende Ergebnis aus
 
 ## Beispiel-Output
@@ -31,4 +31,4 @@ Bei `zahl = 7`:
 
 ## Erweiterung (optional)
 
-Pruefe zusaetzlich, ob die Zahl durch 3 oder durch 5 teilbar ist.
+Prüfe zusätzlich, ob die Zahl durch 3 oder durch 5 teilbar ist.

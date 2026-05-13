@@ -25,8 +25,8 @@ Hallo, Welt!
 
 ## Hinweise
 
-- println fuegt am Ende einen Zeilenumbruch hinzu, print nicht.
-- printf verwendet Format-Strings: %s fuer Strings, %d fuer Zahlen.
+- println fügt am Ende einen Zeilenumbruch hinzu, print nicht.
+- printf verwendet Format-Strings: %s für Strings, %d für Zahlen.
 - Der erste Teil (Hallo) und der zweite Teil (Welt!) sollen in getrennten print-Befehlen ausgegeben werden.
 
 ## Erweiterung (optional)

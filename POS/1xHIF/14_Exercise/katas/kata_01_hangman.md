@@ -13,7 +13,7 @@ Schreibe ein einfaches Hangman-Spiel.
 1. Lege ein Wort fest (z.B. "java", "programmieren", "computer")
 2. Zeige dem Spieler den aktuellen Stand: unbekannte Buchstaben als _
 3. Der Spieler gibt wiederholt einen Buchstaben ein
-4. Pruefe mit charAt(), ob der Buchstabe im Wort vorkommt
+4. Prüfe mit charAt(), ob der Buchstabe im Wort vorkommt
 5. Aktualisiere den sichtbaren Wortstand
 6. Das Spiel endet, wenn alle Buchstaben erraten wurden
 
@@ -33,7 +33,7 @@ Gewonnen! Das Wort war: java
 
 ### Hinweise
 
-- Verwende eine while-Schleife, die laeuft, bis das Wort vollstaendig erraten ist
-- charAt(index) gibt den Buchstaben an Stelle index zurueck
-- Baue den sichtbaren String neu auf: fuer jeden Buchstaben im Wort entweder den Buchstaben oder _
-- equals() statt == fuer String-Vergleich
+- Verwende eine while-Schleife, die läuft, bis das Wort vollständig erraten ist
+- charAt(index) gibt den Buchstaben an Stelle index zurück
+- Baue den sichtbaren String neu auf: für jeden Buchstaben im Wort entweder den Buchstaben oder _
+- equals() statt == für String-Vergleich
