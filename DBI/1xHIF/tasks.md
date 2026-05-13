@@ -49,7 +49,7 @@ tasks:
       - 04_Word_Verweise_Verzeichnisse/revision.md
       - 04_Word_Verweise_Verzeichnisse/katas/plan.md
       - 04_Word_Verweise_Verzeichnisse/katas/kata_01_inhaltsverzeichnis.md
-      - 04_Word_Verweise_Verzeichnisse/katas/kata_02_fussnoten.md
+       - 04_Word_Verweise_Verzeichnisse/katas/kata_02_fussnoten_beschriftungen.md
 
   - id: 05-word-serienbrief
     description: "Erstelle Woche 05: Word Serienbrief (mit 2 Katas)"
@@ -236,73 +236,73 @@ tasks:
 
   - id: 23-office-alternativen
     description: "Erstelle Woche 23: MS Office Alternativen (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 23_Office_Alternativen/plan.md
       - 23_Office_Alternativen/lecture.md
       - 23_Office_Alternativen/revision.md
       - 23_Office_Alternativen/katas/plan.md
-      - 23_Office_Alternativen/katas/kata_01_libreoffice_import.md
+       - 23_Office_Alternativen/katas/kata_01_libreoffice_import_export.md
       - 23_Office_Alternativen/katas/kata_02_odf_kompatibilitaet.md
 
   - id: 24-markdown1
     description: "Erstelle Woche 24: Markdown I (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 24_Markdown_Grundlagen/plan.md
       - 24_Markdown_Grundlagen/lecture.md
       - 24_Markdown_Grundlagen/revision.md
       - 24_Markdown_Grundlagen/katas/plan.md
       - 24_Markdown_Grundlagen/katas/kata_01_readme_schreiben.md
-      - 24_Markdown_Grundlagen/katas/kata_02_listen_code.md
+       - 24_Markdown_Grundlagen/katas/kata_02_listen_und_code.md
 
   - id: 25-markdown2
     description: "Erstelle Woche 25: Markdown II (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 25_Markdown_Tabellen/plan.md
       - 25_Markdown_Tabellen/lecture.md
       - 25_Markdown_Tabellen/revision.md
       - 25_Markdown_Tabellen/katas/plan.md
       - 25_Markdown_Tabellen/katas/kata_01_dokumentation_tabellen.md
-      - 25_Markdown_Tabellen/katas/kata_02_checkboxen_zitate.md
+       - 25_Markdown_Tabellen/katas/kata_02_checkboxen_mehr.md
 
   - id: 26-asciidoc1
     description: "Erstelle Woche 26: AsciiDoc I (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 26_AsciiDoc_Grundlagen/plan.md
       - 26_AsciiDoc_Grundlagen/lecture.md
       - 26_AsciiDoc_Grundlagen/revision.md
       - 26_AsciiDoc_Grundlagen/katas/plan.md
-      - 26_AsciiDoc_Grundlagen/katas/kata_01_kurz_dokument_adoc.md
-      - 26_AsciiDoc_Grundlagen/katas/kata_02_markdown_vs_adoc.md
+       - 26_AsciiDoc_Grundlagen/katas/kata_01_asciidoc_dokument.md
+       - 26_AsciiDoc_Grundlagen/katas/kata_02_markdown_vs_asciidoc.md
 
   - id: 27-asciidoc2
     description: "Erstelle Woche 27: AsciiDoc II (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 27_AsciiDoc_Advanced/plan.md
       - 27_AsciiDoc_Advanced/lecture.md
       - 27_AsciiDoc_Advanced/revision.md
       - 27_AsciiDoc_Advanced/katas/plan.md
-      - 27_AsciiDoc_Advanced/katas/kata_01_toc_xref.md
-      - 27_AsciiDoc_Advanced/katas/kata_02_include_conditional.md
+       - 27_AsciiDoc_Advanced/katas/kata_01_toc_crossref.md
+       - 27_AsciiDoc_Advanced/katas/kata_02_include_conditionals.md
 
   - id: 28-csv
     description: "Erstelle Woche 28: CSV (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 28_CSV/plan.md
       - 28_CSV/lecture.md
       - 28_CSV/revision.md
       - 28_CSV/katas/plan.md
-      - 28_CSV/katas/kata_01_csv_editor_erstellen.md
-      - 28_CSV/katas/kata_02_csv_excel_import.md
+       - 28_CSV/katas/kata_01_csv_editor.md
+       - 28_CSV/katas/kata_02_csv_excel.md
 
   - id: 29-json
     description: "Erstelle Woche 29: JSON (mit 2 Katas)"
-    done: false
+    done: true
     creates:
       - 29_JSON/plan.md
       - 29_JSON/lecture.md
@@ -313,5 +313,5 @@ tasks:
 
   - id: 99-qualitaet
     description: "Qualitäts-Check: Alle Dateien durchlesen, Konsistenz prüfen"
-    done: false
+    done: true
     note: "Terminologie, Verzeichnisnamen, Dateinamen konsistent?"

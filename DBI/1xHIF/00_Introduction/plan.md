@@ -15,7 +15,7 @@
 
 ---
 
-## Aufbau der Unterrichtseinheit
+## Unterrichtsaufbau
 
 | Phase | Dauer | Inhalt |
 |-------|-------|--------|
