@@ -22,6 +22,8 @@ Connection valid: true
 Connection closed.
 ```
 
+**Note:** The DDL script to set up the database is available at `katas/init.sql`.
+
 ### Extension
 
 Read connection parameters (url, user, password) from environment variables.

@@ -1,33 +1,42 @@
-# K2: @NotNull Field Validation
+# K2: @ToString Annotation Processor
 
-| Concept | Difficulty | Duration |
-|---------|------------|----------|
-| Field-level annotations, setAccessible, reflection validation | 2/5 | 30 min |
+| Feld | Wert |
+|------|------|
+| Konzepte | @interface, @Retention, @Target, annotation-processing, Field.get/set |
+| Schwierigkeit | 2/5 |
+| Dauer | ca. 25 min |
 
-## Task
+### Aufgabenstellung
 
-Build a validation framework with a `@NotNull` annotation and a `Validator` class.
+Implementiere eine `@ToString` Annotation und einen Prozessor, der automatisch einen String-Repräsentation eines Objekts erzeugt.
 
 ```java
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface NotNull {}
+@Target(ElementType.TYPE)
+public @interface ToString {
+    boolean includeFields() default true;
+    String[] excludeFields() default {};
+}
 ```
 
-The `Validator.validate(Object obj)` method should:
-1. Get all declared fields via reflection
-2. For fields annotated with `@NotNull`, read the value
-3. If the value is null, add an error message to the result list
-4. Return a list of validation error strings
-
-## Example Output
-
-```
-Validating Person{name='null', email='test@example.com'}
-Errors:
-  - Field 'name' is null but marked @NotNull
+Schreibe eine `ToStringProcessor` Klasse mit einer Methode:
+```java
+public static String toString(Object obj) throws Exception
 ```
 
-## Extension
+Der Prozessor soll:
+1. Prüfen, ob die Klasse mit `@ToString` annotiert ist
+2. Alle deklarierten Felder via Reflection lesen
+3. Felder in `excludeFields()` überspringen
+4. Wenn `includeFields=false`, nur den Klassennamen ausgeben
+5. Einen String im Format `ClassName{field1=value1, field2=value2, ...}` erzeugen
 
-Add a `@NotEmpty` annotation for String fields that checks the string is not empty after trimming.
+### Beispiel-Output
+
+```
+Person{name=Alice, age=30}
+```
+
+### Erweiterung
+
+Füge ein `@ToStringExclude` Annotation hinzu, die auf einzelne Felder angewendet werden kann, um sie von der Ausgabe auszuschließen, unabhängig von der Klassen-Annotation.
