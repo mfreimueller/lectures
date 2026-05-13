@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>09 - Flyway_Migration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>09 - Flyway & Database Migration</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>The Schema Problem</h2>
+                <ul>
+                    <li class="fragment">Wer hat die letzte Änderung an der DB gemacht?</li>
+                    <li class="fragment">Welche Tabellen gibt es in Produktion, welche nicht?</li>
+                    <li class="fragment">Warum funktioniert der Code lokal, aber nicht auf dem Server?</li>
+                    <li class="fragment highlight-box">Lösung: Schema-Migrationen — versioniert, reproduzierbar, automatisiert</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Manuelle Schema-Änderungen — Probleme</h2>
+                <ul>
+                    <li class="fragment">SQL-Skripte werden per E-Mail/Chat geteilt</li>
+                    <li class="fragment">Niemand weiß, welche Skripte schon ausgeführt wurden</li>
+                    <li class="fragment">Produktion und Entwicklung laufen auseinander</li>
+                    <li class="fragment">Kein Rollback möglich</li>
+                    <li class="fragment">Keine Versionierung im Git</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Flyway — Überblick</h2>
+                <ul>
+                    <li class="fragment">Versionierung für Datenbank-Schemata</li>
+                    <li class="fragment">SQL-Dateien werden der Reihe nach ausgeführt</li>
+                    <li class="fragment">Flyway merkt sich in einer Tabelle (<code>flyway_schema_history</code>), welche Migrationen schon gelaufen sind</li>
+                    <li class="fragment">Integriert sich nahtlos in Spring Boot</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Flyway — Konzept</h2>
+                <pre><code>V1__Initial_schema.sql   ✅ ausgeführt
+V2__Add_members.sql      ✅ ausgeführt
+V3__Add_loans.sql        ⏳ wird beim nächsten Start ausgeführt
+V4__Add_indexes.sql      ⏳ wartet</code></pre>
+                <ul>
+                    <li class="fragment">Dateien in <code>src/main/resources/db/migration/</code></li>
+                    <li class="fragment">Namenskonvention: <code>V{Version}__{Beschreibung}.sql</code></li>
+                    <li class="fragment">Versionen sind durchnummeriert (1, 2, 3, ... oder 1.1, 1.2, ...)</li>
+                    <li class="fragment">Bereits ausgeführte Migrationen werden NIEMALS geändert</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dependency</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.flywaydb&lt;/groupId&gt;
+    &lt;artifactId&gt;flyway-core&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.flywaydb&lt;/groupId&gt;
+    &lt;artifactId&gt;flyway-database-postgresql&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <p class="fragment">Spring Boot konfiguriert Flyway automatisch, wenn die Dependency auf dem Classpath ist.</p>
+            </section>
+
+            <section>
+                <h2>V1__Initial_Schema.sql</h2>
+                <pre><code class="language-sql">CREATE TABLE book (
+    id          BIGSERIAL PRIMARY KEY,
+    isbn        VARCHAR(13)  NOT NULL UNIQUE,
+    title       VARCHAR(255) NOT NULL,
+    year        INT          NOT NULL,
+    created_at  TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE member (
+    id          BIGSERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    email       VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE loan (
+    id           BIGSERIAL PRIMARY KEY,
+    book_id      BIGINT NOT NULL REFERENCES book(id),
+    member_id    BIGINT NOT NULL REFERENCES member(id),
+    borrow_date  DATE NOT NULL,
+    return_date  DATE
+);</code></pre>
+            </section>
+
+            <section>
+                <h2>Spring Boot — Auto-Konfiguration</h2>
+                <pre><code class="language-yaml">spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # WICHTIG: nicht update/create!</code></pre>
+                <p class="fragment"><code>ddl-auto: validate</code> prüft, ob Entities zum Schema passen — ohne selbst Änderungen zu machen.</p>
+            </section>
+
+            <section>
+                <h2>V2__Add_Phone_And_Category.sql</h2>
+                <pre><code class="language-sql">-- Spalte hinzufügen
+ALTER TABLE member
+    ADD COLUMN phone VARCHAR(20);
+
+-- Neue Tabelle
+CREATE TABLE category (
+    id    BIGSERIAL PRIMARY KEY,
+    name  VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Neue Join-Tabelle (Many-to-Many Buch ↔ Kategorie)
+CREATE TABLE book_category (
+    book_id     BIGINT NOT NULL REFERENCES book(id),
+    category_id BIGINT NOT NULL REFERENCES category(id),
+    PRIMARY KEY (book_id, category_id)
+);</code></pre>
+            </section>
+
+            <section>
+                <h2>Migration-Ablauf</h2>
+                <ol>
+                    <li class="fragment">App startet, Flyway prüft <code>flyway_schema_history</code></li>
+                    <li class="fragment">Neue Migrationen werden erkannt (noch nicht ausgeführt)</li>
+                    <li class="fragment">Flyway führt sie der Reihe nach aus (V1, V2, V3, ...)</li>
+                    <li class="fragment">Jede erfolgreiche Migration wird in der History-Tabelle vermerkt</li>
+                    <li class="fragment">Spring Boot startet erst, wenn alle Migrationen durch sind</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Checksum — Integrität</h2>
+                <ul>
+                    <li class="fragment">Flyway berechnet einen SHA-256 Checksum jeder Migrations-Datei</li>
+                    <li class="fragment">Wird eine bereits ausgeführte Migration verändert → Checksum-Mismatch → App startet nicht!</li>
+                    <li class="fragment highlight-box">Regel: Niemals eine bereits ausgeführte Migration editieren — immer eine NEUE Migration schreiben</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Repair — Wenn was schiefgeht</h2>
+                <pre><code class="language-bash"># Status prüfen
+./mvnw flyway:info
+
+# Fehlgeschlagene Migration reparieren
+./mvnw flyway:repair
+
+# Oder via Maven Plugin
+./mvnw flyway:migrate</code></pre>
+                <ul>
+                    <li class="fragment"><code>flyway:repair</code> löscht fehlgeschlagene Einträge aus der History</li>
+                    <li class="fragment">Danach kann die Migration korrigiert und neu gestartet werden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Flyway in Tests</h2>
+                <pre><code class="language-java">@DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public abstract class RepositoryTest {
+
+    private static final PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("spring.flyway.enabled", () -> "true");
+    }
+}</code></pre>
+                <p class="fragment">Flyway läuft auch in Tests — das Schema wird vor jedem Testlauf frisch aufgesetzt.</p>
+            </section>
+
+            <section>
+                <h2>Projekt: Eigene Migrationen</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Füge Flyway-Dependency zu pom.xml hinzu</li>
+                        <li>Setze <code>spring.jpa.hibernate.ddl-auto: validate</code></li>
+                        <li>Erstelle <code>V1__Initial_Schema.sql</code> mit deinem Domänen-Modell</li>
+                        <li>Starte die App — Flyway erstellt das Schema</li>
+                        <li>Erstelle <code>V2__...</code> mit einer Erweiterung</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Warum Schema-Migrationen notwendig sind</li>
+                        <li>Flyway: versionierte SQL-Dateien</li>
+                        <li>Namenskonvention V{Version}__{Beschreibung}.sql</li>
+                        <li>Spring Boot Auto-Konfiguration für Flyway</li>
+                        <li>ddl-auto: validate statt update/create</li>
+                        <li>Checksum-Integrität und Repair</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Service Layer — Business Logic vom Rest trennen</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">09 - Flyway_Migration</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

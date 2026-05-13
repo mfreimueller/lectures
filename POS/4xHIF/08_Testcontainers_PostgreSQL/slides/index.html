@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>08 - Testcontainers_PostgreSQL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>08 - Testcontainers & PostgreSQL</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>The H2 Problem</h2>
+                <ul>
+                    <li class="fragment">H2 ist nicht 100% PostgreSQL-kompatibel</li>
+                    <li class="fragment">Unterschiede in: SQL-Dialekt, Datentypen, Constraints</li>
+                    <li class="fragment">Tests können grün sein — Produktion crasht trotzdem</li>
+                    <li class="fragment highlight-box">"It works on my machine" — nur mit H2 im Test!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>H2 vs PostgreSQL — Beispiele</h2>
+                <table>
+                    <tr><th>Feature</th><th>H2</th><th>PostgreSQL</th></tr>
+                    <tr><td>Boolean</td><td>TINYINT (0/1)</td><td>BOOLEAN</td></tr>
+                    <tr><td>JSON</td><td>VARCHAR</td><td>JSONB</td></tr>
+                    <tr><td>UUID</td><td>VARCHAR</td><td>UUID native</td></tr>
+                    <tr><td>Sequences</td><td>Simuliert</td><td>Native SEQUENCE</td></tr>
+                    <tr><td>ARRAY</td><td>Nicht unterstützt</td><td>Native Arrays</td></tr>
+                </table>
+                <p class="fragment">Fazit: Teste gegen die gleiche DB wie in Produktion!</p>
+            </section>
+
+            <section>
+                <h2>Testcontainers — Idee</h2>
+                <ul>
+                    <li class="fragment">Startet Docker-Container programmatisch in JUnit-Tests</li>
+                    <li class="fragment">Unterstützt PostgreSQL, MySQL, Redis, Kafka, ...</li>
+                    <li class="fragment">Container wird vor den Tests gestartet, nach den Tests gestoppt</li>
+                    <li class="fragment">Benötigt nur eine laufende Docker-Umgebung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Testcontainers — Vorteile</h2>
+                <ul>
+                    <li class="fragment">Echte Datenbank, kein Simulator</li>
+                    <li class="fragment">Isolierte Tests — jeder Testlauf frischer Container</li>
+                    <li class="fragment">Konfigurierbar (Version, Port, Init-Script)</li>
+                    <li class="fragment">CI-kompatibel (Docker-in-Docker, Testcontainers Cloud)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dependency</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+    &lt;artifactId&gt;testcontainers&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+    &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+                <p class="fragment">Ohne Version — wird via BOM von Spring Boot verwaltet.</p>
+            </section>
+
+            <section>
+                <h2>PostgreSQLContainer — Setup</h2>
+                <pre><code class="language-java">@DataJpaTest
+@Testcontainers
+class BookRepositoryTest {
+
+    @Container
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16")
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test");
+}</code></pre>
+                <ul>
+                    <li class="fragment">@Testcontainers aktiviert automatische Lifecycle-Verwaltung</li>
+                    <li class="fragment">@Container markiert das Container-Objekt</li>
+                    <li class="fragment">Static = Container wird einmal pro Testklasse gestartet</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@DynamicPropertySource</h2>
+                <pre><code class="language-java">@DataJpaTest
+@Testcontainers
+class BookRepositoryTest {
+
+    @Container
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(
+            DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url",
+            postgres::getJdbcUrl);
+        registry.add("spring.datasource.username",
+            postgres::getUsername);
+        registry.add("spring.datasource.password",
+            postgres::getPassword);
+    }
+}</code></pre>
+                <p class="fragment">Überschreibt die application.yml-Werte dynamisch zur Laufzeit.</p>
+            </section>
+
+            <section>
+                <h2>Ablauf im Detail</h2>
+                <ol>
+                    <li class="fragment">JUnit startet die Testklasse</li>
+                    <li class="fragment">@Testcontainers erkennt @Container und startet PostgreSQL</li>
+                    <li class="fragment">Container meldet sich mit dynamischem Port (nicht 5432!)</li>
+                    <li class="fragment">@DynamicPropertySource injiziert JDBC-URL + Credentials</li>
+                    <li class="fragment">Spring konfiguriert DataSource mit diesen Werten</li>
+                    <li class="fragment">Tests laufen gegen echte PostgreSQL-Datenbank</li>
+                    <li class="fragment">Nach allen Tests: Container wird gestoppt</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Abstract Test Base Class</h2>
+                <pre><code class="language-java">@DataJpaTest
+@Testcontainers
+public abstract class RepositoryTest {
+
+    private static final PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(
+            DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url",
+            postgres::getJdbcUrl);
+        registry.add("spring.datasource.username",
+            postgres::getUsername);
+        registry.add("spring.datasource.password",
+            postgres::getPassword);
+    }
+}</code></pre>
+                <p class="fragment">Alle Repository-Tests erben einfach von dieser Basisklasse.</p>
+            </section>
+
+            <section>
+                <h2>Mit Flyway-Konfiguration</h2>
+                <pre><code class="language-java">@DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public abstract class RepositoryTest {
+
+    private static final PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("spring.flyway.enabled", () -> "true");
+    }
+}</code></pre>
+                <p class="fragment">@AutoConfigureTestDatabase.Replace.NONE verhindert, dass Spring H2 verwendet.</p>
+            </section>
+
+            <section>
+                <h2>Projekt: Tests migrieren</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Füge Testcontainers-Dependencies zu pom.xml hinzu</li>
+                        <li>Erstelle eine abstrakte Basisklasse <code>RepositoryTest</code></li>
+                        <li>Migriere alle <code>@DataJpaTest</code>-Klassen von H2 auf Testcontainers</li>
+                        <li>Stelle sicher, dass alle Tests grün sind</li>
+                        <li>Optional: Füge einen Test hinzu, der einen PostgreSQL-spezifischen Feature testet</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Warum H2 für JPA-Tests nicht ausreicht</li>
+                        <li>Testcontainers für PostgreSQL-Container in Tests</li>
+                        <li>@Container, @Testcontainers, @DynamicPropertySource</li>
+                        <li>Abstracte Test-Basisklasse für Wiederverwendung</li>
+                        <li>Integration mit Flyway</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Flyway — Database Migration & Schema Versioning</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">08 - Testcontainers_PostgreSQL</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

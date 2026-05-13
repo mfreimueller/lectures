@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>07 - Configuration_Profiles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>07 - Configuration & Profiles</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum externalisierte Konfiguration?</h2>
+                <ul>
+                    <li class="fragment">Die gleiche App läuft in dev, test, staging, production</li>
+                    <li class="fragment">Jede Umgebung braucht andere Werte (DB-URL, Log-Level, API-Keys)</li>
+                    <li class="fragment">Konfiguration <strong>außerhalb</strong> des Codes = flexibel & sicher</li>
+                    <li class="fragment">12-Factor-App: "Store config in the environment"</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>application.properties vs. application.yml</h2>
+                <pre><code class="language-plaintext"># application.properties (flach)
+app.title=My Project
+app.version=1.0.0
+app.contact=admin@example.com
+datasource.url=jdbc:h2:mem:testdb
+datasource.username=sa</code></pre>
+                <pre><code class="language-yaml"># application.yml (hierarchisch)
+app:
+  title: "My Project"
+  version: 1.0.0
+  contact: admin@example.com
+
+datasource:
+  url: jdbc:h2:mem:testdb
+  username: sa</code></pre>
+                <p class="fragment">YAML ist lesbarer bei verschachtelten Strukturen.</p>
+            </section>
+
+            <section>
+                <h2>Priorität der Konfigurationsquellen</h2>
+                <ol>
+                    <li class="fragment"><strong>Command Line Arguments</strong> <code>--server.port=9090</code></li>
+                    <li class="fragment"><strong>Umgebungsvariablen</strong> <code>SPRING_DATASOURCE_URL</code></li>
+                    <li class="fragment"><strong>application-{profile}.yml</strong> (profil-spezifisch)</li>
+                    <li class="fragment"><strong>application.yml</strong> (Basis-Konfiguration)</li>
+                    <li class="fragment"><strong>@PropertySource</strong> auf @Configuration-Klassen</li>
+                </ol>
+                <p class="fragment highlight-box">Spätere Quellen überschreiben frühere (Last Write Wins).</p>
+            </section>
+
+            <section>
+                <h2>@Value — Einfache Injection</h2>
+                <pre><code class="language-java">@Service
+public class MailService {
+
+    @Value("${app.mail.host}")
+    private String mailHost;
+
+    @Value("${app.mail.port:587}")
+    private int mailPort;
+
+    public void send() {
+        System.out.println("Sending via " + mailHost + ":" + mailPort);
+    }
+}</code></pre>
+                <p class="fragment">Mit <code>:</code> kann ein Default-Wert angegeben werden.</p>
+            </section>
+
+            <section>
+                <h2>@Value — Typen und SpEL</h2>
+                <pre><code class="language-java">@Value("${app.title}")          // String
+private String title;
+
+@Value("${app.version}")        // automatische Konvertierung
+private double version;
+
+@Value("${app.feature.x:false}") // boolean mit Default
+private boolean featureXEnabled;
+
+@Value("#{2 * 3}")              // SpEL-Ausdruck
+private int multiplied;</code></pre>
+                <p class="fragment">Nachteil: Keine Typsicherheit, schwer testbar, Werte verteilt im Code.</p>
+            </section>
+
+            <section>
+                <h2>@ConfigurationProperties — Typsicher</h2>
+                <pre><code class="language-java">@ConfigurationProperties(prefix = "app")
+public record AppConfig(
+    String title,
+    String version,
+    String contact
+) {}</code></pre>
+                <pre><code class="language-yaml"># application.yml
+app:
+  title: "Library Manager"
+  version: 1.0.0
+  contact: admin@library.com</code></pre>
+                <p class="fragment">Werte werden automatisch ins Record/Bean gemappt — typsicher und zentral.</p>
+            </section>
+
+            <section>
+                <h2>@ConfigurationProperties — Aktivierung</h2>
+                <pre><code class="language-java">@SpringBootApplication
+@EnableConfigurationProperties(AppConfig.class)
+public class TeamprojectApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TeamprojectApplication.class, args);
+    }
+}</code></pre>
+                <p class="fragment">Oder kürzer: Die <code>@ConfigurationProperties</code>-Klasse mit <code>@Component</code> versehen (oder <code>@ConfigurationPropertiesScan</code> verwenden).</p>
+            </section>
+
+            <section>
+                <h2>Verschachtelte Config-Properties</h2>
+                <pre><code class="language-java">@ConfigurationProperties(prefix = "app")
+public record AppConfig(
+    String title,
+    DatasourceConfig datasource
+) {
+    public record DatasourceConfig(
+        String url,
+        String username,
+        String password
+    ) {}
+}</code></pre>
+                <pre><code class="language-yaml">app:
+  title: "Library Manager"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library
+    username: app_user
+    password: ${DB_PASSWORD}  # Umgebungsvariable!</code></pre>
+            </section>
+
+            <section>
+                <h2>@Profile — Grundidee</h2>
+                <ul>
+                    <li class="fragment">Profile = Umgebungs-Labels: <code>dev</code>, <code>test</code>, <code>prod</code></li>
+                    <li class="fragment">Unterschiedliche Beans je nach aktivem Profile</li>
+                    <li class="fragment">Unterschiedliche Konfigurationsdateien: <code>application-dev.yml</code></li>
+                    <li class="fragment">Separation of Concerns: Code bleibt gleich, Config variiert</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@Profile auf Beans</h2>
+                <pre><code class="language-java">@Configuration
+public class DatasourceConfig {
+
+    @Bean
+    @Profile("dev")
+    public DataSource devDataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.H2)
+            .build();
+    }
+
+    @Bean
+    @Profile("prod")
+    public DataSource prodDataSource() {
+        return DataSourceBuilder.create()
+            .url("jdbc:postgresql://localhost:5432/mydb")
+            .username("${db.username}")
+            .password("${db.password}")
+            .build();
+    }
+}</code></pre>
+                <p class="fragment">Nur der zum aktiven Profile passende Bean wird erzeugt.</p>
+            </section>
+
+            <section>
+                <h2>@Profile auf Komponenten</h2>
+                <pre><code class="language-java">@Service
+@Profile("dev")
+public class DevMailService implements MailService {
+    @Override
+    public void send(String message) {
+        System.out.println("[DEV] Logging mail instead of sending: " + message);
+    }
+}
+
+@Service
+@Profile("prod")
+public class ProdMailService implements MailService {
+    @Override
+    public void send(String message) {
+        // tatsächlicher Mail-Versand
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Profile-spezifische YAML-Dateien</h2>
+                <pre><code class="language-yaml"># application-dev.yml
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:devdb
+    username: sa
+    password:
+
+logging:
+  level:
+    at.spengergasse: DEBUG</code></pre>
+                <pre><code class="language-yaml"># application-prod.yml
+server:
+  port: 443
+
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db:5432/library
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+logging:
+  level:
+    at.spengergasse: WARN</code></pre>
+            </section>
+
+            <section>
+                <h2>Profile aktivieren</h2>
+                <pre><code class="language-bash"># Kommandozeile
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Oder als Umgebungsvariable
+export SPRING_PROFILES_ACTIVE=prod
+./mvnw spring-boot:run</code></pre>
+                <pre><code class="language-yaml"># application.yml (Default-Profile setzen)
+spring:
+  profiles:
+    active: dev</code></pre>
+                <pre><code class="language-java">// Programmatisch
+SpringApplication app = new SpringApplication(MyApp.class);
+app.setAdditionalProfiles("dev");
+app.run(args);</code></pre>
+            </section>
+
+            <section>
+                <h2>Mehrere Profile gleichzeitig</h2>
+                <pre><code class="language-bash"># Aktiviert dev + monitoring + tracing
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev,monitoring,tracing</code></pre>
+                <pre><code class="language-yaml"># application.yml
+spring:
+  profiles:
+    include: monitoring,tracing  # immer aktiv</code></pre>
+                <ul>
+                    <li class="fragment">Profile können kombiniert werden</li>
+                    <li class="fragment">Nützlich für Cross-Cutting-Profile (monitoring, tracing, audit)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Projekt: Profile für dein Projekt</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Erstelle <code>application-dev.yml</code> mit H2-Datenbank</li>
+                        <li>Erstelle <code>application-prod.yml</code> mit PostgreSQL-Konfiguration</li>
+                        <li>Füge <code>@ConfigurationProperties(prefix = "app")</code> für Projekteinstellungen hinzu</li>
+                        <li>Aktiviere das dev-Profile beim lokalen Start</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Externalisierte Konfiguration mit application.yml / .properties</li>
+                        <li>@Value für einzelne Werte</li>
+                        <li>@ConfigurationProperties für typsichere Config-Klassen</li>
+                        <li>@Profile für umgebungsspezifische Beans</li>
+                        <li>Profile-spezifische Konfigurationsdateien</li>
+                        <li>Aktivierung von Profilen (CLI, Umgebungsvariablen, programmatisch)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Testcontainers for PostgreSQL — Replace H2 with a real PostgreSQL database in tests</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">07 - Configuration_Profiles</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>04 - JPA_Repositories</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>04 - JPA Repositories</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>JPA Recap</h2>
+                <ul>
+                    <li class="fragment">ORM = Object-Relational Mapping</li>
+                    <li class="fragment">JPA = Jakarta Persistence API (specification)</li>
+                    <li class="fragment">Hibernate = most popular JPA implementation</li>
+                    <li class="fragment">Maps Java classes to database tables</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@Entity</h2>
+                <pre><code class="language-java">@Entity
+@Table(name = "books")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String isbn;
+
+    @Column(nullable = false)
+    private String title;
+
+    private int year;
+    // getters, setters, constructors
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Spring Data Repository</h2>
+                <pre><code class="language-java">public interface BookRepository
+    extends CrudRepository&lt;Book, Long&gt; {
+    // Inherited methods:
+    // save(entity), findById(id), findAll(),
+    // count(), delete(entity), existsById(id)
+}</code></pre>
+                <p class="fragment">Spring Data generates the implementation at runtime!</p>
+            </section>
+
+            <section>
+                <h2>CRUD Operations</h2>
+                <pre><code class="language-java">@Service
+public class LibraryService {
+    private final BookRepository bookRepo;
+
+    public Book addBook(Book book) {
+        return bookRepo.save(book);
+    }
+
+    public Optional&lt;Book&gt; findBook(Long id) {
+        return bookRepo.findById(id);
+    }
+
+    public List&lt;Book&gt; getAllBooks() {
+        return (List&lt;Book&gt;) bookRepo.findAll();
+    }
+
+    public void deleteBook(Long id) {
+        bookRepo.deleteById(id);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>@OneToMany / @ManyToOne</h2>
+                <pre><code class="language-java">@Entity
+public class Member {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List&lt;Loan&gt; loans = new ArrayList&lt;&gt;();
+}
+
+@Entity
+public class Loan {
+    @Id @GeneratedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Bidirectional Relationship</h2>
+                <p>Helper methods keep both sides consistent:</p>
+                <pre><code class="language-java">@Entity
+public class Member {
+    // ...
+
+    public void addLoan(Loan loan) {
+        loans.add(loan);
+        loan.setMember(this);
+    }
+
+    public void removeLoan(Loan loan) {
+        loans.remove(loan);
+        loan.setMember(null);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Cascade Types</h2>
+                <table>
+                    <tr><th>Cascade</th><th>Effect</th></tr>
+                    <tr><td>PERSIST</td><td>Save parent → save children</td></tr>
+                    <tr><td>MERGE</td><td>Update parent → update children</td></tr>
+                    <tr><td>REMOVE</td><td>Delete parent → delete children</td></tr>
+                    <tr><td>ALL</td><td>All of the above</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-java">@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+// but be careful: do you always want to delete Loans with Member?</code></pre>
+            </section>
+
+            <section>
+                <h2>Fetch Strategies</h2>
+                <table>
+                    <tr><th>Fetch Type</th><th>Behavior</th></tr>
+                    <tr><td>LAZY (default for @OneToMany)</td><td>Loaded on demand (proxy)</td></tr>
+                    <tr><td>EAGER (default for @ManyToOne)</td><td>Loaded immediately</td></tr>
+                </table>
+                <p class="fragment">Watch out for the <strong>N+1 problem</strong>:</p>
+                <pre class="fragment"><code class="language-java">// 1 query for members + N queries for loans = N+1!
+for (Member m : memberRepo.findAll()) {
+    m.getLoans().size();  // triggers lazy load
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Custom Queries</h2>
+                <pre><code class="language-java">public interface BookRepository
+    extends JpaRepository&lt;Book, Long&gt; {
+
+    // Derived query (Spring Data parses method name)
+    List&lt;Book&gt; findByAuthorName(String authorName);
+
+    // JPQL query
+    @Query("SELECT b FROM Book b WHERE b.title LIKE %:keyword%")
+    List&lt;Book&gt; searchByTitle(@Param("keyword") String keyword);
+
+    // Native SQL query
+    @Query(value = "SELECT * FROM books WHERE year > :year",
+           nativeQuery = true)
+    List&lt;Book&gt; findBooksAfterYear(@Param("year") int year);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Project: Apply JPA to Your Domain</h2>
+                <ul>
+                    <li class="fragment">Add `@Entity` to ALL your domain classes</li>
+                    <li class="fragment">Configure relationships with correct cascade/fetch</li>
+                    <li class="fragment">Create Repository interfaces for each aggregate root</li>
+                    <li class="fragment">Add helper methods for bidirectional relationships</li>
+                </ul>
+                <p class="fragment">Next week: Unit testing your repositories with H2!</p>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>JPA entity mapping with @Entity, @Id</li>
+                        <li>Spring Data Repositories for CRUD</li>
+                        <li>@OneToMany, @ManyToOne, cascade & fetch</li>
+                        <li>Derived queries and @Query</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">04 - JPA Repositories</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

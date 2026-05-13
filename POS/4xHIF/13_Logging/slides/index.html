@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>13 - Logging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>13 - Logging & SA1 Vorbereitung</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum Logging?</h2>
+                <ul>
+                    <li class="fragment"><strong>Debugging</strong> — Was passiert in der Produktion?</li>
+                    <li class="fragment"><strong>Monitoring</strong> — Wie viele Requests, Fehler, Latenzen?</li>
+                    <li class="fragment"><strong>Auditing</strong> — Wer hat was wann gemacht?</li>
+                    <li class="fragment"><strong>Fehleranalyse</strong> — Warum ist der Request fehlgeschlagen?</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p>System.out.println ist KEIN Logging!</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>System.out vs. Logging</h2>
+                <table>
+                    <tr><th></th><th>System.out</th><th>Logging (SLF4J)</th></tr>
+                    <tr><td>Levels</td><td>Nein</td><td>TRACE, DEBUG, INFO, WARN, ERROR</td></tr>
+                    <tr><td>Konfigurierbar</td><td>Nein</td><td>Per Paket, per Profile</td></tr>
+                    <tr><td>Format</td><td>Nur Text</td><td>Strukturiert (JSON, Pattern)</td></tr>
+                    <tr><td>Ziel</td><td>Nur Konsole</td><td>Datei, DB, Elastic, ...</td></tr>
+                    <tr><td>Performance</td><td>Langsam (+ concat)</td><td>Optimiert ({})</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>SLF4J — Simple Logging Facade</h2>
+                <ul>
+                    <li class="fragment">Abstraktionsschicht (Facade Pattern)</li>
+                    <li class="fragment">Die Anwendung spricht nur mit SLF4J</li>
+                    <li class="fragment">Die Implementierung (Logback, Log4j2, java.util.logging) wird zur Laufzeit eingebunden</li>
+                    <li class="fragment">Wechsel der Implementierung ohne Code-Änderung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Logback — Default in Spring Boot</h2>
+                <pre><code>Anwendung
+    ↓ (SLF4J API)
+SLF4J Facade
+    ↓ (Logback Implementation)
+Console / File / Syslog / ...</code></pre>
+                <p class="fragment">Spring Boot bringt Logback mit — keine extra Dependency nötig.</p>
+            </section>
+
+            <section>
+                <h2>Log Levels</h2>
+                <table>
+                    <tr><th>Level</th><th>Bedeutung</th><th>Beispiel</th></tr>
+                    <tr><td>TRACE</td><td>Sehr detailliert</td><td>Methodeneintritt, Parameterwerte</td></tr>
+                    <tr><td>DEBUG</td><td>Debug-Informationen</td><td>SQL-Statements, Zwischenergebnisse</td></tr>
+                    <tr><td>INFO</td><td>Normale Betriebsinfo</td><td>App gestartet, Request empfangen</td></tr>
+                    <tr><td>WARN</td><td>Warnung</td><td>Deprecated API, knapper Speicher</td></tr>
+                    <tr><td>ERROR</td><td>Fehler</td><td>Datenbank nicht erreichbar, Exception</td></tr>
+                </table>
+                <p class="fragment">Default-Level in Spring Boot: <code>INFO</code></p>
+            </section>
+
+            <section>
+                <h2>Logger in Java</h2>
+                <pre><code class="language-java">import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class LibraryService {
+
+    private static final Logger log =
+        LoggerFactory.getLogger(LibraryService.class);
+
+    public Book createBook(CreateBookCommand command) {
+        log.info("Creating book with ISBN: {}", command.isbn());
+
+        if (bookRepository.findByIsbn(command.isbn()).isPresent()) {
+            log.warn("Duplicate ISBN attempted: {}", command.isbn());
+            throw new DuplicateIsbnException(command.isbn());
+        }
+
+        Book book = new Book(command.isbn(), command.title(), command.year());
+        Book saved = bookRepository.save(book);
+        log.debug("Book saved with id: {}", saved.getId());
+        return saved;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Parameterized Logging</h2>
+                <pre><code class="language-java">// ❌ Schlecht: String-Konkatenation (auch wenn Level deaktiviert!)
+log.debug("User " + user.getId() + " logged in from " + ip);
+
+// ✅ Gut: Platzhalter (keine Kosten bei deaktiviertem Level)
+log.debug("User {} logged in from {}", user.getId(), ip);
+
+// Beliebig viele Platzhalter
+log.info("Order {} by {}: {} items, total {}",
+    orderId, customer, itemCount, total);
+
+// Mit Throwable als letztem Parameter
+log.error("Failed to process order {}", orderId, exception);</code></pre>
+                <p class="fragment">Platzhalter {} werden NUR ausgewertet, wenn das Level aktiv ist.</p>
+            </section>
+
+            <section>
+                <h2>Logging-Konfiguration in application.yml</h2>
+                <pre><code class="language-yaml">logging:
+  level:
+    root: INFO
+    at.spengergasse: DEBUG          # Eigenes Projekt = DEBUG
+    org.springframework: WARN        # Spring-Framework = WARN
+    org.hibernate.SQL: DEBUG         # SQL-Statements sehen
+
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+  file:
+    name: logs/application.log       # Datei-Logging aktivieren
+    max-size: 10MB                   # Pro Datei maximal 10MB
+    max-history: 7                   # 7 Tage aufbewahren</code></pre>
+            </section>
+
+            <section>
+                <h2>Per-Profile Logging</h2>
+                <pre><code class="language-yaml"># application-dev.yml
+logging:
+  level:
+    at.spengergasse: DEBUG
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"</code></pre>
+                <pre><code class="language-yaml"># application-prod.yml
+logging:
+  level:
+    at.spengergasse: WARN
+  file:
+    name: logs/app-prod.log
+    max-size: 50MB
+    max-history: 30</code></pre>
+            </section>
+
+            <section>
+                <h2>logback-spring.xml</h2>
+                <pre><code class="language-xml">&lt;configuration&gt;
+    &lt;appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;
+        &lt;file&gt;logs/app.log&lt;/file&gt;
+        &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;
+            &lt;fileNamePattern&gt;logs/app.%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+            &lt;maxHistory&gt;30&lt;/maxHistory&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;springProfile name="dev"&gt;
+        &lt;root level="DEBUG"&gt;
+            &lt;appender-ref ref="CONSOLE"/&gt;
+        &lt;/root&gt;
+    &lt;/springProfile&gt;
+
+    &lt;springProfile name="prod"&gt;
+        &lt;root level="INFO"&gt;
+            &lt;appender-ref ref="CONSOLE"/&gt;
+            &lt;appender-ref ref="FILE"/&gt;
+        &lt;/root&gt;
+    &lt;/springProfile&gt;
+&lt;/configuration&gt;</code></pre>
+            </section>
+
+            <section>
+                <h2>Structured Logging (JSON)</h2>
+                <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;net.logstash.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logstash-logback-encoder&lt;/artifactId&gt;
+    &lt;version&gt;7.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                <pre><code class="language-xml">&lt;appender name="JSON" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"/&gt;
+&lt;/appender&gt;</code></pre>
+                <pre><code class="language-json">{
+    "@timestamp": "2024-11-20T10:30:00.123+01:00",
+    "level": "INFO",
+    "logger": "at.spengergasse.LibraryService",
+    "message": "Creating book with ISBN: 978-3-16-148410-0",
+    "thread": "http-nio-8080-exec-3"
+}</code></pre>
+                <p class="fragment">Ideal für Elasticsearch/Kibana (ELK-Stack).</p>
+            </section>
+
+            <section>
+                <h2>SA 1 Vorbereitung</h2>
+                <div class="highlight-box">
+                    <p><strong>SA 1 umfasst:</strong> Domain Layer, Persistence Layer, Unit Testing</p>
+                    <ul>
+                        <li>UML/PlantUML — Diagramme lesen und zeichnen</li>
+                        <li>JPA — @Entity, Repositories, Relationships, Queries</li>
+                        <li>Testcontainers — PostgreSQL in Tests</li>
+                        <li>Flyway — Schema-Migrationen</li>
+                        <li>Service Layer — @Service, @Transactional, Command-Objekte</li>
+                        <li>Service Testing — Mockito, @Mock, verify</li>
+                        <li>Logging — SLF4J, Log-Levels, Konfiguration</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>SLF4J als Logging-Facade, Logback als Implementierung</li>
+                        <li>Log-Levels: TRACE, DEBUG, INFO, WARN, ERROR</li>
+                        <li>Parameterized Logging mit {}</li>
+                        <li>Konfiguration via application.yml und logback-spring.xml</li>
+                        <li>Per-Profile Logging (dev = DEBUG, prod = INFO)</li>
+                        <li>File Appender und Rolling Policy</li>
+                        <li>Structured Logging für ELK-Stack</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Up</h2>
+                    <p>SA 1 — zentrale schriftliche Prüfung</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">13 - Logging</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

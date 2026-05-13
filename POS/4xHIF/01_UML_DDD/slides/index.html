@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>01 - UML_DDD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>01 - UML & DDD</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Recap: UML Class Diagrams</h2>
+                <ul>
+                    <li class="fragment">Class: rectangle with name, attributes, methods</li>
+                    <li class="fragment"><code>+</code> public, <code>-</code> private, <code>#</code> protected</li>
+                    <li class="fragment">Relationships: association, aggregation, composition, inheritance</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Recap: Visibility Notation</h2>
+                <pre><code class="language-plaintext">+---------------------------+
+|         Person            |
++---------------------------+
+| - name: String            |
+| - birthDate: LocalDate    |
++---------------------------+
+| + getName(): String       |
+| + getAge(): int           |
+| # validateAge(): boolean  |
++---------------------------+</code></pre>
+            </section>
+
+            <section>
+                <h2>Association</h2>
+                <ul>
+                    <li class="fragment">A structural relationship between classes</li>
+                    <li class="fragment">"Has-a" or "knows about" relationship</li>
+                    <li class="fragment">Can have: multiplicity, role name, navigability</li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">Person ──────────► Address
+    works at    1       *
+       (role)   (multiplicity)</code></pre>
+            </section>
+
+            <section>
+                <h2>Association in Java</h2>
+                <pre><code class="language-java">public class Person {
+    private Address address;  // association
+}
+
+public class Address {
+    private String street;
+    private String city;
+}</code></pre>
+                <p class="fragment">The Person "knows about" an Address — but Address has its own lifecycle.</p>
+            </section>
+
+            <section>
+                <h2>Aggregation</h2>
+                <ul>
+                    <li class="fragment">Special form of association — "has-a" with <em>shared</em> ownership</li>
+                    <li class="fragment">The child can exist independently of the parent</li>
+                    <li class="fragment">Drawn with an <strong>empty diamond</strong> on the parent side</li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">Department ◊─────── Employee
+    (empty diamond = aggregation)</code></pre>
+            </section>
+
+            <section>
+                <h2>Aggregation Example</h2>
+                <pre><code class="language-java">public class Department {
+    private List&lt;Employee&gt; employees;  // aggregation
+}
+
+public class Employee {
+    // Employee exists independently
+    // even if Department is deleted
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Composition</h2>
+                <ul>
+                    <li class="fragment">Stronger form — "has-a" with <em>exclusive</em> ownership</li>
+                    <li class="fragment">Child <strong>cannot</strong> exist without the parent</li>
+                    <li class="fragment">Drawn with a <strong>filled diamond</strong> on the parent side</li>
+                    <li class="fragment">Parent is responsible for child's lifecycle</li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">Order ◆────── OrderItem
+    (filled diamond = composition)</code></pre>
+            </section>
+
+            <section>
+                <h2>Composition Example</h2>
+                <pre><code class="language-java">public class Order {
+    private List&lt;OrderItem&gt; items;  // composition
+    // items created with Order, destroyed with Order
+}
+
+public class OrderItem {
+    // Cannot exist without an Order
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Aggregation vs. Composition</h2>
+                <table>
+                    <tr><th>Feature</th><th>Aggregation</th><th>Composition</th></tr>
+                    <tr><td>Ownership</td><td>Shared</td><td>Exclusive</td></tr>
+                    <tr><td>Lifecycle</td><td>Independent</td><td>Dependent on parent</td></tr>
+                    <tr><td>Diamond</td><td>Empty (◊)</td><td>Filled (◆)</td></tr>
+                    <tr><td>Example</td><td>Department + Employee</td><td>Order + OrderItem</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Inheritance (Generalization)</h2>
+                <ul>
+                    <li class="fragment">"Is-a" relationship — arrow with <strong>empty triangle</strong></li>
+                    <li class="fragment">Child inherits all non-private members</li>
+                    <li class="fragment">Java: <code>extends</code> for classes</li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">     ┌───────┐
+     │ Animal │
+     └───┬───┘
+         ▲
+    ┌────┴────┐
+    │         │
+ ┌──┴───┐ ┌──┴────┐
+ │ Dog  │ │ Cat   │
+ └──────┘ └───────┘</code></pre>
+            </section>
+
+            <section>
+                <h2>Realization (Interface)</h2>
+                <ul>
+                    <li class="fragment">Dashed line with <strong>empty triangle</strong></li>
+                    <li class="fragment">Class implements interface</li>
+                    <li class="fragment">Java: <code>implements</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">---◇ «interface»
+    │Borrowable│
+    └────┬─────┘
+         ⋮ (dashed)
+    ┌────┴────┐
+    │  Book   │
+    └─────────┘</code></pre>
+            </section>
+
+            <section>
+                <h2>What is Domain-Driven Design?</h2>
+                <ul>
+                    <li class="fragment">A software design methodology by Eric Evans (2003)</li>
+                    <li class="fragment">Focus on the <strong>core domain</strong> and domain logic</li>
+                    <li class="fragment">Model software after real-world business concepts</li>
+                    <li class="fragment">Bridge the gap between domain experts and developers</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>DDD: Key Concepts</h2>
+                <ul>
+                    <li class="fragment"><strong>Ubiquitous Language</strong> — common vocabulary used by developers AND domain experts</li>
+                    <li class="fragment"><strong>Bounded Context</strong> — explicit boundary around a domain model</li>
+                    <li class="fragment"><strong>Entities</strong> — objects with identity (e.g., a Person)</li>
+                    <li class="fragment"><strong>Value Objects</strong> — objects defined by their attributes (e.g., an Address)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Ubiquitous Language</h2>
+                <ul>
+                    <li class="fragment">No translation layers: "Book", "Member", "Loan" in code = same terms in conversation</li>
+                    <li class="fragment">Avoid technical terms in the domain model</li>
+                    <li class="fragment">If the team says "check out a book", the code should have <code>checkOut(book, member)</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Bounded Context</h2>
+                <ul>
+                    <li class="fragment">A <em>Book</em> in the "Catalog" context may have different attributes than in "Sales"</li>
+                    <li class="fragment">Each context has its own model and its own ubiquitous language</li>
+                    <li class="fragment">Contexts communicate via events or APIs</li>
+                </ul>
+                <pre class="fragment"><code class="language-plaintext">┌──────────────────┐     ┌──────────────────┐
+│  Catalog Context │     │  Lending Context │
+│  Book: ISBN,     │     │  Book: copyId,   │
+│  Title, Author   │     │  condition,      │
+│                  │     │  location        │
+└──────────────────┘     └──────────────────┘</code></pre>
+            </section>
+
+            <section>
+                <h2>Entities vs. Value Objects</h2>
+                <table>
+                    <tr><th>Entities</th><th>Value Objects</th></tr>
+                    <tr><td>Have identity (id)</td><td>No identity — defined by attributes</td></tr>
+                    <tr><td>Mutable</td><td>Immutable</td></tr>
+                    <tr><td>Equality by id</td><td>Equality by all attributes</td></tr>
+                    <tr><td>Example: Person, Order</td><td>Example: Address, Money, Color</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Project: Choosing Your Domain</h2>
+                <ul>
+                    <li class="fragment">At least <strong>6 entities</strong></li>
+                    <li class="fragment">Meaningful business logic (beyond CRUD)</li>
+                    <li class="fragment">Multiple relationship types (1:1, 1:n, n:m)</li>
+                    <li class="fragment">Searchable, filterable lists</li>
+                    <li class="fragment">Something you find interesting!</li>
+                </ul>
+                <p class="fragment">Next week: PlantUML your domain model</p>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>UML: Association, Aggregation, Composition, Inheritance</li>
+                        <li>DDD: Ubiquitous Language, Bounded Context</li>
+                        <li>Entities vs. Value Objects</li>
+                        <li>How to evaluate a domain for the project</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>PlantUML, ValueObjects, RichTypes — Model Your Domain</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">01 - UML_DDD</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

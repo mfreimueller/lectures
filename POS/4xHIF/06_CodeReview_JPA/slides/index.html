@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>06 - CodeReview_JPA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>06 - Code Review: JPA & Tests</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Why Code Reviews?</h2>
+                <ul>
+                    <li class="fragment">Catch bugs before they reach production</li>
+                    <li class="fragment">Share knowledge across teams</li>
+                    <li class="fragment">Enforce consistent code quality</li>
+                    <li class="fragment">Learn from others' approaches</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Review Etiquette</h2>
+                <ul>
+                    <li class="fragment">Be specific: "Line 42: fetch type LAZY would be better here because..."</li>
+                    <li class="fragment">Ask questions, don't accuse: "Why did you choose CascadeType.ALL?"</li>
+                    <li class="fragment">Praise good solutions too!</li>
+                    <li class="fragment">Focus on the code, not the person</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checklist: Entities</h2>
+                <ul>
+                    <li class="fragment">@Entity on all persistent classes?</li>
+                    <li class="fragment">@Id and @GeneratedValue configured correctly?</li>
+                    <li class="fragment">@Column annotations with nullable, unique, length where needed?</li>
+                    <li class="fragment">Table names follow naming convention (lowercase, plural)?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checklist: Relationships</h2>
+                <ul>
+                    <li class="fragment">Correct relationship type (@OneToMany vs @ManyToMany)?</li>
+                    <li class="fragment">mappedBy used on the inverse side of bidirectional relationships?</li>
+                    <li class="fragment">Helper methods (addLoan, removeLoan) present?</li>
+                    <li class="fragment">Join table names follow convention?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checklist: Cascade & Fetch</h2>
+                <ul>
+                    <li class="fragment">Cascade types not too aggressive (avoid CascadeType.ALL on @ManyToMany)?</li>
+                    <li class="fragment">CascadeType.REMOVE only where it makes sense?</li>
+                    <li class="fragment">FetchType.LAZY used everywhere (except rare cases)?</li>
+                    <li class="fragment">Any obvious N+1 query risks?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Checklist: Tests</h2>
+                <ul>
+                    <li class="fragment">@DataJpaTest used for repository tests?</li>
+                    <li class="fragment">Tests cover: CRUD, relationships, custom queries?</li>
+                    <li class="fragment">Edge cases tested (empty results, nulls)?</li>
+                    <li class="fragment">AssertJ used for readable assertions?</li>
+                    <li class="fragment">Test data set up in @BeforeEach?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Review Process</h2>
+                <ol>
+                    <li class="fragment"><strong>Assign</strong> — Each team is paired with another (30 min)</li>
+                    <li class="fragment"><strong>Review</strong> — Walk through checklist, file GitHub issues (30 min)</li>
+                    <li class="fragment"><strong>Discuss</strong> — Reviewers present findings to reviewed team (15 min)</li>
+                    <li class="fragment"><strong>Fix</strong> — Each team fixes issues in their own repo (30 min)</li>
+                    <li class="fragment"><strong>Verify</strong> — Reviewers check fixes were applied (15 min)</li>
+                </ol>
+            </section>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">06 - Code Review: JPA & Tests</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

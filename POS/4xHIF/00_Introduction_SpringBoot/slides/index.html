@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>00 - Introduction_SpringBoot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>00 - Introduction & Spring Boot</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Course Overview</h2>
+                <ul>
+                    <li class="fragment">4th Grade POS: Enterprise Software Engineering</li>
+                    <li class="fragment">Focus: Spring Boot ecosystem</li>
+                    <li class="fragment">Year-long group project in teams of 2-3</li>
+                    <li class="fragment">Two centralized exams (SA1, SA2)</li>
+                    <li class="fragment">Final project presentation at year end</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Grading</h2>
+                <ul>
+                    <li class="fragment">2 SA (schriftliche Arbeiten) — centrally defined</li>
+                    <li class="fragment">Group project — milestones, code reviews, final presentation</li>
+                    <li class="fragment">Katas and exercises — ongoing assessment</li>
+                    <li class="fragment">Code reviews — 3 peer reviews throughout the year</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>The Group Project</h2>
+                <ul>
+                    <li class="fragment">Choose your own domain (library, gym, restaurant, hotel, ...)</li>
+                    <li class="fragment">Build a full Spring Boot application over the year</li>
+                    <li class="fragment">REST API + Thymeleaf frontend + PostgreSQL + Docker</li>
+                    <li class="fragment">Milestones every 6-7 weeks (presentations + code reviews)</li>
+                    <li class="fragment">Final product: fully functional enterprise application</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Recap: 3rd Grade Stack</h2>
+                <ul>
+                    <li class="fragment">Java 17+ (Records, Streams, Optional, Pattern Matching)</li>
+                    <li class="fragment">JUnit 5, Mockito, AssertJ</li>
+                    <li class="fragment">SOLID Principles, TDD, Layered Architecture</li>
+                    <li class="fragment">JDBC, JPA, Hibernate, PostgreSQL</li>
+                    <li class="fragment">HTTP, REST, Javalin (our first REST framework)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>From Javalin to Spring Boot</h2>
+                <div class="fragment">
+                    <p>Javalin: lightweight, minimal, great for learning REST fundamentals</p>
+                </div>
+                <div class="fragment">
+                    <p>Spring Boot: industry standard, full ecosystem, enterprise-ready</p>
+                </div>
+                <div class="fragment highlight-box">
+                    <p>Same REST concepts — different toolset</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Why Spring Boot?</h2>
+                <ul>
+                    <li class="fragment">Convention over Configuration — sensible defaults</li>
+                    <li class="fragment">Embedded Tomcat — no separate server needed</li>
+                    <li class="fragment">Massive ecosystem: Security, Data, Cloud, Actuator</li>
+                    <li class="fragment">Industry standard in Austrian enterprises</li>
+                    <li class="fragment">Relevant for Matura and internships</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Spring Initializr</h2>
+                <ul>
+                    <li class="fragment">https://start.spring.io/</li>
+                    <li class="fragment">Configure: Maven/Gradle, Java, Spring Boot version</li>
+                    <li class="fragment">Select dependencies (start with Spring Web + DevTools)</li>
+                    <li class="fragment">Generate &rarr; download &rarr; extract &rarr; open in IDE</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Project Structure</h2>
+                <pre><code class="language-plaintext">project/
+├── pom.xml                          (or build.gradle)
+├── src/
+│   ├── main/
+│   │   ├── java/at/spengergasse/
+│   │   │   └── TeamprojectApplication.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       ├── static/
+│   │       └── templates/
+│   └── test/
+│       └── java/at/spengergasse/
+│           └── TeamprojectApplicationTests.java</code></pre>
+            </section>
+
+            <section>
+                <h2>pom.xml Essentials</h2>
+                <pre><code class="language-xml">&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.2.0&lt;/version&gt;
+&lt;/parent&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+            </section>
+
+            <section>
+                <h2>First REST Controller</h2>
+                <pre><code class="language-java">package at.spengergasse;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello from Spring Boot!";
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Path Variables</h2>
+                <pre><code class="language-java">@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello from Spring Boot!";
+    }
+
+    @GetMapping("/hello/{name}")
+    public String sayHelloName(@PathVariable String name) {
+        return "Hello, " + name + "!";
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Returning JSON</h2>
+                <pre><code class="language-java">// Using a record
+public record Greeting(String message) {}
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public Greeting sayHello() {
+        return new Greeting("Hello from Spring Boot!");
+    }
+}</code></pre>
+                <p class="fragment">Spring Boot automatically serializes records to JSON via Jackson.</p>
+            </section>
+
+            <section>
+                <h2>Testing in the Browser</h2>
+                <pre><code class="language-bash"># Start the application
+./mvnw spring-boot:run
+
+# Test endpoints
+curl http://localhost:8080/hello
+curl http://localhost:8080/hello/Alice</code></pre>
+                <p class="fragment">Or simply open http://localhost:8080/hello in your browser.</p>
+            </section>
+
+            <section>
+                <h2>Spring Boot DevTools</h2>
+                <ul>
+                    <li class="fragment">Automatic restart when files change</li>
+                    <li class="fragment">LiveReload browser extension (optional)</li>
+                    <li class="fragment">Disabled in production by default</li>
+                    <li class="fragment">Included via <code>spring-boot-devtools</code> dependency</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>GitHub Classroom Setup</h2>
+                <ul>
+                    <li class="fragment">Accept the invitation link</li>
+                    <li class="fragment">Create or join your team</li>
+                    <li class="fragment">Clone the repository</li>
+                    <li class="fragment">Push your Spring Boot project</li>
+                    <li class="fragment">Verify: all team members can pull, modify, push</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Team Workflow</h2>
+                <pre><code class="language-bash"># Clone the repo
+git clone &lt;repo-url&gt;
+
+# Add your project files
+git add .
+git commit -m "Initial project setup"
+git push
+
+# Team member pulls changes
+git pull
+
+# Make changes and push
+git add .
+git commit -m "Added greeting endpoint"
+git push</code></pre>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>Course structure and the year-long project</li>
+                        <li>Transition from Javalin to Spring Boot</li>
+                        <li>Creating a Spring Boot project with Initializr</li>
+                        <li>Writing a REST controller with @GetMapping</li>
+                        <li>Returning JSON responses using records</li>
+                        <li>Setting up GitHub Classroom for team collaboration</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>UML & DDD — Domain Modeling for Your Project</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">00 - Introduction_SpringBoot</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

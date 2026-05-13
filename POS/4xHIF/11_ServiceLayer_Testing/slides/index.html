@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>11 - ServiceLayer_Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>11 - Service Layer Testing</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Unit vs. Integration Tests</h2>
+                <table>
+                    <tr><th></th><th>Unit-Test</th><th>Integration-Test</th></tr>
+                    <tr><td>Scope</td><td>Eine Klasse</td><td>Mehrere Schichten</td></tr>
+                    <tr><td>Abhängigkeiten</td><td>Gemosst</td><td>Echt</td></tr>
+                    <tr><td>Geschwindigkeit</td><td>Millisekunden</td><td>Sekunden</td></tr>
+                    <tr><td>Datenbank</td><td>Nein</td><td>Ja</td></tr>
+                    <tr><td>Fehlerort</td><td>Exakt</td><td>Indirekt</td></tr>
+                </table>
+                <p class="fragment">Service-Tests = Unit-Tests mit gemockten Repositories.</p>
+            </section>
+
+            <section>
+                <h2>Warum Repositories mocken?</h2>
+                <ul>
+                    <li class="fragment">Repository ist schon getestet (Week 05 + 08)</li>
+                    <li class="fragment">Service-Logik isoliert testen (nur die Business-Regeln)</li>
+                    <li class="fragment">Kein Testcontainers nötig → Tests sind schnell</li>
+                    <li class="fragment">Fehler im Service sind sofort sichtbar (nicht im DB-Layer versteckt)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Mockito Annotations</h2>
+                <pre><code class="language-java">@ExtendWith(MockitoExtension.class)
+class LibraryServiceTest {
+
+    @Mock
+    private BookRepository bookRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    @Mock
+    private LoanRepository loanRepository;
+
+    @InjectMocks
+    private LibraryService libraryService;
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>@Mock</code> — erzeugt einen Mock</li>
+                    <li class="fragment"><code>@InjectMocks</code> — erzeugt das Service-Objekt und injiziert die Mocks</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Stubbing — when/thenReturn</h2>
+                <pre><code class="language-java">@Test
+void findAllBooks_shouldReturnAllBooks() {
+    List<Book> expected = List.of(
+        new Book("978-3-16-148410-0", "DDD", 2003),
+        new Book("978-0-13-468599-1", "Clean Code", 2008)
+    );
+
+    when(bookRepository.findAll()).thenReturn(expected);
+
+    List<Book> actual = libraryService.findAllBooks();
+
+    assertEquals(2, actual.size());
+    assertEquals(expected, actual);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>doThrow — Exception-Szenarien</h2>
+                <pre><code class="language-java">@Test
+void createBook_withDuplicateIsbn_shouldThrow() {
+    CreateBookCommand command = new CreateBookCommand(
+        "978-3-16-148410-0", "DDD", 2003);
+
+    when(bookRepository.findByIsbn(command.isbn()))
+        .thenReturn(Optional.of(new Book()));
+
+    assertThrows(DuplicateIsbnException.class,
+        () -> libraryService.createBook(command));
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>verify — Interaktion prüfen</h2>
+                <pre><code class="language-java">@Test
+void deleteBook_shouldCallRepository() {
+    Long bookId = 1L;
+
+    when(bookRepository.existsById(bookId)).thenReturn(true);
+
+    libraryService.deleteBook(bookId);
+
+    // Prüfen, dass deleteById() aufgerufen wurde
+    verify(bookRepository).deleteById(bookId);
+}
+
+@Test
+void deleteBook_nonExistent_shouldNotCallDelete() {
+    Long bookId = 99L;
+
+    when(bookRepository.existsById(bookId)).thenReturn(false);
+
+    assertThrows(EntityNotFoundException.class,
+        () -> libraryService.deleteBook(bookId));
+
+    // Prüfen, dass deleteById() NIEMALS aufgerufen wurde
+    verify(bookRepository, never()).deleteById(any());
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>ArgumentCaptor</h2>
+                <pre><code class="language-java">@Test
+void createBook_shouldSaveCorrectEntity() {
+    CreateBookCommand command = new CreateBookCommand(
+        "978-3-16-148410-0", "Domain-Driven Design", 2003);
+
+    libraryService.createBook(command);
+
+    ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+    verify(bookRepository).save(captor.capture());
+
+    Book saved = captor.getValue();
+    assertEquals("978-3-16-148410-0", saved.getIsbn());
+    assertEquals("Domain-Driven Design", saved.getTitle());
+    assertEquals(2003, saved.getYear());
+}</code></pre>
+                <p class="fragment">Nützlich, um zu prüfen, WAS genau an das Repository übergeben wurde.</p>
+            </section>
+
+            <section>
+                <h2>@Transactional testen</h2>
+                <pre><code class="language-java">@Test
+void checkOutBook_whenSaveFails_shouldRollback() {
+    Long memberId = 1L;
+    Long bookId = 1L;
+
+    when(memberRepository.findById(memberId))
+        .thenReturn(Optional.of(new Member()));
+    when(bookRepository.findById(bookId))
+        .thenReturn(Optional.of(new Book()));
+
+    // Simuliere Fehler beim Speichern des Loans
+    when(loanRepository.save(any()))
+        .thenThrow(new RuntimeException("DB error"));
+
+    assertThrows(RuntimeException.class,
+        () -> libraryService.checkOutBook(memberId, bookId));
+
+    // Prüfen: Keine Side-Effects
+    verify(bookRepository, never()).save(any());
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Projekt: Service Tests</h2>
+                <div class="highlight-box">
+                    <ol>
+                        <li>Erstelle <code>LibraryServiceTest</code> mit MockitoExtension</li>
+                        <li>Teste alle CRUD-Methoden (State-Tests)</li>
+                        <li>Teste <code>checkOutBook()</code> (Behavior-Tests mit verify)</li>
+                        <li>Teste Exception-Szenarien (Buch nicht verfügbar, Member nicht gefunden)</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>@Mock, @InjectMocks, @ExtendWith(MockitoExtension.class)</li>
+                        <li>when/thenReturn und doThrow zum Stubbing</li>
+                        <li>verify(), times(), never() für Behavior-Tests</li>
+                        <li>ArgumentCaptor für detaillierte Prüfungen</li>
+                        <li>Exception-Szenarien testen</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Exception Handling & Validation — @ControllerAdvice, @Valid, ProblemDetail</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">11 - ServiceLayer_Testing</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

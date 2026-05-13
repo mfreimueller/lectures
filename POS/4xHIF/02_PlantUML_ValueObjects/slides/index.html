@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>02 - PlantUML_ValueObjects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>02 - PlantUML & Value Objects</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Why PlantUML?</h2>
+                <ul>
+                    <li class="fragment">Text-based diagrams — version control friendly</li>
+                    <li class="fragment">Automatically generate diagrams from code</li>
+                    <li class="fragment">No drag-and-drop layout problems</li>
+                    <li class="fragment">Integrates with IntelliJ, VS Code, CI pipelines</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>PlantUML Syntax: Class</h2>
+                <pre><code class="language-plaintext">@startuml
+class Person {
+  - String name
+  - LocalDate birthDate
+  + getName(): String
+  + getAge(): int
+}
+@enduml</code></pre>
+                <p><code>-</code> private, <code>#</code> protected, <code>+</code> public</p>
+            </section>
+
+            <section>
+                <h2>PlantUML: Relationships</h2>
+                <pre><code class="language-plaintext">@startuml
+Person "1" --> "*" Address : lives at
+Person "1" --> "*" Book : owns
+@enduml</code></pre>
+                <p><code>--></code> = association with direction</p>
+            </section>
+
+            <section>
+                <h2>PlantUML: Aggregation & Composition</h2>
+                <pre><code class="language-plaintext">@startuml
+Department o-- Employee  ' aggregation (empty diamond)
+Order *-- OrderItem     ' composition (filled diamond)
+@enduml</code></pre>
+            </section>
+
+            <section>
+                <h2>PlantUML: Inheritance & Realization</h2>
+                <pre><code class="language-plaintext">@startuml
+Animal <|-- Dog            ' inheritance (extends)
+interface Borrowable
+Borrowable <|.. Book       ' realization (implements)
+@enduml</code></pre>
+            </section>
+
+            <section>
+                <h2>What are Value Objects?</h2>
+                <ul>
+                    <li class="fragment">Objects defined <strong>by their attributes</strong>, not by identity</li>
+                    <li class="fragment"><strong>Immutable</strong> — cannot change after creation</li>
+                    <li class="fragment"><strong>Structural equality</strong> — two VOs are equal if all fields match</li>
+                    <li class="fragment">No side effects — operations return new instances</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Value Object Examples</h2>
+                <table>
+                    <tr><th>Bad (primitives)</th><th>Good (Value Objects)</th></tr>
+                    <tr><td><code>String email</code></td><td><code>Email email</code></td></tr>
+                    <tr><td><code>double amount</code></td><td><code>Money price</code></td></tr>
+                    <tr><td><code>String street</code></td><td><code>Address address</code></td></tr>
+                    <tr><td><code>String color</code></td><td><code>Color color</code></td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Implementing a Value Object</h2>
+                <pre><code class="language-java">public record Email(String value) {
+    public Email {
+        if (value == null || !value.contains("@")) {
+            throw new IllegalArgumentException(
+                "Email must contain @");
+        }
+    }
+
+    public static Email of(String value) {
+        return new Email(value);
+    }
+}</code></pre>
+                <p class="fragment">Records give us immutability, equals/hashCode, toString for free.</p>
+            </section>
+
+            <section>
+                <h2>Money Value Object</h2>
+                <pre><code class="language-java">public record Money(BigDecimal amount, Currency currency) {
+    public Money {
+        if (amount.compareTo(BigDecimal.ZERO) &lt; 0) {
+            throw new IllegalArgumentException(
+                "Amount cannot be negative");
+        }
+    }
+
+    public Money add(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException(
+                "Currency mismatch");
+        }
+        return new Money(this.amount.add(other.amount),
+                         this.currency);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>RichTypes: Beyond Primitives</h2>
+                <ul>
+                    <li class="fragment"><strong>Primitive Obsession</strong> — using String, int, long for everything</li>
+                    <li class="fragment"><strong>RichTypes</strong> — wrap primitives in domain-meaningful types</li>
+                    <li class="fragment">Compiler catches errors: <code>CustomerId</code> vs <code>OrderId</code></li>
+                    <li class="fragment">Validation lives in the type, not scattered across services</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>RichType Example</h2>
+                <pre><code class="language-java">// Before
+public void placeOrder(String customerId,
+                       String productId) { ... }
+
+// After
+public record CustomerId(String value) {
+    public CustomerId {
+        if (!value.matches("CUST-\\d{3}")) {
+            throw new IllegalArgumentException(
+                "Invalid customer ID format");
+        }
+    }
+}
+
+public record ProductId(String value) { ... }
+
+public void placeOrder(CustomerId customerId,
+                       ProductId productId) { ... }</code></pre>
+            </section>
+
+            <section>
+                <h2>Project: Domain Model as PlantUML</h2>
+                <ul>
+                    <li class="fragment">Convert your UML sketch to PlantUML</li>
+                    <li class="fragment">Identify Value Objects (Email, Money, Address, etc.)</li>
+                    <li class="fragment">Identify RichTypes for IDs and codes</li>
+                    <li class="fragment">Commit the .puml file to your repo</li>
+                </ul>
+                <p class="fragment">Next week: Milestone 1 — Present your domain model!</p>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>PlantUML syntax for class diagrams</li>
+                        <li>Value Objects: immutable, structural equality</li>
+                        <li>RichTypes to eliminate primitive obsession</li>
+                        <li>Validation at construction time</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>Next Week</h2>
+                    <p>Milestone 1: Domain Model &amp; Projekt-Setup — Präsentation</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">02 - PlantUML_ValueObjects</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

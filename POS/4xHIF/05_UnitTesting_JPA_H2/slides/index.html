@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>05 - UnitTesting_JPA_H2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>05 - Unit Testing JPA with H2</h1>
+                <p class="institution">POS - 4xHIF</p>
+            </section>
+
+            <section>
+                <h2>Why Test Repositories?</h2>
+                <ul>
+                    <li class="fragment">Verify your JPA mappings actually work</li>
+                    <li class="fragment">Catch regression when schema changes</li>
+                    <li class="fragment">Test custom queries against real SQL</li>
+                    <li class="fragment">Run in CI — no real database needed</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>@DataJpaTest</h2>
+                <ul>
+                    <li class="fragment">A "slice test" — only loads JPA-related beans</li>
+                    <li class="fragment">Auto-configures H2 in-memory database</li>
+                    <li class="fragment">Rolls back after each test (transactional)</li>
+                    <li class="fragment">Injects TestEntityManager for additional control</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Test Setup</h2>
+                <pre><code class="language-java">@DataJpaTest
+class BookRepositoryTest {
+
+    @Autowired
+    private BookRepository bookRepo;
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @BeforeEach
+    void setUp() {
+        book1 = new Book("123-4", "Java Basics", 2020);
+        book2 = new Book("567-8", "Spring Boot", 2022);
+        bookRepo.saveAll(List.of(book1, book2));
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Testing CRUD</h2>
+                <pre><code class="language-java">@Test
+void saveAndFindById_shouldWork() {
+    Book saved = bookRepo.save(new Book("000", "Test", 2024));
+    assertThat(saved.getId()).isNotNull();
+    assertThat(bookRepo.findById(saved.getId())).isPresent();
+}
+
+@Test
+void findAll_shouldReturnAllBooks() {
+    assertThat(bookRepo.findAll()).hasSize(2);
+}
+
+@Test
+void delete_shouldRemoveBook() {
+    bookRepo.delete(book1);
+    assertThat(bookRepo.findById(book1.getId())).isEmpty();
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Testing Relationships</h2>
+                <pre><code class="language-java">@Test
+void cascadePersist_shouldSaveLoans() {
+    Member member = new Member("Alice");
+    member.addLoan(new Loan(book1, LocalDate.now()));
+    memberRepo.save(member);
+
+    assertThat(loanRepo.count()).isEqualTo(1);
+}
+
+@Test
+@Transactional
+void lazyLoading_shouldWorkInTransaction() {
+    Member member = memberRepo.findById(member1.getId()).get();
+    assertThat(member.getLoans()).hasSize(2); // no LazyInitException
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Testing Custom Queries</h2>
+                <pre><code class="language-java">@Test
+void searchByTitle_shouldFindMatches() {
+    List&lt;Book&gt; result = bookRepo.searchByTitle("Java");
+    assertThat(result)
+        .hasSize(1)
+        .extracting(Book::getTitle)
+        .contains("Java Basics");
+}
+
+@Test
+void searchByTitle_shouldReturnEmptyForNoMatch() {
+    assertThat(bookRepo.searchByTitle("xyz"))
+        .isEmpty();
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Project: Write Repository Tests</h2>
+                <ul>
+                    <li class="fragment">Write @DataJpaTest classes for all repositories</li>
+                    <li class="fragment">Cover: basic CRUD, relationships, custom queries</li>
+                    <li class="fragment">Test edge cases: empty results, duplicates, null values</li>
+                    <li class="fragment">Use AssertJ for readable assertions</li>
+                </ul>
+                <p class="fragment">Next week: Code Review — inspect each other's JPA + tests!</p>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h2>What We Learned Today</h2>
+                    <ul>
+                        <li>@DataJpaTest for repository slice tests</li>
+                        <li>H2 in-memory database for testing</li>
+                        <li>Testing CRUD, relationships, and custom queries</li>
+                        <li>Test isolation and @Transactional rollback</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide',
+            backgroundTransition: 'fade', plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">05 - Unit Testing JPA with H2</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>
