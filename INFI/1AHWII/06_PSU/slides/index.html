@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>06 - Hardware - Stromversorgung (PSU)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>06 - Hardware: Stromversorgung (PSU)</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment">Wiederholung: Rechnerarchitektur</li>
+                    <li class="fragment">Warum ein Netzteil? Grundfunktion</li>
+                    <li class="fragment">Aufbau eines Desktop-Netzteils</li>
+                    <li class="fragment">Anschlüsse im Detail (ATX, CPU, Molex, SATA)</li>
+                    <li class="fragment">Spannungsschienen +12V, +5V, +3.3V</li>
+                    <li class="fragment">80 Plus Effizienzklassen</li>
+                    <li class="fragment">Berechnungsbeispiel Effizienz</li>
+                    <li class="fragment">Laptop-Netzteile und Akkus</li>
+                    <li class="fragment">USV – Unterbrechungsfreie Stromversorgung</li>
+                    <li class="fragment">USV-Typen im Vergleich</li>
+                    <li class="fragment">Zusammenfassung und Ausblick</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Rechnerarchitektur</h2>
+                <p>Letzte Woche haben wir die Von-Neumann-Architektur kennengelernt:</p>
+                <ul>
+                    <li class="fragment"><strong>CPU</strong> – Steuerwerk + Rechenwerk</li>
+                    <li class="fragment"><strong>Speicher</strong> – RAM (Hauptspeicher)</li>
+                    <li class="fragment"><strong>E/A</strong> – Eingabe/Ausgabe-Geräte</li>
+                    <li class="fragment"><strong>Bussystem</strong> – Verbindung zwischen den Komponenten</li>
+                </ul>
+                <p class="fragment" style="margin-top: 0.5em;">Alle diese Komponenten benötigen <strong>elektrische Energie</strong> – bereitgestellt durch das Netzteil (PSU).</p>
+            </section>
+
+            <section>
+                <h2>Warum ein Netzteil? Grundfunktion</h2>
+                <p>Das Netzteil (Power Supply Unit, PSU) hat zwei Hauptaufgaben:</p>
+                <ol>
+                    <li class="fragment"><strong>Spannungswandlung:</strong> 230 V Wechselstrom (AC) aus der Steckdose in mehrere Gleichspannungen (DC) umwandeln</li>
+                    <li class="fragment"><strong>Stabilisierung:</strong> Konstante Spannungen liefern, trotz schwankender Last</li>
+                </ol>
+                <p class="fragment" style="margin-top: 0.8em;">Ohne Netzteil könnten die empfindlichen elektronischen Komponenten beschädigt werden oder gar nicht funktionieren.</p>
+            </section>
+
+            <section>
+                <h2>Aufbau eines Desktop-Netzteils</h2>
+                <p>Ein modernes Schaltnetzteil besteht aus folgenden Komponenten:</p>
+                <table>
+                    <tr><th>Komponente</th><th>Funktion</th></tr>
+                    <tr><td>Eingangsfilter</td><td>Unterdrückt Störungen aus dem Stromnetz</td></tr>
+                    <tr><td>Gleichrichter</td><td>Wandelt AC in gepulste DC um</td></tr>
+                    <tr><td>Transformator</td><td>Transformiert auf niedrigere Spannungen</td></tr>
+                    <tr><td>Ausgangsgleichrichter</td><td>Glättet die Spannungen (Kondensatoren)</td></tr>
+                    <tr><td>Lüfter</td><td>Kühlt die Komponenten</td></tr>
+                    <tr><td>Spannungsregelung</td><td>Hält die Ausgangsspannungen stabil</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Anschlüsse im Detail</h2>
+                <table>
+                    <tr><th>Stecker</th><th>Verwendung</th><th>Pins</th></tr>
+                    <tr><td>ATX 24-pin</td><td>Hauptplatine (Mainboard)</td><td>24</td></tr>
+                    <tr><td>CPU 4+4-pin</td><td>CPU-Stromversorgung</td><td>4+4 (8)</td></tr>
+                    <tr><td>PCIe 6+2-pin</td><td>Grafikkarte</td><td>6+2 (8)</td></tr>
+                    <tr><td>Molex 4-pin</td><td>Ältere Festplatten, Lüfter, etc.</td><td>4</td></tr>
+                    <tr><td>SATA-Strom</td><td>SATA-Festplatten, SSDs</td><td>15</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.5em;"><strong>Achtung:</strong> Stecker sind verpolungssicher – nur eine Einbaurichtung ist möglich.</p>
+            </section>
+
+            <section>
+                <h2>Spannungsschienen +12V, +5V, +3.3V</h2>
+                <p>Ein Netzteil stellt drei Hauptspannungen bereit:</p>
+                <table>
+                    <tr><th>Spannung</th><th>Verwendung</th></tr>
+                    <tr><td>+12 V</td><td>CPU, Grafikkarte, Lüfter, Festplattenmotoren (höchste Leistung)</td></tr>
+                    <tr><td>+5 V</td><td>USB-Anschlüsse, SSDs, ältere Komponenten</td></tr>
+                    <tr><td>+3.3 V</td><td>Chipsätze, RAM, M.2-SSDs, Low-Power-Komponenten</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.8em;">Die maximale Leistung (Watt) verteilt sich auf diese Schienen. Ein gutes Netzteil kann die Last dynamisch verteilen.</p>
+            </section>
+
+            <section>
+                <h2>80 Plus Effizienzklassen</h2>
+                <p>80 Plus ist ein Zertifikat für die Effizienz von Netzteilen. Mindestens 80 % der aufgenommenen Energie werden nutzbar abgegeben.</p>
+                <table>
+                    <tr><th>Zertifikat</th><th>Effizienz bei 20 % Last</th><th>bei 50 % Last</th><th>bei 100 % Last</th></tr>
+                    <tr><td>80 Plus (Weiß)</td><td>80 %</td><td>80 %</td><td>80 %</td></tr>
+                    <tr><td>80 Plus Bronze</td><td>82 %</td><td>85 %</td><td>82 %</td></tr>
+                    <tr><td>80 Plus Silver</td><td>85 %</td><td>88 %</td><td>85 %</td></tr>
+                    <tr><td>80 Plus Gold</td><td>87 %</td><td>90 %</td><td>87 %</td></tr>
+                    <tr><td>80 Plus Platinum</td><td>90 %</td><td>92 %</td><td>89 %</td></tr>
+                    <tr><td>80 Plus Titanium</td><td>90 %</td><td>94 %</td><td>90 %</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Berechnungsbeispiel Effizienz</h2>
+                <p>Ein PC benötigt 400 W Leistung. Das Netzteil hat 80 Plus Gold (90 % Effizienz bei 50 % Last).</p>
+                <div class="fragment">
+                    <p><strong>Berechnung der Aufnahmeleistung:</strong></p>
+                    <p>$\text{Effizienz} = \dfrac{\text{Abgabe}}{\text{Aufnahme}} \quad \Rightarrow \quad \text{Aufnahme} = \dfrac{\text{Abgabe}}{\text{Effizienz}}$</p>
+                    <p>$\text{Aufnahme} = \dfrac{400\ \text{W}}{0{,}90} \approx 444\ \text{W}$</p>
+                </div>
+                <div class="fragment" style="margin-top: 0.5em;">
+                    <p><strong>Verlustleistung:</strong> $444\ \text{W} - 400\ \text{W} = 44\ \text{W}$ (als Wärme)</p>
+                    <p>Mit einem 80 Plus Bronze-Netzteil (85 %) wäre die Aufnahme $400 / 0{,}85 \approx 471\ \text{W}$ – also 27 W mehr Verlust.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Laptop-Netzteile und Akkus</h2>
+                <ul>
+                    <li class="fragment"><strong>Externe Netzteile:</strong> Meist als "Power Brick" ausgeführt – kleiner, leichter, aber oft proprietär.</li>
+                    <li class="fragment"><strong>Spannung:</strong> Typisch 19–20 V Gleichspannung (DC).</li>
+                    <li class="fragment"><strong>Akkus:</strong> Meist Lithium-Ionen (Li-Ion) oder Lithium-Polymer (LiPo).</li>
+                    <li class="fragment"><strong>Kapazität:</strong> Gemessen in Wattstunden (Wh) oder Milliamperestunden (mAh).</li>
+                    <li class="fragment"><strong>Ladezyklen:</strong> Ein Akku kann etwa 300–500 Ladezyklen durchlaufen, bevor die Kapazität merklich nachlässt.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>USV – Unterbrechungsfreie Stromversorgung</h2>
+                <p>Eine USV (UPS – Uninterruptible Power Supply) schützt den Computer vor:</p>
+                <ul>
+                    <li class="fragment"><strong>Stromausfall:</strong> Sorgt für geordnetes Herunterfahren</li>
+                    <li class="fragment"><strong>Spannungsschwankungen:</strong> Glättet Überspannungen und Einbrüche</li>
+                    <li class="fragment"><strong>Frequenzschwankungen:</strong> Stabilisiert die Netzfrequenz</li>
+                </ul>
+                <p class="fragment" style="margin-top: 0.5em;">Eine USV besteht aus einem Akku, einem Wechselrichter und einem Ladegerät. Die Überbrückungszeit beträgt meist 5–30 Minuten.</p>
+            </section>
+
+            <section>
+                <h2>USV-Typen im Vergleich</h2>
+                <table>
+                    <tr><th>Typ</th><th>Funktion</th><th>Einsatz</th></tr>
+                    <tr><td>Offline (Standby)</td><td>Schaltet bei Stromausfall auf Akku um (Umschaltzeit ~5 ms)</td><td>Heimanwender, Büro-PCs</td></tr>
+                    <tr><td>Line-Interactive</td><td>Glättet Spannungsschwankungen aktiv (AVR), schaltet bei Ausfall auf Akku</td><td>Server, Workstations</td></tr>
+                    <tr><td>Online (Doppelwandler)</td><td>Akku ist immer im Strompfad – keine Umschaltzeit</td><td>Rechenzentren, Krankenhäuser</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.5em;"><strong>Empfehlung:</strong> Für zu Hause reicht ein Line-Interactive-Modell. Für kritische Server ist Online die beste Wahl.</p>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung und Ausblick</h2>
+                <ul>
+                    <li class="fragment">Das Netzteil wandelt 230 V AC in mehrere Gleichspannungen um.</li>
+                    <li class="fragment">Wichtige Anschlüsse: ATX 24-pin, CPU 4+4-pin, PCIe, SATA, Molex.</li>
+                    <li class="fragment">Die 80 Plus-Zertifikate geben die Effizienz an – Gold oder besser wird empfohlen.</li>
+                    <li class="fragment">Laptops nutzen externe Netzteile und Akkus (Li-Ion/LiPo).</li>
+                    <li class="fragment">Eine USV schützt vor Stromausfällen und Spannungsproblemen.</li>
+                </ul>
+                <p class="fragment" style="margin-top: 0.8em;"><strong>Nächste Woche:</strong> Mainboard & Chipsatz – die zentrale Verbindungsplattform des Computers.</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">06 - Hardware: Stromversorgung (PSU)</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

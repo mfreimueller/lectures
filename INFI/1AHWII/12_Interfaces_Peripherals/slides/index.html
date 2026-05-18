@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>12 - Schnittstellen & Peripherie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>12 - Schnittstellen & Peripherie</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Schnittstellen – Einteilung</h2>
+                <ul>
+                    <li class="fragment">Eine Schnittstelle (Interface) verbindet zwei Komponenten oder Systeme</li>
+                    <li class="fragment">Man unterscheidet <strong>interne</strong> und <strong>externe</strong> Schnittstellen</li>
+                    <li class="fragment"><strong>Interne Schnittstellen:</strong> Verbindung von Komponenten innerhalb des Gehäuses (PCIe, SATA, M.2)</li>
+                    <li class="fragment"><strong>Externe Schnittstellen:</strong> Verbindung zu Peripheriegeräten (USB, HDMI, Bluetooth)</li>
+                    <li class="fragment">Die Wahl der richtigen Schnittstelle beeinflusst Geschwindigkeit, Kompatibilität und Nutzung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Schnittstellen-Kategorien im Überblick</h2>
+                <table>
+                    <tr><th>Kategorie</th><th>Beispiele</th><th>Typische Nutzung</th></tr>
+                    <tr><td>Daten (seriell)</td><td>USB, SATA, PCIe</td><td>Massenspeicher, Peripherie</td></tr>
+                    <tr><td>Video</td><td>HDMI, DisplayPort, VGA</td><td>Monitor, Beamer</td></tr>
+                    <tr><td>Netzwerk</td><td>Ethernet, WLAN</td><td>Internet, LAN</td></tr>
+                    <tr><td>Audio</td><td>Klinke, SPDIF, Bluetooth</td><td>Kopfhörer, Lautsprecher</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>USB – Universal Serial Bus</h2>
+                <ul>
+                    <li class="fragment">USB ist die verbreitetste Schnittstelle für Peripheriegeräte</li>
+                    <li class="fragment">Ermöglicht Datenübertragung und Stromversorgung über ein Kabel</li>
+                    <li class="fragment">USB 2.0: max. 480 Mbit/s, meist schwarzer/grauer Stecker</li>
+                    <li class="fragment">USB 3.0 / 3.1 Gen 1: max. 5 Gbit/s, meist blauer Stecker</li>
+                    <li class="fragment">USB 3.1 Gen 2: max. 10 Gbit/s, meist roter/türkiser Stecker</li>
+                    <li class="fragment">USB 3.2 / 4.0: bis zu 40 Gbit/s mit USB-C</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>USB-Standards im Vergleich</h2>
+                <table>
+                    <tr><th>Standard</th><th>Max. Datenrate</th><th>Steckertyp</th><th>Einführung</th></tr>
+                    <tr><td>USB 2.0</td><td>480 Mbit/s</td><td>USB-A, USB-B, Mini, Micro</td><td>2000</td></tr>
+                    <tr><td>USB 3.0</td><td>5 Gbit/s</td><td>USB-A (blau), USB-B, Micro-B</td><td>2008</td></tr>
+                    <tr><td>USB 3.1 Gen 2</td><td>10 Gbit/s</td><td>USB-A, USB-C</td><td>2013</td></tr>
+                    <tr><td>USB 3.2 Gen 2×2</td><td>20 Gbit/s</td><td>USB-C</td><td>2017</td></tr>
+                    <tr><td>USB4</td><td>40 Gbit/s</td><td>USB-C</td><td>2019</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>USB-C – Der Universalstecker</h2>
+                <ul>
+                    <li class="fragment">USB-C ist ein kleiner, symmetrischer (reversible) 24-Pin-Stecker</li>
+                    <li class="fragment">Unterstützt verschiedene Protokolle: USB, DisplayPort, HDMI, Thunderbolt</li>
+                    <li class="fragment">Kann bis zu 240 W (USB PD 3.1) Strom liefern</li>
+                    <li class="fragment">Wird bei Smartphones, Laptops, Monitoren und Docking-Stationen eingesetzt</li>
+                    <li class="fragment">Nicht jeder USB-C-Anschluss unterstützt alle Protokolle – auf Beschriftung achten!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>HDMI – High-Definition Multimedia Interface</h2>
+                <ul>
+                    <li class="fragment">HDMI überträgt Video und Audio digital über ein einziges Kabel</li>
+                    <li class="fragment">HDMI 1.4: max. 4K bei 30 Hz, 10,2 Gbit/s (2009)</li>
+                    <li class="fragment">HDMI 2.0: max. 4K bei 60 Hz, 18 Gbit/s (2013)</li>
+                    <li class="fragment">HDMI 2.1: max. 8K bei 60 Hz / 4K bei 120 Hz, 48 Gbit/s (2017)</li>
+                    <li class="fragment">Typische Stecker: HDMI Typ A (Standard), Typ C (Mini), Typ D (Micro)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>DisplayPort</h2>
+                <ul>
+                    <li class="fragment">DisplayPort ist ein digitaler Video-Standard, primär für Computer-Monitore</li>
+                    <li class="fragment">DisplayPort 1.4: max. 8K bei 60 Hz, 32,4 Gbit/s (2016)</li>
+                    <li class="fragment">DisplayPort 2.0/2.1: max. 16K bei 60 Hz, bis zu 80 Gbit/s (2019/2022)</li>
+                    <li class="fragment">Unterstützt Daisy-Chaining (mehrere Monitore in Reihe)</li>
+                    <li class="fragment">VGA (Video Graphics Array) ist der analoge Vorgänger – veraltet, max. 1.920 × 1.200</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Video-Schnittstellen im Vergleich</h2>
+                <table>
+                    <tr><th>Merkmal</th><th>HDMI</th><th>DisplayPort</th><th>VGA</th></tr>
+                    <tr><td>Signal</td><td>digital</td><td>digital</td><td>analog</td></tr>
+                    <tr><td>Audio</td><td>ja</td><td>ja</td><td>nein</td></tr>
+                    <tr><td>Max. Auflösung</td><td>8K (2.1)</td><td>16K (2.0)</td><td>1.920 × 1.200</td></tr>
+                    <tr><td>Daisy-Chain</td><td>nein</td><td>ja</td><td>nein</td></tr>
+                    <tr><td>Typische Nutzung</td><td>TV, Beamer, Spiele</td><td>PC-Monitore</td><td>ältere Geräte</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Peripherie – Klassifikation</h2>
+                <ul>
+                    <li class="fragment"><strong>Peripheriegeräte</strong> sind alle Geräte, die an einen Computer angeschlossen werden</li>
+                    <li class="fragment">Man unterteilt sie nach ihrer Funktion in drei Hauptkategorien</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Eingabe-, Ausgabe- und Speichergeräte</h2>
+                <table>
+                    <tr><th>Kategorie</th><th>Funktion</th><th>Beispiele</th></tr>
+                    <tr><td><strong>Eingabegeräte</strong></td><td>Eingabe von Daten und Steuerung</td><td>Tastatur, Maus, Mikrofon, Scanner, Webcam</td></tr>
+                    <tr><td><strong>Ausgabegeräte</strong></td><td>Ausgabe von Daten an den Benutzer</td><td>Monitor, Lautsprecher, Drucker, Beamer</td></tr>
+                    <tr><td><strong>Speichergeräte</strong></td><td>Dauerhafte Speicherung von Daten</td><td>Externe HDD/SSD, USB-Stick, NAS</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Drahtlose Schnittstellen – Bluetooth</h2>
+                <ul>
+                    <li class="fragment">Bluetooth ist ein Funkstandard für kurze Distanzen (bis ca. 10 m)</li>
+                    <li class="fragment">Hauptanwendungen: kabellose Mäuse, Tastaturen, Kopfhörer, Smartphone-Kopplung</li>
+                    <li class="fragment">Bluetooth 5.x: höhere Reichweite (bis 200 m), niedriger Stromverbrauch</li>
+                    <li class="fragment">Datenrate: bis zu 2 Mbit/s (BLE) bzw. 50 Mbit/s (Bluetooth 5.2+ LE Audio)</li>
+                    <li class="fragment">Geeignet für geringe Datenmengen und sporadische Übertragungen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Drahtlose Schnittstellen – WLAN</h2>
+                <ul>
+                    <li class="fragment">WLAN (Wireless Local Area Network) verbindet Geräte über Funk mit einem Netzwerk</li>
+                    <li class="fragment">Wi-Fi 5 (802.11ac): bis zu 3,5 Gbit/s, 5-GHz-Band (2014)</li>
+                    <li class="fragment">Wi-Fi 6 (802.11ax): bis zu 9,6 Gbit/s, 2,4 + 5 GHz, OFDMA (2019)</li>
+                    <li class="fragment">Wi-Fi 7 (802.11be): bis zu 46 Gbit/s, 2,4 + 5 + 6 GHz (2024)</li>
+                    <li class="fragment">WLAN eignet sich für hohe Datenraten und permanente Netzwerkanbindung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Docking-Stationen</h2>
+                <ul>
+                    <li class="fragment">Eine Docking-Station erweitert die Anschlussmöglichkeiten eines Laptops</li>
+                    <li class="fragment">Über ein einziges Kabel (meist USB-C oder Thunderbolt) werden mehrere Geräte angeschlossen</li>
+                    <li class="fragment">Typische Anschlüsse: HDMI/DP, USB-A, Ethernet, Audio, SD-Kartenleser</li>
+                    <li class="fragment">Vorteile: schnelles An- und Abdocken, weniger Kabelgewirr</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Schnittstellen verbinden Komponenten intern (PCIe, SATA) und extern (USB, HDMI)</li>
+                    <li class="fragment">USB-Standards reichen von 480 Mbit/s (USB 2.0) bis 40 Gbit/s (USB4)</li>
+                    <li class="fragment">HDMI und DisplayPort sind die wichtigsten digitalen Video-Schnittstellen</li>
+                    <li class="fragment">Peripherie wird in Eingabe-, Ausgabe- und Speichergeräte unterteilt</li>
+                    <li class="fragment">Drahtlose Schnittstellen (Bluetooth, WLAN) ersetzen zunehmend Kabelverbindungen</li>
+                    <li class="fragment">Docking-Stationen vereinfachen den Anschluss vieler Geräte an Laptops</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">12 - Schnittstellen & Peripherie</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

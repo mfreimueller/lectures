@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>22 - Excel - Formeln & Funktionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>22 - Excel - Formeln & Funktionen</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Zellbezüge</h2>
+                <ul>
+                    <li class="fragment"><strong>Relativer Bezug</strong>: Ändert sich beim Kopieren (z. B. <code>A1</code>)</li>
+                    <li class="fragment"><strong>Absoluter Bezug</strong>: Bleibt beim Kopieren gleich (z. B. <code>$A$1</code>)</li>
+                    <li class="fragment"><strong>Gemischter Bezug</strong>: Nur Zeile oder Spalte fixiert (z. B. <code>$A1</code> oder <code>A$1</code>)</li>
+                    <li class="fragment">Tastenkürzel <kbd>F4</kbd> schaltet zwischen den Bezugsarten um</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>Formel in B1</th><th>Kopiert nach C2</th></tr>
+                    <tr><td><code>=A1+1</code> (relativ)</td><td><code>=B2+1</code></td></tr>
+                    <tr><td><code>=$A$1+1</code> (absolut)</td><td><code>=$A$1+1</code></td></tr>
+                    <tr><td><code>=$A1+1</code> (gemischt)</td><td><code>=$A2+1</code></td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Mathematische Funktionen</h2>
+                <ul>
+                    <li class="fragment"><code>=SUMME(Zahl1; Zahl2; …)</code> – Addiert Werte</li>
+                    <li class="fragment"><code>=MITTELWERT(Zahl1; Zahl2; …)</code> – Arithmetisches Mittel</li>
+                    <li class="fragment"><code>=MIN(Zahl1; Zahl2; …)</code> – Kleinster Wert</li>
+                    <li class="fragment"><code>=MAX(Zahl1; Zahl2; …)</code> – Größter Wert</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=SUMME(A1:A10)     → Summe der Zellen A1 bis A10
+=MITTELWERT(B2:B20) → Durchschnitt von B2 bis B20
+=MIN(C5:C15)        → Minimum im Bereich C5:C15
+=MAX(C5:C15)        → Maximum im Bereich C5:C15</code></pre>
+            </section>
+
+            <section>
+                <h2>Zählfunktionen</h2>
+                <ul>
+                    <li class="fragment"><code>=ANZAHL(Wert1; Wert2; …)</code> – Zählt numerische Werte</li>
+                    <li class="fragment"><code>=ANZAHL2(Wert1; Wert2; …)</code> – Zählt nicht leere Zellen</li>
+                    <li class="fragment"><code>=ANZAHLLEEREZELLEN(Bereich)</code> – Zählt leere Zellen</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>Funktion</th><th>Zählt</th></tr>
+                    <tr><td>ANZAHL</td><td>Nur Zahlen</td></tr>
+                    <tr><td>ANZAHL2</td><td>Alle nicht leeren Zellen (Zahlen, Text, Fehler)</td></tr>
+                    <tr><td>ANZAHLLEEREZELLEN</td><td>Nur leere Zellen</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Logische Funktionen: WENN (einfach)</h2>
+                <ul>
+                    <li class="fragment">Syntax: <code>=WENN(Prüfung; Dann_Wert; Sonst_Wert)</code></li>
+                    <li class="fragment">Führt einen Vergleich durch und gibt je nach Ergebnis Werte aus</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=WENN(A1>=50; "Bestanden"; "Durchgefallen")</code></pre>
+                <table class="fragment">
+                    <tr><th>Punkte (A1)</th><th>Ergebnis</th></tr>
+                    <tr><td>72</td><td>Bestanden</td></tr>
+                    <tr><td>34</td><td>Durchgefallen</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Logische Funktionen: WENN mit UND/ODER</h2>
+                <ul>
+                    <li class="fragment"><code>=UND(Bedingung1; Bedingung2; …)</code> – Alle Bedingungen müssen wahr sein</li>
+                    <li class="fragment"><code>=ODER(Bedingung1; Bedingung2; …)</code> – Mindestens eine Bedingung muss wahr sein</li>
+                    <li class="fragment">Diese Funktionen werden oft innerhalb von WENN verwendet</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=WENN(UND(A1>=50; B1="Ja"); "Qualifiziert"; "Nicht qualifiziert")
+=WENN(ODER(A1<18; C1="Austritt"); "Inaktiv"; "Aktiv")</code></pre>
+            </section>
+
+            <section>
+                <h2>Verschachtelte WENN-Funktionen</h2>
+                <ul>
+                    <li class="fragment">Mehrere WENN-Funktionen ineinander = mehrere Bedingungen prüfen</li>
+                    <li class="fragment">Maximal 64 Ebenen (praktisch: 3–5)</li>
+                    <li class="fragment">Lesbarkeit durch Einrückungen verbessern</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=WENN(A1>=90; "Sehr gut";
+ WENN(A1>=75; "Gut";
+  WENN(A1>=60; "Befriedigend";
+   WENN(A1>=50; "Genügend";
+    "Nicht genügend"))))</code></pre>
+            </section>
+
+            <section>
+                <h2>SVERWEIS (Grundlagen)</h2>
+                <ul>
+                    <li class="fragment"><strong>SVERWEIS</strong> = Senkrechter Verweis – sucht in der ersten Spalte einer Tabelle</li>
+                    <li class="fragment">Syntax: <code>=SVERWEIS(Suchkriterium; Matrix; Spaltenindex; [Bereich_Verweis])</code></li>
+                    <li class="fragment"><code>Bereich_Verweis = 0 (FALSCH)</code> → genaue Übereinstimmung</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=SVERWEIS(E2; A2:B10; 2; 0)
+  Sucht E2 in A2:A10 und gibt den Wert aus B2:B10 zurück</code></pre>
+            </section>
+
+            <section>
+                <h2>XVERWEIS (moderne Alternative)</h2>
+                <ul>
+                    <li class="fragment">Seit Excel 2019 / Office 365 verfügbar</li>
+                    <li class="fragment">Syntax: <code>=XVERWEIS(Suchkriterium; Suchmatrix; Rückgabematrix; [Wenn_nicht_gefunden])</code></li>
+                    <li class="fragment">Vorteile gegenüber SVERWEIS:
+                        <ul>
+                            <li>Suchspalte muss nicht ganz links sein</li>
+                            <li>Sucht auch zeilenweise (vertauschte Achsen möglich)</li>
+                            <li>Eingebaute Fehlerbehandlung</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=XVERWEIS(E2; B2:B10; D2:D10; "Nicht gefunden")</code></pre>
+            </section>
+
+            <section>
+                <h2>Namensdefinitionen</h2>
+                <ul>
+                    <li class="fragment">Zellen oder Bereiche können benannt werden (z. B. <code>Umsatz</code> statt <code>B2:B100</code>)</li>
+                    <li class="fragment">Vorteile: Lesbare Formeln, leichtere Wartung, absolute Bezüge automatisch</li>
+                    <li class="fragment">Erstellung: Formeln → Namensmanager oder direkt im Namensfeld</li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=SUMME(Umsatz)   statt  =SUMME(B2:B100)
+=MITTELWERT(Preise)  statt  =MITTELWERT(C2:C50)</code></pre>
+            </section>
+
+            <section>
+                <h2>Fehlerbehandlung</h2>
+                <ul>
+                    <li class="fragment"><code>=WENNFEHLER(Wert; Wert_falls_Fehler)</code> – Fehler abfangen und Ersatzwert anzeigen</li>
+                    <li class="fragment"><code>=ISTFEHLER(Wert)</code> – Prüft, ob ein Wert einen Fehler enthält (gibt WAHR/FALSCH)</li>
+                    <li class="fragment">Typische Fehler: <code>#DIV/0!</code>, <code>#NV</code>, <code>#WERT!</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=WENNFEHLER(A1/B1; "Nicht berechenbar")
+=WENN(ISTFEHLER(A1/B1); 0; A1/B1)</code></pre>
+            </section>
+
+            <section>
+                <h2>Datums- und Zeitfunktionen</h2>
+                <ul>
+                    <li class="fragment"><code>=HEUTE()</code> – Gibt das aktuelle Datum zurück (ohne Uhrzeit)</li>
+                    <li class="fragment"><code>=JETZT()</code> – Gibt aktuelles Datum und Uhrzeit zurück</li>
+                    <li class="fragment"><code>=DATEDIF(Start; Ende; Einheit)</code> – Differenz zwischen zwei Daten
+                        <ul>
+                            <li><code>"d"</code> – Tage</li>
+                            <li><code>"m"</code> – Monate</li>
+                            <li><code>"y"</code> – Jahre</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre class="fragment"><code class="language-excel">=DATEDIF(A1; HEUTE(); "y") & " Jahre"</code></pre>
+            </section>
+
+            <section>
+                <h2>Tipps und Tricks</h2>
+                <ul>
+                    <li class="fragment"><strong>Formelüberwachung</strong>: Register Formeln → Formelüberwachung
+                        <ul>
+                            <li>Spuren zu Vorgängern/Nachfolgern anzeigen</li>
+                            <li>Fehler suchen und korrigieren</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Formelauswertung</strong>: Formeln → Formelauswertung
+                        <ul>
+                            <li>Berechnet eine Formel Schritt für Schritt</li>
+                            <li>Hilft beim Verstehen komplexer Formeln</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>QuickInfos</strong>: Strg + U (Windows) / Ctrl + U (Mac) zeigt alle Formeln an</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Zellbezüge (relativ, absolut, gemischt) sind die Basis jeder Formel</li>
+                    <li>Mathematische Funktionen: SUMME, MITTELWERT, MIN, MAX</li>
+                    <li>Zählfunktionen: ANZAHL, ANZAHL2, ANZAHLLEEREZELLEN</li>
+                    <li>Logische Funktionen: WENN, UND, ODER – für Bedingungen</li>
+                    <li>SVERWEIS / XVERWEIS zum Suchen in Tabellen</li>
+                    <li>Namensdefinitionen und Fehlerbehandlung (WENNFEHLER)</li>
+                    <li>Datumsfunktionen: HEUTE, JETZT, DATEDIF</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">22 - Excel - Formeln & Funktionen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

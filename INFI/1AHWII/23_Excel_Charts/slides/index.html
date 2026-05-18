@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>23 - Excel - Diagramme & Datenanalyse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>23 - Excel - Diagramme & Datenanalyse</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Diagrammtypen im Überblick</h2>
+                <ul>
+                    <li class="fragment">Excel bietet viele Diagrammtypen für unterschiedliche Zwecke</li>
+                    <li class="fragment"><strong>Säulendiagramm</strong>: Vergleiche zwischen Kategorien</li>
+                    <li class="fragment"><strong>Liniendiagramm</strong>: Entwicklungen über Zeit (Trends)</li>
+                    <li class="fragment"><strong>Kreisdiagramm</strong>: Anteile an einem Ganzen (Prozent)</li>
+                    <li class="fragment"><strong>Balkendiagramm</strong>: Säulendiagramm um 90 Grad gedreht</li>
+                    <li class="fragment"><strong>Punktdiagramm (XY)</strong>: Zusammenhang zweier Zahlenreihen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Diagramme erstellen</h2>
+                <ul>
+                    <li class="fragment">Datensatz markieren (inkl. Spaltenüberschriften)</li>
+                    <li class="fragment">Menüband → <strong>Einfügen</strong> → Diagramm auswählen</li>
+                    <li class="fragment">Excel schlägt passende Diagrammtypen vor (Empfohlene Diagramme)</li>
+                    <li class="fragment">Diagramm wird als Objekt im Arbeitsblatt eingefügt</li>
+                    <li class="fragment">Über <strong>Diagrammtools</strong> (Entwurf & Format) nachbearbeitbar</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Diagramme formatieren</h2>
+                <ul>
+                    <li class="fragment"><strong>Achsen</strong>: Beschriftung, Skalierung, Einheiten anpassen</li>
+                    <li class="fragment"><strong>Titel</strong>: Diagramm- und Achsentitel hinzufügen/ändern</li>
+                    <li class="fragment"><strong>Legende</strong>: Position ändern, ein-/ausblenden</li>
+                    <li class="fragment"><strong>Datenbeschriftungen</strong>: Werte direkt an den Datenpunkten anzeigen</li>
+                    <li class="fragment"><strong>Farben & Stile</strong>: Designvorlagen oder manuelle Anpassung</li>
+                    <li class="fragment">Rechtsklick auf jedes Element → Kontextmenü für Formatierung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Säulen- und Balkendiagramme</h2>
+                <ul>
+                    <li class="fragment"><strong>Säulendiagramm</strong>: senkrechte Balken, ideal für Vergleiche</li>
+                    <li class="fragment"><strong>Balkendiagramm</strong>: waagrechte Balken, gut bei langen Kategorienamen</li>
+                    <li class="fragment">Gruppiert: mehrere Reihen nebeneinander</li>
+                    <li class="fragment">Gestapelt: Reihen übereinander → Gesamt und Anteile sichtbar</li>
+                    <li class="fragment">100%-Gestapelt: Anteile auf 100% normiert</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Liniendiagramme und Trendlinien</h2>
+                <ul>
+                    <li class="fragment">Liniendiagramm zeigt Werteverlauf über Zeit (z. B. Monate, Jahre)</li>
+                    <li class="fragment">Mehrere Datenreihen als separate Linien darstellbar</li>
+                    <li class="fragment"><strong>Trendlinie</strong> hinzufügen: Diagramm → "+" → Trendlinie</li>
+                    <li class="fragment">Typen: Linear, Exponentiell, Gleitender Mittelwert, ...</li>
+                    <li class="fragment">Formel und R² anzeigen: Trendlinie formatieren → Optionen</li>
+                    <li class="fragment">Prognose: Trendlinie in die Zukunft/reine Vergangenheit verlängern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Kreisdiagramme</h2>
+                <ul>
+                    <li class="fragment">Zeigen Anteile an einem Ganzen (muss 100 % ergeben)</li>
+                    <li class="fragment">Nur <strong>eine</strong> Datenreihe möglich</li>
+                    <li class="fragment">Varianten: Kreis (2D/3D), Ring, Kreis aus Kreis</li>
+                    <li class="fragment"><strong>Wann vermeiden?</strong>:
+                        <ul>
+                            <li>Mehr als 5–7 Kategorien (unübersichtlich)</li>
+                            <li>Ähnliche Werte ( kaum erkennbare Unterschiede)</li>
+                            <li>Zeitliche Entwicklungen (dafür Liniendiagramm)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Alternative: Säulendiagramm ist oft besser lesbar</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Kombinationsdiagramme</h2>
+                <ul>
+                    <li class="fragment">Zwei unterschiedliche Diagrammtypen kombinieren</li>
+                    <li class="fragment">Beispiel: Säulen + Linie (z. B. Umsatz als Säule, Gewinnmarge als Linie)</li>
+                    <li class="fragment">Ermöglicht <strong>sekundäre Achse</strong> bei unterschiedlichen Größenordnungen</li>
+                    <li class="fragment">Erstellung: Diagramm → Entwurf → Diagrammtyp ändern → Kombination</li>
+                    <li class="fragment">Sekundäre Achse beschriften und formatieren</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Pivot-Tabellen – Grundlagen</h2>
+                <ul>
+                    <li class="fragment">Pivot-Tabelle: interaktive Zusammenfassung großer Datenmengen</li>
+                    <li class="fragment">Daten markieren → Einfügen → Pivot-Tabelle</li>
+                    <li class="fragment">Aufbau: Zeilen, Spalten, Werte, Filter (vier Bereiche)</li>
+                    <li class="fragment">Datenfelder per Drag & Drop in die Bereiche ziehen</li>
+                    <li class="fragment">Werte: Summe, Anzahl, Mittelwert, Min, Max, ...</li>
+                    <li class="fragment">Pivot-Tabelle wird automatisch aktualisiert (Aktualisieren)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Pivot-Tabellen – Gruppieren & Filtern</h2>
+                <ul>
+                    <li class="fragment"><strong>Gruppieren</strong>: Zahlen in Bereiche (z. B. 0–100, 101–200)</li>
+                    <li class="fragment">Datumsangaben gruppieren: Nach Jahr, Quartal, Monat, Tag</li>
+                    <li class="fragment"><strong>Filtern</strong>: Manuell oder mit <strong>Slicer</strong> (Steuerelement)</li>
+                    <li class="fragment">Slicer: Schaltflächen zum schnellen Filtern (visuell)</li>
+                    <li class="fragment">Pivot-Chart: Diagramm aus Pivot-Tabelle erstellen</li>
+                    <li class="fragment">Tipp: Quell-Daten als Tabelle formatieren (Strg+T) → Pivot wird dynamisch</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Bedingte Formatierung – Regeln</h2>
+                <ul>
+                    <li class="fragment">Start → Bedingte Formatierung → Regeln zum Hervorheben von Zellen</li>
+                    <li class="fragment">Beispiele: Größer als, Kleiner als, Gleich, Text, Datum</li>
+                    <li class="fragment"><strong>Farbskalen</strong>: 2- oder 3-Farb-Verlauf über Wertebereich</li>
+                    <li class="fragment"><strong>Datenbalken</strong>: Balkenlänge = Zellenwert (Balkendiagramm in Zellen)</li>
+                    <li class="fragment"><strong>Symbolsätze</strong>: Pfeile, Ampeln, Sterne als Wertkennzeichnung</li>
+                    <li class="fragment">Mehrere Regeln übereinander anwendbar (Priorität beachten)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Bedingte Formatierung mit Formeln</h2>
+                <ul>
+                    <li class="fragment">Regel basierend auf Formel für maximale Flexibilität</li>
+                    <li class="fragment">Start → Bedingte Formatierung → Neue Regel → Formel verwenden</li>
+                    <li class="fragment">Beispiel: Ganze Zeile hervorheben:<br>
+                        <code>=ODE.&#36;A2&#62;100</code> (Spalte A fix, Zeile relativ)</li>
+                    <li class="fragment">Formel muss einen WAHR/FALSCH-Wert zurückgeben</li>
+                    <li class="fragment">Achtung auf absolute/relative Bezüge (&#36; für Spalte fixieren)</li>
+                    <li class="fragment">Anwendungen: Schwellwerte, Abweichungen, Duplikate, Flash-Cards</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Datenanalyse: Sortieren, Filtern, Teilergebnisse</h2>
+                <ul>
+                    <li class="fragment"><strong>Sortieren</strong>: Daten → Sortieren (ein/mehrere Spalten, benutzerdefiniert)</li>
+                    <li class="fragment"><strong>Filtern</strong>: AutoFilter (Daten → Filter) → Dropdown in Spaltenköpfen</li>
+                    <li class="fragment">Erweiterter Filter: mit Kriterienbereich (Daten → Erweitert)</li>
+                    <li class="fragment"><strong>Teilergebnisse</strong>: Daten → Teilergebnis
+                        <ul>
+                            <li>Gruppiert Daten und berechnet Zwischensummen</li>
+                            <li>Vorher nach der Gruppierungsspalte sortieren!</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Gliederungsebenen: 1, 2, 3 zum Ein-/Ausklappen</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Wähle den passenden Diagrammtyp (Säule, Linie, Kreis, Balken, Kombi)</li>
+                    <li>Formatiere Achsen, Titel, Legende, Datenbeschriftungen</li>
+                    <li>Trendlinien zeigen Entwicklungen und Prognosen</li>
+                    <li>Pivot-Tabellen fassen große Datenmengen interaktiv zusammen</li>
+                    <li>Bedingte Formatierung visualisiert Daten durch Farben, Balken, Symbole</li>
+                    <li>Sortieren, Filtern und Teilergebnisse sind grundlegende Analysetools</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">23 - Excel - Diagramme & Datenanalyse</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

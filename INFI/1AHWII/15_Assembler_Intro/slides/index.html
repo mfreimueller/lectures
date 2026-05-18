@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>15 - Assembler Einf&uuml;hrung</title><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
+<body><div class="reveal"><div class="slides">
+<section class="center title-slide"><h1>15 - Assembler Einf&uuml;hrung</h1><p class="institution">INFI - 1AHWII</p></section>
+
+<section>
+<h2>Maschinensprache &ndash; Was ist das?</h2>
+<ul>
+<li class="fragment">Die CPU versteht <strong>nur Bin&auml;rcode</strong> (0 und 1)</li>
+<li class="fragment">Jeder Befehl ist eine Bitfolge, z. B. <code>10110000 01100001</code></li>
+<li class="fragment">Diese Bitfolgen hei&szlig;en <strong>Maschinenbefehle</strong></li>
+<li class="fragment">Maschinensprache ist <strong>prozessorabh&auml;ngig</strong> (x86, ARM, RISC-V)</li>
+<li class="fragment">Fr&uuml;her wurden Programme direkt in Maschinensprache geschrieben</li>
+</ul>
+</section>
+
+<section>
+<h2>Assembler &ndash; Die L&ouml;sung</h2>
+<ul>
+<li class="fragment"><strong>Assembler</strong> ist eine <strong>textuelle Darstellung</strong> der Maschinensprache</li>
+<li class="fragment">Jeder Maschinenbefehl bekommt einen <strong>Mnemonik</strong> (z. B. MOV, ADD)</li>
+<li class="fragment">Ein <strong>Assembler</strong> (&uuml;bersetzt) den Text in Bin&auml;rcode</li>
+</ul>
+<div class="fragment">
+<table>
+<tr><th>Maschinensprache</th><th>Assembler</th></tr>
+<tr><td><code>10110000 01100001</code></td><td><code>MOV AL, 61h</code></td></tr>
+<tr><td><code>00000101 00000001</code></td><td><code>ADD AX, 1</code></td></tr>
+</table>
+</div>
+<ul>
+<li class="fragment">Assembler ist <strong>lesbarer</strong> als Maschinensprache, aber immer noch hardwarenah</li>
+</ul>
+</section>
+
+<section>
+<h2>Die CPU-Register &ndash; &Uuml;bersicht</h2>
+<ul>
+<li class="fragment">Register sind <strong>schnelle Speicherpl&auml;tze</strong> direkt in der CPU</li>
+<li class="fragment">Sie sind <strong>sehr klein</strong> (8, 16, 32 oder 64 Bit)</li>
+<li class="fragment">Die x86-Architektur hat <strong>allgemeine</strong> und <strong>spezielle</strong> Register</li>
+</ul>
+<div class="fragment">
+<table>
+<tr><th>Register</th><th>Gr&ouml;&szlig;e (16 Bit)</th><th>Verwendung</th></tr>
+<tr><td>AX</td><td>16 Bit</td><td>Allgemein (Akkumulator)</td></tr>
+<tr><td>BX</td><td>16 Bit</td><td>Allgemein (Basis)</td></tr>
+<tr><td>CX</td><td>16 Bit</td><td>Allgemein (Z&auml;hler)</td></tr>
+<tr><td>DX</td><td>16 Bit</td><td>Allgemein (Daten)</td></tr>
+</table>
+</div>
+</section>
+
+<section>
+<h2>Allgemeine Register (AX, BX, CX, DX)</h2>
+<ul>
+<li class="fragment"><strong>AX</strong> (Accumulator) &ndash; Arithmetik, E/A-Operationen</li>
+<li class="fragment"><strong>BX</strong> (Base) &ndash; Basisadresse f&uuml;r Speicherzugriffe</li>
+<li class="fragment"><strong>CX</strong> (Counter) &ndash; Schleifenz&auml;hler (LOOP, Shift)</li>
+<li class="fragment"><strong>DX</strong> (Data) &ndash; Datenregister, Port-Adressen</li>
+</ul>
+<div class="fragment">
+<p>Jedes 16-Bit-Register ist in zwei 8-Bit-Teile zerlegbar:</p>
+<table>
+<tr><th>High</th><th>Low</th></tr>
+<tr><td>AH</td><td>AL</td></tr>
+<tr><td>BH</td><td>BL</td></tr>
+<tr><td>CH</td><td>CL</td></tr>
+<tr><td>DH</td><td>DL</td></tr>
+</table>
+</div>
+</section>
+
+<section>
+<h2>Spezielle Register (IP, SP, Flags)</h2>
+<ul>
+<li class="fragment"><strong>IP</strong> (Instruction Pointer) &ndash; Zeigt auf den n&auml;chsten Befehl</li>
+<li class="fragment"><strong>SP</strong> (Stack Pointer) &ndash; Zeigt auf das oberste Stack-Element</li>
+<li class="fragment"><strong>Flags</strong> (Statusregister) &ndash; Einzelne Bits mit Status-Informationen</li>
+</ul>
+<div class="fragment">
+<p>Wichtige Flags:</p>
+<table>
+<tr><th>Flag</th><th>Bedeutung</th></tr>
+<tr><td>ZF (Zero Flag)</td><td>Ergebnis ist 0</td></tr>
+<tr><td>CF (Carry Flag)</td><td>&Uuml;berlauf bei unsigned</td></tr>
+<tr><td>SF (Sign Flag)</td><td>Ergebnis ist negativ</td></tr>
+<tr><td>OF (Overflow Flag)</td><td>&Uuml;berlauf bei signed</td></tr>
+</table>
+</div>
+</section>
+
+<section>
+<h2>Der Befehlssatz &ndash; MOV</h2>
+<ul>
+<li class="fragment"><code>MOV</code> kopiert Daten von einer Quelle zu einem Ziel</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">MOV AX, 42     ; Konstante 42 in AX laden
+MOV BX, AX     ; AX nach BX kopieren
+MOV CX, [100]  ; Wert von Speicherstelle 100 nach CX
+</code></pre>
+</div>
+<ul>
+<li class="fragment">Syntax: <code>MOV Ziel, Quelle</code></li>
+<li class="fragment">Quelle und Ziel m&uuml;ssen <strong>gleiche Gr&ouml;&szlig;e</strong> haben</li>
+<li class="fragment">Es kann <strong>nicht</strong> von Speicher zu Speicher kopiert werden</li>
+</ul>
+</section>
+
+<section>
+<h2>Arithmetische Befehle &ndash; ADD, SUB</h2>
+<ul>
+<li class="fragment"><code>ADD</code> addiert zwei Werte und speichert das Ergebnis im Ziel</li>
+<li class="fragment"><code>SUB</code> subtrahiert zwei Werte</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">MOV AX, 10     ; AX = 10
+ADD AX, 5      ; AX = 15
+MOV BX, 20     ; BX = 20
+SUB BX, AX     ; BX = 20 - 15 = 5
+</code></pre>
+</div>
+<ul>
+<li class="fragment">Die Flags (ZF, CF, SF, OF) werden <strong>automatisch aktualisiert</strong></li>
+<li class="fragment">Beispiel: <code>ADD AX, 5</code> &rArr; ZF = 1 wenn AX + 5 = 0</li>
+</ul>
+</section>
+
+<section>
+<h2>Sprungbefehle &ndash; JMP, CMP</h2>
+<ul>
+<li class="fragment"><code>JMP</code> &ndash; unbedingter Sprung zu einer Marke (Label)</li>
+<li class="fragment"><code>CMP</code> &ndash; vergleicht zwei Werte (setzt Flags)</li>
+<li class="fragment"><code>JE</code>, <code>JNE</code>, <code>JG</code>, <code>JL</code> &ndash; bedingte Spr&uuml;nge</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">CMP AX, BX     ; Vergleiche AX mit BX
+JE  gleich     ; Springe zu 'gleich' wenn AX == BX
+JMP weiter     ; Sonst springe zu 'weiter'
+
+gleich:
+    MOV CX, 1
+weiter:
+    MOV CX, 0
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Aufbau eines Assembler-Programms</h2>
+<ul>
+<li class="fragment">Ein Assembler-Programm ist in <strong>Segmente</strong> unterteilt</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">ORG 100h       ; Startadresse festlegen
+
+.DATA          ; Datensegment
+    zahl DB 10 ; Variable 'zahl' mit Wert 10
+
+.CODE          ; Codesegment
+    MOV AX, zahl
+    ADD AX, 5
+    RET        ; R&uuml;ckkehr zum Betriebssystem
+</code></pre>
+</div>
+<ul>
+<li class="fragment"><strong>.DATA</strong> &ndash; deklariert Variablen und Konstanten</li>
+<li class="fragment"><strong>.CODE</strong> &ndash; enth&auml;lt die ausf&uuml;hrbaren Befehle</li>
+</ul>
+</section>
+
+<section>
+<h2>Direktiven im Assembler</h2>
+<ul>
+<li class="fragment">Direktiven sind <strong>Anweisungen an den Assembler</strong>, nicht an die CPU</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">ORG 100h       ; Startadresse (Origin)
+DB  10         ; Define Byte (8 Bit) &ndash; reserviert 1 Byte
+DW  1000       ; Define Word (16 Bit) &ndash; reserviert 2 Bytes
+DD  50000      ; Define Double (32 Bit)
+EQU 100        ; Konstante definieren (ersetzen)
+</code></pre>
+</div>
+<ul>
+<li class="fragment"><strong>ORG</strong> &ndash; legt die Speicherposition fest</li>
+<li class="fragment"><strong>DB/DW/DD</strong> &ndash; deklarieren Daten mit bestimmter Gr&ouml;&szlig;e</li>
+<li class="fragment"><strong>EQU</strong> &ndash; definiert eine Konstante (wird vom Assembler ersetzt)</li>
+</ul>
+</section>
+
+<section>
+<h2>Label und Sprungmarken</h2>
+<ul>
+<li class="fragment">Ein <strong>Label</strong> ist ein Name f&uuml;r eine Speicheradresse</li>
+<li class="fragment">Label werden mit <strong>Doppelpunkt</strong> am Ende geschrieben</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">start:         ; Label 'start'
+    MOV AX, 0
+    MOV CX, 10
+
+schleife:      ; Label 'schleife'
+    ADD AX, CX
+    LOOP schleife  ; CX--; springe wenn CX != 0
+
+ende:          ; Label 'ende'
+    RET
+</code></pre>
+</div>
+<ul>
+<li class="fragment">Label machen das Programm <strong>strukturierter</strong> und lesbarer</li>
+<li class="fragment">Sie werden f&uuml;r Spr&uuml;nge und Schleifen verwendet</li>
+</ul>
+</section>
+
+<section>
+<h2>Das erste Assembler-Programm (Teil 1)</h2>
+<pre><code class="language-nasm">ORG 100h
+
+.DATA
+    msg DB 'Hallo Welt$'
+    ergebnis DW 0
+
+.CODE
+start:
+    MOV AH, 09h
+    LEA DX, msg
+    INT 21h
+</code></pre>
+<ul>
+<li class="fragment">Das Programm gibt &bdquo;Hallo Welt&ldquo; auf dem Bildschirm aus</li>
+<li class="fragment"><code>INT 21h</code> ist ein DOS-Interrupt f&uuml;r Bildschirmausgabe</li>
+<li class="fragment"><code>LEA</code> l&auml;dt die Adresse einer Variable</li>
+</ul>
+</section>
+
+<section>
+<h2>Das erste Assembler-Programm (Teil 2)</h2>
+<pre><code class="language-nasm">    MOV AX, 100
+    ADD AX, 200
+    MOV [ergebnis], AX
+
+    MOV AH, 4Ch
+    INT 21h       ; Programm beenden
+</code></pre>
+<ul>
+<li class="fragment"><code>INT 21h</code> mit <code>AH = 4Ch</code> beendet das Programm</li>
+<li class="fragment">Das Ergebnis der Addition wird in <code>ergebnis</code> gespeichert</li>
+</ul>
+<div class="fragment">
+<p>Gesamtstruktur:</p>
+<ul>
+<li><strong>ORG</strong> &ndash; Startadresse</li>
+<li><strong>.DATA</strong> &ndash; Variablen</li>
+<li><strong>.CODE</strong> &ndash; Befehle mit Label <strong>start:</strong></li>
+<li><strong>INT 21h</strong> &ndash; DOS-Interrupts f&uuml;r Ein-/Ausgabe</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Debugging und Zusammenfassung</h2>
+<ul>
+<li class="fragment">Assembler-Programme k&ouml;nnen mit <strong>Debuggern</strong> (z. B. TD, GDB) analysiert werden</li>
+<li class="fragment">Wichtige Debugging-Techniken:
+  <ul>
+    <li class="fragment">Schrittweise Ausf&uuml;hrung (<strong>Step Into / Step Over</strong>)</li>
+    <li class="fragment">Register und Speicher <strong>inspizieren</strong></li>
+    <li class="fragment"><strong>Breakpoints</strong> setzen</li>
+  </ul>
+</li>
+<li class="fragment"><strong>H&auml;ufige Fehler:</strong> Falsche Operandengr&ouml;&szlig;e, vergessene RET, falsche Segment-Adressen</li>
+</ul>
+<div class="fragment">
+<p>Zusammenfassung:</p>
+<ul>
+<li>Assembler = lesbare Version der Maschinensprache</li>
+<li>Register sind schnelle CPU-interne Speicher</li>
+<li>MOV, ADD, SUB, JMP, CMP sind grundlegende Befehle</li>
+<li>Ein Programm besteht aus Segmenten, Direktiven und Labels</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){document.querySelector('.reveal').insertAdjacentHTML('beforeend','<div class=\"footer\"><div class=\"logo-container\"><img src=\"https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png\" class=\"school-logo\"></div><span class=\"date\">15 - Assembler Einf&uuml;hrung</span></div>');});</script>
+</body></html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>20 - Linux Administration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>20 - Linux Administration</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Benutzerverwaltung (1) – useradd, userdel</h2>
+                <pre><code class="language-bash">useradd -m -s /bin/bash max     # Neuen Benutzer anlegen
+# -m = Home-Verzeichnis erstellen, -s = Shell festlegen
+
+passwd max                      # Passwort setzen
+
+userdel -r max                  # Benutzer + Home-Verzeichnis löschen</code></pre>
+                <p class="fragment">Benutzerdaten werden in <code>/etc/passwd</code> gespeichert:</p>
+                <pre class="fragment"><code class="language-bash">max:x:1001:1001:Max Mustermann:/home/max:/bin/bash</code></pre>
+            </section>
+
+            <section>
+                <h2>Benutzerverwaltung (2) – Gruppen</h2>
+                <pre><code class="language-bash">groupadd schueler           # Neue Gruppe anlegen
+groupadd lehrer
+
+usermod -aG schueler max    # Benutzer zu Gruppe hinzufügen
+usermod -aG lehrer max
+
+groups max                  # Gruppen eines Benutzers anzeigen
+
+groupdel schueler           # Gruppe löschen</code></pre>
+                <p class="fragment">Gruppendaten in <code>/etc/group</code></p>
+            </section>
+
+            <section>
+                <h2>Benutzerverwaltung (3) – sudo und sudoers</h2>
+                <ul>
+                    <li class="fragment"><strong>sudo</strong> = <em>superuser do</em> – Befehle als root ausführen</li>
+                    <li class="fragment">Nur Benutzer in <code>/etc/sudoers</code> dürfen sudo verwenden</li>
+                    <li class="fragment">Bearbeiten mit <code>visudo</code> (niemals direkt editieren!)</li>
+                </ul>
+                <pre class="fragment"><code class="language-bash">sudo apt update              # Befehl als root
+sudo -i                      # permanente root-Shell
+visudo                       # sudoers-Datei bearbeiten</code></pre>
+                <p class="fragment">Typische sudoers-Zeile: <code>max ALL=(ALL:ALL) ALL</code></p>
+            </section>
+
+            <section>
+                <h2>Paketmanager (apt) – update und upgrade</h2>
+                <p><strong>apt</strong> (Advanced Package Tool) – der Paketmanager von Debian/Ubuntu</p>
+                <pre><code class="language-bash">sudo apt update              # Paketliste aktualisieren
+sudo apt upgrade             # Alle Pakete aktualisieren
+sudo apt full-upgrade        # Mit Abhängigkeitsauflösung</code></pre>
+                <ul>
+                    <li class="fragment"><code>apt update</code> lädt die aktuellen Paketlisten aus den Repositories</li>
+                    <li class="fragment"><code>apt upgrade</code> installiert neuere Versionen aller Pakete</li>
+                    <li class="fragment">Repositories in <code>/etc/apt/sources.list</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Paketmanager (apt) – install, remove, dpkg</h2>
+                <pre><code class="language-bash">sudo apt install htop        # Paket installieren
+sudo apt remove htop         # Paket deinstallieren
+sudo apt purge htop          # Inklusive Konfigurationsdateien
+
+sudo apt search "text"       # Nach Paketen suchen
+sudo apt show htop           # Paketdetails anzeigen
+
+sudo dpkg -i paket.deb       # .deb-Paket manuell installieren
+sudo dpkg -l                 # Alle installierten Pakete auflisten</code></pre>
+            </section>
+
+            <section>
+                <h2>Prozessverwaltung (1) – ps, top</h2>
+                <pre><code class="language-bash">ps aux                       # Alle laufenden Prozesse anzeigen
+ps aux | grep firefox        # Bestimmten Prozess suchen
+
+top                          # Echtzeit-Ansicht der Prozesse
+htop                         # Verbesserte Version von top</code></pre>
+                <ul>
+                    <li class="fragment"><strong>PID</strong> = Process ID (eindeutige Nummer)</li>
+                    <li class="fragment"><strong>PPID</strong> = Parent Process ID</li>
+                    <li class="fragment"><code>top</code> zeigt CPU-, RAM-Nutzung und laufende Prozesse</li>
+                    <li class="fragment">Beenden von <code>top</code> mit der Taste <strong>q</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Prozessverwaltung (2) – kill, nice, fg/bg</h2>
+                <pre><code class="language-bash">kill 1234                    # Prozess mit PID 1234 beenden
+kill -9 1234                 # Prozess erzwingen beenden (SIGKILL)
+kill -15 1234                # Prozess höflich beenden (SIGTERM)
+
+nice -n 10 ./skript.sh       # Prozess mit niedriger Priorität starten
+renice 5 -p 1234             # Priorität eines laufenden Prozesses ändern
+
+sleep 100 &                   # Prozess im Hintergrund starten
+fg %1                        # Hintergrundprozess in Vordergrund holen
+bg %1                        # Prozess in Hintergrund schicken</code></pre>
+            </section>
+
+            <section>
+                <h2>systemd (1) – systemctl, Unit-Dateien</h2>
+                <p><strong>systemd</strong> ist das Init-System moderner Linux-Distributionen</p>
+                <pre><code class="language-bash">systemctl status ssh         # Status eines Dienstes anzeigen
+systemctl start ssh          # Dienst starten
+systemctl stop ssh           # Dienst stoppen
+systemctl restart ssh        # Dienst neustarten
+systemctl enable ssh         # Dienst automatisch starten (Boot)
+systemctl disable ssh        # Automatischen Start deaktivieren</code></pre>
+                <p class="fragment">Unit-Dateien liegen in <code>/etc/systemd/system/</code></p>
+            </section>
+
+            <section>
+                <h2>systemd (2) – journalctl</h2>
+                <p><strong>journalctl</strong> zeigt die System-Logs von systemd an</p>
+                <pre><code class="language-bash">journalctl                   # Alle Logs anzeigen
+journalctl -u ssh            # Logs eines bestimmten Dienstes
+journalctl -f                # Logs in Echtzeit verfolgen
+journalctl --since "1 hour ago"  # Logs der letzten Stunde
+journalctl -p err            # Nur Fehlermeldungen</code></pre>
+                <ul>
+                    <li class="fragment">Logs werden binär in <code>/var/log/journal/</code> gespeichert</li>
+                    <li class="fragment">Mit <code>dmesg</code> können Kernel-Ringpuffer-Nachrichten angezeigt werden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Netzwerkkonfiguration (1) – ip addr, ping</h2>
+                <pre><code class="language-bash">ip addr show                 # IP-Adressen und Netzwerkschnittstellen
+ip link set eth0 up/down     # Schnittstelle aktivieren/deaktivieren
+
+ping 8.8.8.8                 # Erreichbarkeit eines Hosts prüfen
+ping -c 4 google.com        # Nur 4 Pakete senden
+
+hostname                     # Rechnername anzeigen
+hostnamectl set-hostname neuer-name  # Rechnername ändern</code></pre>
+                <p class="fragment">Neuere Netzwerkbefehle ersetzen das veraltete <code>ifconfig</code></p>
+            </section>
+
+            <section>
+                <h2>Netzwerkkonfiguration (2) – netstat, DHCP</h2>
+                <pre><code class="language-bash">ss -tuln                     # Offene Ports anzeigen (modern)
+netstat -tuln                # Offene Ports anzeigen (klassisch)
+
+ip route show                # Routing-Tabelle anzeigen
+
+# DHCP: Automatische IP-Vergabe
+# Konfiguration in /etc/netplan/ (Ubuntu)
+# oder /etc/network/interfaces (Debian)</code></pre>
+                <ul>
+                    <li class="fragment">Standardmäßig bezieht Linux die IP per <strong>DHCP</strong></li>
+                    <li class="fragment"><strong>DHCP</strong> = Dynamic Host Configuration Protocol</li>
+                    <li class="fragment">Statische IPs werden in Netplan- oder interfaces-Dateien konfiguriert</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Log-Dateien</h2>
+                <p>Linux speichert Systemmeldungen und Logs in <code>/var/log/</code></p>
+                <pre><code class="language-bash">ls /var/log                  # Alle Log-Dateien anzeigen
+cat /var/log/syslog          # System-Logs
+tail -f /var/log/syslog      # Logs in Echtzeit verfolgen
+
+dmesg                        # Kernel-Ringpuffer (Hardware-Erkennung)
+journalctl -xe               # systemd-Logs mit Erklärungen</code></pre>
+                <table>
+                    <tr><th>Log-Datei</th><th>Inhalt</th></tr>
+                    <tr><td>/var/log/syslog</td><td>Allgemeine Systemmeldungen</td></tr>
+                    <tr><td>/var/log/auth.log</td><td>Authentifizierungsversuche</td></tr>
+                    <tr><td>/var/log/dpkg.log</td><td>Paketinstallationen</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Sicherheit – sudo, ufw, SSH</h2>
+                <pre><code class="language-bash"># Firewall mit ufw (Uncomplicated Firewall)
+sudo ufw enable              # Firewall aktivieren
+sudo ufw allow 22/tcp        # SSH-Port freigeben
+sudo ufw allow 80/tcp        # HTTP-Port freigeben
+sudo ufw status              # Status anzeigen
+
+# SSH-Server
+sudo apt install openssh-server
+sudo systemctl status ssh
+sudo nano /etc/ssh/sshd_config   # SSH-Konfiguration</code></pre>
+                <ul>
+                    <li class="fragment"><strong>sudo</strong> beschränkt root-Zugriff auf berechtigte Benutzer</li>
+                    <li class="fragment"><strong>ufw</strong> vereinfacht die iptables-Firewall</li>
+                    <li class="fragment"><strong>SSH</strong> (Secure Shell) ermöglicht verschlüsselte Remote-Zugriffe</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Benutzerverwaltung: useradd, usermod, groupadd, sudo</li>
+                    <li class="fragment">Paketmanager: apt update, upgrade, install, remove</li>
+                    <li class="fragment">Prozesse: ps, top, kill, nice, fg/bg</li>
+                    <li class="fragment">systemd: systemctl, journalctl</li>
+                    <li class="fragment">Netzwerk: ip addr, ping, ss, DHCP</li>
+                    <li class="fragment">Logs: /var/log, dmesg, journalctl</li>
+                    <li class="fragment">Sicherheit: sudo, ufw, SSH</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">20 - Linux Administration</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

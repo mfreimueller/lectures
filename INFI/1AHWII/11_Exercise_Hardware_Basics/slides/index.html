@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>11 - Übung Hardware Grundlagen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>11 - Übung Hardware Grundlagen</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Einführung und Überblick</h2>
+                <ul>
+                    <li class="fragment">Diese Stunde dient der Wiederholung und Vertiefung der Hardware-Themen</li>
+                    <li class="fragment">Bisher behandelt: Mainboard, CPU, GPU, Speichermedien</li>
+                    <li class="fragment">Ablauf: kurze Wiederholungsfolien, dann selbstständige Übungen (Katas)</li>
+                    <li class="fragment">Ziel: Sicherheit im Umgang mit Hardware-Kenndaten und Komponenten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Mainboard – Wiederholung</h2>
+                <ul>
+                    <li class="fragment">Das Mainboard verbindet alle Hardware-Komponenten</li>
+                    <li class="fragment">Wichtige Komponenten: CPU-Sockel, RAM-Slots, PCIe-Slots, Chipsatz</li>
+                    <li class="fragment">Formfaktoren: ATX (305 × 244 mm), Micro-ATX (244 × 244 mm), Mini-ITX (170 × 170 mm)</li>
+                    <li class="fragment">Sockel-Typen: LGA (Intel, Pins auf Mainboard), PGA (AMD, Pins auf CPU)</li>
+                    <li class="fragment">Chipsatz steuert die Kommunikation zwischen CPU, RAM und Peripherie</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>CPU – Wiederholung</h2>
+                <ul>
+                    <li class="fragment">Die CPU (Central Processing Unit) ist das Rechenwerk des Computers</li>
+                    <li class="fragment">Taktrate (GHz): Anzahl der Schaltvorgänge pro Sekunde</li>
+                    <li class="fragment">Cores: Mehrere Rechenkerne für parallele Verarbeitung</li>
+                    <li class="fragment">Cache: Schneller Pufferspeicher (L1, L2, L3)</li>
+                    <li class="fragment">Wichtige Hersteller: Intel (Core i-Serie) und AMD (Ryzen-Serie)</li>
+                    <li class="fragment">TDP (Thermal Design Power): Wärmeabgabe in Watt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>GPU – Wiederholung</h2>
+                <ul>
+                    <li class="fragment">Die GPU (Graphics Processing Unit) berechnet Grafiken und Bilder</li>
+                    <li class="fragment">Dedizierte Grafikkarten haben eigenen VRAM (Grafikspeicher)</li>
+                    <li class="fragment">Integrierte GPUs sitzen in der CPU und teilen sich den RAM</li>
+                    <li class="fragment">Grafik-APIs: DirectX (Microsoft), Vulkan, OpenGL</li>
+                    <li class="fragment">Wichtige Kenndaten: VRAM-Größe, Taktrate, Speicherbandbreite</li>
+                    <li class="fragment">Hersteller: NVIDIA (GeForce), AMD (Radeon), Intel (Arc)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Speichermedien – Wiederholung</h2>
+                <ul>
+                    <li class="fragment">Speicherhierarchie: Register → Cache → RAM → SSD → HDD</li>
+                    <li class="fragment">HDD: magnetische Platten, günstig pro GB, langsam (~100 MB/s)</li>
+                    <li class="fragment">SSD: NAND-Flash, schnell (~500 MB/s SATA, ~3.500 MB/s NVMe)</li>
+                    <li class="fragment">Schnittstellen: SATA (HDD/SSD), M.2 NVMe (schnelle SSDs)</li>
+                    <li class="fragment">NAND-Typen: SLC (1 Bit), MLC (2 Bit), TLC (3 Bit), QLC (4 Bit)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Selbstständiges Arbeiten</h2>
+                <ul>
+                    <li class="fragment">Bearbeite die Übungsblätter (Katas) in beliebiger Reihenfolge</li>
+                    <li class="fragment"><strong>Kata 1:</strong> Hardware-Komponenten – Mainboard, CPU, GPU (20 min)</li>
+                    <li class="fragment"><strong>Kata 2:</strong> Speichermedien & Schnittstellen (15 min)</li>
+                    <li class="fragment"><strong>Kata 3:</strong> Hardware-Wissen anwenden – Praxisbeispiele (20 min)</li>
+                    <li class="fragment">Bei Fragen: Hand heben oder Nachbar:in fragen</li>
+                    <li class="fragment">Lösungen werden nach der Übungsphase besprochen</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">11 - Übung Hardware Grundlagen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

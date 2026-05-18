@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>03 - Hexadezimalzahlen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>03 - Hexadezimalzahlen</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Binärzahlen</h2>
+                <ul>
+                    <li class="fragment">Binärsystem = Basis 2</li>
+                    <li class="fragment">Ziffern: 0 und 1</li>
+                    <li class="fragment">Jede Stelle hat einen Stellenwert (2<sup>n</sup>)</li>
+                    <li class="fragment">Beispiel: 1011<sub>2</sub> = 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8 + 0 + 2 + 1 = 11<sub>10</sub></li>
+                    <li class="fragment">Nachteil: Lange Zahlen, schwer lesbar</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Das Hexadezimalsystem</h2>
+                <ul>
+                    <li class="fragment">Hexadezimalsystem = Basis 16</li>
+                    <li class="fragment">16 Ziffern: 0–9 und A–F</li>
+                    <li class="fragment">A=10, B=11, C=12, D=13, E=14, F=15</li>
+                    <li class="fragment">Kompakte Darstellung von Binärzahlen</li>
+                    <li class="fragment">4 Binärziffern entsprechen 1 Hex-Ziffer</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Stellenwertsystem</h2>
+                <table>
+                    <tr><th>Stelle</th><th>…</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+                    <tr><td>Stellenwert</td><td>…</td><td>16³</td><td>16²</td><td>16¹</td><td>16⁰</td></tr>
+                    <tr><td>Wert</td><td>…</td><td>4096</td><td>256</td><td>16</td><td>1</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-plaintext">Beispiel: 2A3₁₆ = 2×256 + 10×16 + 3×1
+                = 512 + 160 + 3
+                = 675₁₀</code></pre>
+            </section>
+
+            <section>
+                <h2>Hex in Dezimal umrechnen</h2>
+                <p>Jede Hex-Ziffer mit ihrem Stellenwert multiplizieren:</p>
+                <pre><code class="language-plaintext">B7F₁₆ = 11×256 + 7×16 + 15×1
+      = 2816 + 112 + 15
+      = 2943₁₀</code></pre>
+                <pre class="fragment"><code class="language-plaintext">1A4₁₆ = 1×256 + 10×16 + 4×1
+      = 256 + 160 + 4
+      = 420₁₀</code></pre>
+            </section>
+
+            <section>
+                <h2>Dezimal in Hex umrechnen</h2>
+                <p>Durch 16 dividieren, Reste notieren (von unten nach oben):</p>
+                <pre><code class="language-plaintext">420 ÷ 16 = 26 Rest 4 → Ziffer 4
+ 26 ÷ 16 =  1 Rest 10 → Ziffer A
+  1 ÷ 16 =  0 Rest  1 → Ziffer 1</code></pre>
+                <p class="fragment">Ergebnis: 420₁₀ = 1A4₁₆</p>
+            </section>
+
+            <section>
+                <h2>Binär in Hex umrechnen</h2>
+                <p>Binärzahl in 4er-Gruppen teilen, jede Gruppe einzeln umwandeln:</p>
+                <pre><code class="language-plaintext">1011 0110₂ = ?
+1011₂ = B₁₆
+0110₂ = 6₁₆
+→ 1011 0110₂ = B6₁₆</code></pre>
+                <table class="fragment">
+                    <tr><th>Binär</th><th>Hex</th><th>Binär</th><th>Hex</th></tr>
+                    <tr><td>0000</td><td>0</td><td>1000</td><td>8</td></tr>
+                    <tr><td>0001</td><td>1</td><td>1001</td><td>9</td></tr>
+                    <tr><td>0010</td><td>2</td><td>1010</td><td>A</td></tr>
+                    <tr><td>0011</td><td>3</td><td>1011</td><td>B</td></tr>
+                    <tr><td>0100</td><td>4</td><td>1100</td><td>C</td></tr>
+                    <tr><td>0101</td><td>5</td><td>1101</td><td>D</td></tr>
+                    <tr><td>0110</td><td>6</td><td>1110</td><td>E</td></tr>
+                    <tr><td>0111</td><td>7</td><td>1111</td><td>F</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Hex in Binär umrechnen</h2>
+                <p>Jede Hex-Ziffer durch 4 Binärziffern ersetzen:</p>
+                <pre><code class="language-plaintext">3F₁₆ = ?
+3₁₆ = 0011₂
+F₁₆ = 1111₂
+→ 3F₁₆ = 0011 1111₂</code></pre>
+                <pre class="fragment"><code class="language-plaintext">A9₁₆ = ?
+A₁₆ = 1010₂
+9₁₆ = 1001₂
+→ A9₁₆ = 1010 1001₂</code></pre>
+            </section>
+
+            <section>
+                <h2>Hexadezimale Addition</h2>
+                <p>Gleiches Verfahren wie dezimal, aber Basis 16:</p>
+                <pre><code class="language-plaintext">  1  (Übertrag)
+  2A3
++ 1F4
+-----
+  497</code></pre>
+                <ul>
+                    <li class="fragment">3 + 4 = 7</li>
+                    <li class="fragment">A(10) + F(15) = 25 → 25 - 16 = 9, Übertrag 1</li>
+                    <li class="fragment">2 + 1 + 1(Übertrag) = 4</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Hexadezimale Addition – weiteres Beispiel</h2>
+                <pre><code class="language-plaintext">  11  (Übertrag)
+  BF8
++ A2C
+-----
+ 1624</code></pre>
+                <ul>
+                    <li class="fragment">8 + C(12) = 20 → 20 - 16 = 4, Übertrag 1</li>
+                    <li class="fragment">F(15) + 2 + 1 = 18 → 18 - 16 = 2, Übertrag 1</li>
+                    <li class="fragment">B(11) + A(10) + 1 = 22 → 22 - 16 = 6, Übertrag 1</li>
+                    <li class="fragment">Ergebnis: 1624₁₆</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Anwendung: RGB-Farbcodes</h2>
+                <ul>
+                    <li class="fragment">Farben im Web werden hexadezimal angegeben: <code>#RRGGBB</code></li>
+                    <li class="fragment">Jede Farbe (Rot, Grün, Blau) von 00 bis FF (0–255)</li>
+                    <li class="fragment"><span style="color:#FF0000;">#FF0000</span> = Rot</li>
+                    <li class="fragment"><span style="color:#00FF00;">#00FF00</span> = Grün</li>
+                    <li class="fragment"><span style="color:#0000FF;">#0000FF</span> = Blau</li>
+                    <li class="fragment"><span style="color:#FFFFFF;">#FFFFFF</span> = Weiß, <span style="color:#000000;">#000000</span> = Schwarz</li>
+                    <li class="fragment"><span style="color:#FFA500;">#FFA500</span> = Orange (FF Rot, A5 Grün, 00 Blau)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Anwendung: Speicheradressen</h2>
+                <ul>
+                    <li class="fragment">Speicheradressen werden hexadezimal dargestellt</li>
+                    <li class="fragment">Beispiel: <code>0x7FFD4F8A</code> (32-Bit-Adresse)</li>
+                    <li class="fragment">Kompakte Darstellung großer Zahlenbereiche</li>
+                    <li class="fragment">Jedes Byte = 2 Hex-Ziffern</li>
+                    <li class="fragment">Debugger und Hex-Editoren zeigen Speicher in Hex</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Anwendung: MAC-Adressen</h2>
+                <ul>
+                    <li class="fragment">MAC-Adresse = 6 Bytes, dargestellt in Hex</li>
+                    <li class="fragment">Format: <code>00:1A:2B:3C:4D:5E</code></li>
+                    <li class="fragment">Ersten 3 Bytes = Hersteller (OUI)</li>
+                    <li class="fragment">Letzten 3 Bytes = Geräte-ID</li>
+                    <li class="fragment">Beispiel: <code>00:1A:2B:3C:4D:5E</code> ≠ <code>00:1A:2B:3C:4D:5F</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Anwendung: Weitere Beispiele</h2>
+                <ul>
+                    <li class="fragment"><strong>IPv6-Adressen:</strong> <code>fe80::1</code> (hexadezimale Notation)</li>
+                    <li class="fragment"><strong>ASCII-Codes:</strong> 0x41 = 'A', 0x42 = 'B'</li>
+                    <li class="fragment"><strong>Assembler-Programmierung:</strong> Opcodes in Hex</li>
+                    <li class="fragment"><strong>Cheat-Codes:</strong> Speicherwerte in Hex-Editoren ändern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Hexadezimalsystem: Basis 16, Ziffern 0–9 und A–F</li>
+                    <li class="fragment">1 Hex-Ziffer = 4 Binärziffern</li>
+                    <li class="fragment">Umrechnung: Hex ↔ Dez ↔ Binär</li>
+                    <li class="fragment">Hexadezimale Addition mit Übertrag</li>
+                    <li class="fragment">Wichtige Anwendungen: Farben, Speicher, MAC-Adressen</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">03 - Hexadezimalzahlen</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

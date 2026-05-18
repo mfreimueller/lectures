@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>04 - Aussagenlogik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>04 - Aussagenlogik</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Was ist Aussagenlogik?</h2>
+                <ul>
+                    <li class="fragment">Aussagenlogik = Teilgebiet der Logik</li>
+                    <li class="fragment">Befasst sich mit Aussagen und deren Wahrheitswerten</li>
+                    <li class="fragment">Grundlage für digitale Schaltungen und Programmierung</li>
+                    <li class="fragment">George Boole (1815–1864): Boolesche Algebra</li>
+                    <li class="fragment">Aussagen sind entweder <strong>wahr</strong> oder <strong>falsch</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aussagen und Wahrheitswerte</h2>
+                <p>Eine <strong>Aussage</strong> ist ein Satz, der eindeutig wahr oder falsch ist.</p>
+                <table>
+                    <tr><th>Aussage</th><th>Wahrheitswert</th></tr>
+                    <tr><td>Wien ist die Hauptstadt von Österreich.</td><td>wahr</td></tr>
+                    <tr><td>2 + 2 = 5</td><td>falsch</td></tr>
+                    <tr><td>Heute scheint die Sonne.</td><td>wahr oder falsch</td></tr>
+                </table>
+                <p class="fragment">Keine Aussagen: Fragen ("Wie geht's?"), Befehle ("Komm her!")</p>
+            </section>
+
+            <section>
+                <h2>Logische Operatoren – Übersicht</h2>
+                <table>
+                    <tr><th>Operator</th><th>Name</th><th>Symbol</th><th>Bedeutung</th></tr>
+                    <tr><td>¬</td><td>NOT (Negation)</td><td>¬A, !A</td><td>Nicht A</td></tr>
+                    <tr><td>∧</td><td>AND (Konjunktion)</td><td>A ∧ B, A && B</td><td>A und B</td></tr>
+                    <tr><td>∨</td><td>OR (Disjunktion)</td><td>A ∨ B, A || B</td><td>A oder B</td></tr>
+                    <tr><td>⊕</td><td>XOR (exklusives Oder)</td><td>A ⊕ B</td><td>A oder B, nicht beide</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>NOT – Negation</h2>
+                <p>Der NOT-Operator kehrt den Wahrheitswert um.</p>
+                <table>
+                    <tr><th>A</th><th>¬A</th></tr>
+                    <tr><td>0 (falsch)</td><td>1 (wahr)</td></tr>
+                    <tr><td>1 (wahr)</td><td>0 (falsch)</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-plaintext">¬(5 &gt; 3) = ?      // 5 &gt; 3 ist wahr → ¬wahr = falsch
+¬(2 = 3) = ?      // 2 = 3 ist falsch → ¬falsch = wahr</code></pre>
+            </section>
+
+            <section>
+                <h2>AND – Konjunktion</h2>
+                <p>A ∧ B ist nur dann wahr, wenn <strong>beide</strong> Aussagen wahr sind.</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>A ∧ B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-plaintext">(5 &gt; 3) ∧ (2 &lt; 4) = 1 ∧ 1 = 1 (wahr)
+(5 &gt; 3) ∧ (2 &gt; 4) = 1 ∧ 0 = 0 (falsch)</code></pre>
+            </section>
+
+            <section>
+                <h2>OR – Disjunktion</h2>
+                <p>A ∨ B ist wahr, wenn <strong>mindestens eine</strong> der Aussagen wahr ist.</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>A ∨ B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-plaintext">(5 &lt; 3) ∨ (2 = 4) = 0 ∨ 0 = 0 (falsch)
+(5 &lt; 3) ∨ (2 &lt; 4) = 0 ∨ 1 = 1 (wahr)</code></pre>
+            </section>
+
+            <section>
+                <h2>XOR – Exklusives Oder</h2>
+                <p>A ⊕ B ist wahr, wenn <strong>genau eine</strong> der Aussagen wahr ist.</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>A ⊕ B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td></tr>
+                </table>
+                <p class="fragment">"Entweder A oder B, aber nicht beide"</p>
+            </section>
+
+            <section>
+                <h2>Wahrheitstabellen erstellen</h2>
+                <p>Vorgehen: Alle Kombinationen der Eingaben durchgehen.</p>
+                <pre><code class="language-plaintext">Gesucht: Wahrheitstabelle für (A ∧ B) ∨ ¬C
+
+A B C | A∧B | ¬C | (A∧B) ∨ ¬C
+0 0 0 |  0  | 1  |     1
+0 0 1 |  0  | 0  |     0
+0 1 0 |  0  | 1  |     1
+0 1 1 |  0  | 0  |     0
+1 0 0 |  0  | 1  |     1
+1 0 1 |  0  | 0  |     0
+1 1 0 |  1  | 1  |     1
+1 1 1 |  1  | 0  |     1</code></pre>
+                <p class="fragment">2<sup>n</sup> Zeilen für n Variablen</p>
+            </section>
+
+            <section>
+                <h2>Logische Äquivalenz</h2>
+                <p>Zwei Ausdrücke sind <strong>logisch äquivalent</strong>, wenn sie bei gleichen Eingaben gleiche Ergebnisse liefern.</p>
+                <pre><code class="language-plaintext">Zeige: ¬(A ∧ B) ≡ ¬A ∨ ¬B (De Morgan)
+
+A B | A∧B | ¬(A∧B) | ¬A | ¬B | ¬A ∨ ¬B
+0 0 |  0  |   1    | 1  | 1  |    1
+0 1 |  0  |   1    | 1  | 0  |    1
+1 0 |  0  |   1    | 0  | 1  |    1
+1 1 |  1  |   0    | 0  | 0  |    0</code></pre>
+            </section>
+
+            <section>
+                <h2>De Morgansche Gesetze</h2>
+                <p>Zwei wichtige Äquivalenzen:</p>
+                <table>
+                    <tr><th>Gesetz</th><th>Formel</th><th>Bedeutung</th></tr>
+                    <tr><td>1. De Morgan</td><td>¬(A ∧ B) ≡ ¬A ∨ ¬B</td><td>Negation von AND</td></tr>
+                    <tr><td>2. De Morgan</td><td>¬(A ∨ B) ≡ ¬A ∧ ¬B</td><td>Negation von OR</td></tr>
+                </table>
+                <pre class="fragment"><code class="language-plaintext">¬(x &gt; 0 ∧ x &lt; 10) ≡ ¬(x &gt; 0) ∨ ¬(x &lt; 10)
+                     ≡ x ≤ 0 ∨ x ≥ 10</code></pre>
+            </section>
+
+            <section>
+                <h2>De Morgan – Beispiele</h2>
+                <pre><code class="language-plaintext">¬(A ∨ B) ≡ ¬A ∧ ¬B
+
+¬(Es regnet ∨ Es schneit) ≡ ¬(Es regnet) ∧ ¬(Es schneit)
+                          ≡ Es regnet nicht ∧ Es schneit nicht</code></pre>
+                <pre class="fragment"><code class="language-plaintext">¬(A ∧ B) ≡ ¬A ∨ ¬B
+
+Vereinfache: ¬(a == 0 ∧ b == 0)
+→ a ≠ 0 ∨ b ≠ 0</code></pre>
+            </section>
+
+            <section>
+                <h2>Anwendungen in der Informatik</h2>
+                <ul>
+                    <li class="fragment"><strong>Digitale Schaltungen:</strong> AND/OR/NOT-Gatter in CPUs</li>
+                    <li class="fragment"><strong>Programmierung:</strong> Bedingungen in if-Anweisungen</li>
+                    <li class="fragment"><strong>Datenbanken:</strong> SQL-WHERE-Klauseln</li>
+                    <li class="fragment"><strong>Netzwerke:</strong> Subnetzberechnungen mit Bitmasken</li>
+                    <li class="fragment"><strong>Kryptographie:</strong> XOR in Verschlüsselungsalgorithmen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Bedingung in Java</h2>
+<pre><code class="language-java">int alter = 18;
+boolean hatAusweis = true;
+
+if (alter >= 18 &amp;&amp; hatAusweis) {
+    // Eintritt erlaubt
+}
+
+// In Java: if (alter >= 18 && hatAusweis)</code></pre>
+<pre class="fragment"><code class="language-java">// De Morgan in der Praxis:
+if (!(alter &lt; 18 || !hatAusweis)) { ... }
+// ist äquivalent zu:
+if (alter >= 18 &amp;&amp; hatAusweis) { ... }</code></pre>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Aussagenlogik: wahr/falsch, logische Operatoren</li>
+                    <li class="fragment">AND (∧), OR (∨), NOT (¬), XOR (⊕)</li>
+                    <li class="fragment">Wahrheitstabellen zeigen alle Ergebnisse</li>
+                    <li class="fragment">Logische Äquivalenz: gleiche Wahrheitstabelle</li>
+                    <li class="fragment">De Morgan: ¬(A∧B) ≡ ¬A∨¬B, ¬(A∨B) ≡ ¬A∧¬B</li>
+                    <li class="fragment">Anwendungen in Schaltungen, Programmierung, Datenbanken</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">04 - Aussagenlogik</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

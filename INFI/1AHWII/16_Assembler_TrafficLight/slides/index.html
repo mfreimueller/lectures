@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>16 - Assembler &ndash; Projekt: Ampelschaltung</title><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
+<body><div class="reveal"><div class="slides">
+<section class="center title-slide"><h1>16 - Assembler &ndash; Projekt: Ampelschaltung</h1><p class="institution">INFI - 1AHWII</p></section>
+
+<section>
+<h2>Ein-/Ausgabe-Ports im &Uuml;berblick</h2>
+<ul>
+<li class="fragment">Die CPU kommuniziert mit Peripherie &uuml;ber <strong>Ports</strong></li>
+<li class="fragment">Ein Port ist eine <strong>nummrierte Adresse</strong> im I/O-Adressraum</li>
+<li class="fragment">I/O-Ports sind <strong>getrennt vom Arbeitsspeicher</strong> (IN/OUT-Befehle)</li>
+<li class="fragment">Beispiele: Parallelport (378h), Tastatur (60h), Timer (40h)</li>
+</ul>
+<div class="fragment">
+<table>
+<tr><th>Port-Adresse</th><th>Ger&auml;t</th></tr>
+<tr><td>60h</td><td>Tastatur-Controller</td></tr>
+<tr><td>378h &ndash; 37Fh</td><td>Parallelport (LPT1)</td></tr>
+<tr><td>3F8h &ndash; 3FFh</td><td>Serielle Schnittstelle (COM1)</td></tr>
+</table>
+</div>
+</section>
+
+<section>
+<h2>Die IN/OUT-Befehle</h2>
+<ul>
+<li class="fragment"><code>IN</code> &ndash; liest ein Byte/Word von einem Port</li>
+<li class="fragment"><code>OUT</code> &ndash; schreibt ein Byte/Word zu einem Port</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">; Beispiel: Wert von Port 60h (Tastatur) lesen
+IN  AL, 60h     ; AL = Byte von Port 60h
+
+; Beispiel: Wert zu Port 378h (LPT1) senden
+MOV AL, 0FFh    ; Alle Bits auf 1 setzen
+OUT 378h, AL    ; Ausgabe an Port 378h
+
+; Beispiel mit DX (16-Bit-Port-Adresse)
+MOV DX, 378h
+OUT DX, AL
+</code></pre>
+</div>
+<ul>
+<li class="fragment">F&uuml;r Ports &lt; 256 kann die Adresse direkt angegeben werden</li>
+<li class="fragment">F&uuml;r Ports &gt; 256 muss die Adresse in <strong>DX</strong> stehen</li>
+</ul>
+</section>
+
+<section>
+<h2>Die Ampelschaltung als Zustandsautomat</h2>
+<ul>
+<li class="fragment">Eine Ampel durchl&auml;uft <strong>mehrere Zust&auml;nde</strong> in einer festen Reihenfolge</li>
+<li class="fragment">Jeder Zustand hat eine <strong>definierte Dauer</strong> (Timing)</li>
+</ul>
+<div class="fragment">
+<p>Standard-Ampelphasen:</p>
+<table>
+<tr><th>Zustand</th><th>Farbe</th><th>Dauer</th></tr>
+<tr><td>1</td><td>Rot</td><td>ca. 30 s</td></tr>
+<tr><td>2</td><td>Rot-Gelb</td><td>ca. 3 s</td></tr>
+<tr><td>3</td><td>Gr&uuml;n</td><td>ca. 25 s</td></tr>
+<tr><td>4</td><td>Gelb</td><td>ca. 3 s</td></tr>
+</table>
+</div>
+<ul>
+<li class="fragment">Die Ampel wechselt zyklisch: 1 &rArr; 2 &rArr; 3 &rArr; 4 &rArr; 1</li>
+</ul>
+</section>
+
+<section>
+<h2>Zustandsdiagramm der Ampel</h2>
+<div class="fragment">
+<pre style="font-size:0.8em; line-height:1.4;">
+        +-------+
+   +---&gt;| Rot   |----+
+   |    +-------+    |
+   |                 v
+   |             +--------+
+   |             | Rot-   |
+   |             | Gelb   |
+   |             +--------+
+   |                 |
+   |                 v
+   |             +-------+
+   |    +--------| Gr&uuml;n |
+   |    |        +-------+
+   |    v
+   | +-------+
+   +-| Gelb  |
+     +-------+
+</pre>
+</div>
+<ul>
+<li class="fragment"><strong>Zust&auml;nde:</strong> Rot, Rot-Gelb, Gr&uuml;n, Gelb</li>
+<li class="fragment"><strong>&Uuml;berg&auml;nge:</strong> immer in eine Richtung (zyklisch)</li>
+<li class="fragment"><strong>Bedingung:</strong> Timer/Verz&ouml;gerung abgelaufen</li>
+</ul>
+</section>
+
+<section>
+<h2>Zustandstabelle</h2>
+<table>
+<tr><th>Zustand</th><th>Port-Ausgabe</th><th>Dauer (Ticks)</th><th>N&auml;chster Zustand</th></tr>
+<tr><td>0 (Rot)</td><td>000001b</td><td>300</td><td>1</td></tr>
+<tr><td>1 (Rot-Gelb)</td><td>000011b</td><td>30</td><td>2</td></tr>
+<tr><td>2 (Gr&uuml;n)</td><td>000100b</td><td>250</td><td>3</td></tr>
+<tr><td>3 (Gelb)</td><td>000010b</td><td>30</td><td>0</td></tr>
+</table>
+<div class="fragment">
+<ul>
+<li>Die Bits entsprechen den <strong>einzelnen Lampen</strong> der Ampel</li>
+<li>Bit 0 = Rot, Bit 1 = Gelb, Bit 2 = Gr&uuml;n</li>
+<li>Die Ausgabe erfolgt &uuml;ber <strong>OUT</strong> an einen definierten Port</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Timing und Verz&ouml;gerungsschleifen</h2>
+<ul>
+<li class="fragment">Die CPU arbeitet <strong>viel schneller</strong> als die Ampel schalten muss</li>
+<li class="fragment">Wir brauchen <strong>Verz&ouml;gerungsschleifen</strong> (Delay-Loops)</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">; Einfache Verz&ouml;gerungsschleife
+delay:
+    MOV CX, 0FFFFh    ; Z&auml;hler maximal
+delay_loop:
+    NOP               ; Leerbefehl (keine Operation)
+    LOOP delay_loop   ; CX--, springe wenn CX != 0
+    RET
+</code></pre>
+</div>
+<ul>
+<li class="fragment">Die Dauer h&auml;ngt von der <strong>Taktfrequenz</strong> der CPU ab</li>
+<li class="fragment"><code>LOOP</code> dekrementiert CX und springt, wenn CX &ne; 0</li>
+</ul>
+</section>
+
+<section>
+<h2>Verschachtelte Verz&ouml;gerungsschleifen</h2>
+<ul>
+<li class="fragment">Eine einzelne Schleife reicht oft <strong>nicht f&uuml;r lange Verz&ouml;gerungen</strong></li>
+<li class="fragment">L&ouml;sung: <strong>verschachtelte Schleifen</strong> (&auml;u&szlig;erer und innerer Z&auml;hler)</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">; Verz&ouml;gerung mit zwei Schleifen (ca. 1 s bei 4,77 MHz)
+delay_long:
+    MOV BX, 10         ; &Auml;u&szlig;erer Z&auml;hler
+outer_loop:
+    MOV CX, 0FFFFh     ; Innerer Z&auml;hler
+inner_loop:
+    NOP
+    LOOP inner_loop
+    DEC BX
+    JNZ outer_loop     ; BX--, springe wenn BX != 0
+    RET
+</code></pre>
+</div>
+<ul>
+<li class="fragment"><strong>&Auml;u&szlig;erer Z&auml;hler</strong> (BX) steuert die Anzahl der Durchl&auml;ufe</li>
+<li class="fragment"><strong>Innerer Z&auml;hler</strong> (CX) erzeugt die Basisverz&ouml;gerung</li>
+</ul>
+</section>
+
+<section>
+<h2>Programmstruktur &ndash; &Uuml;bersicht</h2>
+<ul>
+<li class="fragment">Das Ampel-Programm hat folgende Struktur:</li>
+</ul>
+<div class="fragment">
+<pre><code class="language-nasm">ORG 100h
+
+.DATA
+    ; Konstanten f&uuml;r Zust&auml;nde und Verz&ouml;gerungen
+
+.CODE
+start:
+    ; Initialisierung
+main_loop:
+    ; Zustand ausgeben (OUT)
+    ; Verz&ouml;gerung
+    ; N&auml;chster Zustand
+    JMP main_loop
+
+; Hilfsfunktionen
+delay:
+    ; Verz&ouml;gerungsschleife
+    RET
+</code></pre>
+</div>
+<ul>
+<li class="fragment">Die <strong>Hauptschleife</strong> l&auml;uft unendlich (Endlos-Schleife)</li>
+<li class="fragment">Hilfsfunktionen wie <strong>delay</strong> werden mit CALL aufgerufen</li>
+</ul>
+</section>
+
+<section>
+<h2>Code-Ger&uuml;st f&uuml;r die Ampelschaltung</h2>
+<pre><code class="language-nasm">ORG 100h
+
+.DATA
+    AMPEL_PORT EQU 378h
+    rot    EQU 00000001b
+    gelb   EQU 00000010b
+    gruen  EQU 00000100b
+
+.CODE
+start:
+    MOV DX, AMPEL_PORT
+
+ampel_loop:
+    ; Rot
+    MOV AL, rot
+    OUT DX, AL
+    CALL delay_rot
+
+    ; Rot-Gelb
+    MOV AL, rot OR gelb
+    OUT DX, AL
+    CALL delay_kurz
+
+    ; Gr&uuml;n
+    MOV AL, gruen
+    OUT DX, AL
+    CALL delay_gruen
+
+    ; Gelb
+    MOV AL, gelb
+    OUT DX, AL
+    CALL delay_kurz
+
+    JMP ampel_loop
+</code></pre>
+</section>
+
+<section>
+<h2>Testen der Ampelschaltung</h2>
+<ul>
+<li class="fragment">Zum Testen wird ein <strong>Emulator</strong> oder eine <strong>Hardware-Simulation</strong> verwendet</li>
+<li class="fragment">M&ouml;gliche Testumgebungen:
+  <ul>
+    <li class="fragment"><strong>DOSBox</strong> mit TASM/MASM</li>
+    <li class="fragment"><strong>EMU8086</strong> (grafischer Emulator mit Port-Simulation)</li>
+    <li class="fragment"><strong>Bochs/QEMU</strong> (vollst&auml;ndige PC-Emulation)</li>
+  </ul>
+</li>
+</ul>
+<div class="fragment">
+<p>Test-Schritte:</p>
+<ol>
+<li class="fragment">Assemblieren (&uuml;bersetzen) des Quelltextes</li>
+<li class="fragment">Linken zur ausf&uuml;hrbaren Datei (EXE/COM)</li>
+<li class="fragment">Ausf&uuml;hren im Emulator &ndash; <strong>Port-Ausgabe beobachten</strong></li>
+<li class="fragment">Timing &uuml;berpr&uuml;fen und Z&auml;hler ggf. anpassen</li>
+</ol>
+</div>
+</section>
+
+<section>
+<h2>Debuggen des Ampel-Programms</h2>
+<ul>
+<li class="fragment">H&auml;ufige Fehler beim Assembler-Projekt:
+  <ul>
+    <li class="fragment"><strong>Falsche Port-Adresse</strong> &ndash; keine Ausgabe sichtbar</li>
+    <li class="fragment"><strong>Endlosschleife ohne Ausgabe</strong> &ndash; INIT vergessen</li>
+    <li class="fragment"><strong>Falsche Bit-Muster</strong> &ndash; falsche Lampen leuchten</li>
+    <li class="fragment"><strong>Timing zu kurz/lang</strong> &ndash; Z&auml;hler falsch gew&auml;hlt</li>
+  </ul>
+</li>
+</ul>
+<div class="fragment">
+<p>Debugging-Methoden:</p>
+<ul>
+<li class="fragment"><strong>Step-by-Step</strong> durch das Programm gehen</li>
+<li class="fragment"><strong>Register</strong> (AX, DX, CX) nach jedem Schritt pr&uuml;fen</li>
+<li class="fragment"><strong>Breakpoints</strong> vor jedem OUT-Befehl setzen</li>
+<li class="fragment">Mit <strong>kleinen Z&auml;hlerwerten</strong> testen, dann vergr&ouml;&szlig;ern</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){document.querySelector('.reveal').insertAdjacentHTML('beforeend','<div class=\"footer\"><div class=\"logo-container\"><img src=\"https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png\" class=\"school-logo\"></div><span class=\"date\">16 - Assembler &ndash; Projekt: Ampelschaltung</span></div>');});</script>
+</body></html>

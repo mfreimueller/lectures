@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>24 - Übung Excel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>24 - Übung Excel</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Zellbezüge</h2>
+                <table>
+                    <tr><th>Typ</th><th>Beispiel</th><th>Verhalten beim Kopieren</th></tr>
+                    <tr><td><strong>Relativ</strong></td><td><code>=A1+B1</code></td><td>Passt sich an neue Position an</td></tr>
+                    <tr><td><strong>Absolut</strong></td><td><code>=$A$1+$B$1</code></td><td>Bleibt immer gleich</td></tr>
+                    <tr><td><strong>Gemischt</strong></td><td><code>=$A1+B$1</code></td><td>Nur Zeile oder Spalte fixiert</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Mit <kbd>F4</kbd> zwischen den Bezugsarten wechseln</li>
+                    <li class="fragment">Wichtig für Formeln, die in viele Zellen kopiert werden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Wichtige Funktionen</h2>
+                <table>
+                    <tr><th>Funktion</th><th>Syntax</th><th>Beschreibung</th></tr>
+                    <tr><td>SUMME</td><td><code>=SUMME(Bereich)</code></td><td>Addiert alle Zahlen in einem Bereich</td></tr>
+                    <tr><td>WENN</td><td><code>=WENN(Prüfung; Dann; Sonst)</code></td><td>Bedingte Ausgabe</td></tr>
+                    <tr><td>SVERWEIS</td><td><code>=SVERWEIS(Kriterium; Matrix; Spalte; 0)</code></td><td>Senkrechtes Suchen in Tabelle</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">WENN mit UND/ODER kombinierbar: <code>=WENN(UND(A1>10; B1<5); "OK"; "Nicht OK")</code></li>
+                    <li class="fragment">SVERWEIS mit <code>0</code> (FALSCH) für genaue Übereinstimmung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Diagrammtypen</h2>
+                <table>
+                    <tr><th>Typ</th><th>Verwendung</th></tr>
+                    <tr><td><strong>Säulendiagramm</strong></td><td>Vergleiche zwischen Kategorien</td></tr>
+                    <tr><td><strong>Liniendiagramm</strong></td><td>Entwicklungen über Zeit (Trends)</td></tr>
+                    <tr><td><strong>Kreisdiagramm</strong></td><td>Anteile an einem Ganzen (max. 5–7 Kategorien)</td></tr>
+                    <tr><td><strong>Balkendiagramm</strong></td><td>Wie Säule, waagrecht – gut bei langen Namen</td></tr>
+                    <tr><td><strong>Kombidiagramm</strong></td><td>Säule + Linie mit sekundärer Achse</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Diagramm auswählen → Datenreihen prüfen → Achsen beschriften</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Pivot-Tabellen</h2>
+                <ul>
+                    <li class="fragment">Daten markieren → <strong>Einfügen → Pivot-Tabelle</strong></li>
+                    <li class="fragment">Vier Bereiche: Zeilen, Spalten, Werte, Filter</li>
+                    <li class="fragment">Felder per Drag & Drop zuweisen</li>
+                    <li class="fragment">Werte: Summe, Anzahl, Mittelwert, Min, Max</li>
+                    <li class="fragment"><strong>Slicer</strong> zum interaktiven Filtern</li>
+                    <li class="fragment"><strong>Pivot-Chart</strong> aus Pivot-Tabelle erstellen</li>
+                    <li class="fragment">Tipp: Quelldaten als Tabelle formatieren (<kbd>Strg</kbd>+<kbd>T</kbd>) → Pivot wird dynamisch</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aufgabenübersicht & Tipps</h2>
+                <table>
+                    <tr><th>Kata</th><th>Thema</th><th>Dauer</th></tr>
+                    <tr><td><strong>K1: Formeln & Funktionen</strong></td><td>Gemischte Aufgaben zu Excel-Formeln</td><td>30 min</td></tr>
+                    <tr><td><strong>K2: Datenanalyse</strong></td><td>Daten mit Diagrammen und Pivot auswerten</td><td>25 min</td></tr>
+                    <tr><td><strong>K3: Excel-Projekt</strong></td><td>Vollständige Aufgabenstellung umsetzen</td><td>35 min</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment"><strong>Tipp 1:</strong> Speichert regelmäßig (<kbd>Strg</kbd>+<kbd>S</kbd>)</li>
+                    <li class="fragment"><strong>Tipp 2:</strong> Nutzt die Formelüberwachung bei Fehlern</li>
+                    <li class="fragment"><strong>Tipp 3:</strong> Beginnt mit K1, dann K2, dann K3</li>
+                    <li class="fragment">Bei Fragen: Hand heben!</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'none', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">24 - Übung Excel</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>17 - Einführung in Betriebssysteme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>17 - Einführung in Betriebssysteme</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Was ist ein Betriebssystem?</h2>
+                <p class="subtitle">Definition und grundlegende Aufgaben</p>
+            </section>
+
+            <section>
+                <h2>Definition</h2>
+                <ul>
+                    <li class="fragment">Ein <strong>Betriebssystem</strong> (OS) ist die zentrale Software eines Computers</li>
+                    <li class="fragment">Es agiert als <strong>Vermittler</strong> zwischen Hardware und Anwendungssoftware</li>
+                    <li class="fragment">Stellt eine <strong>Abstraktion</strong> der Hardware bereit</li>
+                    <li class="fragment">Beispiele: Windows, Linux, macOS, Android, iOS</li>
+                </ul>
+                <blockquote class="fragment">
+                    „Ein Betriebssystem ist eine Sammlung von Systemprogrammen, die den Betrieb eines Rechners steuert und überwacht."
+                </blockquote>
+            </section>
+
+            <section>
+                <h2>Die vier Hauptaufgaben eines Betriebssystems</h2>
+                <ul>
+                    <li class="fragment"><strong>Prozessverwaltung:</strong> Erzeugen, Planen und Beenden von Prozessen; Synchronisation und Kommunikation</li>
+                    <li class="fragment"><strong>Speicherverwaltung:</strong> Verteilung des Hauptspeichers an laufende Prozesse; virtuelle Adressräume</li>
+                    <li class="fragment"><strong>Dateisystemverwaltung:</strong> Organisation von Dateien und Verzeichnissen auf persistenten Speichermedien</li>
+                    <li class="fragment"><strong>Geräteverwaltung:</strong> Ansteuerung und Abstraktion von Ein-/Ausgabegeräten über Treiber</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Kernel-Modus vs. User-Modus</h2>
+                <p>Prozessoren unterstützen mindestens zwei Ausführungsmodi:</p>
+                <table>
+                    <tr><th>Kernel-Modus (Ring 0)</th><th>User-Modus (Ring 3)</th></tr>
+                    <tr><td>Vollständiger Hardware-Zugriff</td><td>Eingeschränkter Zugriff</td></tr>
+                    <tr><td>Kann alle CPU-Instruktionen ausführen</td><td>Kritische Instruktionen gesperrt</td></tr>
+                    <tr><td>Betriebssystem-Kernel läuft hier</td><td>Anwendungsprogramme laufen hier</td></tr>
+                    <tr><td>Direkter Speicherzugriff möglich</td><td>Nur eigener virtueller Adressraum</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Systemaufrufe (Syscalls)</h2>
+                <p><strong>Systemaufrufe</strong> sind die Schnittstelle zwischen User-Space und Kernel:</p>
+                <ol>
+                    <li class="fragment">Anwendung ruft eine Funktion der Standardbibliothek auf (z. B. <code>read()</code>)</li>
+                    <li class="fragment">Die Bibliothek führt einen <strong>Trap</strong> (Software-Interrupt) aus</li>
+                    <li class="fragment">Der Prozessor wechselt in den Kernel-Modus</li>
+                    <li class="fragment">Der Kernel führt die gewünschte Operation aus</li>
+                    <li class="fragment">Rückkehr in den User-Modus mit dem Ergebnis</li>
+                </ol>
+                <p class="fragment">Beispiel-Syscalls: <code>open</code>, <code>read</code>, <code>write</code>, <code>fork</code>, <code>execve</code></p>
+            </section>
+
+            <section>
+                <h2>Was ist ein Prozess?</h2>
+                <ul>
+                    <li class="fragment">Ein <strong>Prozess</strong> ist ein <em>Programm in Ausführung</em></li>
+                    <li class="fragment">Enthält: Code (Text), Daten, Heap, Stack, Registerinhalte</li>
+                    <li class="fragment">Jeder Prozess hat einen eigenen <strong>virtuellen Adressraum</strong></li>
+                    <li class="fragment">Prozesse sind voneinander isoliert – ein Absturz betrifft nur den eigenen Prozess</li>
+                </ul>
+                <p class="fragment">Abgrenzung: Ein <strong>Programm</strong> ist eine passive Datei auf der Festplatte, ein <strong>Prozess</strong> ist die aktive Ausführung dieses Programms im Speicher.</p>
+            </section>
+
+            <section>
+                <h2>Prozesszustände (Process States)</h2>
+                <p>Ein Prozess durchläuft während seiner Lebensdauer verschiedene Zustände:</p>
+                <table>
+                    <tr><th>Zustand</th><th>Bedeutung</th></tr>
+                    <tr><td><strong>Running</strong></td><td>Der Prozess wird gerade von der CPU ausgeführt</td></tr>
+                    <tr><td><strong>Ready</strong></td><td>Der Prozess ist bereit zur Ausführung, wartet aber auf die CPU</td></tr>
+                    <tr><td><strong>Blocked</strong></td><td>Der Prozess wartet auf ein Ereignis (z. B. Tastatureingabe, Festplatte)</td></tr>
+                </table>
+                <p class="fragment">Zustandsübergänge: <em>Ready → Running</em> (Scheduling), <em>Running → Ready</em> (Unterbrechung), <em>Running → Blocked</em> (E/A), <em>Blocked → Ready</em> (Ereignis tritt ein).</p>
+            </section>
+
+            <section>
+                <h2>Process Control Block (PCB)</h2>
+                <p>Für jeden Prozess führt das Betriebssystem einen <strong>PCB</strong> (auch Prozessdeskriptor):</p>
+                <ul>
+                    <li class="fragment">Prozess-ID (PID)</li>
+                    <li class="fragment">Prozesszustand (Running, Ready, Blocked)</li>
+                    <li class="fragment">Program Counter (nächste auszuführende Adresse)</li>
+                    <li class="fragment">CPU-Register (müssen bei Unterbrechung gesichert werden)</li>
+                    <li class="fragment">Speicherverwaltungs-Informationen (Seitentabellen etc.)</li>
+                    <li class="fragment">geöffnete Dateien, Signale, Priorität</li>
+                </ul>
+                <p class="fragment">Der PCB wird im <strong>Kernel-Space</strong> gespeichert und ist für User-Prozesse nicht sichtbar.</p>
+            </section>
+
+            <section>
+                <h2>Virtueller Speicher</h2>
+                <ul>
+                    <li class="fragment">Jeder Prozess sieht einen eigenen, <strong>zusammenhängenden Adressraum</strong></li>
+                    <li class="fragment">Dieser muss nicht physisch zusammenhängen</li>
+                    <li class="fragment">Vorteile: <strong>Isolation</strong> (Prozesse stören einander nicht), <strong>Vereinfachung</strong> (Programme müssen nicht um Speicherplatz konkurrieren)</li>
+                    <li class="fragment">Die Adressen, die ein Programm verwendet, sind <strong>virtuelle Adressen</strong></li>
+                    <li class="fragment">Die <strong>MMU</strong> (Memory Management Unit) übersetzt diese in physische Adressen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Paging und Seitentabelle</h2>
+                <ul>
+                    <li class="fragment">Der virtuelle Speicher ist in gleich große Blöcke (<strong>Seiten / Pages</strong>) eingeteilt</li>
+                    <li class="fragment">Der physische Speicher ist in gleich große <strong>Rahmen (Frames)</strong> eingeteilt (gleiche Größe)</li>
+                    <li class="fragment">Die <strong>Seitentabelle (Page Table)</strong> bildet virtuelle Seiten auf physische Rahmen ab</li>
+                    <li class="fragment">Typische Seitengröße: 4 KiB</li>
+                </ul>
+                <pre><code>Virtuelle Adresse:
++--------+-----------+
+| Seite  | Offset    |
++--------+-----------+
+  ↑           ↑
+Seiten-    Position
+tabelle → innerhalb
+Frame-Nr.  der Seite</code></pre>
+            </section>
+
+            <section>
+                <h2>Swapping und MMU</h2>
+                <ul>
+                    <li class="fragment"><strong>Swapping:</strong> Nicht benötigte Seiten werden auf die Festplatte (Swap-Bereich) ausgelagert</li>
+                    <li class="fragment">Bei Zugriff auf eine ausgelagerte Seite → <strong>Page Fault</strong> → Kernel lädt Seite zurück</li>
+                    <li class="fragment">Die <strong>MMU</strong> ist eine Hardware-Komponente der CPU, die die Adressübersetzung in Echtzeit durchführt</li>
+                    <li class="fragment">Ein <strong>TLB</strong> (Translation Lookaside Buffer) beschleunigt die Adressübersetzung als Cache</li>
+                </ul>
+                <p class="fragment">Vorteil von Paging: Keine externe Fragmentierung; Prozesse können größer als der physische Speicher sein.</p>
+            </section>
+
+            <section>
+                <h2>Hierarchisches Dateisystem</h2>
+                <ul>
+                    <li class="fragment">Dateien sind in einer <strong>Baumstruktur</strong> (hierarchisch) organisiert</li>
+                    <li class="fragment">Jeder Eintrag ist entweder eine <strong>Datei</strong> oder ein <strong>Verzeichnis (Ordner)</strong></li>
+                    <li class="fragment">Der oberste Knoten heißt <strong>Wurzelverzeichnis (Root)</strong></li>
+                    <li class="fragment">Beispiele: <code>/</code> (Linux/macOS), <code>C:\</code> (Windows)</li>
+                    <li class="fragment">Ein <strong>Pfad</strong> beschreibt den Weg durch den Baum (z. B. <code>/home/user/dokument.txt</code>)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Mount Points und Verzeichnisstruktur</h2>
+                <ul>
+                    <li class="fragment"><strong>Mount Points:</strong> Einbinden eines Dateisystems in die Verzeichnisstruktur</li>
+                    <li class="fragment">Ein USB-Stick wird z. B. unter <code>/media/usb</code> oder <code>/mnt</code> eingehängt</li>
+                    <li class="fragment">Die <strong>FHS</strong> (Filesystem Hierarchy Standard) definiert die Verzeichnisstruktur unter Linux</li>
+                    <li class="fragment">Wichtige Verzeichnisse: <code>/bin</code>, <code>/etc</code>, <code>/var</code>, <code>/home</code>, <code>/tmp</code></li>
+                    <li class="fragment">Metadaten werden in <strong>Inodes</strong> gespeichert (Besitzer, Berechtigungen, Zeitstempel, Blockadressen)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die drei großen Betriebssysteme</h2>
+                <table>
+                    <tr><th></th><th>Windows</th><th>Linux</th><th>macOS</th></tr>
+                    <tr><td>Entwickler</td><td>Microsoft</td><td>Open Source (Gemeinschaft)</td><td>Apple</td></tr>
+                    <tr><td>Kernel-Typ</td><td>Hybrid-Kernel (NT)</td><td>Monolithischer Kernel</td><td>Hybrid-Kernel (XNU)</td></tr>
+                    <tr><td>Dateisystem</td><td>NTFS (primär)</td><td>ext4, Btrfs, XFS u. v. m.</td><td>APFS</td></tr>
+                    <tr><td>GUI</td><td>Windows Explorer</td><td>Verschiedene (GNOME, KDE, …)</td><td>Aqua (Finder)</td></tr>
+                    <tr><td>Paketverwaltung</td><td>MSI, Store</td><td>apt, dnf, pacman, …</td><td>.app-Bundle, Homebrew</td></tr>
+                    <tr><td>Zielgruppe</td><td>Desktop, Server, Enterprise</td><td>Server, Embedded, Desktop</td><td>Desktop, Kreativ, Mobile</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Grundlagen der Virtualisierung</h2>
+                <ul>
+                    <li class="fragment"><strong>Virtual Machine Monitor (VMM)</strong> / <strong>Hypervisor</strong> – Software, die mehrere Gast-Betriebssysteme auf einer physischen Maschine ausführt</li>
+                    <li class="fragment"><strong>Typ-1-Hypervisor</strong> (bare-metal): Läuft direkt auf der Hardware (z. B. VMware ESXi, Hyper-V, KVM)</li>
+                    <li class="fragment"><strong>Typ-2-Hypervisor</strong> (gehostet): Läuft auf einem Host-Betriebssystem (z. B. VirtualBox, VMware Workstation)</li>
+                    <li class="fragment"><strong>Container</strong> (z. B. Docker): Teilen sich den Host-Kernel, isolieren nur den User-Space → schlanker als VMs</li>
+                </ul>
+                <p class="fragment">Virtualisierung ermöglicht: Konsolidierung, Isolation, Snapshots, Live-Migration, Testumgebungen.</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">17 - Einführung in Betriebssysteme</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

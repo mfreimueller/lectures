@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>18 - Windows</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>18 - Windows</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Meilensteine der Windows-Geschichte</h2>
+                <table>
+                    <tr><th>Jahr</th><th>Version</th><th>Bemerkung</th></tr>
+                    <tr><td>1985</td><td>Windows 1.0</td><td>Grafische Oberfläche über MS-DOS</td></tr>
+                    <tr><td>1995</td><td>Windows 95</td><td>Startmenü, Taskleiste, Plug &amp; Play</td></tr>
+                    <tr><td>2000</td><td>Windows 2000</td><td>NT-Technologie für Workstations und Server</td></tr>
+                    <tr><td>2001</td><td>Windows XP</td><td>Langlebiger Klassiker, Luna-Design</td></tr>
+                    <tr><td>2007</td><td>Windows Vista</td><td>Aero-Glass-Effekte, UAC eingeführt</td></tr>
+                    <tr><td>2009</td><td>Windows 7</td><td>Verfeinerung von Vista, sehr beliebt</td></tr>
+                    <tr><td>2012</td><td>Windows 8</td><td>Kachel-Oberfläche (Metro/Modern UI)</td></tr>
+                    <tr><td>2015</td><td>Windows 10</td><td>Rückkehr zum Startmenü, Windows as a Service</td></tr>
+                    <tr><td>2021</td><td>Windows 11</td><td>Neues Design, zentrierte Taskleiste, Android-Apps</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>NT-Architektur</h2>
+                <ul>
+                    <li class="fragment">Windows NT (New Technology) ist die gemeinsame Basis seit Windows NT 3.1 (1993)</li>
+                    <li class="fragment"><strong>Hybrid-Kernel:</strong> Kombination aus Mikrokernel- und monolithischen Elementen</li>
+                    <li class="fragment">Wichtige Schichten: <strong>Hardware Abstraction Layer (HAL)</strong>, <strong>Kernel</strong>, <strong>Executive</strong>, <strong>Subsysteme</strong></li>
+                    <li class="fragment">Eigenschaften: präemptives Multitasking, Speicherschutz, Multiprozessor-Unterstützung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Startmenü und Taskleiste</h2>
+                <ul>
+                    <li class="fragment"><strong>Startmenü:</strong> Zentrale Anlaufstelle zum Starten von Programmen, öffnen von Ordnern und Systemeinstellungen</li>
+                    <li class="fragment"><strong>Taskleiste:</strong> Zeigt laufende Programme an; Fixieren von Programmen möglich</li>
+                    <li class="fragment"><strong>Infobereich (System Tray):</strong> Uhrzeit, Lautstärke, Netzwerk, Benachrichtigungen</li>
+                    <li class="fragment"><strong>Aufgabenansicht (Task View):</strong> Virtuelle Desktops und Fensterwechsel (Win + Tab)</li>
+                    <li class="fragment"><strong>Suchfunktion:</strong> Suche nach Apps, Dokumenten und Web (Win + S)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Fensterverwaltung</h2>
+                <ul>
+                    <li class="fragment"><strong>Aero Snap:</strong> Fenster an Bildschirmseiten oder -ecken ziehen für automatische Größenanpassung (Win + Pfeiltasten)</li>
+                    <li class="fragment"><strong>Minimieren, Maximieren, Schließen:</strong> Standard-Fenstersteuerung oben rechts</li>
+                    <li class="fragment"><strong>Taskleisten-Gruppierung:</strong> Mehrere Fenster derselben App werden gruppiert</li>
+                    <li class="fragment"><strong>Alt + Tab:</strong> Schnelles Wechseln zwischen geöffneten Fenstern</li>
+                    <li class="fragment">Rechtsklick auf Taskleiste → Taskleisteneinstellungen für Anpassungen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>NTFS-Dateisystem</h2>
+                <p class="subtitle">New Technology File System</p>
+            </section>
+
+            <section>
+                <h2>Master File Table (MFT)</h2>
+                <ul>
+                    <li class="fragment">Jede Datei und jedes Verzeichnis wird durch einen <strong>MFT-Eintrag</strong> repräsentiert</li>
+                    <li class="fragment">Jeder Eintrag ist typischerweise 1 KiB groß</li>
+                    <li class="fragment">Kleine Dateien (&lt; ~600 Byte) werden direkt im MFT-Eintrag gespeichert (<strong>residente Daten</strong>)</li>
+                    <li class="fragment">Größere Dateien enthalten Verweise auf <strong>Extents</strong> (zusammenhängende Speicherbereiche)</li>
+                    <li class="fragment">Die MFT ist die zentrale Verwaltungsstruktur von NTFS</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>NTFS-Dateiberechtigungen</h2>
+                <ul>
+                    <li class="fragment">Jede Datei/Ordner hat eine <strong>Access Control List (ACL)</strong></li>
+                    <li class="fragment">Jeder ACL-Eintrag (<strong>ACE</strong>) besteht aus: Benutzer/Gruppe + Berechtigung (Allow/Deny)</li>
+                    <li class="fragment">Wichtige Berechtigungen: <strong>Vollzugriff</strong>, <strong>Ändern</strong>, <strong>Lesen &amp; Ausführen</strong>, <strong>Ordnerinhalt auflisten</strong>, <strong>Lesen</strong>, <strong>Schreiben</strong></li>
+                    <li class="fragment"><strong>Vererbung:</strong> Untergeordnete Objekte erben standardmäßig die Berechtigungen des übergeordneten Ordners</li>
+                    <li class="fragment"><strong>Effektive Berechtigung:</strong> Summe aller Allow- minus Deny-Einträge (Deny hat Vorrang)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Systemsteuerung vs. Einstellungen</h2>
+                <table>
+                    <tr><th>Systemsteuerung (klassisch)</th><th>Einstellungen (modern)</th></tr>
+                    <tr><td>Win + R → <code>control</code></td><td>Win + I</td></tr>
+                    <tr><td>Kategorisierte Ansicht (8 Kategorien)</td><td>Kachel-Design, für Touch optimiert</td></tr>
+                    <tr><td>Detailreicher, z. B. Geräte-Manager, Freigabe</td><td>Übersichtlicher, einfachere Navigation</td></tr>
+                    <tr><td>Wird schrittweise abgelöst</td><td>Zukunft der Windows-Konfiguration</td></tr>
+                </table>
+                <p class="fragment">Wichtige Bereiche: System, Geräte, Netzwerk, Konten, Update &amp; Sicherheit</p>
+            </section>
+
+            <section>
+                <h2>Datenträgerverwaltung und Geräte-Manager</h2>
+                <ul>
+                    <li class="fragment"><strong>Datenträgerverwaltung (<code>diskmgmt.msc</code>):</strong>
+                        <ul>
+                            <li>Anzeigen und Verwalten von Festplatten, Partitionen und Volumes</li>
+                            <li>Partitionen erstellen, formatieren, erweitern, verkleinern</li>
+                            <li>Laufwerksbuchstaben zuweisen, Volume-Erstellung (einfach, spanned, striped, mirrored)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Geräte-Manager (<code>devmgmt.msc</code>):</strong>
+                        <ul>
+                            <li>Übersicht aller installierten Hardware-Komponenten</li>
+                            <li>Treiber aktualisieren, deinstallieren, deaktivieren</li>
+                            <li>Konflikte und Fehler erkennen (gelbes Ausrufezeichen)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Ereignisanzeige (Event Viewer)</h2>
+                <ul>
+                    <li class="fragment">Aufruf: <code>eventvwr.msc</code> oder Win + R → eventvwr</li>
+                    <li class="fragment">Protokolliert System-, Sicherheits- und Anwendungsereignisse</li>
+                    <li class="fragment"><strong>Ereignistypen:</strong> Information, Warnung, Fehler, Erfolgs- und Fehlerüberwachung</li>
+                    <li class="fragment"><strong>Windows-Protokolle:</strong> Anwendung, Sicherheit, Setup, System, Weitergeleitete Ereignisse</li>
+                    <li class="fragment">Unverzichtbar zur Fehleranalyse nach Systemabstürzen oder Treiberproblemen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Lokale Benutzerverwaltung</h2>
+                <ul>
+                    <li class="fragment"><strong>Lokale Benutzer und Gruppen</strong> (<code>lusrmgr.msc</code>): Anlegen, Bearbeiten und Löschen von lokalen Benutzerkonten</li>
+                    <li class="fragment">Standardbenutzer: <strong>Administrator</strong> (vollständige Kontrolle) vs. <strong>Standardbenutzer</strong> (eingeschränkt)</li>
+                    <li class="fragment">Gruppen: Z. B. <strong>Administratoren</strong>, <strong>Benutzer</strong>, <strong>Gäste</strong>, <strong>Remotedesktopbenutzer</strong></li>
+                    <li class="fragment"><strong>User Account Control (UAC):</strong> Fragt bei Administrator-Aktionen nach Bestätigung – schützt vor unautorisierter Software</li>
+                    <li class="fragment"><strong>Passwortrichtlinien:</strong> Mindestlänge, Komplexität, Gültigkeitsdauer (über Gruppenrichtlinien konfigurierbar)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Task-Manager (taskmgr.exe)</h2>
+                <ul>
+                    <li class="fragment">Aufruf: <kbd>Strg + Shift + Esc</kbd> oder Rechtsklick auf Taskleiste</li>
+                    <li class="fragment">Standard-Ansicht: Nur laufende Anwendungen</li>
+                    <li class="fragment">Detail-Ansicht („Mehr Details") mit mehreren Registerkarten:
+                        <ul>
+                            <li><strong>Prozesse:</strong> Übersicht aller laufenden Prozesse mit CPU-, RAM-, Datenträger- und Netzwerkauslastung</li>
+                            <li><strong>Leistung:</strong> Grafische Darstellung der Auslastung von CPU, RAM, Datenträgern, Netzwerk</li>
+                            <li><strong>App-Verlauf:</strong> Ressourcennutzung von Store-Apps</li>
+                            <li><strong>Autostart:</strong> Programme, die beim Systemstart automatisch ausgeführt werden</li>
+                            <li><strong>Benutzer:</strong> Anwendungen und Dienste pro angemeldetem Benutzer</li>
+                            <li><strong>Details:</strong> Erweiterte Prozessinformationen (PID, Priorität, CPU-Zeit)</li>
+                            <li><strong>Dienste:</strong> Verwaltung von Windows-Diensten (Start/Stopp/Neustart)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">18 - Windows</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

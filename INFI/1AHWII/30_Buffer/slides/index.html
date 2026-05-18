@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>30 - Puffer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>30 - Puffer</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Übersicht offener Aufgaben</h2>
+                <ul>
+                    <li class="fragment">Ausstehende Katas aus den letzten Wochen identifizieren</li>
+                    <li class="fragment">Unvollständige Übungen und Aufgaben nachholen</li>
+                    <li class="fragment">Abgabefristen und Prioritäten checken</li>
+                    <li class="fragment">Ziel: Alle offenen Punkte bis Stundenende abschließen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zeitplan</h2>
+                <table>
+                    <tr><th>Phase</th><th>Dauer</th><th>Aktivität</th></tr>
+                    <tr><td><strong>Einstieg & Organisation</strong></td><td>5 min</td><td>Überblick, offene Punkte notieren</td></tr>
+                    <tr><td><strong>Kata 1 – Offene Aufgaben</strong></td><td>25 min</td><td>Ausstehende Katas und Übungen abschließen</td></tr>
+                    <tr><td><strong>Kata 2 – Wiederholung</strong></td><td>25 min</td><td>Individuelle Schwerpunkte vertiefen</td></tr>
+                    <tr><td><strong>Abschluss & Fragen</strong></td><td>5 min</td><td>Offene Fragen klären, Ausblick</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Lernempfehlungen für die Prüfung</h2>
+                <ul>
+                    <li class="fragment"><strong>Zahlensysteme:</strong> Binär, Hexadezimal, Umrechnungen sicher beherrschen</li>
+                    <li class="fragment"><strong>Hardware:</strong> Mainboard, CPU, GPU, Speichermedien – Kenndaten und Funktionen</li>
+                    <li class="fragment"><strong>Betriebssysteme:</strong> Windows & Linux – Grundlagen und Administration</li>
+                    <li class="fragment"><strong>Assembler:</strong> Befehle, Register, einfache Programme lesen und schreiben</li>
+                    <li class="fragment"><strong>Office:</strong> Excel-Formeln, Diagramme, Word-Formatierung, Präsentationen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Empfehlungen zur Prüfungsvorbereitung</h2>
+                <ul>
+                    <li class="fragment">Alte Übungsblätter und Katas als Selbsttest durcharbeiten</li>
+                    <li class="fragment">Themen mit den meisten Unsicherheiten zuerst wiederholen</li>
+                    <li class="fragment">Lerngruppen bilden und sich gegenseitig erklären</li>
+                    <li class="fragment">Bei Fragen: rechtzeitig melden – wir klären alles!</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'none', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">30 - Puffer</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

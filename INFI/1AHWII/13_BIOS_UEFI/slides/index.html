@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>13 - BIOS & UEFI</title><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
+<body><div class="reveal"><div class="slides">
+<section class="center title-slide"><h1>13 - BIOS & UEFI</h1><p class="institution">INFI - 1AHWII</p></section>
+
+<section><h2>BIOS – Grundlagen</h2>
+<ul>
+<li class="fragment"><strong>BIOS</strong> = <strong>B</strong>asic <strong>I</strong>nput/<strong>O</strong>utput <strong>S</strong>ystem</li>
+<li class="fragment">Firmware auf dem Mainboard – der erste Code, der beim Einschalten läuft</li>
+<li class="fragment">Aufgaben:
+<ul>
+<li>Hardware initialisieren und testen (POST)</li>
+<li>Bootloader von einem Speichermedium laden</li>
+<li>Einfache Treiber für Tastatur, Maus, Festplatten bereitstellen</li>
+<li>BIOS-Setup (Konfiguration speichern)</li>
+</ul>
+</li>
+<li class="fragment">Gespeichert in einem <strong>ROM</strong>- oder <strong>Flash</strong>-Chip auf dem Mainboard</li>
+</ul>
+</section>
+
+<section><h2>POST und CMOS</h2>
+<ul>
+<li class="fragment"><strong>POST</strong> (<strong>P</strong>ower-<strong>O</strong>n <strong>S</strong>elf-<strong>T</strong>est):
+<ul>
+<li>Überprüft CPU, RAM, Grafikkarte, Tastatur, Massenspeicher</li>
+<li>Signalisiert Fehler durch Pieptöne (Beep-Codes)</li>
+<li>Wichtigster Test: RAM-Initialisierung und Grafikkarten-Erkennung</li>
+</ul>
+</li>
+<li class="fragment"><strong>CMOS</strong> (<strong>C</strong>omplementary <strong>M</strong>etal-<strong>O</strong>xide-<strong>S</strong>emiconductor):
+<ul>
+<li>Kleiner Speicher für BIOS-Einstellungen (Bootreihenfolge, Datum/Zeit)</li>
+<li>Wird durch eine <strong>CMOS-Batterie</strong> (Knopfzelle, CR2032) gepuffert</li>
+<li>Bei leerer Batterie: Einstellungen gehen verloren, Datum/Zeit zurückgesetzt</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section><h2>BIOS-Speicher und Flash-Update</h2>
+<ul>
+<li class="fragment">Der BIOS-Chip ist ein <strong>Flash-EEPROM</strong>:
+<ul>
+<li>Nicht flüchtig (Daten bleiben ohne Strom erhalten)</li>
+<li>Kann durch ein <strong>BIOS-Update (Flashing)</strong> aktualisiert werden</li>
+<li>Größe typischerweise 8 MB – 32 MB (viel kleiner als ein OS)</li>
+</ul>
+</li>
+<li class="fragment"><strong>BIOS-Update</strong>:
+<ul>
+<li>Behält Sicherheitslücken oder fügt CPU-Unterstützung hinzu</li>
+<li>Risiko: Stromausfall während des Flashens = defektes Mainboard</li>
+<li>Viele Mainboards haben einen <strong>Dual-BIOS</strong> (Reserve-Chip)</li>
+</ul>
+</li>
+<li class="fragment">CMOS löschen (Reset): Batterie entfernen oder Jumper setzen</li>
+</ul>
+</section>
+
+<section><h2>Der Bootvorgang – Schritt 1 und 2</h2>
+<ul>
+<li class="fragment"><strong>Schritt 1: Einschalten (Power-On)</strong>
+<ul>
+<li>Netzteil versorgt Mainboard mit Standby-Spannung (+5VSB)</li>
+<li>Power-Button wird gedrückt → Netzteil startet alle Spannungen</li>
+<li>CPU erhält Reset-Signal und startet an der <strong>Reset-Vektoradresse</strong></li>
+</ul>
+</li>
+<li class="fragment"><strong>Schritt 2: POST und Hardware-Initialisierung</strong>
+<ul>
+<li>BIOS führt den POST durch (CPU, RAM, Grafik, Tastatur)</li>
+<li>Grafikkarte wird initialisiert → erstes Bild erscheint</li>
+<li>Speichertimer werden konfiguriert, PCI-Geräte werden erkannt</li>
+<li>Bei Fehlern: Pieptöne oder Fehlermeldung auf dem Bildschirm</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section><h2>Der Bootvorgang – Schritt 3 bis 5</h2>
+<ul>
+<li class="fragment"><strong>Schritt 3: Bootloader laden</strong>
+<ul>
+<li>BIOS durchsucht die Bootreihenfolge (z. B. USB → SSD → DVD)</li>
+<li>Liest den ersten Sektor (MBR/GPT) des gewählten Mediums</li>
+<li>Bootloader wird in den RAM geladen und ausgeführt (z. B. GRUB, Windows Boot Manager)</li>
+</ul>
+</li>
+<li class="fragment"><strong>Schritt 4: Betriebssystem-Kernel starten</strong>
+<ul>
+<li>Bootloader lädt den OS-Kernel (z. B. <code>vmlinuz</code> bei Linux, <code>ntoskrnl.exe</code> bei Windows)</li>
+<li>Kernel übernimmt die Kontrolle über die Hardware</li>
+</ul>
+</li>
+<li class="fragment"><strong>Schritt 5: Benutzeranmeldung</strong>
+<ul>
+<li>Systemdienste und Treiber werden geladen</li>
+<li>Graphische Oberfläche (GUI) startet</li>
+<li>Benutzer meldet sich an</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section><h2>BIOS vs. UEFI – Grundlegende Unterschiede</h2>
+<table>
+<tr><th>Merkmal</th><th>Legacy BIOS</th><th>UEFI</th></tr>
+<tr><td>Oberfläche</td><td>Textbasiert (Tastatur)</td><td>Grafisch (Maus unterstützt)</td></tr>
+<tr><td>Boot-Medium</td><td>MBR (Master Boot Record)</td><td>GPT (GUID Partition Table)</td></tr>
+<tr><td>Bootgeschwindigkeit</td><td>Langsamer (POST + Option ROMs)</td><td>Schneller (kein 16-Bit-Modus)</td></tr>
+<tr><td>Max. Festplattengröße</td><td>~2 TB (MBR-Limit)</td><td>~9,4 ZB (GPT)</td></tr>
+<tr><td>Treiber-Schnittstelle</td><td>INT 13h (16-Bit, kein Maus)</td><td>EFI-API (64-Bit, Maus)</td></tr>
+<tr><td>Bootloader-Speicher</td><td>Erster Sektor (512 Byte)</td><td>Eigene EFI-Systempartition (ESP)</td></tr>
+<tr><td>Sicherheit</td><td>Keine Boot-Schutzmechanismen</td><td>Secure Boot möglich</td></tr>
+</table>
+</section>
+
+<section><h2>UEFI – Vorteile im Detail</h2>
+<ul>
+<li class="fragment"><strong>Grafische Oberfläche</strong>: Mausbedienung, intuitiver als BIOS</li>
+<li class="fragment"><strong>Größere Festplatten</strong>: GPT erlaubt Partitionen &gt; 2 TB und mehr als 4 primäre Partitionen</li>
+<li class="fragment"><strong>Schnelleres Booten</strong>: UEFI kann den Bootvorgang optimieren
+<ul>
+<li>Kein Wechsel in den 16-Bit-Real-Mode</li>
+<li>Parallelisierung der Initialisierung</li>
+</ul>
+</li>
+<li class="fragment"><strong>Modularer Aufbau</strong>: EFI-Treiber können nachgeladen werden (z. B. Netzwerk-Stack)</li>
+<li class="fragment"><strong>Netzwerk-Boot</strong>: UEFI unterstützt PXE-Boot ohne zusätzliche ROMs</li>
+<li class="fragment"><strong>Kompatibilität</strong>: CSM (Compatibility Support Module) für Legacy-Betrieb</li>
+</ul>
+</section>
+
+<section><h2>Secure Boot</h2>
+<ul>
+<li class="fragment"><strong>Secure Boot</strong> ist eine UEFI-Funktion, die das Ausführen von nicht signiertem Code verhindert</li>
+<li class="fragment">Funktionsweise:
+<ul>
+<li>Nur Bootloader mit einer gültigen <strong>digitalen Signatur</strong> dürfen ausgeführt werden</li>
+<li>Die Signaturen werden mit einem <strong>Schlüssel</strong> verglichen (PK – Platform Key)</li>
+<li>Schützt vor <strong>Bootkits</strong> und <strong>Rootkits</strong>, die vor dem OS laden</li>
+</ul>
+</li>
+<li class="fragment">Voraussetzung für <strong>Windows 11</strong> – muss aktiviert sein</li>
+<li class="fragment">Kann im UEFI-Setup deaktiviert werden (z. B. für Linux-Distributionen ohne Signatur)</li>
+<li class="fragment">Kritik: Herstellerkontrolle über die Hardware (Microsoft-Schlüssel)</li>
+</ul>
+</section>
+
+<section><h2>GPT vs. MBR Partitionierung</h2>
+<ul>
+<li class="fragment"><strong>MBR</strong> (<strong>M</strong>aster <strong>B</strong>oot <strong>R</strong>ecord):
+<ul>
+<li>Erster Sektor (512 Byte) eines Datenträgers</li>
+<li>Enthält: Bootloader-Code + Partitionstabelle (4 Einträge à 16 Byte)</li>
+<li>Maximale Größe: 2 TB (32-Bit-Adressierung, 512-Byte-Sektoren)</li>
+<li>Maximal 4 primäre Partitionen (oder 3 primäre + erweiterte Partition)</li>
+</ul>
+</li>
+<li class="fragment"><strong>GPT</strong> (<strong>G</strong>UID <strong>P</strong>artition <strong>T</strong>able):
+<ul>
+<li>Teil des UEFI-Standards</li>
+<li>Maximale Größe: ~9,4 Zettabyte (64-Bit-Adressierung)</li>
+<li>Bis zu 128 Partitionen unter Windows (unbegrenzt theoretisch)</li>
+<li>Redundante Partitionstabelle am Ende der Festplatte → Fehlertoleranz</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section><h2>GPT und MBR – Vergleichstabelle</h2>
+<table>
+<tr><th>Merkmal</th><th>MBR</th><th>GPT</th></tr>
+<tr><td>Maximale Kapazität</td><td>~2 TB</td><td>~9,4 ZB</td></tr>
+<tr><td>Max. primäre Partitionen</td><td>4</td><td>128 (Windows)</td></tr>
+<tr><td>Partitions-IDs</td><td>1 Byte (Typ-ID)</td><td>GUID (128 Bit)</td></tr>
+<tr><td>Redundanz</td><td>Keine (nur ein Sektor)</td><td>Ja (Kopie am Ende der Platte)</td></tr>
+<tr><td>Fehlererkennung</td><td>Keine</td><td>CRC32-Prüfsumme (erkennt Korruption)</td></tr>
+<tr><td>Boot-Modus</td><td>Legacy BIOS (CSM)</td><td>UEFI</td></tr>
+<tr><td>Kompatibilität</td><td>Alle Betriebssysteme</td><td>Moderne Systeme (Win 10+/Linux/macOS)</td></tr>
+</table>
+</section>
+
+<section><h2>BIOS-Setup und Konfiguration</h2>
+<ul>
+<li class="fragment">Zugriff: <strong>Entf</strong> (DEL), <strong>F2</strong>, <strong>F10</strong> oder <strong>Esc</strong> beim Start</li>
+<li class="fragment">Wichtige Einstellungen:
+<ul>
+<li><strong>Bootreihenfolge</strong>: Welches Medium zuerst booten (USB, DVD, SSD)</li>
+<li><strong>Secure Boot</strong>: Aktivieren/Deaktivieren</li>
+<li><strong>Boot Mode</strong>: Legacy (CSM) oder UEFI, ggf. Both</li>
+<li><strong>SATA-Modus</strong>: AHCI (empfohlen) vs. IDE (Kompatibilität) vs. RAID</li>
+<li><strong>XMP/DOCP</strong>: RAM-Übertakten (höhere Frequenz freischalten)</li>
+</ul>
+</li>
+<li class="fragment">Vorsicht: Falsche Einstellungen können das System instabil machen</li>
+<li class="fragment">Reset auf Standardwerte (Load Optimized Defaults) behebt meistens Probleme</li>
+</ul>
+</section>
+
+<section class="center"><div class="highlight-box"><h3 class="centered">Zusammenfassung</h3></div>
+<ul>
+<li>BIOS ist die Firmware, die Hardware initialisiert und den Bootvorgang startet</li>
+<li>POST testet die Hardware, BIOS-Einstellungen werden im CMOS gespeichert</li>
+<li>Bootvorgang: Einschalten → POST → Bootloader → OS-Kernel → Anmeldung</li>
+<li>UEFI ist der moderne Nachfolger von Legacy-BIOS mit grafischer Oberfläche, GPT-Support und Secure Boot</li>
+<li>GPT erlaubt größere Festplatten (&gt; 2 TB) und mehr Partitionen als MBR</li>
+<li>Secure Boot schützt vor nicht signierten Bootloadern</li>
+<li>BIOS-Setup: Bootreihenfolge, Secure Boot, Boot-Modus, XMP</li>
+</ul>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){document.querySelector('.reveal').insertAdjacentHTML('beforeend','<div class=\"footer\"><div class=\"logo-container\"><img src=\"https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png\" class=\"school-logo\"></div><span class=\"date\">13 - BIOS & UEFI</span></div>');});</script>
+</body></html>

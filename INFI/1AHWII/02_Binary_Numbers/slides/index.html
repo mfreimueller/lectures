@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>02 - Binary Numbers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>02 - Binary Numbers</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Binärzahlen</h2>
+                <ul>
+                    <li class="fragment">Binärzahlen verwenden die <strong>Basis 2</strong></li>
+                    <li class="fragment">Ziffern: 0 und 1</li>
+                    <li class="fragment">Stellenwert = 2<sup>Position</sup> (von rechts, beginnend bei 0)</li>
+                    <li class="fragment">Beispiel: <code>1011</code><sub>2</sub> = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 11<sub>10</sub></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Stellenwerttabelle</h2>
+                <table>
+                    <tr><th>2⁷</th><th>2⁶</th><th>2⁵</th><th>2⁴</th><th>2³</th><th>2²</th><th>2¹</th><th>2⁰</th></tr>
+                    <tr><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Beispiel: <code>1 0 0 1 1 0 1 0</code>
+                        <ul>
+                            <li>128 + 0 + 0 + 16 + 8 + 0 + 2 + 0 = 154<sub>10</sub></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dezimal zu Binär – Methode 1: Subtraktion</h2>
+                <ul>
+                    <li class="fragment">Wandle 42<sub>10</sub> in Binär um:</li>
+                    <li class="fragment">Größter Stellenwert ≤ 42: 32 → Bit setzen, Rest = 10</li>
+                    <li class="fragment">Nächster: 16 > 10 → Bit = 0</li>
+                    <li class="fragment">8 ≤ 10 → Bit setzen, Rest = 2</li>
+                    <li class="fragment">4 > 2 → Bit = 0</li>
+                    <li class="fragment">2 ≤ 2 → Bit setzen, Rest = 0</li>
+                    <li class="fragment">1 > 0 → Bit = 0</li>
+                    <li class="fragment">Ergebnis: <code>00101010</code><sub>2</sub></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dezimal zu Binär – Methode 2: Division</h2>
+                <ul>
+                    <li class="fragment">Teile die Zahl wiederholt durch 2 und notiere die Reste</li>
+                    <li class="fragment">Beispiel: 42<sub>10</sub>
+                        <ul>
+                            <li>42 ÷ 2 = 21 Rest <strong>0</strong></li>
+                            <li>21 ÷ 2 = 10 Rest <strong>1</strong></li>
+                            <li>10 ÷ 2 = 5 Rest <strong>0</strong></li>
+                            <li>5 ÷ 2 = 2 Rest <strong>1</strong></li>
+                            <li>2 ÷ 2 = 1 Rest <strong>0</strong></li>
+                            <li>1 ÷ 2 = 0 Rest <strong>1</strong></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Reste von unten nach oben lesen: <code>101010</code><sub>2</sub></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binäre Addition – Grundregeln</h2>
+                <table>
+                    <tr><th>0 + 0</th><th>0 + 1</th><th>1 + 0</th><th>1 + 1</th></tr>
+                    <tr><td>= 0</td><td>= 1</td><td>= 1</td><td>= 0, Übertrag 1</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">1 + 1 + 1 (mit Übertrag) = 1, Übertrag 1</li>
+                    <li class="fragment">Die binäre Addition funktioniert genau wie die dezimale Addition</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binäre Addition – Beispiel</h2>
+                <pre><code>  1011  (11)
++ 1101  (13)
+------
+ 11000  (24)
+</code></pre>
+                <ul>
+                    <li class="fragment">Schritt für Schritt von rechts nach links:
+                        <ul>
+                            <li>1 + 1 = 0, Übertrag 1</li>
+                            <li>1 + 0 + Übertrag 1 = 0, Übertrag 1</li>
+                            <li>0 + 1 + Übertrag 1 = 0, Übertrag 1</li>
+                            <li>1 + 1 + Übertrag 1 = 1, Übertrag 1</li>
+                            <li>Übertrag 1 = 1</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binäre Addition – Übung</h2>
+                <pre><code>  0110  (6)
++ 0011  (3)
+------
+
+  1111  (15)
++ 0001  (1)
+------
+
+  1010  (10)
++ 0110  (6)
+------
+</code></pre>
+            </section>
+
+            <section>
+                <h2>Binäre Subtraktion – Grundlagen</h2>
+                <ul>
+                    <li class="fragment">0 - 0 = 0</li>
+                    <li class="fragment">1 - 0 = 1</li>
+                    <li class="fragment">1 - 1 = 0</li>
+                    <li class="fragment">0 - 1 = 1, mit <strong>Borger</strong> (leihe von links)</li>
+                    <li class="fragment">Beispiel: <code>1010 - 0110</code>
+                        <ul>
+                            <li>0 - 0 = 0</li>
+                            <li>1 - 1 = 0</li>
+                            <li>0 - 1 → borgen von links: 10 - 1 = 1</li>
+                            <li>0 (nach Borgen) - 0 = 0</li>
+                            <li>Ergebnis: <code>0100</code> = 4</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binäre Subtraktion – Beispiel</h2>
+                <pre><code>  1100  (12)
+- 0101  (5)
+------
+  0111  (7)
+</code></pre>
+                <ul>
+                    <li class="fragment">Alternativ: Subtraktion durch Addition des Zweierkomplements</li>
+                    <li class="fragment">a - b = a + (Zweierkomplement von b)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zweierkomplement – Motivation</h2>
+                <ul>
+                    <li class="fragment">Wie stellt man negative Zahlen im Binärsystem dar?</li>
+                    <li class="fragment">Lösung: <strong>Zweierkomplement</strong></li>
+                    <li class="fragment">Vorteile:
+                        <ul>
+                            <li>Subtraktion wird zur Addition</li>
+                            <li>Kein separater Subtrahierer nötig</li>
+                            <li>Eine eindeutige Darstellung der Null</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zweierkomplement – Berechnung</h2>
+                <ul>
+                    <li class="fragment">Schritte für -5 (8 Bit):
+                        <ol>
+                            <li>Binärwert von +5: <code>00000101</code></li>
+                            <li>Alle Bits umkehren (Einerkomplement): <code>11111010</code></li>
+                            <li>+1 addieren: <code>11111011</code></li>
+                        </ol>
+                    </li>
+                    <li class="fragment">Probe: 5 + (-5) = 0
+                        <ul>
+                            <li><code>00000101 + 11111011 = 1 00000000</code></li>
+                            <li>Der Überlauf wird ignoriert, Ergebnis = 0</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zweierkomplement – Beispiele</h2>
+                <table>
+                    <tr><th>Dezimal</th><th>8-Bit Zweierkomplement</th></tr>
+                    <tr><td>+7</td><td>00000111</td></tr>
+                    <tr><td>-1</td><td>11111111</td></tr>
+                    <tr><td>-2</td><td>11111110</td></tr>
+                    <tr><td>-128</td><td>10000000</td></tr>
+                    <tr><td>+127</td><td>01111111</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Wertebereich (8 Bit): -128 bis +127</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Vorzeichenbehaftet vs. Vorzeichenlos</h2>
+                <table>
+                    <tr><th>8 Bit</th><th>vorzeichenlos</th><th>vorzeichenbehaftet</th></tr>
+                    <tr><td>00000000</td><td>0</td><td>0</td></tr>
+                    <tr><td>01111111</td><td>127</td><td>+127</td></tr>
+                    <tr><td>10000000</td><td>128</td><td>-128</td></tr>
+                    <tr><td>11111111</td><td>255</td><td>-1</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Gleiche Bitfolge, unterschiedliche Interpretation!</li>
+                    <li class="fragment">Das MSB (most significant bit) zeigt bei vorzeichenbehaftet das Vorzeichen an</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Binär = Stellenwertsystem mit Basis 2</li>
+                    <li>Umrechnung Dezimal ↔ Binär durch Division oder Subtraktion</li>
+                    <li>Binäre Addition: 1+1 = 0 mit Übertrag</li>
+                    <li>Binäre Subtraktion: Borger bei 0-1</li>
+                    <li>Zweierkomplement: Bitweise negieren + 1</li>
+                    <li>Vorzeichenbehaftet: MSB = Vorzeichenbit</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">02 - Binary Numbers</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

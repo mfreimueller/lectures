@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>01 - Introduction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>01 - Introduction</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Was ist Informatik?</h2>
+                <ul>
+                    <li class="fragment">Informatik = <strong>Inform</strong>ation + <strong>Automatik</strong></li>
+                    <li class="fragment">Wissenschaft von der systematischen Verarbeitung von Informationen</li>
+                    <li class="fragment">Teilgebiete:
+                        <ul>
+                            <li>Theoretische Informatik</li>
+                            <li>Praktische Informatik</li>
+                            <li>Technische Informatik</li>
+                            <li>Angewandte Informatik</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Teilgebiete der Informatik</h2>
+                <table>
+                    <tr><th>Teilgebiet</th><th>Beschreibung</th></tr>
+                    <tr><td>Theoretische Informatik</td><td>Algorithmen, Berechenbarkeit, formale Sprachen</td></tr>
+                    <tr><td>Praktische Informatik</td><td>Programmierung, Softwareentwicklung</td></tr>
+                    <tr><td>Technische Informatik</td><td>Hardware, Schaltungen, Rechnerarchitektur</td></tr>
+                    <tr><td>Angewandte Informatik</td><td>Datenbanken, Netzwerke, KI</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Definition eines Computers</h2>
+                <ul>
+                    <li class="fragment">Ein Computer ist eine elektronische Rechenanlage</li>
+                    <li class="fragment">Eingabe &rarr; Verarbeitung &rarr; Ausgabe (EVA-Prinzip)</li>
+                    <li class="fragment">Besteht aus:
+                        <ul>
+                            <li>Hardware (physische Komponenten)</li>
+                            <li>Software (Programme und Daten)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Das EVA-Prinzip</h2>
+                <table>
+                    <tr><th>Schritt</th><th>Beschreibung</th><th>Beispiel</th></tr>
+                    <tr><td>Eingabe</td><td>Daten aufnehmen</td><td>Tastatur, Maus, Mikrofon</td></tr>
+                    <tr><td>Verarbeitung</td><td>Daten verarbeiten</td><td>CPU, GPU</td></tr>
+                    <tr><td>Ausgabe</td><td>Ergebnisse ausgeben</td><td>Bildschirm, Drucker, Lautsprecher</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Hardware vs. Software</h2>
+                <ul>
+                    <li class="fragment"><strong>Hardware</strong> = alle physischen Bestandteile
+                        <ul>
+                            <li>Beispiele: Prozessor, RAM, Festplatte, Mainboard</li>
+                            <li>Anfassbar, sichtbar</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Software</strong> = Programme und Daten
+                        <ul>
+                            <li>Beispiele: Betriebssystem, Browser, Spiele</li>
+                            <li>Nicht anfassbar, aber ausführbar</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Hardware-Komponenten im Überblick</h2>
+                <table>
+                    <tr><th>Komponente</th><th>Funktion</th></tr>
+                    <tr><td>Prozessor (CPU)</td><td>Befehle ausführen, Rechnen</td></tr>
+                    <tr><td>Arbeitsspeicher (RAM)</td><td>Daten kurzzeitig speichern</td></tr>
+                    <tr><td>Festplatte (SSD/HDD)</td><td>Daten dauerhaft speichern</td></tr>
+                    <tr><td>Mainboard</td><td>Verbindet alle Komponenten</td></tr>
+                    <tr><td>Netzteil</td><td>Stromversorgung</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Bits und Bytes</h2>
+                <ul>
+                    <li class="fragment"><strong>Bit</strong> = kleinste Informationseinheit (0 oder 1)</li>
+                    <li class="fragment"><strong>Byte</strong> = 8 Bit</li>
+                    <li class="fragment">Ein Bit kann 2 Zustände annehmen (0 oder 1)</li>
+                    <li class="fragment">Mit n Bits können 2<sup>n</sup> verschiedene Werte dargestellt werden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binärzahlen – Stellenwertsystem</h2>
+                <ul>
+                    <li class="fragment">Binärzahlen verwenden Basis 2</li>
+                    <li class="fragment">Jede Stelle hat einen Stellenwert (2<sup>n</sup>)</li>
+                    <li class="fragment">Beispiel: <code>1011</code><sub>2</sub>
+                        <ul>
+                            <li>= 1&times;2<sup>3</sup> + 0&times;2<sup>2</sup> + 1&times;2<sup>1</sup> + 1&times;2<sup>0</sup></li>
+                            <li>= 8 + 0 + 2 + 1 = 11<sub>10</sub></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Binär zu Dezimal – Übung</h2>
+                <table>
+                    <tr><th>Binär</th><th>Stellenwerte</th><th>Dezimal</th></tr>
+                    <tr><td>1001</td><td>8+0+0+1</td><td>9</td></tr>
+                    <tr><td>1100</td><td>8+4+0+0</td><td>12</td></tr>
+                    <tr><td>1111</td><td>8+4+2+1</td><td>15</td></tr>
+                    <tr><td>10000</td><td>16+0+0+0+0</td><td>16</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Datengrößen (KB, MB, GB, TB)</h2>
+                <ul>
+                    <li class="fragment">1 Byte = 8 Bit</li>
+                    <li class="fragment">1 Kilobyte (KB) = 1.024 Byte</li>
+                    <li class="fragment">1 Megabyte (MB) = 1.024 KB = 1.048.576 Byte</li>
+                    <li class="fragment">1 Gigabyte (GB) = 1.024 MB</li>
+                    <li class="fragment">1 Terabyte (TB) = 1.024 GB</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Datengrößen – Beispiele</h2>
+                <table>
+                    <tr><th>Einheit</th><th>Größe</th><th>Beispiel</th></tr>
+                    <tr><td>1 Byte</td><td>8 Bit</td><td>Ein Buchstabe</td></tr>
+                    <tr><td>1 KB</td><td>1.024 Byte</td><td>Eine kurze E-Mail</td></tr>
+                    <tr><td>1 MB</td><td>1.024 KB</td><td>Ein Musikstück (MP3)</td></tr>
+                    <tr><td>1 GB</td><td>1.024 MB</td><td>Ein HD-Film</td></tr>
+                    <tr><td>1 TB</td><td>1.024 GB</td><td>Eine Festplatte</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Arten von Computern</h2>
+                <ul>
+                    <li class="fragment"><strong>Embedded System</strong> – in Geräte eingebettet (z. B. Mikrowelle, Auto)</li>
+                    <li class="fragment"><strong>PC / Laptop</strong> – Allzweckrechner für zu Hause / Büro</li>
+                    <li class="fragment"><strong>Server</strong> – stellt Dienste für andere Rechner bereit</li>
+                    <li class="fragment"><strong>Mainframe</strong> – Großrechner für Unternehmen</li>
+                    <li class="fragment"><strong>Supercomputer</strong> – Höchstleistungsrechner für Forschung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Computerarten im Vergleich</h2>
+                <table>
+                    <tr><th>Typ</th><th>Leistung</th><th>Größe</th><th>Einsatz</th></tr>
+                    <tr><td>Embedded</td><td>niedrig</td><td>sehr klein</td><td>Steuerungen</td></tr>
+                    <tr><td>PC/Laptop</td><td>mittel</td><td>klein</td><td>Alltag, Büro</td></tr>
+                    <tr><td>Server</td><td>hoch</td><td>mittel</td><td>Netzwerke, Cloud</td></tr>
+                    <tr><td>Mainframe</td><td>sehr hoch</td><td>groß</td><td>Banken, Versicherungen</td></tr>
+                    <tr><td>Supercomputer</td><td>extrem</td><td>riesig</td><td>Forschung, Simulation</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Informatik = Information + Automatik</li>
+                    <li>Computer arbeitet nach dem EVA-Prinzip</li>
+                    <li>Hardware (physisch) vs. Software (logisch)</li>
+                    <li>Bit = kleinste Einheit, Byte = 8 Bit</li>
+                    <li>Binärzahlen: Basis 2, Stellenwerte 2<sup>n</sup></li>
+                    <li>Datengrößen: KB, MB, GB, TB (Faktor 1.024)</li>
+                    <li>Computerarten: Embedded bis Supercomputer</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">01 - Introduction</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

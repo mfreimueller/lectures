@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>07 - Mainboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>07 - Mainboard</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Was ist ein Mainboard?</h2>
+                <ul>
+                    <li class="fragment">Das Mainboard (auch Motherboard) ist die zentrale Platine eines Computers</li>
+                    <li class="fragment">Es verbindet alle Hardware-Komponenten miteinander</li>
+                    <li class="fragment">Stellt Stromversorgung und Datenwege (Busse) bereit</li>
+                    <li class="fragment">Enthält den Chipsatz als zentrale Steuereinheit</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Hauptkomponenten eines Mainboards</h2>
+                <ul>
+                    <li class="fragment"><strong>CPU-Sockel</strong> – Aufnahme der CPU</li>
+                    <li class="fragment"><strong>Chipsatz</strong> – Steuerung der Datenströme</li>
+                    <li class="fragment"><strong>RAM-Slots</strong> – Arbeitsspeicher aufnehmen</li>
+                    <li class="fragment"><strong>PCIe-Slots</strong> – Erweiterungskarten (GPU, SSD)</li>
+                    <li class="fragment"><strong>Anschlüsse</strong> – SATA, USB, LAN, Audio</li>
+                    <li class="fragment"><strong>BIOS/UEFI-Chip</strong> – Firmware zum Systemstart</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Formfaktoren – Übersicht</h2>
+                <p>Der Formfaktor bestimmt Größe, Befestigungspunkte und Anordnung der Komponenten.</p>
+                <ul>
+                    <li class="fragment"><strong>ATX</strong> (Advanced Technology Extended) – 305 × 244 mm, Standard für Desktop-PCs</li>
+                    <li class="fragment"><strong>Micro-ATX</strong> – 244 × 244 mm, kompakter, weniger PCIe-Slots</li>
+                    <li class="fragment"><strong>Mini-ITX</strong> – 170 × 170 mm, sehr klein, oft 1 PCIe-Slot</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Formfaktoren im Vergleich</h2>
+                <table>
+                    <tr><th>Eigenschaft</th><th>ATX</th><th>Micro-ATX</th><th>Mini-ITX</th></tr>
+                    <tr><td>Größe</td><td>305 × 244 mm</td><td>244 × 244 mm</td><td>170 × 170 mm</td></tr>
+                    <tr><td>PCIe-Slots</td><td>bis zu 7</td><td>bis zu 4</td><td>meist 1</td></tr>
+                    <tr><td>RAM-Slots</td><td>bis zu 4 (8)</td><td>bis zu 4</td><td>bis zu 2</td></tr>
+                    <tr><td>Einsatz</td><td>Desktop, Workstation</td><td>Büro-PC, HTPC</td><td>Home-Server, Minis</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Der Chipsatz</h2>
+                <ul>
+                    <li class="fragment">Der Chipsatz steuert die Kommunikation zwischen CPU, RAM und Peripherie</li>
+                    <li class="fragment"><strong>Northbridge</strong> (früher): Verbindung CPU ↔ RAM ↔ PCIe</li>
+                    <li class="fragment"><strong>Southbridge</strong> (früher): Verbindung zu SATA, USB, LAN, Audio</li>
+                    <li class="fragment">Moderne CPUs haben Northbridge-Funktionen integriert (z. B. Speichercontroller)</li>
+                    <li class="fragment">Beispiele: Intel Z790, B760; AMD X670E, B650</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>CPU-Sockel</h2>
+                <ul>
+                    <li class="fragment">Der Sockel ist die mechanische und elektrische Schnittstelle zur CPU</li>
+                    <li class="fragment"><strong>LGA</strong> (Land Grid Array) – Pins auf dem Mainboard, Intel</li>
+                    <li class="fragment"><strong>PGA</strong> (Pin Grid Array) – Pins auf der CPU, AMD (bis AM4)</li>
+                    <li class="fragment"><strong>BGA</strong> (Ball Grid Array) – fest verlötet, Laptops</li>
+                    <li class="fragment">Aktuelle Sockel: Intel LGA1700 / LGA1851, AMD AM5 (LGA1718)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>PCIe-Erweiterungsslots</h2>
+                <ul>
+                    <li class="fragment"><strong>PCI Express (PCIe)</strong> ist die Standard-Schnittstelle für Erweiterungskarten</li>
+                    <li class="fragment">Varianten: x1, x4, x8, x16 (Anzahl der Lanes)</li>
+                    <li class="fragment">Typische Nutzung: GPU (x16), NVMe-SSD (x4), WLAN (x1)</li>
+                    <li class="fragment">Abwärtskompatibel innerhalb einer Generation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>PCIe-Versionen und Bandbreiten</h2>
+                <table>
+                    <tr><th>Version</th><th>Transferrate pro Lane</th><th>x16 gesamt</th><th>Einführung</th></tr>
+                    <tr><td>PCIe 3.0</td><td>~1 GB/s</td><td>~16 GB/s</td><td>2010</td></tr>
+                    <tr><td>PCIe 4.0</td><td>~2 GB/s</td><td>~32 GB/s</td><td>2017</td></tr>
+                    <tr><td>PCIe 5.0</td><td>~4 GB/s</td><td>~64 GB/s</td><td>2022</td></tr>
+                    <tr><td>PCIe 6.0</td><td>~8 GB/s</td><td>~128 GB/s</td><td>2025</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Anschlüsse auf dem Mainboard</h2>
+                <ul>
+                    <li class="fragment"><strong>SATA</strong> (Serial ATA) – HDD, SSD, optische Laufwerke</li>
+                    <li class="fragment"><strong>M.2-Slot</strong> – schnelle NVMe-SSDs (PCIe x4)</li>
+                    <li class="fragment"><strong>USB-Header</strong> – Front-USB-Anschlüsse des Gehäuses</li>
+                    <li class="fragment"><strong>LAN</strong> (RJ-45) – Netzwerkverbindung, oft 1 Gbit/s oder 2.5 Gbit/s</li>
+                    <li class="fragment"><strong>Audio</strong> – 3.5-mm-Klinkenbuchsen für Mikrofon/Lautsprecher</li>
+                    <li class="fragment"><strong>HDMI/DP</strong> (falls vorhanden) – integrierte Grafikausgabe</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Onboard-Komponenten</h2>
+                <ul>
+                    <li class="fragment"><strong>Soundchip</strong> (z. B. Realtek ALC897) – Audioverarbeitung</li>
+                    <li class="fragment"><strong>LAN-Controller</strong> (z. B. Intel I225-V) – Netzwerkschnittstelle</li>
+                    <li class="fragment"><strong>WLAN/BT-Modul</strong> – WLAN und Bluetooth (optional)</li>
+                    <li class="fragment"><strong>Spannungswandler (VRM)</strong> – Versorgung der CPU mit stabiler Spannung</li>
+                    <li class="fragment"><strong>CMOS-Batterie</strong> – Pufferung der BIOS-Einstellungen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>BIOS/UEFI-Chip</h2>
+                <ul>
+                    <li class="fragment">Enthält die Firmware zum Starten des Computers</li>
+                    <li class="fragment"><strong>BIOS</strong> (Basic Input/Output System) – älterer Standard</li>
+                    <li class="fragment"><strong>UEFI</strong> (Unified Extensible Firmware Interface) – moderner Nachfolger</li>
+                    <li class="fragment">UEFI bietet grafische Oberfläche, Mausunterstützung und schnellere Boot-Zeiten</li>
+                    <li class="fragment">Auf dem BIOS/UEFI-Chip ist ein Flash-Speicher (EEPROM)</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Das Mainboard verbindet alle Komponenten eines PCs</li>
+                    <li>Formfaktoren: ATX, Micro-ATX, Mini-ITX</li>
+                    <li>Chipsatz steuert Datenströme, CPU-Sockel bestimmt Kompatibilität</li>
+                    <li>PCIe-Slots für Erweiterungen, diverse Anschlüsse für Peripherie</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">07 - Mainboard</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

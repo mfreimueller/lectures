@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>10 - Storage Media</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>10 - Storage Media</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Speichermedien im Überblick</h2>
+                <ul>
+                    <li class="fragment">Ein Computer benötigt verschiedene Speichermedien für unterschiedliche Zwecke</li>
+                    <li class="fragment">Kriterien zur Unterscheidung:
+                        <ul>
+                            <li>Geschwindigkeit (Lese-/Schreibrate, Latenz)</li>
+                            <li>Kapazität</li>
+                            <li>Kosten pro Gigabyte</li>
+                            <li>Flüchtigkeit (volatil / nicht flüchtig)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Wichtige Speichermedien: HDD, SSD, RAM, Cache, Register</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Speicherhierarchie</h2>
+                <ul>
+                    <li class="fragment">Die Speicherhierarchie ordnet Speicher nach Geschwindigkeit und Kapazität</li>
+                    <li class="fragment">Oben: schnell, klein, teuer (pro GB)</li>
+                    <li class="fragment">Unten: langsam, groß, günstig (pro GB)</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>Ebene</th><th>Typ</th><th>Größe</th><th>Geschwindigkeit</th></tr>
+                    <tr><td>1</td><td>Register</td><td>~1 KB</td><td>&lt; 1 ns</td></tr>
+                    <tr><td>2</td><td>L1/L2/L3-Cache</td><td>~1–32 MB</td><td>~1–10 ns</td></tr>
+                    <tr><td>3</td><td>Arbeitsspeicher (RAM)</td><td>~8–64 GB</td><td>~10–50 ns</td></tr>
+                    <tr><td>4</td><td>SSD (Flash)</td><td>~256 GB–4 TB</td><td>~0,1–1 ms</td></tr>
+                    <tr><td>5</td><td>HDD (magnetisch)</td><td>~1–20 TB</td><td>~5–20 ms</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Speicherhierarchie im Detail</h2>
+                <ul>
+                    <li class="fragment"><strong>Register</strong>: Kleiner Speicher direkt in der CPU, schnellster Zugriff</li>
+                    <li class="fragment"><strong>Cache</strong>: Schneller Pufferspeicher zwischen CPU und RAM
+                        <ul>
+                            <li>L1-Cache: sehr klein (32–64 KB), sehr schnell</li>
+                            <li>L2-Cache: etwas größer (256–512 KB pro Kern)</li>
+                            <li>L3-Cache: geteilt (8–32 MB)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>RAM</strong>: Arbeitsspeicher, flüchtig, speichert laufende Programme</li>
+                    <li class="fragment"><strong>SSD/HDD</strong>: Massenspeicher, nicht flüchtig, für Daten und Programme</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>HDD: Aufbau und Funktion</h2>
+                <ul>
+                    <li class="fragment"><strong>HDD</strong> = <strong>H</strong>ard <strong>D</strong>isk <strong>D</strong>rive (Festplatte)</li>
+                    <li class="fragment">Magnetische Speicherung auf rotierenden Scheiben (<strong>Plattern</strong>)</li>
+                    <li class="fragment">Komponenten:
+                        <ul>
+                            <li>Plattern (magn. beschichtete Aluminium-/Glasscheiben)</li>
+                            <li>Schreib-/Lesekopf (auf Arm)</li>
+                            <li>Spindelmotor (dreht die Plattern)</li>
+                            <li>Controller-Elektronik</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Die Drehzahl bestimmt die Geschwindigkeit: 5400–15000 U/min (RPM)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>HDD: Technische Details</h2>
+                <ul>
+                    <li class="fragment">Daten werden in konzentrischen <strong>Spuren</strong> (Tracks) gespeichert</li>
+                    <li class="fragment">Spuren sind in <strong>Sektoren</strong> unterteilt (512 Byte oder 4 KB)</li>
+                    <li class="fragment">Zugriffszeit setzt sich zusammen aus:
+                        <ul>
+                            <li><strong>Rotationslatenz</strong>: Zeit, bis der Sektor unter dem Kopf ist</li>
+                            <li><strong>Seek-Zeit</strong>: Zeit, bis der Arm auf der richtigen Spur ist</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Typische Zugriffszeit: ~5–20 ms</li>
+                    <li class="fragment">Übertragungsrate: ~150–250 MB/s (abhängig von Drehzahl und Dichte)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>SSD: Flash-Speicher und NAND</h2>
+                <ul>
+                    <li class="fragment"><strong>SSD</strong> = <strong>S</strong>olid <strong>S</strong>tate <strong>D</strong>rive</li>
+                    <li class="fragment">Keine beweglichen Teile – Daten in <strong>Flash-Speicherzellen</strong></li>
+                    <li class="fragment"><strong>NAND-Flash</strong>: Speichert Daten in Floating-Gate-Transistoren</li>
+                    <li class="fragment">Varianten von NAND-Flash:
+                        <ul>
+                            <li><strong>SLC</strong> (Single-Level Cell): 1 Bit pro Zelle, schnell, teuer</li>
+                            <li><strong>MLC</strong> (Multi-Level Cell): 2 Bit pro Zelle</li>
+                            <li><strong>TLC</strong> (Triple-Level Cell): 3 Bit pro Zelle</li>
+                            <li><strong>QLC</strong> (Quad-Level Cell): 4 Bit pro Zelle, günstig, langsamer</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>SSD: Aufbau und Funktionsweise</h2>
+                <ul>
+                    <li class="fragment">SSDs bestehen aus:
+                        <ul>
+                            <li>NAND-Flash-Chips (Datenspeicher)</li>
+                            <li>Controller (Verwaltet Speicher, Verschleiß, Caching)</li>
+                            <li>DRAM-Cache (optional, für Adresszuordnung)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Vorteile gegenüber HDD:
+                        <ul>
+                            <li>Keine mechanischen Teile → stoßunempfindlich, leise</li>
+                            <li>Deutlich schnellere Zugriffszeiten (~0,1 ms)</li>
+                            <li>Höhere Übertragungsraten (500–7000 MB/s)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Nachteil: Begrenzte Schreibzyklen (Verschleiß)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>HDD vs. SSD im Vergleich</h2>
+                <table>
+                    <tr><th>Merkmal</th><th>HDD</th><th>SSD</th></tr>
+                    <tr><td>Technologie</td><td>Magnetisch, rotierend</td><td>Flash-Speicher, elektronisch</td></tr>
+                    <tr><td>Zugriffszeit</td><td>5–20 ms</td><td>0,05–0,2 ms</td></tr>
+                    <tr><td>Datenrate (sequenziell)</td><td>150–250 MB/s</td><td>500–7000 MB/s</td></tr>
+                    <tr><td>Geräuschentwicklung</td><td>Hörbar (Surren, Klackern)</td><td>Lautlos</td></tr>
+                    <tr><td>Stoßempfindlichkeit</td><td>Hoch (bewegte Teile)</td><td>Niedrig (keine Teile)</td></tr>
+                    <tr><td>Kapazität (max.)</td><td>Bis ~20 TB</td><td>Bis ~8 TB (consumer)</td></tr>
+                    <tr><td>Preis pro GB</td><td>~0,02–0,05 €</td><td>~0,08–0,20 €</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>HDD vs. SSD – Wann was?</h2>
+                <ul>
+                    <li class="fragment"><strong>SSD empfohlen für:</strong>
+                        <ul>
+                            <li>Betriebssystem und Programme (schnelleres Booten, Laden)</li>
+                            <li>Laptops (Stoßfestigkeit, geringer Stromverbrauch)</li>
+                            <li>Datenbanken und häufig genutzte Dateien</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>HDD empfohlen für:</strong>
+                        <ul>
+                            <li>Große Datenmengen (Backups, Archiv, Medien)</li>
+                            <li>Server mit viel Speicherplatz zu geringen Kosten</li>
+                            <li>Network Attached Storage (NAS)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Kombination: SSD als Systemlaufwerk + HDD als Datenlaufwerk</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Schnittstellen: SATA</h2>
+                <ul>
+                    <li class="fragment"><strong>SATA</strong> (<strong>S</strong>erial <strong>A</strong>dvanced <strong>T</strong>echnology <strong>A</strong>ttachment)</li>
+                    <li class="fragment">Weit verbreitete Schnittstelle für HDDs und ältere SSDs</li>
+                    <li class="fragment">SATA III: 6 Gbit/s → max. ~550 MB/s (durch Codierungs-Overhead)</li>
+                    <li class="fragment">Kompatibel mit den meisten Mainboards</li>
+                </ul>
+                <table class="fragment">
+                    <tr><th>Version</th><th>Bandbreite</th><th>Max. Datenrate</th></tr>
+                    <tr><td>SATA I</td><td>1,5 Gbit/s</td><td>~150 MB/s</td></tr>
+                    <tr><td>SATA II</td><td>3 Gbit/s</td><td>~300 MB/s</td></tr>
+                    <tr><td>SATA III</td><td>6 Gbit/s</td><td>~550 MB/s</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Schnittstellen: NVMe und M.2</h2>
+                <ul>
+                    <li class="fragment"><strong>NVMe</strong> (<strong>N</strong>on-<strong>V</strong>olatile <strong>M</strong>emory <strong>E</strong>xpress)
+                        <ul>
+                            <li>Protokoll speziell für SSDs über PCIe</li>
+                            <li>Niedrige Latenz, hohe Parallelität</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>M.2</strong>: Formfaktor für SSDs
+                        <ul>
+                            <li>Kompakte Bauweise (keine Kabel nötig)</li>
+                            <li>Unterstützt SATA (M.2 SATA) oder PCIe/NVMe (M.2 NVMe)</li>
+                            <li>NVMe über PCIe 4.0: bis zu 7000 MB/s</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">NVMe ist deutlich schneller als SATA, aber teurer</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Schnittstellen-Vergleich</h2>
+                <table>
+                    <tr><th>Merkmal</th><th>SATA III</th><th>NVMe (PCIe 3.0)</th><th>NVMe (PCIe 4.0)</th></tr>
+                    <tr><td>Max. Datenrate</td><td>~550 MB/s</td><td>~3500 MB/s</td><td>~7000 MB/s</td></tr>
+                    <tr><td>Latenz</td><td>~10 ms</td><td>&lt; 0,1 ms</td><td>&lt; 0,05 ms</td></tr>
+                    <tr><td>IOPS (4K zufällig)</td><td>~100.000</td><td>~500.000</td><td>~1.000.000</td></tr>
+                    <tr><td>Formfaktor</td><td>2,5"/3,5" + Kabel</td><td>M.2 / U.2</td><td>M.2 / U.2</td></tr>
+                    <tr><td>Preis pro GB</td><td>Niedrig</td><td>Mittel</td><td>Höher</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Lese-/Schreibgeschwindigkeit, Latenz, IOPS</h2>
+                <ul>
+                    <li class="fragment"><strong>Lese-/Schreibgeschwindigkeit</strong>
+                        <ul>
+                            <li>Sequenziell: Große Dateien (Filme, Archive)</li>
+                            <li>Zufällig (4K): Kleine Dateien, Systemzugriffe</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Latenz</strong>: Zeit bis zur ersten Datenübertragung
+                        <ul>
+                            <li>HDD: ~5–20 ms, SSD: ~0,1 ms, NVMe: &lt; 0,05 ms</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>IOPS</strong> (Input/Output Operations Per Second)
+                        <ul>
+                            <li>HDD: ~200 IOPS</li>
+                            <li>SATA SSD: ~100.000 IOPS</li>
+                            <li>NVMe SSD: ~500.000–1.000.000 IOPS</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Speicherhierarchie: Register → Cache → RAM → SSD → HDD</li>
+                    <li>HDD: magnetisch, rotierend, günstig pro GB, langsam</li>
+                    <li>SSD: Flash-Speicher, schnell, leise, stoßfest, teurer</li>
+                    <li>SATA: max. ~550 MB/s, für HDDs und ältere SSDs</li>
+                    <li>NVMe (M.2): bis zu 7000 MB/s, niedrige Latenz</li>
+                    <li>Kombination SSD (System) + HDD (Daten) ist optimal</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">10 - Storage Media</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

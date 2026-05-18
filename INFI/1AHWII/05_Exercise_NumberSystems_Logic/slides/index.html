@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>05 - Exercise Number Systems & Logic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>05 - Exercise Number Systems & Logic</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Einführung</h2>
+                <p>Diese Stunde dient der Wiederholung und Vertiefung der bisher gelernten Themen:</p>
+                <ul>
+                    <li class="fragment">Binärzahlen (Konvertierung, Arithmetik, Zweierkomplement)</li>
+                    <li class="fragment">Hexadezimalzahlen (Konvertierung, Anwendungen)</li>
+                    <li class="fragment">Aussagenlogik (Operatoren, Wahrheitstabellen, De Morgan)</li>
+                </ul>
+                <p class="fragment" style="margin-top: 1em;">Ihr arbeitet selbstständig an den Übungsaufgaben (Katas). Bei Fragen stehe ich zur Verfügung.</p>
+            </section>
+
+            <section>
+                <h2>Binärzahlen – Die wichtigsten Regeln</h2>
+                <table>
+                    <tr><th>Konvertierung</th><th>Regel</th></tr>
+                    <tr><td>Dezimal → Binär</td><td>Durch 2 dividieren, Reste notieren (von unten nach oben)</td></tr>
+                    <tr><td>Binär → Dezimal</td><td>Stellenwerte multiplizieren und summieren: $b_n \cdot 2^n + \dots + b_0 \cdot 2^0$</td></tr>
+                </table>
+                <table style="margin-top: 0.8em;">
+                    <tr><th>Operation</th><th>Regel</th></tr>
+                    <tr><td>Addition</td><td>Wie Dezimal, aber $1+1 = 10$ (Übertrag)</td></tr>
+                    <tr><td>Subtraktion</td><td>Zweierkomplement des Subtrahenden addieren</td></tr>
+                    <tr><td>Zweierkomplement</td><td>Alle Bits invertieren, dann $+1$</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Hexadezimalzahlen – Die wichtigsten Regeln</h2>
+                <table>
+                    <tr><th>Konvertierung</th><th>Regel</th></tr>
+                    <tr><td>Hex → Binär</td><td>Jede Hex-Ziffer durch 4 Binärbits ersetzen</td></tr>
+                    <tr><td>Binär → Hex</td><td>Bits in 4er-Gruppen teilen,每组 in Hex-Ziffer umwandeln</td></tr>
+                    <tr><td>Hex → Dezimal</td><td>$h_n \cdot 16^n + \dots + h_0 \cdot 16^0$</td></tr>
+                    <tr><td>Dezimal → Hex</td><td>Durch 16 dividieren, Reste notieren</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.8em;"><strong>Wichtig:</strong> Ziffern 10–15 werden als A–F dargestellt.</p>
+            </section>
+
+            <section>
+                <h2>Aussagenlogik – Die wichtigsten Regeln</h2>
+                <table>
+                    <tr><th>Operator</th><th>Symbol</th><th>Wahrheit</th></tr>
+                    <tr><td>AND (Konjunktion)</td><td>$\land$</td><td>Wahr nur wenn beide wahr</td></tr>
+                    <tr><td>OR (Disjunktion)</td><td>$\lor$</td><td>Wahr wenn mindestens einer wahr</td></tr>
+                    <tr><td>NOT (Negation)</td><td>$\lnot$</td><td>Kehrt den Wahrheitswert um</td></tr>
+                    <tr><td>XOR (exklusiv Oder)</td><td>$\oplus$</td><td>Wahr wenn genau einer wahr</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.8em;">Eine <strong>Wahrheitstabelle</strong> zeigt den Wahrheitswert eines Ausdrucks für alle möglichen Belegungen.</p>
+            </section>
+
+            <section>
+                <h2>De Morgan – Übersicht</h2>
+                <p>Die De Morganschen Gesetze erlauben das Umformen negierter UND/ODER-Verknüpfungen:</p>
+                <div class="fragment" style="margin-top: 0.5em;">
+                    <p>$\lnot (A \land B) \equiv (\lnot A) \lor (\lnot B)$</p>
+                    <p>$\lnot (A \lor B) \equiv (\lnot A) \land (\lnot B)$</p>
+                </div>
+                <p class="fragment" style="margin-top: 0.8em;"><strong>Eselsbrücke:</strong> Negation ausklammern – UND wird zu ODER und umgekehrt.</p>
+                <p class="fragment" style="margin-top: 0.5em;"><strong>Beispiel:</strong> $\lnot (x > 5 \land y &lt; 3) \equiv (x \le 5) \lor (y \ge 3)$</p>
+            </section>
+
+            <section>
+                <h2>Gemeinsame Übungsbeispiele</h2>
+                <p>Wir lösen die ersten Aufgaben gemeinsam:</p>
+                <ol>
+                    <li class="fragment">$101101_2$ in Dezimal und Hexadezimal umrechnen</li>
+                    <li class="fragment">$A3F_{16}$ in Binär und Dezimal umrechnen</li>
+                    <li class="fragment">$1101_2 + 1011_2$ binär addieren</li>
+                    <li class="fragment">$-6_{10}$ als 4-Bit-Zweierkomplement darstellen</li>
+                    <li class="fragment">Wahrheitstabelle für $(A \land B) \lor \lnot C$ erstellen</li>
+                    <li class="fragment">$\lnot (A \lor (B \land C))$ mit De Morgan umformen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Selbstständiges Arbeiten</h2>
+                <p>Bearbeitet nun die drei Katas in Eigenregie:</p>
+                <table>
+                    <tr><th>Kata</th><th>Thema</th><th>Dauer</th></tr>
+                    <tr><td>K1: Zahlensysteme gemischt</td><td>Konvertierungsaufgaben</td><td>15 min</td></tr>
+                    <tr><td>K2: Arithmetik & Zweierkomplement</td><td>Binär rechnen</td><td>15 min</td></tr>
+                    <tr><td>K3: Logik-Wiederholung</td><td>Logische Ausdrücke</td><td>15 min</td></tr>
+                </table>
+                <p class="fragment" style="margin-top: 0.8em;">Beginnt mit K1, dann K2, dann K3. Bei Fragen melden!</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">05 - Exercise Number Systems & Logic</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

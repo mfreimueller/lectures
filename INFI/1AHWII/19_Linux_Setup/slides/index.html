@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>19 - Linux Setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>19 - Linux Setup</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Linux-Geschichte und Philosophie (1)</h2>
+                <ul>
+                    <li class="fragment"><strong>Linus Torvalds</strong> entwickelte 1991 den Linux-Kernel</li>
+                    <li class="fragment">Kombination mit dem <strong>GNU-Projekt</strong> (Richard Stallman, 1983)</li>
+                    <li class="fragment">GNU = <em>"GNU's Not Unix"</em> – freie Unix-kompatible Software</li>
+                    <li class="fragment">Linux ist ein freies, <strong>Open-Source</strong>-Betriebssystem</li>
+                    <li class="fragment">Lizenz: <strong>GNU GPL</strong> (General Public License)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Linux-Geschichte und Philosophie (2)</h2>
+                <ul>
+                    <li class="fragment"><strong>Open Source</strong> = Quellcode ist öffentlich einsehbar</li>
+                    <li class="fragment">Jeder kann den Code verbessern, anpassen und weitergeben</li>
+                    <li class="fragment">Linux läuft auf Servern, Embedded-Geräten, Android und Desktops</li>
+                    <li class="fragment">Weltweit dominierendes Server-Betriebssystem (&gt; 70 %)</li>
+                    <li class="fragment">Grundprinzip: <em>"Everything is a file"</em></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Linux-Distributionen (1)</h2>
+                <p>Eine <strong>Distribution</strong> = Linux-Kernel + Software + Paketmanager</p>
+                <table>
+                    <tr><th>Distribution</th><th>Basis</th><th>Paketmanager</th><th>Einsatz</th></tr>
+                    <tr><td>Ubuntu</td><td>Debian</td><td>apt</td><td>Desktop/Anfänger</td></tr>
+                    <tr><td>Debian</td><td>–</td><td>apt</td><td>Server/Stabilität</td></tr>
+                    <tr><td>Fedora</td><td>RHEL</td><td>dnf</td><td>Workstation</td></tr>
+                    <tr><td>openSUSE</td><td>SUSE</td><td>zypper</td><td>Desktop/Server</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Linux-Distributionen (2)</h2>
+                <p><strong>Paketmanager</strong> verwalten Installation, Update und Deinstallation von Software</p>
+                <ul>
+                    <li class="fragment">Debian/Ubuntu: <strong>apt</strong> (Advanced Package Tool) – <code>.deb</code>-Pakete</li>
+                    <li class="fragment">Fedora/RHEL: <strong>dnf</strong> (Nachfolger von yum) – <code>.rpm</code>-Pakete</li>
+                    <li class="fragment">Arch Linux: <strong>pacman</strong></li>
+                    <li class="fragment">Ein Distributionswechsel bedeutet oft auch einen anderen Paketmanager</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>VirtualBox-Setup (1) – VM erstellen</h2>
+                <ol>
+                    <li class="fragment"><strong>Oracle VirtualBox</strong> installieren (virtualbox.org)</li>
+                    <li class="fragment">Neue VM anlegen: <em>Maschine → Neu</em></li>
+                    <li class="fragment">Name: <code>Ubuntu-VM</code>, Typ: <code>Linux</code>, Version: <code>Ubuntu (64-bit)</code></li>
+                    <li class="fragment">Arbeitsspeicher: <strong>2048 MB</strong> (2 GB)</li>
+                    <li class="fragment">Festplatte: <strong>20 GB</strong>, dynamisch alloziert</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>VirtualBox-Setup (2) – Ubuntu installieren</h2>
+                <ol>
+                    <li class="fragment"><strong>Ubuntu-ISO</strong> herunterladen von ubuntu.com</li>
+                    <li class="fragment">ISO in das virtuelle Laufwerk einlegen:<br><em>VM → Einstellungen → Massenspeicher → CD hinzufügen</em></li>
+                    <li class="fragment">VM starten und Installation durchführen</li>
+                    <li class="fragment">Sprache, Tastaturlayout (Deutsch), Benutzer anlegen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>VirtualBox-Setup (3) – Erster Start</h2>
+                <ul>
+                    <li class="fragment">Nach der Installation: Login mit Benutzername und Passwort</li>
+                    <li class="fragment">Ubuntu-Desktop erkunden (GNOME-Desktop)</li>
+                    <li class="fragment">Terminal öffnen: <strong>Strg + Alt + T</strong></li>
+                    <li class="fragment">Oder: <em>Aktivitäten → Terminal</em></li>
+                    <li class="fragment">Gast-Erweiterungen installieren für bessere Integration</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Erste Schritte im Terminal</h2>
+                <p>Der <strong>Shell-Prompt</strong> zeigt: <code>benutzer@rechner:~$</code></p>
+                <pre class="fragment"><code class="language-bash">whoami    # Wer bin ich?
+pwd       # Wo bin ich? (present working directory)
+clear     # Bildschirm leeren
+echo "Hallo Welt"  # Text ausgeben</code></pre>
+                <ul>
+                    <li class="fragment"><code>whoami</code> – aktueller Benutzername</li>
+                    <li class="fragment"><code>pwd</code> – aktuelles Verzeichnis (print working directory)</li>
+                    <li class="fragment"><code>clear</code> – Terminal leeren (oder <strong>Strg + L</strong>)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wichtige Linux-Befehle (1)</h2>
+                <pre><code class="language-bash">ls          # Dateien und Ordner auflisten
+ls -l       # Detaillierte Ansicht
+ls -a       # Auch versteckte Dateien zeigen
+
+cd /etc     # In Verzeichnis wechseln
+cd ..       # Ein Verzeichnis nach oben
+cd ~        # Ins Home-Verzeichnis
+
+mkdir neuer_ordner    # Ordner erstellen
+mkdir -p a/b/c        # Verschachtelte Ordner</code></pre>
+            </section>
+
+            <section>
+                <h2>Wichtige Linux-Befehle (2)</h2>
+                <pre><code class="language-bash">cp datei.txt kopie.txt          # Datei kopieren
+cp -r ordner/ ordner_backup/    # Ordner kopieren
+
+mv datei.txt zielordner/        # Verschieben
+mv alt.txt neu.txt              # Umbenennen
+
+rm datei.txt                    # Datei löschen
+rm -r ordner/                   # Ordner löschen
+rm -rf ordner/                  # Ohne Nachfrage (Vorsicht!)
+
+touch neue_datei.txt            # Leere Datei erstellen
+cat datei.txt                   # Dateiinhalt anzeigen</code></pre>
+            </section>
+
+            <section>
+                <h2>Linux-Dateisystemhierarchie</h2>
+                <table>
+                    <tr><th>Verzeichnis</th><th>Bedeutung</th></tr>
+                    <tr><td><code>/</code></td><td>Root – Stammverzeichnis</td></tr>
+                    <tr><td><code>/bin</code></td><td>Wichtige Programme (ls, cp, mv)</td></tr>
+                    <tr><td><code>/etc</code></td><td>Konfigurationsdateien</td></tr>
+                    <tr><td><code>/home</code></td><td>Benutzerverzeichnisse</td></tr>
+                    <tr><td><code>/var</code></td><td>Variable Daten (Logs, Spool)</td></tr>
+                    <tr><td><code>/tmp</code></td><td>Temporäre Dateien</td></tr>
+                    <tr><td><code>/usr</code></td><td>Anwendungen und Bibliotheken</td></tr>
+                </table>
+                <p class="fragment">Der Verzeichnisbaum beginnt immer bei <code>/</code></p>
+            </section>
+
+            <section>
+                <h2>Dateirechte (1) – rwx</h2>
+                <p>Jede Datei hat drei Kategorien von Rechten:</p>
+                <table>
+                    <tr><th>Kategorie</th><th>Bedeutung</th></tr>
+                    <tr><td>Besitzer (user)</td><td>Der Eigentümer der Datei</td></tr>
+                    <tr><td>Gruppe (group)</td><td>Eine Benutzergruppe</td></tr>
+                    <tr><td>Andere (others)</td><td>Alle übrigen</td></tr>
+                </table>
+                <p class="fragment">Rechte: <strong>r</strong> (read = 4), <strong>w</strong> (write = 2), <strong>x</strong> (execute = 1)</p>
+                <pre class="fragment"><code class="language-bash">-rwxr-xr--  1 benutzer gruppe  1024 datei.txt
+# Besitzer: rwx (7), Gruppe: r-x (5), Andere: r-- (4)</code></pre>
+            </section>
+
+            <section>
+                <h2>Dateirechte (2) – chmod, chown</h2>
+                <pre><code class="language-bash">chmod 755 datei.sh     # Rechte auf rwxr-xr-x setzen
+chmod u+x datei.sh     # Ausführrecht für Besitzer hinzufügen
+chmod g-w datei.txt    # Schreibrecht für Gruppe entfernen
+
+chown benutzer datei.txt          # Besitzer ändern
+chown benutzer:gruppe datei.txt   # Besitzer und Gruppe ändern
+chown -R benutzer:gruppe ordner/  # Rekursiv für Ordner</code></pre>
+                <p class="fragment"><code>chown</code> kann nur <strong>root</strong> ausführen</p>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Linux: Open-Source-Betriebssystem von Linus Torvalds (1991)</li>
+                    <li class="fragment">Distributionen: Ubuntu, Debian, Fedora – jeder mit eigenem Paketmanager</li>
+                    <li class="fragment">VirtualBox ermöglicht Linux-Installation auf jedem Rechner</li>
+                    <li class="fragment">Wichtige Befehle: ls, cd, mkdir, cp, mv, rm, touch, cat</li>
+                    <li class="fragment">Dateisystem: hierarchisch, beginnt bei <code>/</code></li>
+                    <li class="fragment">Dateirechte: rwx für Besitzer, Gruppe, Andere – änderbar mit chmod/chown</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true, progress: true, center: false, hash: true,
+            slideNumber: 'c/t', transition: 'slide', backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            reveal.insertAdjacentHTML('beforeend', `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">19 - Linux Setup</span>
+                </div>
+            `);
+        });
+    </script>
+</body>
+</html>

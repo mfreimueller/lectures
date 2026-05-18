@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>25 - Word - Textverarbeitung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>25 - Word - Textverarbeitung</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Die Word-Oberfläche</h2>
+                <ul>
+                    <li class="fragment"><strong>Menüband (Ribbon)</strong>: Enthält alle Befehle, gruppiert in Registerkarten</li>
+                    <li class="fragment"><strong>Registerkarten</strong>: Start, Einfügen, Entwurf, Layout, Referenzen, Sendungen, Überprüfen, Ansicht</li>
+                    <li class="fragment"><strong>Schnellzugriffsleiste</strong>: Anpassbare Symbolleiste über dem Menüband</li>
+                    <li class="fragment"><strong>Statusleiste</strong>: Unten – zeigt Seitenzahl, Wortanzahl, Ansichtsmodus, Zoom</li>
+                    <li class="fragment">Minimieren des Menübands: <kbd>Strg</kbd> + <kbd>F1</kbd> oder Doppelklick auf Registerkarte</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dokumente erstellen, öffnen und speichern</h2>
+                <ul>
+                    <li class="fragment">Neues Dokument: <em>Datei → Neu</em> oder <kbd>Strg</kbd> + <kbd>N</kbd></li>
+                    <li class="fragment">Öffnen: <em>Datei → Öffnen</em> oder <kbd>Strg</kbd> + <kbd>O</kbd></li>
+                    <li class="fragment">Speichern: <kbd>Strg</kbd> + <kbd>S</kbd> (Schnellspeichern) oder <kbd>F12</kbd> (Speichern unter)</li>
+                    <li class="fragment"><strong>Wichtige Dateiformate</strong>:
+                        <table>
+                            <tr><th>Format</th><th>Beschreibung</th></tr>
+                            <tr><td>.docx</td><td>Word-OpenXML-Format (Standard seit 2007)</td></tr>
+                            <tr><td>.doc</td><td>Älteres Word-Format (kompatibel)</td></tr>
+                            <tr><td>.pdf</td><td>Portable Document Format (druckfertig)</td></tr>
+                            <tr><td>.rtf</td><td>Rich Text Format (plattformunabhängig)</td></tr>
+                        </table>
+                    </li>
+                    <li class="fragment">AutoWiederherstellen speichert Dokumente in regelmäßigen Abständen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Texteingabe und -bearbeitung</h2>
+                <ul>
+                    <li class="fragment">Text einfach tippen – Word führt automatischen Zeilenumbruch durch</li>
+                    <li class="fragment"><strong>Einfügen vs. Überschreiben</strong>: Mit <kbd>Einfg</kbd> (Insert) zwischen den Modi wechseln</li>
+                    <li class="fragment">Mit <kbd>Entf</kbd> Zeichen rechts vom Cursor löschen, mit <kbd>Rück</kbd> (Backspace) links</li>
+                    <li class="fragment"><strong>Rückgängig</strong>: <kbd>Strg</kbd> + <kbd>Z</kbd> – macht letzte Aktion rückgängig</li>
+                    <li class="fragment"><strong>Wiederholen</strong>: <kbd>Strg</kbd> + <kbd>Y</kbd> – stellt rückgängig gemachte Aktion wieder her</li>
+                    <li class="fragment">Text markieren: Mit Maus ziehen, <kbd>Shift</kbd> + Pfeiltasten, oder <kbd>Strg</kbd> + <kbd>A</kbd> (alles markieren)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Schriftformatierung</h2>
+                <ul>
+                    <li class="fragment">Über das Menüband <em>Start → Schriftart</em> oder das Minisymbolleisten-Kontextmenü</li>
+                    <li class="fragment"><strong>Schriftart</strong>: Z. B. Calibri, Arial, Times New Roman, Courier New</li>
+                    <li class="fragment"><strong>Schriftgröße</strong>: In Punkt (pt) – Standard 11 pt (neu), 12 pt (klassisch)</li>
+                    <li class="fragment"><strong>Schriftfarbe</strong>: Über das Farbsymbol – auch Hervorhebungsfarbe (Marker)</li>
+                    <li class="fragment"><strong>Textauszeichnungen</strong>:
+                        <ul>
+                            <li><strong>Fett</strong>: <kbd>Strg</kbd> + <kbd>B</kbd></li>
+                            <li><em>Kursiv</em>: <kbd>Strg</kbd> + <kbd>I</kbd></li>
+                            <li><u>Unterstrichen</u>: <kbd>Strg</kbd> + <kbd>U</kbd></li>
+                            <li><del>Durchgestrichen</del></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Absatzformatierung</h2>
+                <ul>
+                    <li class="fragment"><strong>Ausrichtung</strong> (Start → Absatz):
+                        <ul>
+                            <li>Linksbündig (<kbd>Strg</kbd> + <kbd>L</kbd>)</li>
+                            <li>Zentriert (<kbd>Strg</kbd> + <kbd>E</kbd>)</li>
+                            <li>Rechtsbündig (<kbd>Strg</kbd> + <kbd>R</kbd>)</li>
+                            <li>Blocksatz (<kbd>Strg</kbd> + <kbd>J</kbd>)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Einzüge</strong>: Erste Zeile, hängend, links/rechts im Dialogformat</li>
+                    <li class="fragment"><strong>Zeilenabstand</strong>: 1,0 / 1,5 / 2,0 – über <em>Start → Zeilenabstand</em></li>
+                    <li class="fragment"><strong>Absatzabstand</strong>: Abstand vor/nach Absätzen – im Dialog <em>Absatz → Abstände</em></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aufzählungszeichen und Nummerierungen</h2>
+                <ul>
+                    <li class="fragment">Über <em>Start → Absatz</em>:
+                        <ul>
+                            <li><strong>Aufzählungszeichen</strong>: Punkte, Striche, Symbole</li>
+                            <li><strong>Nummerierungen</strong>: 1., 2., 3. / a., b., c. / I., II., III.</li>
+                            <li><strong>Mehrstufige Listen</strong>: Gliederungen, z. B. 1 / 1.1 / 1.1.1</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Aufzählungs-/Nummerierungs-<strong>Bibliothek</strong> bietet vordefinierte Formate</li>
+                    <li class="fragment">Eigene Symbole und Formate definieren über <em>Neues Aufzählungszeichen definieren</em></li>
+                    <li class="fragment">Mit <kbd>Tab</kbd> die Ebene erhöhen, mit <kbd>Shift</kbd> + <kbd>Tab</kbd> verringern</li>
+                    <li class="fragment">Kontrollkästchen-Aufzählungen für Checklisten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Tabellen einfügen und formatieren</h2>
+                <ul>
+                    <li class="fragment">Tabelle einfügen:
+                        <ul>
+                            <li>Über <em>Einfügen → Tabelle</em> – Raster auswählen</li>
+                            <li>Oder: <em>Tabelle einfügen</em> für genaue Zeilen-/Spaltenanzahl</li>
+                            <li>Tabelle zeichnen (frei definierbar)</li>
+                            <li>Excel-Tabelle einbetten</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Formatieren mit <strong>Tabellenentwurf</strong> (erscheint bei Auswahl):
+                        <ul>
+                            <li>Tabellenvorlagen (Farben, Rahmen)</li>
+                            <li>Kopfzeile hervorgehoben, Streifenmuster</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Layout-Tab</strong>: Zellen verbinden, teilen, Größe anpassen</li>
+                    <li class="fragment">Tabellenbeschriftung: Rechtsklick → <em>Beschriftung einfügen</em></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Seitenränder und Seitenausrichtung</h2>
+                <ul>
+                    <li class="fragment"><strong>Seitenränder</strong> über <em>Layout → Seitenränder</em>:
+                        <ul>
+                            <li>Normal (2,54 cm oben/unten, links/rechts)</li>
+                            <li>Schmal, Mittel, Breit – oder benutzerdefiniert</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Seitenausrichtung</strong>:
+                        <ul>
+                            <li>Hochformat (Standard)</li>
+                            <li>Querformat – für breite Tabellen oder Grafiken</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Ausrichtung für einzelne Abschnitte über <em>Layout → Umbrüche → Abschnittsumbrüche</em></li>
+                    <li class="fragment">Spaltenlayout: <em>Layout → Spalten</em> (z. B. für Zeitungen/Flyer)</li>
+                    <li class="fragment">Seitenhintergrund: <em>Entwurf → Seitenfarbe / Seitenränder</em></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Rechtschreibprüfung und Autokorrektur</h2>
+                <ul>
+                    <li class="fragment"><strong>Rechtschreibprüfung</strong>:
+                        <ul>
+                            <li>Automatisch: rot-welllinig = Rechtschreibfehler</li>
+                            <li>Blau-welllinig = Grammatikfehler</li>
+                            <li>Überprüfen mit <kbd>F7</kbd> oder <em>Überprüfen → Rechtschreibung</em></li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Autokorrektur</strong>:
+                        <ul>
+                            <li>Korrigiert häufige Tippfehler automatisch (z. B. "dass" statt "das")</li>
+                            <li>Wörterbuch erweiterbar unter <em>Datei → Optionen → Dokumentprüfung → Autokorrektur-Optionen</em></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Kontextmenü (rechtsklick) schlägt Korrekturen vor</li>
+                    <li class="fragment">Thesaurus: <em>Überprüfen → Thesaurus</em> oder <kbd>Shift</kbd> + <kbd>F7</kbd></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Tipps und Tricks</h2>
+                <ul>
+                    <li class="fragment"><strong>Wichtige Tastenkombinationen</strong>:
+                        <table>
+                            <tr><th>Taste</th><th>Aktion</th></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>Z</kbd></td><td>Rückgängig</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>Y</kbd></td><td>Wiederholen</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>C</kbd> / <kbd>V</kbd></td><td>Kopieren / Einfügen</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>X</kbd></td><td>Ausschneiden</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>F</kbd></td><td>Suchen</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>H</kbd></td><td>Ersetzen</td></tr>
+                        </table>
+                    </li>
+                    <li class="fragment"><strong>Format übertragen</strong> (Format-Pinsel):
+                        <ul>
+                            <li>Einmalig: Auf formatierte Stelle klicken, Symbol für Format übertragen, Ziel markieren</li>
+                            <li>Mehrfach: Doppelklick auf Symbol; mit <kbd>Esc</kbd> beenden</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><kbd>F4</kbd>: Wiederholt den letzten Befehl</li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Word-Oberfläche: Menüband, Registerkarten, Schnellzugriffsleiste</li>
+                    <li>Dokumente speichern als .docx (Standard) oder .pdf</li>
+                    <li>Schriftformatierung: Schriftart, -größe, -farbe, Fett/Kursiv/Unterstrichen</li>
+                    <li>Absatzformatierung: Ausrichtung, Einzüge, Zeilen- und Absatzabstand</li>
+                    <li>Aufzählungen und Nummerierungen für strukturierte Listen</li>
+                    <li>Tabellen einfügen, formatieren und beschriften</li>
+                    <li>Seitenränder und -ausrichtung im Layout-Tab einstellen</li>
+                    <li>Rechtschreibprüfung mit <kbd>F7</kbd> und Autokorrektur nutzen</li>
+                    <li>Format übertragen und Tastenkombinationen sparen Zeit</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">25 - Word - Textverarbeitung</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

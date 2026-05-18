@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>09 - GPU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>09 - GPU</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Was ist eine GPU?</h2>
+                <ul>
+                    <li class="fragment"><strong>GPU</strong> = <strong>G</strong>raphics <strong>P</strong>rocessing <strong>U</strong>nit</li>
+                    <li class="fragment">Spezialisierter Prozessor für Grafikberechnungen</li>
+                    <li class="fragment">Unterschied zur CPU:
+                        <ul>
+                            <li>CPU: wenige, aber leistungsstarke Kerne (für sequenzielle Aufgaben)</li>
+                            <li>GPU: tausende kleine Kerne (für parallele Berechnungen)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Wird auch für allgemeine Parallelberechnungen genutzt (GPGPU)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aufgaben einer GPU</h2>
+                <ul>
+                    <li class="fragment">Berechnung und Darstellung von 2D- und 3D-Grafiken</li>
+                    <li class="fragment">Umwandlung von 3D-Modellen in 2D-Bilder (Rendering)</li>
+                    <li class="fragment">Bildverarbeitung und Filtereffekte</li>
+                    <li class="fragment">Videodekodierung und -kodierung (z. B. H.264, H.265)</li>
+                    <li class="fragment"><strong>GPGPU</strong>-Anwendungen: KI, Machine Learning, Wissenschaft</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Aufbau einer Grafikkarte</h2>
+                <ul>
+                    <li class="fragment"><strong>GPU-Chip</strong>: Das Herzstück mit tausenden Shader-Einheiten</li>
+                    <li class="fragment"><strong>VRAM</strong> (Video-RAM): Dedizierter Speicher für Texturen und Framebuffer</li>
+                    <li class="fragment"><strong>Kühlsystem</strong>: Lüfter, Kühlkörper, Heatpipes</li>
+                    <li class="fragment"><strong>PCB</strong> (Printed Circuit Board): Leiterplatte mit Spannungswandlern</li>
+                    <li class="fragment"><strong>Anschlüsse</strong>: HDMI, DisplayPort, Stromanschlüsse</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Grafikkarten-Komponenten im Detail</h2>
+                <table>
+                    <tr><th>Komponente</th><th>Funktion</th></tr>
+                    <tr><td>GPU-Chip</td><td>Führt Grafikberechnungen aus</td></tr>
+                    <tr><td>VRAM</td><td>Speichert Texturen, Framebuffer, Zwischenergebnisse</td></tr>
+                    <tr><td>Kühlsystem</td><td>Leitet Abwärme ab (Lüfter + Kühlkörper)</td></tr>
+                    <tr><td>Spannungswandler (VRM)</td><td>Stabilisiert die Stromversorgung des Chips</td></tr>
+                    <tr><td>PCIe-Schnittstelle</td><td>Verbindet die Karte mit dem Mainboard</td></tr>
+                    <tr><td>Videoausgänge</td><td>HDMI, DisplayPort für Monitoranschluss</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Integrierte vs. dedizierte GPU</h2>
+                <ul>
+                    <li class="fragment"><strong>Integrierte GPU (iGPU)</strong>
+                        <ul>
+                            <li>Im Prozessor integriert</li>
+                            <li>Teilt sich den RAM mit der CPU</li>
+                            <li>Geringer Stromverbrauch, wenig Wärme</li>
+                            <li>Für Alltagsaufgaben ausreichend</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Dedizierte GPU (dGPU)</strong>
+                        <ul>
+                            <li>Eigenständige Grafikkarte</li>
+                            <li>Eigener VRAM und Kühlung</li>
+                            <li>Hohe Leistung, höherer Stromverbrauch</li>
+                            <li>Für Gaming, Rendering, KI-Berechnungen</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>iGPU vs. dGPU – Vergleich</h2>
+                <table>
+                    <tr><th>Merkmal</th><th>iGPU</th><th>dGPU</th></tr>
+                    <tr><td>Speicher</td><td>Geteilt mit CPU (RAM)</td><td>Eigener VRAM</td></tr>
+                    <tr><td>Leistung</td><td>Niedrig bis mittel</td><td>Mittel bis sehr hoch</td></tr>
+                    <tr><td>Stromverbrauch</td><td>15–45 W</td><td>75–450 W</td></tr>
+                    <tr><td>Kosten</td><td>Im CPU-Preis enthalten</td><td>100–2000+ €</td></tr>
+                    <tr><td>Einsatzbereich</td><td>Büro, Multimedia, Laptops</td><td>Gaming, 3D, KI, Workstations</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Die Rendering-Pipeline</h2>
+                <ul>
+                    <li class="fragment">Die <strong>Rendering-Pipeline</strong> wandelt 3D-Daten in 2D-Bilder um</li>
+                    <li class="fragment">Schritte der Pipeline:
+                        <ol>
+                            <li>Vertex-Shader: Positioniert 3D-Punkte</li>
+                            <li>Rasterisierung: Wandelt Polygone in Pixel</li>
+                            <li>Fragment-Shader: Berechnet Farben und Texturen</li>
+                            <li>Output-Merger: Tiefe, Transparenz, Framebuffer</li>
+                        </ol>
+                    </li>
+                    <li class="fragment">Moderne GPUs haben tausende Shader-Einheiten für Parallelverarbeitung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Grafik-APIs</h2>
+                <ul>
+                    <li class="fragment">Eine <strong>Grafik-API</strong> ist die Schnittstelle zwischen Software und GPU</li>
+                    <li class="fragment"><strong>DirectX</strong> (Microsoft)
+                        <ul>
+                            <li>Nur für Windows und Xbox</li>
+                            <li>DirectX 12: Niedrige Treiber-Overhead, bessere Hardware-Auslastung</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>OpenGL</strong> (Khronos Group)
+                        <ul>
+                            <li>Plattformunabhängig (Windows, macOS, Linux)</li>
+                            <li>Älter, aber weit verbreitet</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Vulkan</strong> (Khronos Group)
+                        <ul>
+                            <li>Moderner Nachfolger von OpenGL</li>
+                            <li>Sehr geringer Overhead, hohe Kontrolle</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Grafik-APIs im Vergleich</h2>
+                <table>
+                    <tr><th>API</th><th>Entwickler</th><th>Plattform</th><th>Besonderheit</th></tr>
+                    <tr><td>DirectX 12</td><td>Microsoft</td><td>Windows, Xbox</td><td>Niedriger Overhead</td></tr>
+                    <tr><td>OpenGL</td><td>Khronos Group</td><td>Multi-Plattform</td><td>Weit verbreitet, ausgereift</td></tr>
+                    <tr><td>Vulkan</td><td>Khronos Group</td><td>Multi-Plattform</td><td>Sehr effizient, modern</td></tr>
+                    <tr><td>Metal</td><td>Apple</td><td>macOS, iOS</td><td>Apple-eigen, optimiert</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Anschlüsse: HDMI und DisplayPort</h2>
+                <ul>
+                    <li class="fragment"><strong>HDMI</strong> (High-Definition Multimedia Interface)
+                        <ul>
+                            <li>Überträgt Bild und Ton über ein Kabel</li>
+                            <li>HDMI 2.1: bis zu 48 Gbit/s, 8K bei 60 Hz</li>
+                            <li>Weit verbreitet bei Fernsehern und Monitoren</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>DisplayPort</strong>
+                        <ul>
+                            <li>Primär für Computermonitore entwickelt</li>
+                            <li>DisplayPort 2.0: bis zu 80 Gbit/s, 16K</li>
+                            <li>Unterstützt Daisy-Chaining (mehrere Monitore)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Anwendungsbereiche von GPUs</h2>
+                <table>
+                    <tr><th>Bereich</th><th>Beispiele</th><th>Anforderung</th></tr>
+                    <tr><td>Gaming</td><td>Ego-Shooter, Open World</td><td>Hohe FPS, niedrige Latenz</td></tr>
+                    <tr><td>Professionelles Rendering</td><td>Blender, CAD, 3ds Max</td><td>Hohe Rechenleistung, großer VRAM</td></tr>
+                    <tr><td>KI / Machine Learning</td><td>TensorFlow, PyTorch</td><td>CUDA-Cores, Tensor-Cores</td></tr>
+                    <tr><td>Video-Bearbeitung</td><td>Premiere Pro, DaVinci Resolve</td><td>Schnelle Kodierung/Dekodierung</td></tr>
+                    <tr><td>Wissenschaft</td><td>Simulationen, Klimaforschung</td><td>Massive Parallelverarbeitung</td></tr>
+                </table>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>GPU = spezialisierter Prozessor für parallele Grafikberechnungen</li>
+                    <li>Grafikkarte besteht aus GPU-Chip, VRAM, Kühlung, PCB</li>
+                    <li>iGPU (integriert) vs. dGPU (dediziert) – Leistung vs. Stromverbrauch</li>
+                    <li>Rendering-Pipeline wandelt 3D-Daten in 2D-Bilder um</li>
+                    <li>Wichtige Grafik-APIs: DirectX, OpenGL, Vulkan</li>
+                    <li>Anschlüsse: HDMI (TV) und DisplayPort (Monitor)</li>
+                    <li>GPUs werden auch für KI, Rendering und Simulation genutzt</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">09 - GPU</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

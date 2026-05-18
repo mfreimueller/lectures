@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>21 - Excel Grundlagen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section class="center title-slide">
+                <h1>21 - Excel Grundlagen</h1>
+                <p class="institution">INFI - 1AHWII</p>
+            </section>
+
+            <section>
+                <h2>Die Excel-Oberfläche</h2>
+                <ul>
+                    <li class="fragment"><strong>Menüband (Ribbon)</strong>: Enthält alle Befehle, gruppiert in Registerkarten (Start, Einfügen, Daten, ...)</li>
+                    <li class="fragment"><strong>Formelleiste</strong>: Zeigt den Inhalt der aktiven Zelle an – hier werden Formeln bearbeitet</li>
+                    <li class="fragment"><strong>Zellen</strong>: Grundeinheit einer Tabelle – Schnittpunkt von Zeile und Spalte (z. B. A1, B2)</li>
+                    <li class="fragment"><strong>Arbeitsmappe</strong>: Eine Excel-Datei (.xlsx) besteht aus einem oder mehreren Arbeitsblättern (Tabellenblättern)</li>
+                    <li class="fragment"><strong>Zelladressierung</strong>: Spalten werden mit Buchstaben (A, B, ...), Zeilen mit Zahlen (1, 2, ...) bezeichnet</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dateneingabe und -bearbeitung</h2>
+                <ul>
+                    <li class="fragment">Daten direkt in Zelle eingeben oder über die Formelleiste bearbeiten</li>
+                    <li class="fragment">Nach Eingabe mit <kbd>Enter</kbd> (nächste Zelle) oder <kbd>Tab</kbd> (nächste Spalte) bestätigen</li>
+                    <li class="fragment">Mit <kbd>F2</kbd> in den Bearbeitungsmodus einer Zelle wechseln</li>
+                    <li class="fragment"><strong>Datentypen</strong>:
+                        <ul>
+                            <li>Text (linksbündig)</li>
+                            <li>Zahlen (rechtsbündig)</li>
+                            <li>Datums- und Uhrzeitwerte</li>
+                            <li>Formeln (beginnen mit <code>=</code>)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Mit <kbd>Esc</kbd> die Eingabe abbrechen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Markieren und Navigieren</h2>
+                <ul>
+                    <li class="fragment">Einzelne Zelle: Klicken oder Pfeiltasten</li>
+                    <li class="fragment"><strong>Zellbereich markieren</strong>: Klicken, ziehen – oder <kbd>Shift</kbd> + Pfeiltasten</li>
+                    <li class="fragment"><strong>Nicht zusammenhängende Bereiche</strong>: Mit <kbd>Strg</kbd> + Klicken (Mac: <kbd>Cmd</kbd>)</li>
+                    <li class="fragment"><strong>Ganze Zeile/Spalte</strong>: Auf Zeilen-/Spaltenkopf klicken</li>
+                    <li class="fragment">Mit <kbd>Strg</kbd> + Pfeiltaste springt man zum Rand des Datenbereichs</li>
+                    <li class="fragment"><kbd>Strg</kbd> + <kbd>A</kbd> markiert den gesamten Datenbereich</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zellbezüge</h2>
+                <table>
+                    <tr><th>Typ</th><th>Beispiel</th><th>Verhalten beim Kopieren</th></tr>
+                    <tr><td><strong>Relativ</strong></td><td><code>=A1+B1</code></td><td>Passt sich an neue Position an</td></tr>
+                    <tr><td><strong>Absolut</strong></td><td><code>=$A$1+$B$1</code></td><td>Bleibt immer gleich</td></tr>
+                    <tr><td><strong>Gemischt</strong></td><td><code>=$A1+B$1</code></td><td>Nur Zeile oder Spalte fixiert</td></tr>
+                </table>
+                <ul>
+                    <li class="fragment">Relativ: Standard – beim Kopieren verschiebt sich der Bezug mit</li>
+                    <li class="fragment">Absolut: Spalte und Zeile mit <code>$</code> fixiert – nutzt man für Konstanten</li>
+                    <li class="fragment">Gemischt: Nur eine Komponente fixiert, z. B. <code>$A1</code> oder <code>A$1</code></li>
+                    <li class="fragment">Mit <kbd>F4</kbd> zwischen den Bezugsarten wechseln</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Einfache Formeln</h2>
+                <ul>
+                    <li class="fragment">Jede Formel beginnt mit <code>=</code></li>
+                    <li class="fragment">Wichtige Funktionen:
+                        <table>
+                            <tr><th>Funktion</th><th>Beschreibung</th><th>Beispiel</th></tr>
+                            <tr><td><code>=SUMME(...)</code></td><td>Summe aller Werte</td><td><code>=SUMME(A1:A10)</code></td></tr>
+                            <tr><td><code>=MITTELWERT(...)</code></td><td>Arithmetischer Mittelwert</td><td><code>=MITTELWERT(A1:A10)</code></td></tr>
+                            <tr><td><code>=ANZAHL(...)</code></td><td>Anzahl der Zahlen</td><td><code>=ANZAHL(A1:A10)</code></td></tr>
+                            <tr><td><code>=MIN(...)</code></td><td>Kleinster Wert</td><td><code>=MIN(A1:A10)</code></td></tr>
+                            <tr><td><code>=MAX(...)</code></td><td>Größter Wert</td><td><code>=MAX(A1:A10)</code></td></tr>
+                        </table>
+                    </li>
+                    <li class="fragment">AutoSumme (<kbd>Alt</kbd> + <kbd>=</kbd>) fügt SUMME automatisch ein</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Funktionen einfügen</h2>
+                <ul>
+                    <li class="fragment">Der <strong>Funktionsassistent</strong> hilft beim Einfügen von Funktionen:
+                        <ul>
+                            <li>Klick auf das <code>fx</code>-Symbol neben der Formelleiste</li>
+                            <li>oder über Menüband: <em>Formeln → Funktion einfügen</em></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Im Assistenten:
+                        <ul>
+                            <li>Funktion suchen oder aus Kategorie wählen</li>
+                            <li>Argumente (Parameter) eingeben</li>
+                            <li>Excel zeigt eine Beschreibung und Hilfe an</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Bei Eingabe in der Zelle: <strong>AutoVervollständigen</strong> schlägt passende Funktionen vor</li>
+                    <li class="fragment">Klammern und Semikolon (oder Beistrich) als Trennzeichen beachten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Tabellen gestalten – Schrift & Rahmen</h2>
+                <ul>
+                    <li class="fragment">Über das Menüband <em>Start → Schriftart</em> lassen sich gestalten:
+                        <ul>
+                            <li>Schriftart, Schriftgröße, Fett/Kursiv/Unterstrichen</li>
+                            <li>Schriftfarbe und Hintergrundfarbe</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Rahmen</strong>: Zellen mit Linien versehen
+                        <ul>
+                            <li>Alle Rahmen, Außenrahmen, dicke Rahmenlinie</li>
+                            <li>Linienart und Farbe wählbar</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Zahlenformate</strong>: Währung, Prozent, Datum, Anzahl Dezimalstellen
+                        <ul>
+                            <li>Mehrere Tausend Euro: <code>€ 1.234,56</code></li>
+                            <li>Prozent: <code>12,50%</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Mit dem <strong>Format-Pinsel</strong> Formatierungen auf andere Zellen übertragen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Tabellen formatieren</h2>
+                <ul>
+                    <li class="fragment">Excel bietet vorgefertigte <strong>Tabellenvorlagen</strong>:
+                        <ul>
+                            <li>Menüband <em>Start → Als Tabelle formatieren</em></li>
+                            <li>Abwechselnde Zeilenfarben (Streifenmuster)</li>
+                            <li>Automatische Filter (Dropdown-Pfeile in der Kopfzeile)</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Vorteile einer formatierten Tabelle:
+                        <ul>
+                            <li>Neue Zeilen übernehmen automatisch Format und Formeln</li>
+                            <li>Tabellenname statt Zellbezug in Formeln möglich</li>
+                            <li>Schnelle Sortierung und Filterung</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Umwandlung zurück in Bereich: <em>Tabellentools → In Bereich konvertieren</em></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Einfache Diagramme</h2>
+                <ul>
+                    <li class="fragment">Diagramme visualisieren Daten auf einen Blick</li>
+                    <li class="fragment">Erstellung eines <strong>Säulendiagramms</strong>:
+                        <ol>
+                            <li>Datenbereich markieren (inkl. Beschriftungen)</li>
+                            <li>Menüband <em>Einfügen → Säulendiagramm</em></li>
+                            <li>Diagrammtyp wählen (z. B. gruppierte Säulen)</li>
+                        </ol>
+                    </li>
+                    <li class="fragment">Nach der Erstellung:
+                        <ul>
+                            <li>Diagrammtitel bearbeiten</li>
+                            <li>Achsenbeschriftungen hinzufügen</li>
+                            <li>Design und Farbschema ändern</li>
+                            <li>Diagramm verschieben oder in der Größe anpassen</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Weitere Diagrammtypen: Linien-, Kreis-, Balken- und Flächendiagramme</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Tipps und Tricks</h2>
+                <ul>
+                    <li class="fragment"><strong>AutoAusfüllen</strong>: Kleines Quadrat unten rechts an Zelle ziehen:
+                        <ul>
+                            <li>Zahlenreihen (1, 2, 3, ...)</li>
+                            <li>Daten (Mo, Di, Mi, ...)</li>
+                            <li>Formeln kopieren</li>
+                        </ul>
+                    </li>
+                    <li class="fragment"><strong>Wichtige Tastenkombinationen</strong>:
+                        <table>
+                            <tr><th>Taste</th><th>Aktion</th></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>Z</kbd></td><td>Rückgängig</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>Y</kbd></td><td>Wiederholen</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>C</kbd>/<kbd>V</kbd></td><td>Kopieren/Einfügen</td></tr>
+                            <tr><td><kbd>F2</kbd></td><td>Zelle bearbeiten</td></tr>
+                            <tr><td><kbd>F4</kbd></td><td>Bezugsart wechseln</td></tr>
+                            <tr><td><kbd>Strg</kbd> + <kbd>1</kbd></td><td>Zellen formatieren</td></tr>
+                        </table>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="center">
+                <div class="highlight-box">
+                    <h3 class="centered">Zusammenfassung</h3>
+                </div>
+                <ul>
+                    <li>Excel-Arbeitsmappe: Menüband, Formelleiste, Zellen, Tabellenblätter</li>
+                    <li>Dateneingabe mit <kbd>Enter</kbd>, <kbd>Tab</kbd>, <kbd>F2</kbd>; Zellbezüge relativ, absolut, gemischt</li>
+                    <li>Einfache Formeln: SUMME, MITTELWERT, ANZAHL, MIN, MAX</li>
+                    <li>Funktionsassistent (<code>fx</code>) hilft beim Einfügen von Funktionen</li>
+                    <li>Gestaltung mit Schriftart, Rahmen, Zellfarben, Zahlenformaten</li>
+                    <li>„Als Tabelle formatieren" für Filter und Streifenmuster</li>
+                    <li>Diagramme visualisieren Daten – Säulendiagramm als Einstieg</li>
+                    <li>AutoAusfüllen und Tastenkombinationen sparen Zeit</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'none',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">21 - Excel Grundlagen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>
