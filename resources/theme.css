@@ -232,6 +232,10 @@ li.unmarked {
     font-size: unset !important;
 }
 
+.reveal ul li ol li {
+    font-size: unset !important;
+}
+
 /*********************************************
  * IMAGES & FIGURES WITH LOGO CAPTIONS
  *********************************************/
