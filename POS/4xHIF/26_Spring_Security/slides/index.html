@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="de">
-<head><meta charset="utf-8"><title>26 - Spring_Security</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
+<head><meta charset="utf-8"><title>26 - Spring_Security</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css"><!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"></head>
 <body><div class="reveal"><div class="slides">
 <section class="center title-slide"><h1>26 - Spring Security</h1><p class="institution">POS - 4xHIF</p></section>
 <section><h2>Security-Filter-Chain</h2><ul><li class="fragment">Jeder Request durchläuft eine Kette von Filtern</li><li class="fragment">AuthenticationFilter, AuthorizationFilter, CsrfFilter, ...</li><li class="fragment">Filter können Requests ablehnen (401/403) oder modifizieren</li><li class="fragment">Reihenfolge der Filter ist entscheidend</li></ul></section>
