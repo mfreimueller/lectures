@@ -22,7 +22,6 @@
     System.out.println(s.length());
 }
 
-// Record pattern
 if (obj instanceof Point(int x, int y)) {
     System.out.println(x + ", " + y);
 }
@@ -58,13 +57,8 @@ name.ifPresent(n -&gt; System.out.println(n.toUpperCase()));
 
 <section>
 <h2>Creating Optionals</h2>
-<pre><code class="language-java">// Non-null value
-Optional&lt;String&gt; opt = Optional.of("Hello");
-
-// Nullable value
+<pre><code class="language-java">Optional&lt;String&gt; opt = Optional.of("Hello");
 Optional&lt;String&gt; opt = Optional.ofNullable(nullableValue);
-
-// Empty
 Optional&lt;String&gt; empty = Optional.empty();
 </code></pre>
 <div class="highlight-box fragment">
@@ -138,20 +132,10 @@ switch (day) {
 
 <section>
 <h2>Switch Expressions: Arrow Syntax</h2>
-<pre><code class="language-java">// New switch expression
-var result = switch (day) {
+<pre><code class="language-java">var result = switch (day) {
     case MONDAY, FRIDAY -&gt; "Work day";
     case SATURDAY, SUNDAY -&gt; "Weekend";
     default -&gt; "Midweek";
-};
-
-// With blocks
-var result = switch (day) {
-    case MONDAY -&gt; {
-        System.out.println("Start of week");
-        yield "Work day";
-    }
-    default -&gt; "Other";
 };
 </code></pre>
 <div class="highlight-box fragment">
@@ -211,8 +195,7 @@ public non-sealed class Motorcycle extends Vehicle {}
 
 <section>
 <h2>Sealed + Pattern Matching</h2>
-<pre><code class="language-java">// Exhaustive switch - no default needed!
-public static double calculateArea(Shape shape) {
+<pre><code class="language-java">public static double calculateArea(Shape shape) {
     return switch (shape) {
         case Circle c   -&gt; Math.PI * c.radius() * c.radius();
         case Rectangle r -&gt; r.width() * r.height();

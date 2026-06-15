@@ -90,17 +90,14 @@
 
             <section>
                 <h2>Assoziationen in Java</h2>
-                <pre><code class="language-java">// 1:1 Assoziation
-public class Person {
+                <pre><code class="language-java">public class Person {
     private Adresse adresse;
 }
 
-// 1:* Assoziation
 public class Auto {
     private Rad[] raeder = new Rad[4];
 }
 
-// 0..1 Assoziation
 public class Bestellung {
     private Kunde kunde;  // kann null sein
 }</code></pre>

@@ -52,13 +52,10 @@ app.start(7000);
 <h2>Project Requirements</h2>
 <ul>
 <li>At least 6 database tables</li>
-<li class="fragment">At least one 1:1 relationship</li>
 <li class="fragment">At least one 1:n relationship</li>
 <li class="fragment">At least one inheritance case</li>
 <li class="fragment">Authentication (login/registration)</li>
-<li class="fragment">Roles: user and admin</li>
 <li class="fragment">Full CRUD for all entities</li>
-<li class="fragment">Unit tests</li>
 </ul>
 </section>
 
@@ -71,8 +68,6 @@ app.start(7000);
 <li class="fragment">Restaurant / cafe</li>
 <li class="fragment">Hotel reservation system</li>
 <li class="fragment">E-commerce / shop</li>
-<li class="fragment">School management</li>
-<li class="fragment">Your own idea!</li>
 </ul>
 </section>
 
@@ -84,7 +79,6 @@ app.start(7000);
 <li class="fragment">Book, Author, Category</li>
 <li class="fragment">Loan (1:n between User and Book)</li>
 <li class="fragment">Review (1:n between User and Book)</li>
-<li class="fragment">Address (1:1 with User)</li>
 <li class="fragment">Inheritance: PhysicalBook vs EBook</li>
 </ul>
 </section>
@@ -96,15 +90,15 @@ app.start(7000);
 <li class="fragment"><strong>1:n</strong> - e.g. Category - Book</li>
 <li class="fragment"><strong>Inheritance</strong> - e.g. Book (PhysicalBook, EBook)</li>
 </ul>
-<pre class="fragment"><code class="language-java">@Entity
+        <pre class="fragment"><code class="language-java">@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Book { ... }
+public abstract class Book { }
 
 @Entity
-public class PhysicalBook extends Book { ... }
+public class PhysicalBook extends Book { }
 
 @Entity
-public class EBook extends Book { ... }
+public class EBook extends Book { }
 </code></pre>
 </section>
 
@@ -149,14 +143,11 @@ public class EBook extends Book { ... }
 
 <section>
 <h2>Layered Architecture</h2>
-<pre><code>src/main/java/com/example/project/
+        <pre><code>src/main/java/com/example/project/
   ├── controller/
   ├── service/
   ├── repository/
-  ├── model/
-  │   ├── entity/
-  │   └── dto/
-  └── config/
+  └── model/
 </code></pre>
 <div class="highlight-box fragment">
 Controller - Service - Repository: each layer has a clear responsibility.

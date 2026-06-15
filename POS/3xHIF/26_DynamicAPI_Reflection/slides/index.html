@@ -223,18 +223,11 @@ if (param.isAnnotationPresent(PathVariable.class)) {
 
 <section>
 <h2>Putting It All Together</h2>
-<pre><code class="language-java">
-public class App {
+        <pre><code class="language-java">public class App {
     public static void main(String[] args) throws Exception {
         var app = Javalin.create().start(7070);
-
-        // Scan for controllers
         var controllers = ClasspathScanner.scan("com.example.controllers");
-
-        // Auto-register routes
         RouteRegistrar.registerControllers(app, controllers);
-
-        System.out.println("Server started with auto-registered routes!");
     }
 }
 </code></pre>

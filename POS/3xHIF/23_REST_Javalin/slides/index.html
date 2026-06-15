@@ -62,7 +62,9 @@
     &lt;version&gt;2.15.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
-<p>Minimal server:</p>
+</section>
+<section>
+<h2>Minimal Javalin Server</h2>
 <pre><code class="language-java">var app = Javalin.create(ctx -> {
     ctx.jsonMapper(new JacksonMapper());
 }).start(7070);

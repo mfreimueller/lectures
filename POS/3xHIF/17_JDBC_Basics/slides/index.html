@@ -59,13 +59,8 @@ PostgreSQL JDBC driver class: org.postgresql.Driver
 <section>
 <h2>Establishing a Connection</h2>
 <pre><code class="language-java">String url = "jdbc:postgresql://localhost:5432/school";
-String user = "postgres";
-String password = "secret";
-
-try (Connection conn = DriverManager.getConnection(url, user, password)) {
+try (Connection conn = DriverManager.getConnection(url, "postgres", "secret")) {
     System.out.println("Connected: " + conn.isValid(5));
-} catch (SQLException e) {
-    System.err.println("Connection failed: " + e.getMessage());
 }
 </code></pre>
 <div class="highlight-box fragment">
@@ -91,11 +86,7 @@ Connection conn = DriverManager
 <h2>Statement Interface</h2>
 <p>Statement is used to execute static SQL queries:</p>
 <pre><code class="language-java">Statement stmt = conn.createStatement();
-
-// Execute a query (SELECT)
 ResultSet rs = stmt.executeQuery("SELECT * FROM student");
-
-// Execute an update (INSERT, UPDATE, DELETE)
 int rows = stmt.executeUpdate("UPDATE student SET grade = 1 WHERE id = 101");
 </code></pre>
 <div class="highlight-box fragment">

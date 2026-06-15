@@ -59,13 +59,12 @@ class BookServiceTest {
 
 <section>
 <h2>Repository Testing</h2>
-<pre><code class="language-java">@Test
+        <pre><code class="language-java">@Test
 void shouldSaveAndFindBook() {
     var category = new Category("Fiction");
     var book = new PhysicalBook("Dune", "...", 1965, category, "A1", 3);
     bookRepo.save(book);
     var found = bookRepo.findById(book.getId());
-    assertThat(found).isPresent();
 }
 </code></pre>
 <div class="highlight-box fragment">
@@ -134,20 +133,10 @@ void shouldRejectInvalidBook() {
 
 <section>
 <h2>Test Coverage with JaCoCo</h2>
-<pre><code class="language-xml"><plugin>
+        <pre><code class="language-xml"><plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
     <version>0.8.11</version>
-    <executions>
-        <execution>
-            <goals><goal>prepare-agent</goal></goals>
-        </execution>
-        <execution>
-            <id>report</id>
-            <phase>test</phase>
-            <goals><goal>report</goal></goals>
-        </execution>
-    </executions>
 </plugin>
 </code></pre>
 <div class="highlight-box fragment">

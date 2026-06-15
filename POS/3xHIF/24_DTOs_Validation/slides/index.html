@@ -51,11 +51,7 @@
 
 <section>
 <h2>DTO Example</h2>
-<pre><code class="language-java">
-// Domain entity (internal)
-public record User(Long id, String username, String email,
-                   String passwordHash, LocalDateTime createdAt) {}
-
+        <pre><code class="language-java">
 // Request DTO (what client sends)
 public record CreateUserRequest(String username, String email, String password) {}
 
@@ -236,7 +232,6 @@ app.get("/api/users/{id}", ctx -> {
 <li class="fragment">Manual validation works but becomes repetitive</li>
 <li class="fragment">Custom annotations + reflection enable reusable validation</li>
 <li class="fragment">Exception mappers centralize error handling</li>
-<li class="fragment">Structured error responses help client developers</li>
 </ul>
 </section>
 

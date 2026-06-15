@@ -60,12 +60,10 @@ try {
 
 <section>
 <h2>Unnamed Variables in Loops</h2>
-<pre><code class="language-java">// Traditional
-for (var item : items) {
+<pre><code class="language-java">for (var item : items) {
     counter++;
 }
 
-// With unnamed variable
 for (var _ : items) {
     counter++;
 }
@@ -127,15 +125,14 @@ public class PositiveInt extends Number {
 
 <section>
 <h2>Flexible Constructor Bodies (Java 22+)</h2>
-<pre><code class="language-java">// With flexible constructor bodies
-public class PositiveInt extends Number {
+<pre><code class="language-java">public class PositiveInt extends Number {
     private final int value;
 
     public PositiveInt(int value) {
         if (value &lt;= 0) {
             throw new IllegalArgumentException("Must be positive");
         }
-        super(); // Now allowed after statements
+        super();
         this.value = value;
     }
 }

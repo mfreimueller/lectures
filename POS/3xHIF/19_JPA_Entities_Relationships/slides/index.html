@@ -19,17 +19,7 @@
 <section>
 <h2>From JDBC to JPA</h2>
 <p>JDBC requires a lot of boilerplate code for common operations.</p>
-<pre><code class="language-java">// JDBC: ~20 lines to save one student
-String sql = "INSERT INTO student (name, email, grade) VALUES (?, ?, ?)";
-try (Connection conn = dataSource.getConnection();
-     PreparedStatement pstmt = conn.prepareStatement(sql)) {
-    pstmt.setString(1, student.name());
-    pstmt.setString(2, student.email());
-    pstmt.setInt(3, student.grade());
-    pstmt.executeUpdate();
-}
-
-// JPA: 1 line
+        <pre><code class="language-java">// JPA: 1 line
 entityManager.persist(student);
 </code></pre>
 <div class="highlight-box fragment">
@@ -126,17 +116,9 @@ tx.commit();
 <section>
 <h2>JPQL - JPA Query Language</h2>
 <p>JPQL queries entities (not tables) using Java class and field names:</p>
-<pre><code class="language-java">// JPQL: queries entity classes and fields
-String jpql = "SELECT s FROM Student s WHERE s.grade &gt; :minGrade";
+        <pre><code class="language-java">String jpql = "SELECT s FROM Student s WHERE s.grade &gt; :minGrade";
 List&lt;Student&gt; result = em.createQuery(jpql, Student.class)
     .setParameter("minGrade", 1)
-    .getResultList();
-
-// Equivalent SQL: SELECT * FROM student WHERE grade &gt; 1
-
-// Projection with SELECT
-String jpql2 = "SELECT s.name, s.email FROM Student s";
-List&lt;Object[]&gt; rows = em.createQuery(jpql2, Object[].class)
     .getResultList();
 </code></pre>
 <div class="highlight-box fragment">
@@ -299,7 +281,6 @@ Student student = em.find(Student.class, id);
 <li>JPQL queries entities, not tables</li>
 <li>Relationships: @OneToOne, @OneToMany/@ManyToOne, @ManyToMany</li>
 <li>Cascade types control how operations propagate</li>
-<li>JPA eliminates the boilerplate of JDBC DAO code</li>
 </ul>
 </div>
 </section>

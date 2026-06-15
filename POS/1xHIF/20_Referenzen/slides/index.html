@@ -72,11 +72,10 @@ Person c = new Person("Bob", 30);</code></pre>
             <section>
                 <h2>NullPointerException vermeiden</h2>
                 <pre><code class="language-java">public void printPerson(Person p) {
-    if (p != null) {         // null-Prüfung!
+    if (p != null)
         System.out.println(p.getName());
-    } else {
+    else
         System.out.println("Keine Person vorhanden");
-    }
 }</code></pre>
                 <div class="highlight-box fragment">Immer auf null prüfen, bevor Methoden aufgerufen werden!</div>
             </section>

@@ -55,15 +55,9 @@
 <li class="fragment">JUnit Jupiter provides the programming model</li>
 <li class="fragment">Annotations: @Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll</li>
 </ul>
-<pre class="fragment"><code class="language-java">
-import org.junit.jupiter.api.*;
-
-class CalculatorTest {
-
-    @Test
-    void testAddition() {
-        assertEquals(4, 2 + 2);
-    }
+<pre class="fragment"><code class="language-java">@Test
+void testAddition() {
+    assertEquals(4, 2 + 2);
 }
 </code></pre>
 </section>
@@ -152,13 +146,8 @@ assertThat(names)
 <li class="fragment">Run the same test with different inputs</li>
 <li class="fragment">Reduces boilerplate code</li>
 </ul>
-<pre class="fragment"><code class="language-java">
-@ParameterizedTest
-@CsvSource({
-    "1, 1, 2",
-    "2, 3, 5",
-    "5, 5, 10"
-})
+<pre class="fragment"><code class="language-java">@ParameterizedTest
+@CsvSource({ "1, 1, 2", "2, 3, 5" })
 void testAddition(int a, int b, int expected) {
     assertEquals(expected, a + b);
 }

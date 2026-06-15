@@ -24,14 +24,12 @@
 <li class="fragment"><strong>JOINED:</strong> One table per class, joined via foreign keys</li>
 <li class="fragment"><strong>TABLE_PER_CLASS:</strong> One table per concrete class</li>
 </ul>
-<pre class="fragment"><code class="language-java">@Entity
+        <pre class="fragment"><code class="language-java">@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "person_type")
 public abstract class Person {
     @Id @GeneratedValue
     private Long id;
-    private String name;
-    // ...
 }
 </code></pre>
 </section>
@@ -94,7 +92,10 @@ public class Student extends Person {
     private int grade;
 }
 </code></pre>
-<pre class="fragment"><code class="language-sql">-- Queries require JOIN between person and student tables
+</section>
+<section>
+<h2>JOINED - SQL Query</h2>
+<pre><code class="language-sql">-- Queries require JOIN between person and student tables
 SELECT p.id, p.name, s.studentId, s.grade
 FROM Person p JOIN Student s ON p.id = s.id
 </code></pre>
@@ -258,12 +259,11 @@ public class Email {
 <section>
 <h2>Repository Pattern</h2>
 <p>A Repository mediates between the domain and data mapping layers.</p>
-<pre><code class="language-java">public interface Repository&lt;T, ID&gt; {
+        <pre><code class="language-java">public interface Repository&lt;T, ID&gt; {
     T findById(ID id);
     List&lt;T&gt; findAll();
     T save(T entity);
     void delete(T entity);
-    void deleteById(ID id);
     long count();
 }
 </code></pre>

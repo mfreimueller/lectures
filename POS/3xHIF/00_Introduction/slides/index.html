@@ -33,8 +33,7 @@
 <li>Streams and Functional Programming</li>
 <li class="fragment">Testing with JUnit 5 and TDD</li>
 <li class="fragment">SOLID Principles</li>
-<li class="fragment">JDBC, JPA, and Database Access</li>
-<li class="fragment">REST APIs and Javalin</li>
+
 <li class="fragment">Project Work (WMC)</li>
 </ul>
 </section>
@@ -65,8 +64,6 @@
 <p>Download from <a href="https://adoptium.net">Adoptium</a> or use SDKMAN:</p>
 <pre><code class="language-bash"># Using SDKMAN
 sdk install java 21.0.2-tem
-
-# Verify installation
 java --version
 javac --version
 </code></pre>
@@ -74,10 +71,7 @@ javac --version
 
 <section>
 <h2>Maven Setup</h2>
-<pre><code class="language-bash"># Create a new Maven project
-mvn archetype:generate -DgroupId=com.example -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart
-
-# Build and run
+<pre><code class="language-bash">mvn archetype:generate -DgroupId=com.example -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart
 mvn package
 mvn exec:java -Dexec.mainClass="com.example.App"
 </code></pre>
@@ -98,7 +92,6 @@ mvn exec:java -Dexec.mainClass="com.example.App"
 <pre><code class="language-java">// Before (Java 9 and earlier)
 String message = "Hello, World!";
 List&lt;String&gt; names = new ArrayList&lt;&gt;();
-
 // After (Java 10+)
 var message = "Hello, World!";
 var names = new ArrayList&lt;String&gt;();
@@ -114,7 +107,6 @@ Rule: Use var when the type is obvious from the right-hand side.
 <li>Only for local variables (not fields, method params, return types)</li>
 <li class="fragment">Must be initialized at declaration</li>
 <li class="fragment">Cannot be used with <code>null</code> initializer</li>
-<li class="fragment">Cannot be used in lambda expressions explicitly</li>
 </ul>
 <pre class="fragment"><code class="language-java">// Valid
 var count = 42;
@@ -142,14 +134,7 @@ for (var entry : map.entrySet()) {
 <section>
 <h2>Records (Java 16+)</h2>
 <p>A Record is a transparent carrier for immutable data.</p>
-<pre><code class="language-java">// Before: boilerplate
-public class Person {
-    private final String name;
-    private final int age;
-    // constructor, getters, equals, hashCode, toString
-}
-
-// After: Record
+<pre><code class="language-java">// After: Record
 public record Person(String name, int age) {}
 </code></pre>
 <div class="highlight-box">

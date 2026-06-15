@@ -39,7 +39,6 @@
 <section>
 <h2>Defining Custom Annotations</h2>
 <pre><code class="language-java">import java.lang.annotation.*;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface LogExecutionTime {
@@ -161,16 +160,12 @@ public void weeklyTask() {}</code></pre>
 <pre><code class="language-java">@Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "username", nullable = false)
     private String username;
-
-    @OneToMany(mappedBy = "user")
-    private List&lt;Order&gt; orders;
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li class="fragment">JPA uses runtime annotation processing to generate SQL</li>
 <li class="fragment">EntityManager reads annotations to map objects to tables</li>
@@ -179,26 +174,29 @@ public class User {
 </section>
 
 <section>
-<h2>Real-world: Jackson and JUnit</h2>
-<pre><code class="language-java">// Jackson — JSON serialization
-public class Person {
+<h2>Real-world: Jackson</h2>
+<pre><code class="language-java">public class Person {
     @JsonProperty("full_name")
     private String name;
-
     @JsonIgnore
     private String internalId;
 }
-
-// JUnit — test framework
-@Test
+</code></pre>
+<ul>
+<li>Jackson uses @JsonProperty, @JsonIgnore for serialization</li>
+</ul>
+</section>
+<section>
+<h2>Real-world: JUnit</h2>
+<pre><code class="language-java">@Test
 @DisplayName("should return 42")
 @Tag("fast")
 void testAnswer() {
     assertEquals(42, answer());
-}</code></pre>
+}
+</code></pre>
 <ul>
-<li class="fragment">Jackson uses @JsonProperty, @JsonIgnore for serialization</li>
-<li class="fragment">JUnit uses @Test, @DisplayName, @Tag for test discovery</li>
+<li>JUnit uses @Test, @DisplayName, @Tag for test discovery</li>
 </ul>
 </section>
 

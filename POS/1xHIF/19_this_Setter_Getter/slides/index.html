@@ -21,9 +21,7 @@
                 <div class="highlight-box">Ein Konstruktor initialisiert ein neues Objekt.</div>
                 <pre><code class="language-java">public class Person {
     String name;
-    int alter;
-
-    public Person(String name, int alter) {
+    public Person(String name) {
         name = name;   // Problem!
     }
 }</code></pre>
@@ -117,11 +115,10 @@
                 <h2>Validierung im Setter</h2>
                 <p>Die Kontrolle: Setter können Werte prüfen und ablehnen.</p>
                 <pre><code class="language-java">public void setAlter(int alter) {
-    if (alter > 0 && alter &lt; 150) {
+    if (alter > 0 && alter &lt; 150)
         this.alter = alter;
-    } else {
+    else
         System.out.println("Ungültiges Alter: " + alter);
-    }
 }</code></pre>
                 <div class="highlight-box fragment">Der Setter schützt das Objekt vor ungültigen Zuständen.</div>
             </section>

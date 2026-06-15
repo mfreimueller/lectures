@@ -44,7 +44,6 @@ var numbers = List.of(1, 2, 3);
 <pre><code class="language-java">public interface Greeter {
     String name();
 
-    // default method
     default String greet() {
         return "Hello, " + name() + "!";
     }
@@ -79,7 +78,6 @@ public static void main(String[] args) {
 public interface B {
     default void sayHi() { System.out.println("Hi from B"); }
 }
-// Must override
 public class C implements A, B {
     public void sayHi() { A.super.sayHi(); }
 }
@@ -97,9 +95,6 @@ public class C implements A, B {
         return celsius * 9.0 / 5.0 + 32;
     }
 }
-
-// Usage
-var area = MathUtils.circleArea(5.0);
 </code></pre>
 <div class="highlight-box fragment">
 Static interface methods are utility methods that belong to the interface, not to instances.
@@ -108,14 +103,8 @@ Static interface methods are utility methods that belong to the interface, not t
 
 <section>
 <h2>Pattern Matching for instanceof</h2>
-<p>Traditional approach (Java 15 and earlier):</p>
-<pre><code class="language-java">if (obj instanceof String) {
-    String s = (String) obj;
-    System.out.println(s.length());
-}
-</code></pre>
 <p>With pattern matching (Java 16+):</p>
-<pre class="fragment"><code class="language-java">if (obj instanceof String s) {
+<pre><code class="language-java">if (obj instanceof String s) {
     System.out.println(s.length());
 }
 </code></pre>
@@ -148,8 +137,7 @@ public static void printPoint(Object obj) {
     if (obj instanceof Point(int x, int y)) {
         System.out.println("Point at (" + x + ", " + y + ")");
     }
-}
-</code></pre>
+}</code></pre>
 <div class="highlight-box fragment">
 Record patterns destructure the record into its components.
 </div>

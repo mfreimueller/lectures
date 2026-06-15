@@ -146,14 +146,10 @@ List&lt;String&gt; words = sentences.stream()
 <section>
 <h2>forEach</h2>
 <p>Performs an action on each element (terminal operation).</p>
-<pre><code class="language-java">
-List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
-
+<pre><code class="language-java">List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
 names.stream()
     .filter(n -> n.length() > 3)
     .forEach(System.out::println);
-
-// Output: Alice Charlie
 </code></pre>
 <div class="highlight-box fragment">
 <p>Prefer toList() over forEach for collecting results!</p>

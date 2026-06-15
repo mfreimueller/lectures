@@ -33,12 +33,8 @@
 <li class="fragment">Hard to test, hard to maintain, hard to extend</li>
 <li class="fragment">Business logic mixed with HTTP concerns</li>
 </ul>
-<pre class="fragment"><code class="language-java">
-// Monolithic handler - everything in one place
-app.get("/api/users/{id}", ctx -> {
-    // validation, business logic, data access all here
+        <pre class="fragment"><code class="language-java">app.get("/api/users/{id}", ctx -> {
     var id = Long.parseLong(ctx.pathParam("id"));
-    // ... query database, format response, handle errors
 });
 </code></pre>
 </section>
@@ -186,12 +182,9 @@ public class UserController {
 <li class="fragment">No framework needed -- pure Java!</li>
 <li class="fragment">Makes dependencies explicit and testable</li>
 </ul>
-<pre class="fragment"><code class="language-java">
-// Wiring everything together
-var repository = new InMemoryUserRepository();
+        <pre class="fragment"><code class="language-java">var repository = new InMemoryUserRepository();
 var service = new UserServiceImpl(repository);
 var controller = new UserController(service);
-
 var app = Javalin.create().start(7070);
 controller.registerRoutes(app);
 </code></pre>
@@ -199,19 +192,14 @@ controller.registerRoutes(app);
 
 <section>
 <h2>Testing with Layers</h2>
-<pre><code class="language-java">
-// Service test with mock repository
-class UserServiceTest {
+        <pre><code class="language-java">class UserServiceTest {
     @Test
     void testCreateUser() {
         var repo = new InMemoryUserRepository();
         var service = new UserServiceImpl(repo);
-
         var request = new CreateUserRequest("alice", "alice@test.com");
         var result = service.createUser(request);
-
         assertThat(result.username()).isEqualTo("alice");
-        assertThat(result.id()).isNotNull();
     }
 }
 </code></pre>

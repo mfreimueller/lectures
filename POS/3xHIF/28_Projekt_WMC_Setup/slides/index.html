@@ -49,22 +49,15 @@ public class User {
 <li class="fragment">email (unique, not null)</li>
 <li class="fragment">passwordHash (not null - store hash, NOT plaintext)</li>
 <li class="fragment">role (String - USER or ADMIN)</li>
-<li class="fragment">createdAt (LocalDateTime)</li>
 </ul>
 </section>
 
 <section>
 <h2>Password Hashing with BCrypt</h2>
-<pre><code class="language-java">import at.favre.lib.crypto.bcrypt.BCrypt;
-
-// Hash a password
-String hash = BCrypt.withDefaults()
+        <pre><code class="language-java">String hash = BCrypt.withDefaults()
     .hashToString(12, password.toCharArray());
-
-// Verify a password
 BCrypt.Result result = BCrypt.verifyer()
     .verify(password.toCharArray(), hash);
-boolean matches = result.verified;
 </code></pre>
 <div class="highlight-box fragment">
 Never store plaintext passwords! Always use a strong hashing algorithm like BCrypt.
@@ -194,15 +187,12 @@ Never store plaintext passwords! Always use a strong hashing algorithm like BCry
 <li class="fragment">Admin routes: require role "ADMIN"</li>
 <li class="fragment">User routes: require role "USER" or "ADMIN"</li>
 </ul>
-<pre class="fragment"><code class="language-java">app.before("/api/admin/*", ctx -> {
+        <pre class="fragment"><code class="language-java">app.before("/api/admin/*", ctx -> {
     var token = ctx.header("Authorization");
     if (token == null || !token.startsWith("Bearer ")) {
         throw new UnauthorizedResponse("Missing token");
     }
     var claims = JwtUtil.validate(token.substring(7));
-    if (!"ADMIN".equals(claims.get("role"))) {
-        throw new ForbiddenResponse("Admin only");
-    }
 });
 </code></pre>
 </section>
