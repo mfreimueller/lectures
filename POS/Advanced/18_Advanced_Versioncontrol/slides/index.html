@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>18 - Advanced Version Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>18 - Advanced Version Control</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Branches — Was und warum?</h2>
+<ul>
+<li class="fragment"><strong>Branch:</strong> Ein beweglicher Zeiger auf einen Commit</li>
+<li class="fragment">Ermöglicht parallele Entwicklung ohne sich zu stören</li>
+<li class="fragment">Typische Einsatzbereiche: Features, Bugfixes, Experimente</li>
+<li class="fragment">Haupt-Branch heißt standardmäßig <code>main</code> (früher <code>master</code>)</li>
+</ul>
+<pre class="fragment"><code class="language-plaintext">main:  A---B---C---D
+                   \
+feature:            E---F---G</code></pre>
+</section>
+
+<section>
+<h2>Mit Branches arbeiten</h2>
+<pre><code class="language-bash"># Branches auflisten
+git branch
+
+# Branch wechseln (bestehender)
+git switch feature/neues-feature
+
+# Erstellen & wechseln
+git switch -c feature/neues-feature</code></pre>
+<ul>
+<li class="fragment"><code>git branch</code> (ohne Argument) zeigt den aktuellen Branch mit * an</li>
+<li class="fragment">Wechsel zwischen Branches: <code>git switch main</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Mergen: Fast-Forward</h2>
+<pre><code class="language-plaintext">Vor Merge:
+main:  A---B---C
+               \
+feature:        D---E
+
+git switch main
+git merge feature
+
+Nach Merge (Fast-Forward):
+main:  A---B---C---D---E
+feature:            D---E</code></pre>
+<ul>
+<li class="fragment">Fast-Forward: main war seit dem Branch-Start unverändert</li>
+<li class="fragment">Der Branch-Zeiger wird einfach nach vorne verschoben</li>
+<li class="fragment">Kein eigener Merge-Commit nötig</li>
+</ul>
+</section>
+
+<section>
+<h2>Mergen: 3-Way-Merge</h2>
+<pre><code class="language-plaintext">Vor Merge:
+main:  A---B---C---F
+               \
+feature:        D---E
+
+git switch main
+git merge feature
+
+Nach Merge:
+main:  A---B---C---F---M
+               \     /
+                D---E</code></pre>
+<ul>
+<li class="fragment">Beide Branches haben seit der Abzweigung Änderungen</li>
+<li class="fragment">Git erzeugt einen <strong>Merge-Commit</strong> (M) mit zwei Eltern</li>
+<li class="fragment">Die Historie bleibt erhalten — alle Entwicklungslinien sichtbar</li>
+</ul>
+</section>
+
+<section>
+<h2>Merge-Konflikte — Ursachen</h2>
+<ul>
+<li class="fragment">Ein Konflikt entsteht, wenn zwei Branches <strong>dieselbe Stelle</strong> in derselben Datei unterschiedlich ändern</li>
+<li class="fragment">Git kann nicht entscheiden, welche Version richtig ist</li>
+<li class="fragment"><strong>Du musst den Konflikt manuell lösen!</strong></li>
+</ul>
+<pre class="fragment"><code class="language-plaintext">$ git merge feature
+Auto-merging readme.txt
+CONFLICT (content): Merge conflict in readme.txt
+Automatic merge failed; fix conflicts and commit.</code></pre>
+</section>
+
+<section>
+<h2>Merge-Konflikte auflösen</h2>
+<p>Git markiert Konflikte in der Datei mit:</p>
+<pre><code class="language-plaintext">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Inhalt von main
+=======
+Inhalt vom feature-Branch
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code></pre>
+<ol>
+<li class="fragment">Datei öffnen — die Konflikt-Marker (<code>&lt;&lt;&lt;</code>, <code>===</code>, <code>&gt;&gt;&gt;</code>) anpassen</li>
+<li class="fragment">Gewünschten Inhalt behalten, Marker entfernen</li>
+<li class="fragment"><code>git add</code> → <code>git commit</code> (Merge-Commit erstellen)</li>
+</ol>
+</section>
+
+<section>
+<h2>Merge-Konflikt — Vorbereitung</h2>
+<pre><code class="language-bash">echo "Zeile 1" > datei.txt && git add . && git commit -m "init"
+git switch -c feature
+echo "Feature-Änderung" > datei.txt && git add . && git commit -m "feature"
+git switch main
+echo "Main-Änderung" > datei.txt && git add . && git commit -m "main"</code></pre>
+<ul>
+<li class="fragment">Zwei Branches ändern <strong>dieselbe Zeile</strong> derselben Datei</li>
+<li class="fragment">Das führt beim Merge zwangsläufig zu einem Konflikt</li>
+</ul>
+</section>
+
+<section>
+<h2>Merge-Konflikt — Auflösung</h2>
+<pre><code class="language-plaintext">In datei.txt:
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Main-Änderung
+=======
+Feature-Änderung
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code></pre>
+<div class="fragment highlight-box">
+<p>Lösung: Beide Änderungen kombinieren → <code>Main-Änderung + Feature-Änderung</code></p>
+</div>
+</section>
+
+<section>
+<h2>Merge-Tools &amp; Strategien</h2>
+<ul>
+<li class="fragment">Mit <code>git mergetool</code> kann ein externes Tool (VS Code, IntelliJ, KDiff3) Konflikte visuell darstellen</li>
+<li class="fragment"><strong>git merge --abort:</strong> Bricht den Merge ab, Working Tree bleibt unverändert</li>
+<li class="fragment"><strong>Strategien:</strong>
+  <ul>
+    <li><code>git merge -s ours</code> — unsere Version behalten</li>
+    <li><code>git merge -X theirs</code> — ihre Version bei Konflikten bevorzugen</li>
+  </ul>
+</li>
+</ul>
+</section>
+
+<section>
+<h2>git rebase — Lineare Historie</h2>
+<pre><code class="language-plaintext">Vor Rebase:
+main:  A---B---C---F
+               \
+feature:        D---E
+
+git switch feature
+git rebase main
+
+Nach Rebase:
+main:  A---B---C---F
+                   \
+feature:            D'---E'
+  
+D' und E' sind neue Commits (andere SHA-1 Hashes)</code></pre>
+<ul>
+<li class="fragment">Rebase setzt Commits eines Branches <strong>oben auf</strong> einen anderen Branch</li>
+<li class="fragment">Erzeugt eine <strong>lineare</strong> Historie (leichter nachvollziehbar)</li>
+<li class="fragment">Aber: <strong>Niemals</strong> auf gemeinsamen/veröffentlichten Branches rebasen!</li>
+</ul>
+</section>
+
+<section>
+<h2>Rebase vs. Merge</h2>
+<table>
+<thead>
+<tr><th>Merge</th><th>Rebase</th></tr>
+</thead>
+<tbody>
+<tr class="fragment"><td>Historie bleibt erhalten</td><td>Historie wird umgeschrieben</td></tr>
+<tr class="fragment"><td>Merge-Commit sichtbar</td><td>Lineare Historie</td></tr>
+<tr class="fragment"><td>Sicher für shared Branches</td><td>Nur für lokale Branches</td></tr>
+<tr class="fragment"><td>Einfach zu verstehen</td><td>Mehr Kontrolle über Historie</td></tr>
+<tr class="fragment"><td><code>git merge feature</code></td><td><code>git rebase main</code></td></tr>
+</tbody>
+</table>
+<div class="fragment highlight-box">
+<p>Faustregel: Merge für shared Branches, Rebase für lokale/halte-private Branches</p>
+</div>
+</section>
+
+<section>
+<h2>git stash — Arbeit Zwischenspeichern</h2>
+<pre><code class="language-bash"># Aktuelle Änderungen weglegen
+git stash
+
+# Liste aller Stashes
+git stash list
+
+# Neuesten Stash anwenden (und löschen)
+git stash pop
+
+# Bestimmten Stash anwenden
+git stash apply stash@{2}</code></pre>
+<ul>
+<li class="fragment">Praktisch, um kurz den Branch zu wechseln, ohne zu committen</li>
+<li class="fragment">Nützlich bei <code>git pull</code>, wenn lokale Änderungen stören</li>
+</ul>
+</section>
+
+<section>
+<h2>git reset &amp; git revert</h2>
+<pre><code class="language-bash"># Soft Reset — HEAD verschieben, staged & modified bleiben
+git reset --soft HEAD~1
+
+# Mixed Reset (default) — HEAD verschieben, modified bleibt
+git reset --mixed HEAD~1
+
+# Hard Reset — Änderungen vernichten (Vorsicht!)
+git reset --hard HEAD~1
+
+# Sicherer: Revert erzeugt neuen Commit
+git revert HEAD</code></pre>
+<div class="fragment highlight-box">
+<p><code>git revert</code> ist sicher für geteilte Branches — die Historie wird nicht umgeschrieben</p>
+</div>
+</section>
+
+<section>
+<h2>Tagging — Versionen markieren</h2>
+<pre><code class="language-bash"># Leichten Tag (nur Name)
+git tag v1.0.0
+
+# Annotierten Tag (Name + Nachricht + Datum + Autor)
+git tag -a v1.0.0 -m "Version 1.0.0"
+
+# Tags auflisten
+git tag -n
+
+# Tag (und Commit) zu Remote pushen
+git push origin v1.0.0</code></pre>
+<ul>
+<li class="fragment">Tags sind <strong>unveränderlich</strong> — sie verweisen fix auf einen Commit</li>
+<li class="fragment">Typisch für Releases: <code>v1.0.0</code>, <code>v2.3.1-rc1</code></li>
+<li class="fragment">Annotierte Tags enthalten Metadaten (empfohlen für Releases)</li>
+</ul>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li><strong>Branches:</strong> Parallele Entwicklungslinien</li>
+<li><strong>Merge:</strong> Fast-Forward (linear) vs. 3-Way-Merge (eigener Commit)</li>
+<li><strong>Merge-Konflikte:</strong> Entstehen bei parallelen Änderungen an derselben Stelle — manuell lösen!</li>
+<li><strong>Rebase:</strong> Lineare Historie, aber gefährlich für gemeinsame Branches</li>
+<li><strong>Stash:</strong> Arbeit temporär weglegen</li>
+<li><strong>Reset vs. Revert:</strong> Revert ist sicher für Shared Branches</li>
+<li><strong>Tags:</strong> Releases markieren</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nächste Lektion: <strong>Git Collaboration</strong> — Remote-Repositories, Pull Requests, GitFlow, Branching-Strategien</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">18 - Advanced Version Control</span></div>');});
+</script>
+</body>
+</html>

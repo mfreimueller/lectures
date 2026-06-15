@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>17 - Version Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>17 - Version Control</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Motivation — Warum Versionsverwaltung?</h2>
+<ul>
+<li class="fragment">Änderungen an Code nachvollziehbar dokumentieren</li>
+<li class="fragment">Zu jedem früheren Stand zurückkehren können</li>
+<li class="fragment">Parallelarbeit im Team ohne Chaos</li>
+<li class="fragment">Experimentieren ohne Risiko (Branches)</li>
+<li class="fragment">Backup &amp; verteilte Zusammenarbeit</li>
+</ul>
+<div class="fragment highlight-box">
+<p>Ohne VCS ist Softwareentwicklung auf Team-Ebene kaum möglich</p>
+</div>
+</section>
+
+<section>
+<h2>Was ist Git?</h2>
+<ul>
+<li class="fragment"><strong>Verteiltes</strong> Version Control System (DVCS)</li>
+<li class="fragment">Jeder Entwickler hat das <strong>komplette Repository</strong> lokal</li>
+<li class="fragment">Entwickelt von Linus Torvalds (2005) für den Linux-Kernel</li>
+<li class="fragment">De-facto-Standard in der Softwareentwicklung</li>
+</ul>
+<div class="fragment">
+<h3>Zentral vs. Verteilt</h3>
+<pre><code class="language-plaintext">Zentral (SVN):    Server ── Client
+Verteilt (Git):   Server ── Client (vollständige Kopie)
+                            Client (vollständige Kopie)</code></pre>
+</div>
+</section>
+
+<section>
+<h2>Grundkonzepte</h2>
+<ul>
+<li class="fragment"><strong>Repository:</strong> Enthält die gesamte Projekt-Historie</li>
+<li class="fragment"><strong>Working Tree:</strong> Deine aktuell ausgecheckten Dateien</li>
+<li class="fragment"><strong>Commit:</strong> Ein Snapshot des Projekts zu einem Zeitpunkt</li>
+<li class="fragment"><strong>SHA-1 Hash:</strong> Jeder Commit hat eine eindeutige ID (z. B. <code>a1b2c3d</code>)</li>
+<li class="fragment"><strong>HEAD:</strong> Zeiger auf den aktuellen Commit (den du ausgecheckt hast)</li>
+</ul>
+</section>
+
+<section>
+<h2>Git konfigurieren</h2>
+<pre><code class="language-bash"># Name und E-Mail (wichtig für Commits!)
+git config --global user.name "Max Mustermann"
+git config --global user.email "max@example.com"
+
+# Editor festlegen
+git config --global core.editor "code --wait"
+
+# Konfiguration anzeigen
+git config --list</code></pre>
+<ul>
+<li class="fragment"><code>--global</code> = für deinen gesamten Rechner</li>
+<li class="fragment"><code>--local</code> = nur für ein Repository</li>
+</ul>
+</section>
+
+<section>
+<h2>Repository erstellen</h2>
+<pre><code class="language-bash"># Neues Projekt initialisieren
+mkdir mein-projekt
+cd mein-projekt
+git init
+
+# Oder bestehendes Projekt
+cd bestehendes-projekt
+git init</code></pre>
+<ul>
+<li class="fragment"><code>git init</code> erstellt ein verstecktes Verzeichnis <code>.git/</code></li>
+<li class="fragment">Alle Versionierungsdaten liegen in <code>.git/</code></li>
+<li class="fragment">Löschen von <code>.git/</code> macht das Repository rückgängig</li>
+</ul>
+</section>
+
+<section>
+<h2>Die drei Zustände</h2>
+<pre><code class="language-plaintext">Working Directory    Staging Area    .git (Repository)
+     |                    |                |
+  modified  ────add────>  staged  ──commit──> committed
+     |                    |                |
+  untracked              (bereit für       (sicher
+  (neue Datei)            den Commit)       versioniert)</code></pre>
+<ul>
+<li class="fragment"><strong>Modified:</strong> Datei wurde geändert, aber noch nicht zum Commit vorgemerkt</li>
+<li class="fragment"><strong>Staged:</strong> Änderung ist für den nächsten Commit vorgemerkt</li>
+<li class="fragment"><strong>Committed:</strong> Änderung ist dauerhaft in der Historie gespeichert</li>
+</ul>
+</section>
+
+<section>
+<h2>Erste Schritte: add &amp; commit</h2>
+<pre><code class="language-bash"># Datei erstellen
+echo "Hello World" > readme.txt
+
+# Datei zum Staging hinzufügen
+git add readme.txt
+
+# Commit erstellen (mit Nachricht -m)
+git commit -m "Initialer Commit: readme.txt"
+
+# Alle Änderungen auf einmal
+git add -A
+git commit -m "Alle Dateien auf einmal committed"</code></pre>
+<ul>
+<li class="fragment"><code>git add</code> verschiebt modified → staged</li>
+<li class="fragment"><code>git commit</code> verschiebt staged → committed (dauerhaft)</li>
+<li class="fragment">Commit-Nachrichten sollten aussagekräftig sein!</li>
+</ul>
+</section>
+
+<section>
+<h2>Status &amp; History anzeigen</h2>
+<pre><code class="language-bash"># Status des Working Tree
+git status
+
+# Kompakte History (eine Zeile pro Commit)
+git log --oneline
+
+# Graphische Darstellung
+git log --oneline --graph --all</code></pre>
+<div class="fragment highlight-box">
+<p><code>git status</code> ist der wichtigste Befehl — zeigt, was gerade los ist!</p>
+</div>
+</section>
+
+<section>
+<h2>Änderungen vergleichen</h2>
+<pre><code class="language-bash"># Ungestagede Änderungen anzeigen
+git diff
+
+# Gestagede vs. letzter Commit
+git diff --staged
+
+# Zwei Commits vergleichen
+git log --oneline
+git diff abc123 def456</code></pre>
+<pre><code class="language-diff">diff --git a/readme.txt b/readme.txt
+--- a/readme.txt
++++ b/readme.txt
+@@ -1 +1,2 @@
+ Hello World
++Zeile 2</code></pre>
+</section>
+
+<section>
+<h2>Dateien verschieben &amp; löschen</h2>
+<pre><code class="language-bash"># Datei umbenennen
+git mv readme.txt README.md
+
+# Datei löschen
+git rm alte-datei.txt
+
+# Nur aus Git entfernen (lokal behalten)
+git rm --cached versehentlich.txt</code></pre>
+<ul>
+<li class="fragment"><code>git mv</code> = <code>mv + git add + git rm</code> (alles in einem Schritt)</li>
+<li class="fragment"><code>git rm</code> löscht die Datei und staged die Löschung</li>
+<li class="fragment"><code>--cached</code> entfernt eine Datei aus dem Tracking, ohne sie zu löschen</li>
+</ul>
+</section>
+
+<section>
+<h2>.gitignore — Dateien ausschließen</h2>
+<pre><code class="language-bash"># .gitignore anlegen
+echo ".class" > .gitignore
+echo "*.log" >> .gitignore
+echo "build/" >> .gitignore
+echo ".idea/" >> .gitignore
+
+git add .gitignore
+git commit -m "Gitignore hinzugefügt"</code></pre>
+<ul>
+<li class="fragment"><strong>Weglassen:</strong> Kompilierte Dateien (<code>.class</code>, <code>.jar</code>), IDE-Konfiguration, Build-Ordner</li>
+<li class="fragment">Muster: <code>*.log</code>, <code>build/</code>, <code>config.local.*</code></li>
+<li class="fragment">Bereits getrackte Dateien werden durch .gitignore nicht ignoriert!</li>
+</ul>
+</section>
+
+<section>
+<h2>Änderungen rückgängig machen</h2>
+<pre><code class="language-bash">git restore readme.txt
+git restore --staged readme.txt
+git reset --hard HEAD
+git revert HEAD</code></pre>
+<div class="fragment highlight-box">
+<p><code>git reset --hard</code> löscht ungesicherte Änderungen — nicht rückgängig machbar!</p>
+</div>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li>Git ist ein <strong>verteiltes</strong> VCS — jeder hat das vollständige Repository</li>
+<li>Drei Zustände: <strong>modified → staged → committed</strong></li>
+<li><code>git init</code>, <code>git add</code>, <code>git commit</code> — der grundlegende Workflow</li>
+<li><code>git status</code>, <code>git log</code>, <code>git diff</code> — den Zustand verstehen</li>
+<li><code>.gitignore</code> hält das Repository sauber</li>
+<li><code>git restore</code> / <code>git reset</code> / <code>git revert</code> — Änderungen rückgängig machen</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Ausblick</h2>
+<div class="highlight-box">
+<p>Nächste Lektion: <strong>Advanced Version Control</strong> — Branches, Mergen, Merge-Konflikte lösen, Rebase &amp; Stash</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">17 - Version Control</span></div>');});
+</script>
+</body>
+</html>

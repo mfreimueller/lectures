@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>19 - Git Collaboration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>19 - Git Collaboration</h1>
+<p class="institution">POS - Advanced</p>
+</section>
+
+<section>
+<h2>Remote-Repositories — Konzept</h2>
+<ul>
+<li class="fragment"><strong>Remote:</strong> Eine Kopie des Repositories auf einem anderen Rechner/Server</li>
+<li class="fragment">Ermöglicht synchronisierte Teamarbeit</li>
+<li class="fragment">Typische Dienste: GitHub, GitLab, Bitbucket, Gitea</li>
+<li class="fragment">Standard-Name für das Haupt-Remote: <code>origin</code></li>
+</ul>
+<pre class="fragment"><code class="language-plaintext">Lokal:     main ── dev ── feature
+             │ push / pull
+             v
+Remote:     main ── dev</code></pre>
+</section>
+
+<section>
+<h2>Remote-Grundbefehle</h2>
+<pre><code class="language-bash"># Repository kopieren
+git clone https://github.com/benutzer/projekt.git
+
+# Änderungen holen (ohne zu mergen)
+git fetch origin
+
+# Änderungen holen & mergen
+git pull origin main
+
+# Lokale Commits hochladen
+git push origin main</code></pre>
+<ul>
+<li class="fragment"><code>fetch</code> holt Daten, <code>pull</code> = fetch + merge</li>
+<li class="fragment"><code>push</code> überträgt lokale Commits zum Remote</li>
+</ul>
+</section>
+
+<section>
+<h2>git clone — Repository kopieren</h2>
+<pre><code class="language-bash"># Vollständige lokale Kopie erstellen
+git clone https://github.com/beispiel/projekt.git
+cd projekt</code></pre>
+<ul>
+<li class="fragment">Nach <code>git clone</code> ist <code>origin</code> automatisch als Remote gesetzt</li>
+<li class="fragment"><code>origin/main</code> ist der Remote-Tracking-Branch (nicht direkt bearbeitbar)</li>
+</ul>
+</section>
+
+<section>
+<h2>git pull — Änderungen übernehmen</h2>
+<pre><code class="language-bash"># Kurzform: holen & mergen
+git pull origin main
+
+# Mit Kontrolle: erst holen, dann mergen
+git fetch origin
+git log --oneline main..origin/main
+git merge origin/main</code></pre>
+<ul>
+<li class="fragment">Fetch + Log gibt Kontrolle, bevor gemergt wird</li>
+</ul>
+</section>
+
+<section>
+<h2>Pull Requests — Konzept</h2>
+<ul>
+<li class="fragment"><strong>Pull Request (PR) / Merge Request (MR):</strong> Bitte, Änderungen in einen anderen Branch zu übernehmen</li>
+<li class="fragment">PRs ermöglichen <strong>Code Review</strong> vor dem Merge</li>
+</ul>
+</section>
+
+<section>
+<h2>Pull Requests — Ablauf</h2>
+<ol>
+<li class="fragment">Branch für Feature erstellen</li>
+<li class="fragment">Änderungen committen &amp; pushen</li>
+<li class="fragment">PR auf GitHub/GitLab öffnen (feature → main)</li>
+<li class="fragment">Teamkollegen reviewen den Code</li>
+<li class="fragment">PR wird gemergt (oder abgelehnt)</li>
+</ol>
+</section>
+
+<section>
+<h2>Pull Requests — Beispiel</h2>
+<pre><code class="language-bash">git switch -c feature/login
+git add -A && git commit -m "Login hinzugefügt"
+git push origin feature/login
+git switch main
+git pull origin main</code></pre>
+<div class="fragment highlight-box">
+<p>PRs sind kein Git-Feature, sondern eine Funktion der Plattform (GitHub/GitLab)</p>
+</div>
+</section>
+
+<section>
+<h2>Code Review — Autor:innen</h2>
+<ul>
+<li class="fragment">Kleine, fokussierte PRs (max. 200-300 Zeilen)</li>
+<li class="fragment">Aussagekräftige PR-Beschreibung (Was? Warum? Wie getestet?)</li>
+<li class="fragment">Auf Feedback eingehen &amp; nachbessern</li>
+</ul>
+</section>
+
+<section>
+<h2>Code Review — Reviewer</h2>
+<ul>
+<li class="fragment">Konstruktives Feedback (nicht die Person kritisieren)</li>
+<li class="fragment">Auf Architektur, Sicherheit, Testabdeckung achten</li>
+<li class="fragment">Bei Unklarheiten nachfragen statt raten</li>
+<li class="fragment">Typische PR-Checks: CI-Pipelines, Linting, automatisierte Tests</li>
+</ul>
+</section>
+
+<section>
+<h2>Branching-Strategien — Überblick</h2>
+<table>
+<thead>
+<tr><th>Strategie</th><th>Komplexität</th><th>Anwendung</th></tr>
+</thead>
+<tbody>
+<tr class="fragment"><td>GitFlow</td><td>Hoch</td><td>Große Projekte, Release-Zyklen</td></tr>
+<tr class="fragment"><td>GitHub Flow</td><td>Niedrig</td><td>Continuous Delivery, Web-Apps</td></tr>
+<tr class="fragment"><td>Trunk-Based</td><td>Niedrig</td><td>CI/CD, kurze Feature-Branches</td></tr>
+<tr class="fragment"><td>GitLab Flow</td><td>Mittel</td><td>Umgebungs-basierte Deployments</td></tr>
+<tr class="fragment"><td>Forking</td><td>Mittel</td><td>Open Source, externe Beiträge</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>GitFlow — Architektur</h2>
+<pre><code class="language-plaintext">main ───── v1.0 ─────── v1.1 ─────── v2.0
+            \          / \          /
+develop      *────────*───*────────*
+             |  \         |  \
+feature      |   *─*─*    |   *─*─*
+             |            |
+release      |  *────────*|
+             |            |
+hotfix       |  *────*   |
+             |        |   |
+             v        v   v</code></pre>
+</section>
+
+<section>
+<h2>GitFlow — Branches</h2>
+<ul>
+<li class="fragment"><strong>main:</strong> Produktionsreifer Code (jeder Commit = Release)</li>
+<li class="fragment"><strong>develop:</strong> Integrationsbranch für die nächste Version</li>
+<li class="fragment"><strong>feature/*:</strong> Neue Features (werden in develop gemergt)</li>
+<li class="fragment"><strong>release/*:</strong> Vorbereitung eines Releases (Bugfixes, Metadaten)</li>
+<li class="fragment"><strong>hotfix/*:</strong> Dringende Bugfixes für die Produktion</li>
+</ul>
+</section>
+
+<section>
+<h2>GitFlow — Arbeitsablauf</h2>
+<pre><code class="language-bash"># 1. Feature entwickeln
+git switch -c feature/neues-feature develop
+# ... Arbeit ...
+git push origin feature/neues-feature
+# PR feature/neues-feature → develop
+
+# 2. Release vorbereiten
+git switch -c release/1.2.0 develop
+# Letzte Anpassungen (Version, Changelog)
+git push origin release/1.2.0
+# PR release/1.2.0 → main  (+ zurück nach develop)
+
+# 3. Hotfix
+git switch -c hotfix/1.2.1 main
+# Bugfix
+git push origin hotfix/1.2.1
+# PR hotfix/1.2.1 → main  (+ zurück nach develop)</code></pre>
+</section>
+
+<section>
+<h2>GitHub Flow — Einfach &amp; Effizient</h2>
+<ul>
+<li class="fragment">Nur <strong>ein</strong> Haupt-Branch: <code>main</code></li>
+<li class="fragment">Jedes Feature/ jeder Fix: Branch von main → PR zurück zu main</li>
+<li class="fragment">Nach Merge: Sofort deployen (Continuous Delivery)</li>
+</ul>
+<pre class="fragment"><code class="language-plaintext">main:  A──B────────────D──────────F
+           \          / \        /
+feature:    C──D──E──    E──F──G──
+
+1. Branch von main
+2. Commits
+3. PR öffnen (early!)
+4. Review & Diskussion
+5. Merge & Deploy</code></pre>
+</section>
+
+<section>
+<h2>Forking-Workflow</h2>
+<ul>
+<li class="fragment">Fork = persönliche Kopie eines fremden Repositories auf dem Server</li>
+<li class="fragment">Typisch für Open Source: Externe können nicht direkt pushen</li>
+</ul>
+</section>
+
+<section>
+<h2>Forking — Beispiel</h2>
+<pre><code class="language-bash">git clone https://github.com/DEIN-USER/projekt.git
+cd projekt
+git remote add upstream https://github.com/ORIGINAL/projekt.git
+git switch -c feature/xyz
+# ... Änderungen ...
+git push origin feature/xyz
+git fetch upstream
+git merge upstream/main</code></pre>
+</section>
+
+<section>
+<h2>Git in CI/CD</h2>
+<ul>
+<li class="fragment">CI/CD-Pipelines nutzen Git als Trigger und Informationsquelle</li>
+<li class="fragment">Typische CI-Ereignisse: <code>push</code>, <code>pull_request</code>, <code>tag</code></li>
+<li class="fragment"><code>$GIT_COMMIT</code> — aktueller Commit-SHA</li>
+<li class="fragment"><code>$GIT_BRANCH</code> — aktueller Branch-Name</li>
+<li class="fragment"><code>$GIT_TAG_NAME</code> — Tag-Name (bei Tag-Ereignissen)</li>
+</ul>
+</section>
+
+<section>
+<h2>CI/CD — Beispiel</h2>
+<pre class="fragment"><code class="language-yaml">on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./gradlew build</code></pre>
+</section>
+
+<section>
+<div class="highlight-box">
+<h2>Zusammenfassung</h2>
+<ul>
+<li><strong>Remote-Repos:</strong> <code>clone</code>, <code>fetch</code>, <code>pull</code>, <code>push</code></li>
+<li><strong>Pull Requests:</strong> Code Review vor dem Merge</li>
+<li><strong>GitFlow:</strong> Strukturierte Branches (main, develop, feature, release, hotfix)</li>
+<li><strong>GitHub Flow:</strong> Einfach — ein Haupt-Branch + PRs</li>
+<li><strong>Forking:</strong> Externe Beiträge ohne direkten Schreibzugriff</li>
+<li><strong>CI/CD:</strong> Git als Grundlage für automatisierte Builds &amp; Deployments</li>
+</ul>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">19 - Git Collaboration</span></div>');});
+</script>
+</body>
+</html>
