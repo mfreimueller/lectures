@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>22 — JavaDoc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>22 — JavaDoc</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Warum Dokumentation?</h2>
+                <ul>
+                    <li class="fragment">Code wird einmal geschrieben, aber oft gelesen</li>
+                    <li class="fragment">Andere Entwickler müssen deinen Code verstehen</li>
+                    <li class="fragment">Du selbst vergisst nach Wochen, was dein Code tut</li>
+                </ul>
+                <div class="highlight-box fragment">Guter Code ist selbsterklärend — aber nicht immer!</div>
+            </section>
+
+            <section>
+                <h2>Kommentar-Arten in Java</h2>
+                <pre><code class="language-java">// Einzeiliger Kommentar
+
+/* Mehrzeiliger
+   Kommentar */
+
+/**
+ * JavaDoc-Kommentar:
+ * Beschreibt die API für andere Entwickler.
+ * Wird von javadoc-Tool zu HTML verarbeitet.
+ */</code></pre>
+                <p class="fragment">JavaDoc-Kommentare beginnen mit <code>/**</code> und enden mit <code>*/</code>.</p>
+            </section>
+
+            <section>
+                <h2>JavaDoc für eine Methode</h2>
+                <pre><code class="language-java">/**
+ * Berechnet die Summe aller Zahlen in einem Array.
+ *
+ * @param zahlen Ein Array von ganzen Zahlen
+ * @return Die Summe aller Elemente
+ */
+public int summe(int[] zahlen) {
+    int sum = 0;
+    for (int z : zahlen) {
+        sum += z;
+    }
+    return sum;
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Der @param-Tag</h2>
+                <p><code>@param</code> beschreibt einen Parameter der Methode.</p>
+                <pre><code class="language-java">/**
+ * Setzt das Alter einer Person.
+ *
+ * @param alter Das neue Alter (muss zwischen 0 und 150 liegen)
+ */
+public void setAlter(int alter) {
+    if (alter > 0 && alter &lt; 150) {
+        this.alter = alter;
+    }
+}</code></pre>
+                <p class="fragment">Format: <code>@param parameterName Beschreibung</code></p>
+            </section>
+
+            <section>
+                <h2>Der @return-Tag</h2>
+                <p><code>@return</code> beschreibt den Rückgabewert.</p>
+                <pre><code class="language-java">/**
+ * Prüft, ob die Person volljährig ist.
+ *
+ * @return true wenn alter >= 18, sonst false
+ */
+public boolean isVolljaehrig() {
+    return alter >= 18;
+}
+
+/**
+ * Gibt den Namen der Person zurück.
+ *
+ * @return Der Name als String
+ */
+public String getName() {
+    return name;
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Der @author-Tag</h2>
+                <p><code>@author</code> gibt den Autor der Klasse an.</p>
+                <pre><code class="language-java">/**
+ * Repräsentiert einen Studenten mit Namen und Noten.
+ *
+ * @author Max Mustermann
+ * @since 2024-03-15
+ */
+public class Student {
+    // ...
+}</code></pre>
+                <p class="fragment"><code>@since</code> gibt die Version oder das Datum an, seit der die Klasse existiert.</p>
+            </section>
+
+            <section>
+                <h2>Der @see-Tag</h2>
+                <p><code>@see</code> erstellt einen Verweis auf verwandte Klassen oder Methoden.</p>
+                <pre><code class="language-java">/**
+ * Fügt einen Studenten zu diesem Kurs hinzu.
+ *
+ * @param student Der hinzuzufügende Student
+ * @return true wenn erfolgreich, false wenn Kurs voll
+ * @see Student#addGrade(int)
+ */
+public boolean addStudent(Student student) {
+    // ...
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>JavaDoc für Klassen</h2>
+                <pre><code class="language-java">/**
+ * Ein Bankkonto mit Ein- und Auszahlungsmöglichkeit.
+ * Jedes Konto hat einen Kontoinhaber, einen Kontostand
+ * und ein Überziehungslimit.
+ *
+ * @author Max Mustermann
+ * @since 2024
+ */
+public class Bankkonto {
+    private String kontoinhaber;
+    private double kontostand;
+    private double ueberzugsLimit;
+    // ...
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>JavaDoc für Attribute</h2>
+                <p>Auch Attribute können JavaDoc erhalten (optional).</p>
+                <pre><code class="language-java">/**
+ * Der Name des Studenten. Darf nicht leer sein.
+ */
+private String name;
+
+/**
+ * Die Noten des Studenten (1-5).
+ */
+private int[] grades;</code></pre>
+                <p class="fragment">Oft reicht ein guter Variablenname — JavaDoc für Attribute ist nicht immer nötig.</p>
+            </section>
+
+            <section>
+                <h2>Vollständiges Beispiel</h2>
+                <pre><code class="language-java">/**
+ * Repräsentiert einen Studenten mit Notenverwaltung.
+ *
+ * @author Max Mustermann
+ * @since 2024
+ */
+public class Student {
+    private String name;
+
+    /**
+     * Erzeugt einen neuen Studenten.
+     *
+     * @param name Der Name des Studenten
+     * @param id   Die eindeutige ID
+     */
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    /**
+     * Gibt den Namen des Studenten zurück.
+     *
+     * @return Der Name als String
+     */
+    public String getName() {
+        return name;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>JavaDoc generieren</h2>
+                <p>Über die Kommandozeile:</p>
+                <pre><code class="language-bash">javadoc -d doc *.java</code></pre>
+                <p>In der IDE (IntelliJ):</p>
+                <ul>
+                    <li class="fragment">Tools → Generate JavaDoc</li>
+                    <li class="fragment">Oder: Rechte Maus auf Datei → Generate JavaDoc</li>
+                </ul>
+                <p class="fragment">Das Ergebnis ist eine HTML-Seite wie die offizielle Java-Dokumentation!</p>
+            </section>
+
+            <section>
+                <h2>Best Practices</h2>
+                <ul>
+                    <li class="fragment">Jede öffentliche Methode sollte JavaDoc haben</li>
+                    <li class="fragment">Beschreibe das <strong>Was</strong>, nicht das <strong>Wie</strong></li>
+                    <li class="fragment">@param und @return bei Methoden mit Parametern/Rückgabe</li>
+                    <li class="fragment">@author und @since bei jeder Klasse</li>
+                    <li class="fragment">Halte JavaDoc aktuell — alter Code ist schlimmer als kein Code</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">JavaDoc = <code>/** ... */</code> für Dokumentation</li>
+                    <li class="fragment">Wichtige Tags: @param, @return, @author, @since, @see</li>
+                    <li class="fragment">JavaDoc wird zu HTML-Dokumentation generiert</li>
+                    <li class="fragment">Gute Dokumentation hilft allen Entwicklern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übungen</h2>
+                <ul>
+                    <li><strong>Katas:</strong> Methode dokumentieren, Klasse dokumentieren, JavaDoc generieren</li>
+                    <li><strong>Exercise:</strong> Bibliothek vollständig dokumentieren</li>
+                    <li><strong>Jahresprojekt:</strong> Dungeon Crawler final dokumentieren</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">22 — JavaDoc</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>18 — Konstruktoren</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>18 — Konstruktoren</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Problem: Objekte nachträglich setzen</h2>
+                <pre><code class="language-java">Person p = new Person();
+p.setName("Anna");
+p.setAlter(20);
+// Drei Schritte für ein Objekt — umständlich!</code></pre>
+                <ul>
+                    <li class="fragment">Bisher: Objekt erzeugen, dann Werte einzeln setzen</li>
+                    <li class="fragment">Besser: Werte direkt bei der Erzeugung übergeben</li>
+                    <li class="fragment">Lösung: <strong>Konstruktoren</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Was ist ein Konstruktor?</h2>
+                <ul>
+                    <li class="fragment">Ein Konstruktor ist eine spezielle Methode zur Initialisierung von Objekten</li>
+                    <li class="fragment">Er heißt genau wie die Klasse</li>
+                    <li class="fragment">Er hat <strong>keinen</strong> Rückgabetyp (auch nicht <code>void</code>)</li>
+                    <li class="fragment">Er wird automatisch beim Erzeugen eines Objekts aufgerufen (<code>new</code>)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    // Konstruktor
+    public Person(String name, int alter) {
+        this.name = name;
+        this.alter = alter;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Default-Konstruktor</h2>
+                <ul>
+                    <li class="fragment">Der <strong>Default-Konstruktor</strong> hat keine Parameter</li>
+                    <li class="fragment">Java erzeugt ihn automatisch, wenn kein anderer Konstruktor definiert ist</li>
+                    <li class="fragment">Er setzt die Attribute auf ihre Default-Werte (0, null, false)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">// Default-Konstruktor (automatisch erzeugt):
+public Person() {
+    // nichts — Attribute bleiben auf Default
+}
+
+// Verwendung:
+Person p = new Person(); // Default-Konstruktor</code></pre>
+                <p class="fragment"><strong>Achtung:</strong> Sobald du einen eigenen Konstruktor definierst, gibt es keinen Default-Konstruktor mehr — außer du schreibst ihn selbst!</p>
+            </section>
+
+            <section>
+                <h2>Parametrisierter Konstruktor</h2>
+                <ul>
+                    <li class="fragment">Ein Konstruktor mit Parametern setzt die Attribute direkt bei der Erzeugung</li>
+                    <li class="fragment">Das ist kürzer und sicherer als nachträgliches Setzen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    private String name;
+    private int alter;
+
+    // Parametrisierter Konstruktor
+    public Person(String name, int alter) {
+        this.name = name;
+        this.alter = alter;
+    }
+}
+
+// Verwendung:
+Person p = new Person("Anna", 20); // alles in einer Zeile!</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiel: Book-Klasse</h2>
+                <pre><code class="language-java">public class Book {
+    private String title;
+    private int pages;
+
+    // Konstruktor
+    public Book(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    public void printInfo() {
+        System.out.println("Titel: " + title);
+        System.out.println("Seiten: " + pages);
+    }
+
+    public static void main(String[] args) {
+        Book b = new Book("Java lernen", 350);
+        b.printInfo();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Konstruktor-Überladung</h2>
+                <ul>
+                    <li class="fragment">Eine Klasse kann mehrere Konstruktoren haben (Überladung)</li>
+                    <li class="fragment">Sie müssen sich in der Parameterliste unterscheiden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Book {
+    private String title;
+    private int pages;
+
+    public Book(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    public Book(String title) {
+        this.title = title;
+        this.pages = 0; // Standardwert
+    }
+
+    public Book() {
+        this.title = "Unbekannt";
+        this.pages = 0;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>this-Schlüsselwort</h2>
+                <ul>
+                    <li class="fragment"><code>this</code> bezieht sich auf das aktuelle Objekt</li>
+                    <li class="fragment">Es wird verwendet, um Attribut von Parameter zu unterscheiden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public Book(String title, int pages) {
+    // this.title = Attribut
+    // title = Parameter
+    this.title = title;
+    this.pages = pages;
+}</code></pre>
+                <p class="fragment">Ohne <code>this</code> würde <code>title = title</code> den Parameter mit sich selbst überschreiben!</p>
+            </section>
+
+            <section>
+                <h2>Konstruktor vs. Methode</h2>
+                <table>
+                    <tr><th>Konstruktor</th><th>Methode</th></tr>
+                    <tr class="fragment"><td>Heißt wie die Klasse</td><td>Hat einen frei wählbaren Namen</td></tr>
+                    <tr class="fragment"><td>Kein Rückgabetyp</td><td>Hat einen Rückgabetyp (oder void)</td></tr>
+                    <tr class="fragment"><td>Wird nur bei <code>new</code> aufgerufen</td><td>Kann beliebig oft aufgerufen werden</td></tr>
+                    <tr class="fragment"><td>Initialisiert das Objekt</td><td>Führt Aktionen aus / liefert Werte</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Best Practices</h2>
+                <ul>
+                    <li class="fragment">Verwende Konstruktoren, um Objekte vollständig zu initialisieren</li>
+                    <li class="fragment">Vermeide zu viele Konstruktoren — ab 3-4 wird es unübersichtlich</li>
+                    <li class="fragment">Verwende sprechende Parameternamen</li>
+                    <li class="fragment">Nutze <code>this</code> für klare Unterscheidung</li>
+                    <li class="fragment">Ein Konstruktor sollte keine komplexe Logik enthalten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Konstruktor = spezielle Methode zur Objekt-Initialisierung</li>
+                        <li>Heißt wie die Klasse, kein Rückgabetyp</li>
+                        <li>Default-Konstruktor (automatisch, wenn kein anderer existiert)</li>
+                        <li>Parametrisierter Konstruktor: Werte direkt bei <code>new</code> übergeben</li>
+                        <li>Überladung: mehrere Konstruktoren in einer Klasse</li>
+                        <li><code>this</code> unterscheidet Attribut von Parameter</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Ausblick</h2>
+                <div class="highlight-box">
+                    Nächste Woche vertiefen wir die Objektorientierung mit <code>this</code>, Settern und Gettern.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">18 — Konstruktoren</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

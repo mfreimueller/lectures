@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>07 — Schleifen – while</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>07 — Schleifen – while</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: User Input</h2>
+                <ul>
+                    <li class="fragment">Mit <code>Scanner</code> können wir Benutzereingaben lesen</li>
+                    <li class="fragment"><code>nextInt()</code> für ganze Zahlen, <code>nextLine()</code> für Text</li>
+                    <li class="fragment">Mit <code>Random</code> können wir Zufallszahlen erzeugen</li>
+                    <li class="fragment">Bisher: Einmalige Eingabe, einmalige Ausgabe</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Wiederholung im Alltag</h2>
+                <ul>
+                    <li class="fragment">Jeden Morgen: Wecker klingelt → aufstehen → Zähne putzen → ...</li>
+                    <li class="fragment">Sport: 10 Wiederholungen einer Übung</li>
+                    <li class="fragment">Musik: Ein Lied läuft in einer Schleife</li>
+                    <li class="fragment">Immer das gleiche Muster: <strong>etwas wiederholen</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Konzept der Wiederholung</h2>
+                <ul>
+                    <li class="fragment">Ein Programm soll manche Anweisungen mehrfach ausführen</li>
+                    <li class="fragment">Beispiel: "Gib die Zahlen von 1 bis 10 aus"</li>
+                    <li class="fragment">Ohne Schleife: 10 mal <code>System.out.println()</code></li>
+                    <li class="fragment">Mit Schleife: eine Anweisung, die 10 mal läuft</li>
+                    <li class="fragment">Eine <strong>Schleife</strong> wiederholt Code, solange eine Bedingung gilt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die while-Schleife: Syntax</h2>
+                <pre><code class="language-java">while (Bedingung) {
+    // Schleifenkörper - wird wiederholt
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Bedingung:</strong> Ein boolean-Ausdruck (true/false)</li>
+                    <li class="fragment"><strong>Schleifenkörper:</strong> Wird ausgeführt, solange die Bedingung true ist</li>
+                    <li class="fragment">Vor jedem Durchlauf wird die Bedingung geprüft</li>
+                    <li class="fragment">Ist die Bedingung false, wird die Schleife beendet</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Zahlen 1 bis 10</h2>
+                <pre><code class="language-java">int i = 1;
+while (i &lt;= 10) {
+    System.out.println(i);
+    i++;
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>i</code> ist die <strong>Zählvariable</strong></li>
+                    <li class="fragment">Startwert: 1</li>
+                    <li class="fragment">Bedingung: i &lt;= 10</li>
+                    <li class="fragment"><code>i++</code> erhöht i nach jedem Durchlauf</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zählvariablen-Pattern</h2>
+                <pre><code class="language-java">int i = 0;          // 1. Initialisierung
+while (i &lt; 10) {    // 2. Bedingung
+    // ... mache etwas ...
+    i++;            // 3. Inkrement
+}</code></pre>
+                <ul>
+                    <li class="fragment">Drei Teile: <strong>Initialisierung, Bedingung, Inkrement</strong></li>
+                    <li class="fragment">Oft startet man bei 0 (Programmierkonvention)</li>
+                    <li class="fragment">Oder bei 1 (mathematisch)</li>
+                    <li class="fragment">Das <code>&lt;</code> vs. <code>&lt;=</code> bestimmt die Anzahl der Durchläufe</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>While mit Zählvariable: Ablauf</h2>
+                <pre><code class="language-java">// i=0, Bedingung: 0&lt;10 → true → ausführen → i++
+// i=1, Bedingung: 1&lt;10 → true → ausführen → i++
+// i=2, Bedingung: 2&lt;10 → true → ausführen → i++
+// ...
+// i=9, Bedingung: 9&lt;10 → true → ausführen → i++
+// i=10, Bedingung: 10&lt;10 → false → ENDE</code></pre>
+                <p class="fragment">10 Durchläufe: i = 0, 1, 2, ..., 9</p>
+            </section>
+
+            <section>
+                <h2>Endlosschleifen</h2>
+                <pre><code class="language-java">int i = 1;
+while (i &lt;= 10) {
+    System.out.println("Hallo");
+    // i++ fehlt!
+}</code></pre>
+                <ul>
+                    <li class="fragment">Was passiert? <code>i</code> bleibt immer 1</li>
+                    <li class="fragment">Die Bedingung <code>i &lt;= 10</code> ist immer true</li>
+                    <li class="fragment">Die Schleife läuft <strong>ewig</strong> → Endlosschleife</li>
+                    <li class="fragment">Abbruch mit <code>Strg + C</code> (oder Stop-Knopf in IDE)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Endlosschleifen vermeiden</h2>
+                <div class="highlight-box">
+                    <p><strong>Merke:</strong> Jede Schleife muss die Bedingung irgendwann false machen!</p>
+                </div>
+                <ul>
+                    <li class="fragment">Die Zählvariable muss sich <strong>ändern</strong></li>
+                    <li class="fragment">Das Inkrement darf nicht fehlen</li>
+                    <li class="fragment">Die Bedingung muss <strong>irgendwann</strong> false werden</li>
+                    <li class="fragment">Tipp: Schreibe zuerst die Zählvariable und das Inkrement</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Summe 1 bis n</h2>
+                <pre><code class="language-java">int n = 100;
+int summe = 0;
+int i = 1;
+
+while (i &lt;= n) {
+    summe = summe + i;
+    i++;
+}
+
+System.out.println("Summe 1.." + n + " = " + summe);</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiel: While mit User Input</h2>
+                <pre><code class="language-java">Scanner scanner = new Scanner(System.in);
+String eingabe = "";
+
+while (!eingabe.equals("quit")) {
+    System.out.print("Befehl: ");
+    eingabe = scanner.nextLine();
+    System.out.println("Eingegeben: " + eingabe);
+} </code></pre>
+                <p class="fragment">Die Schleife läuft, bis der Benutzer "quit" eingibt</p>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Die <code>while</code>-Schleife wiederholt Code, solange eine Bedingung true ist</li>
+                        <li>Zählvariablen-Pattern: Initialisierung, Bedingung, Inkrement</li>
+                        <li>Endlosschleifen entstehen, wenn die Bedingung nie false wird</li>
+                        <li>Mit while können wir benutzerdefinierte Wiederholungen steuern</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir die fußgesteuerte Schleife <code>do-while</code> kennen und die Schlüsselwörter <code>break</code> und <code>continue</code>.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">07 — Schleifen – while</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -57,6 +57,7 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 ### Verzweigung
 
 - Vergleichsoperatoren: <, >, ==, !=, !
+- Große Übung
 
 ### User Input - Scanner, Random
 
@@ -64,6 +65,7 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 - einfache Eingaben lesen: String, int
 - Code für Convert vorgeben (kommt erst später)
 - Zufallszahl ziehen
+- Große Übung
 
 ### Schleifen - while
 
@@ -75,6 +77,7 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 
 - break + continue einführen
 - Konzept der kopf- und fußgesteuerten Schleife
+- Große Übung
 
 ### Schleifen - for
 
@@ -84,6 +87,7 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 ### Arrays
 
 - 1-D Arrays
+- Große Übung
 
 ### Sortieren von Arrays
 
@@ -99,6 +103,7 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 ### Funktionen
 
 - Quasi imperative Programmierparadigma
+- Große Übung
 
 ### Übung: REPL
 
@@ -115,8 +120,17 @@ Die Titel der Lektionen sind Vorschläge und können gegebenenfalls adaptiert we
 
 ### this, Setter, Getter
 
+- Große Übung
+
 ### Referenzen
 
 ### UML (Übung: Klassen daraus erstellen & UML aus Klassen erstellen)
 
 ### JavaDoc
+
+### Dateioperationen
+
+- Textdateien lesen mit BufferedReader/FileReader
+- Textdateien schreiben mit PrintWriter/FileWriter
+- IOException behandeln, try-with-resources
+- Relative vs. absolute Pfade

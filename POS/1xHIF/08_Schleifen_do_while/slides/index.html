@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>08 — Schleifen – do-while</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>08 — Schleifen – do-while</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: while-Schleife</h2>
+                <pre><code class="language-java">int i = 0;
+while (i &lt; 5) {
+    System.out.println(i);
+    i++;
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Kopfgesteuert:</strong> Bedingung wird vor dem Durchlauf geprüft</li>
+                    <li class="fragment">Wenn die Bedingung von Anfang an false ist → 0 Durchläufe</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Kopf- vs. fußgesteuerte Schleife</h2>
+                <div class="highlight-box">
+                    <p><strong>Kopfgesteuert (while):</strong> Prüfen → Ausführen → Prüfen → ...</p>
+                    <p><strong>Fußgesteuert (do-while):</strong> Ausführen → Prüfen → Ausführen → ...</p>
+                </div>
+                <ul>
+                    <li class="fragment">Der Unterschied: Eine fußgesteuerte Schleife läuft <strong>mindestens einmal</strong></li>
+                    <li class="fragment">Ideal, wenn etwas zuerst passieren muss (z. B. Menü anzeigen)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die do-while-Schleife: Syntax</h2>
+                <pre><code class="language-java">do {
+    // Schleifenkörper - wird mindestens einmal ausgeführt
+} while (Bedingung);</code></pre>
+                <ul>
+                    <li class="fragment">Das <code>do</code> startet den Schleifenkörper</li>
+                    <li class="fragment">Nach dem Durchlauf wird die Bedingung geprüft</li>
+                    <li class="fragment">Solange die Bedingung true ist → wiederholen</li>
+                    <li class="fragment">Wichtig: Das Semikolon nach <code>while(Bedingung)</code> nicht vergessen!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: do-while</h2>
+                <pre><code class="language-java">int i = 0;
+do {
+    System.out.println(i);
+    i++;
+} while (i &lt; 5);</code></pre>
+                <ul>
+                    <li class="fragment">Ergebnis: 0, 1, 2, 3, 4 — gleiche Ausgabe wie while</li>
+                    <li class="fragment">Aber: Selbst wenn <code>i = 10</code> wäre, würde die Schleife mindestens einmal laufen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>while vs. do-while</h2>
+                <pre><code class="language-java">// while - wird nie ausgeführt
+while (false) {
+    System.out.println("While");
+}
+
+// do-while - wird einmal ausgeführt
+do {
+    System.out.println("Do-While");
+} while (false);</code></pre>
+                <p class="fragment">Ausgabe: "Do-While" (einmal)</p>
+            </section>
+
+            <section>
+                <h2>break — Schleife vorzeitig beenden</h2>
+                <pre><code class="language-java">while (true) {
+    System.out.print("Zahl eingeben: ");
+    int zahl = scanner.nextInt();
+    if (zahl &lt; 0) {
+        break;  // Springt aus der Schleife
+    }
+    System.out.println("Quadrat: " + zahl * zahl);
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>break</code> beendet die Schleife <strong>sofort</strong></li>
+                    <li class="fragment">Das Programm läuft nach der Schleife weiter</li>
+                    <li class="fragment">Nützlich bei "Abbruch bei bestimmter Eingabe"</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>break: Beispiel</h2>
+                <pre><code class="language-java">int summe = 0;
+while (true) {
+    int zahl = scanner.nextInt();
+    if (zahl == 0) {
+        break;  // Eingabe von 0 beendet die Schleife
+    }
+    summe += zahl;
+}
+System.out.println("Summe: " + summe);</code></pre>
+                <p class="fragment">Der Benutzer gibt Zahlen ein, 0 beendet die Eingabe</p>
+            </section>
+
+            <section>
+                <h2>continue — Durchlauf überspringen</h2>
+                <pre><code class="language-java">for (int i = 1; i &lt;= 10; i++) {
+    if (i % 2 == 0) {
+        continue;  // Überspringt den Rest des Durchlaufs
+    }
+    System.out.println(i); // Nur ungerade Zahlen
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>continue</code> überspringt den <strong>restlichen</strong> Schleifenkörper</li>
+                    <li class="fragment">Der nächste Durchlauf beginnt (bzw. die Bedingung wird neu geprüft)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>continue: Beispiel</h2>
+                <pre><code class="language-java">// Gib alle Zahlen 1..20 aus,
+// überspringe aber Zahlen, die durch 3 teilbar sind
+int i = 0;
+while (i &lt; 20) {
+    i++;
+    if (i % 3 == 0) {
+        continue;
+    }
+    System.out.print(i + " ");
+}
+// Ausgabe: 1 2 4 5 7 8 10 11 13 14 16 17 19 20</code></pre>
+            </section>
+
+            <section>
+                <h2>break vs. continue</h2>
+                <div class="highlight-box">
+                    <p><strong>break:</strong> Beendet die gesamte Schleife sofort</p>
+                    <p><strong>continue:</strong> Überspringt nur den aktuellen Durchlauf</p>
+                </div>
+                <pre><code class="language-java">for (int i = 1; i &lt;= 5; i++) {
+    if (i == 3) break;    // → 1 2
+    if (i == 3) continue; // → 1 2 4 5
+    System.out.print(i + " ");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Menübeispiel mit do-while</h2>
+                <pre><code class="language-java">int auswahl;
+do {
+    System.out.println("=== MENÜ ===");
+    System.out.println("1: Option A");
+    System.out.println("2: Option B");
+    System.out.println("0: Beenden");
+    System.out.print("Auswahl: ");
+    auswahl = scanner.nextInt();
+
+    if (auswahl == 1) { /* Option A */ }
+    else if (auswahl == 2) { /* Option B */ }
+
+} while (auswahl != 0);</code></pre>
+                <p class="fragment">Das Menü wird immer mindestens einmal angezeigt</p>
+            </section>
+
+            <section>
+                <h2>do-while mit break</h2>
+                <pre><code class="language-java">do {
+    System.out.print("Passwort: ");
+    String pw = scanner.nextLine();
+
+    if (pw.equals("geheim")) {
+        System.out.println("Zugriff gewährt!");
+        break;
+    }
+    System.out.println("Falsches Passwort!");
+} while (true);</code></pre>
+                <p class="fragment">Endlosschleife + break = "Wiederhole, bis richtig"</p>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><code>do-while</code> führt den Körper mindestens einmal aus</li>
+                        <li><code>break</code> beendet die Schleife vorzeitig</li>
+                        <li><code>continue</code> überspringt den aktuellen Durchlauf</li>
+                        <li>do-while ideal für Menüs und Eingabeprüfungen</li>
+                        <li>while: Bedingung vorher prüfen; do-while: Bedingung nachher prüfen</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir die <code>for</code>-Schleife, die perfekt für Zählschleifen geeignet ist.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">08 — Schleifen – do-while</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

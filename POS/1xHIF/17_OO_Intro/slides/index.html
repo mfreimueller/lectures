@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>17 — OO Intro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>17 — OO Intro</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Bisher: prozedural</h2>
+                <ul>
+                    <li class="fragment">Bisher haben wir <strong>prozedural</strong> programmiert</li>
+                    <li class="fragment">Daten (Variablen) und Verhalten (Methoden) sind getrennt</li>
+                    <li class="fragment">Wir rufen Funktionen auf, die Daten verarbeiten</li>
+                    <li class="fragment">Nachteil: Zusammenhängende Daten liegen oft verteilt</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">String name = "Anna";
+int alter = 20;
+System.out.println(name + " ist " + alter);</code></pre>
+            </section>
+
+            <section>
+                <h2>Objektorientierung: Idee</h2>
+                <ul>
+                    <li class="fragment">Objekte kapseln <strong>Daten</strong> (Attribute) und <strong>Verhalten</strong> (Methoden)</li>
+                    <li class="fragment">Eine Person hat einen Namen und ein Alter — und kann sich vorstellen</li>
+                    <li class="fragment">Ein Auto hat eine Marke und eine Geschwindigkeit — und kann beschleunigen</li>
+                    <li class="fragment">Daten und die dazugehörigen Operationen bleiben zusammen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Klasse = Bauplan</h2>
+                <ul>
+                    <li class="fragment">Eine <strong>Klasse</strong> ist der Bauplan für Objekte</li>
+                    <li class="fragment">Sie definiert, welche Attribute und Methoden ein Objekt hat</li>
+                    <li class="fragment">Vergleich: Ein Bauplan für ein Haus — das Haus selbst ist das Objekt</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    // Attribute (Eigenschaften)
+    String name;
+    int alter;
+
+    // Methoden (Verhalten)
+    void vorstellen() {
+        System.out.println("Hallo!");
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Objekt = Exemplar</h2>
+                <ul>
+                    <li class="fragment">Ein <strong>Objekt</strong> ist ein konkretes Exemplar einer Klasse</li>
+                    <li class="fragment">Erzeugt wird es mit <code>new</code>: <code>new Person()</code></li>
+                    <li class="fragment">Jedes Objekt hat seine eigenen Werte für die Attribute</li>
+                    <li class="fragment">Von einer Klasse können beliebig viele Objekte erzeugt werden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Person p1 = new Person();
+Person p2 = new Person();
+// p1 und p2 sind unabhängige Objekte</code></pre>
+            </section>
+
+            <section>
+                <h2>Attribute</h2>
+                <ul>
+                    <li class="fragment"><strong>Attribute</strong> (auch Felder oder Fields) speichern den Zustand eines Objekts</li>
+                    <li class="fragment">Sie werden in der Klasse deklariert (außerhalb von Methoden)</li>
+                    <li class="fragment">Jedes Objekt hat seine eigenen Attribute mit eigenen Werten</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    String name;   // Attribut
+    int alter;     // Attribut
+}</code></pre>
+                <p class="fragment">Beide Attribute haben einen <strong>Default-Wert</strong>: <code>null</code> für String, <code>0</code> für int.</p>
+            </section>
+
+            <section>
+                <h2>Methoden</h2>
+                <ul>
+                    <li class="fragment"><strong>Methoden</strong> definieren das Verhalten eines Objekts</li>
+                    <li class="fragment">Sie können auf die Attribute des Objekts zugreifen</li>
+                    <li class="fragment">Sie werden auf einem konkreten Objekt aufgerufen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    String name;
+
+    void vorstellen() {
+        // Zugriff auf das Attribut name
+        System.out.println("Hallo, ich bin " + name);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiel: Person-Klasse</h2>
+                <pre><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    void vorstellen() {
+        System.out.println("Hallo, ich bin " + name +
+                " und bin " + alter + " Jahre alt.");
+    }
+
+    public static void main(String[] args) {
+        Person p = new Person();
+        p.name = "Anna";
+        p.alter = 20;
+        p.vorstellen();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Objekte erzeugen (instanziieren)</h2>
+                <ul>
+                    <li class="fragment">Mit <code>new Klassenname()</code> wird ein neues Objekt erzeugt</li>
+                    <li class="fragment">Das Objekt wird einer Variable zugewiesen</li>
+                    <li class="fragment">Über die Variable kann man auf Attribute und Methoden zugreifen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Person p1 = new Person();
+p1.name = "Anna";
+p1.vorstellen();
+
+Person p2 = new Person();
+p2.name = "Max";
+p2.vorstellen();</code></pre>
+                <p class="fragment">Zwei unabhängige Personen mit eigenen Namen!</p>
+            </section>
+
+            <section>
+                <h2>public vs. private</h2>
+                <ul>
+                    <li class="fragment"><code>public</code> — von überall zugreifbar (auch von außerhalb der Klasse)</li>
+                    <li class="fragment"><code>private</code> — nur innerhalb der eigenen Klasse zugreifbar</li>
+                    <li class="fragment">Private Attribute schützen die Daten vor direktem Zugriff von außen</li>
+                    <li class="fragment"><strong>Kapselung:</strong> Daten sind privat, Methoden (Getter/Setter) sind öffentlich</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class Person {
+    private String name;  // nicht direkt von außen änderbar
+
+    public void setName(String name) {
+        this.name = name; // Setter: kontrollierter Zugriff
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Attribut vs. Parameter vs. lokale Variable</h2>
+                <table>
+                    <tr><th>Typ</th><th>Gültigkeitsbereich</th><th>Beispiel</th></tr>
+                    <tr class="fragment"><td>Attribut</td><td>In der ganzen Klasse</td><td><code>String name;</code></td></tr>
+                    <tr class="fragment"><td>Parameter</td><td>In der Methode</td><td><code>void setName(String name)</code></td></tr>
+                    <tr class="fragment"><td>Lokale Variable</td><td>Im aktuellen Block { }</td><td><code>int x = 5;</code></td></tr>
+                </table>
+                <div class="fragment highlight-box">
+                    <p><strong>Merke:</strong> Das <code>this</code>-Schlüsselwort unterscheidet Attribut von Parameter.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Vorteile von OO</h2>
+                <ul>
+                    <li class="fragment"><strong>Kapselung:</strong> Daten und Methoden bleiben zusammen</li>
+                    <li class="fragment"><strong>Wiederverwendbarkeit:</strong> Klassen können mehrfach verwendet werden</li>
+                    <li class="fragment"><strong>Wartbarkeit:</strong> Änderungen betreffen nur eine Klasse</li>
+                    <li class="fragment"><strong>Nähe zur Realität:</strong> Wir modellieren reale Dinge als Objekte</li>
+                    <li class="fragment"><strong>Erweiterbarkeit:</strong> Neue Klassen können existierende erweitern (später: Vererbung)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>Klasse</strong> = Bauplan, <strong>Objekt</strong> = konkretes Exemplar</li>
+                        <li><strong>Attribute</strong> speichern den Zustand eines Objekts</li>
+                        <li><strong>Methoden</strong> definieren das Verhalten</li>
+                        <li>Objekterzeugung mit <code>new</code></li>
+                        <li><code>public</code> = überall zugreifbar, <code>private</code> = nur in der Klasse</li>
+                        <li>Kapselung: Daten privat, Methoden öffentlich</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Ausblick</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir Konstruktoren kennen — damit können wir Objekte mit Anfangswerten erstellen.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">17 — OO Intro</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

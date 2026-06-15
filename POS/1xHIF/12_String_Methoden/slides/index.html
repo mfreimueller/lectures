@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>12 — String Methoden</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>12 — String Methoden</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Strings</h2>
+                <pre><code class="language-java">String name = "Alice";
+String gruss = "Hallo Welt!";
+
+System.out.println(name);
+System.out.println(gruss);</code></pre>
+                <ul>
+                    <li class="fragment">Bisher: Strings als einfache Textvariablen</li>
+                    <li class="fragment">Aber Strings können viel mehr — sie haben <strong>Methoden</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Strings sind Objekte</h2>
+                <div class="highlight-box">
+                    <p>In Java ist <code>String</code> eine <strong>Klasse</strong> (kein primitiver Datentyp).</p>
+                    <p>Jeder String ist ein <strong>Objekt</strong> mit eigenen <strong>Methoden</strong>.</p>
+                </div>
+                <ul>
+                    <li class="fragment">Eine Methode wird mit einem Punkt aufgerufen: <code>string.method()</code></li>
+                    <li class="fragment">Beispiel: <code>"Hallo".length()</code> → 5</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>length() — Länge eines Strings</h2>
+                <pre><code class="language-java">String text = "Hallo Welt!";
+int laenge = text.length();
+System.out.println(laenge);  // 11
+
+// Leerer String:
+String leer = "";
+System.out.println(leer.length());  // 0
+
+// Achtung: length() mit Klammern (Methode)!
+// Bei Arrays: length ohne Klammern (Eigenschaft)</code></pre>
+            </section>
+
+            <section>
+                <h2>equals() — Strings vergleichen</h2>
+                <div class="highlight-box">
+                    <p><strong>Strings vergleicht man mit <code>equals()</code>, NICHT mit <code>==</code></strong></p>
+                </div>
+                <pre><code class="language-java">String a = "Hallo";
+String b = "Hallo";
+
+System.out.println(a == b);        // true oder false?
+System.out.println(a.equals(b));   // true
+
+String c = new String("Hallo");
+System.out.println(a == c);        // false!
+System.out.println(a.equals(c));   // true</code></pre>
+            </section>
+
+            <section>
+                <h2>equals() vs. ==</h2>
+                <ul>
+                    <li class="fragment"><code>==</code> vergleicht <strong>Speicheradressen</strong> (Referenzen)</li>
+                    <li class="fragment"><code>equals()</code> vergleicht den <strong>Inhalt</strong> der Strings</li>
+                    <li class="fragment">Zwei gleiche Wörter können unterschiedliche Speicheradressen haben</li>
+                    <li class="fragment"><strong>Faustregel:</strong> Für Strings immer <code>equals()</code> verwenden!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>charAt() — Zeichenzugriff</h2>
+                <pre><code class="language-java">String text = "Java";
+char c = text.charAt(0);  // 'J'
+System.out.println(c);
+
+System.out.println(text.charAt(1));  // 'a'
+System.out.println(text.charAt(2));  // 'v'
+System.out.println(text.charAt(3));  // 'a'
+
+// StringIndexOutOfBoundsException bei ungültigem Index!
+// System.out.println(text.charAt(10)); // Fehler!</code></pre>
+                <ul>
+                    <li class="fragment">Wie bei Arrays: Der Index beginnt bei <strong>0</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>charAt() mit Schleife</h2>
+                <pre><code class="language-java">String text = "Hallo";
+
+// Jedes Zeichen einzeln ausgeben
+for (int i = 0; i &lt; text.length(); i++) {
+    char c = text.charAt(i);
+    System.out.println("Zeichen " + i + ": " + c);
+}
+
+// Ausgabe:
+// Zeichen 0: H
+// Zeichen 1: a
+// Zeichen 2: l
+// Zeichen 3: l
+// Zeichen 4: o</code></pre>
+            </section>
+
+            <section>
+                <h2>startsWith() / endsWith()</h2>
+                <pre><code class="language-java">String satz = "Hallo Welt!";
+
+// Beginnt der Satz mit "Hallo"?
+System.out.println(satz.startsWith("Hallo"));   // true
+System.out.println(satz.startsWith("Welt"));    // false
+
+// Endet der Satz mit "!"?
+System.out.println(satz.endsWith("!"));         // true
+System.out.println(satz.endsWith("t"));         // false</code></pre>
+                <ul>
+                    <li class="fragment">Beide Methoden geben <code>boolean</code> zurück (true/false)</li>
+                    <li class="fragment">Nützlich für Textanalyse und Eingabevalidierung</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>startsWith/endsWith: Beispiele</h2>
+                <pre><code class="language-java">// Prüfen, ob ein Befehl mit "gehe" beginnt
+String befehl = "gehe norden";
+if (befehl.startsWith("gehe")) {
+    System.out.println("Bewegungsbefehl erkannt");
+}
+
+// Prüfen, ob ein Satz mit einem Fragezeichen endet
+String frage = "Wie heißt du?";
+if (frage.endsWith("?")) {
+    System.out.println("Das ist eine Frage");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Methoden kombinieren</h2>
+                <pre><code class="language-java">String text = "  Java Programmierung  ";
+
+// Methoden können verkettet werden
+String bereinigt = text.trim().toUpperCase();
+System.out.println(bereinigt);  // "JAVA PROGRAMMIERUNG"
+
+// Schrittweise:
+String getrimmt = text.trim();
+String gross = getrimmt.toUpperCase();</code></pre>
+                <ul>
+                    <li class="fragment">Viele String-Methoden geben einen neuen String zurück</li>
+                    <li class="fragment">Methoden können <strong>verkettet</strong> werden (<code>text.trim().toUpperCase()</code>)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Textanalyse</h2>
+                <pre><code class="language-java">String satz = "Wie heißt du?";
+
+int laenge = satz.length();
+char erstes = satz.charAt(0);
+char letztes = satz.charAt(satz.length() - 1);
+boolean istFrage = satz.endsWith("?");
+
+System.out.println("Länge: " + laenge);
+System.out.println("Erstes Zeichen: " + erstes);
+System.out.println("Letztes Zeichen: " + letztes);
+System.out.println("Ist eine Frage: " + istFrage);</code></pre>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><code>length()</code> — Länge eines Strings</li>
+                        <li><code>equals()</code> — Inhalt vergleichen (nicht ==)</li>
+                        <li><code>charAt(index)</code> — Zeichen an Position index</li>
+                        <li><code>startsWith(präfix)</code> / <code>endsWith(suffix)</code> — boolean-Prüfung</li>
+                        <li>Methoden können kombiniert werden</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir, Strings in Zahlen umzuwandeln — <code>Integer.parseInt</code>, <code>Double.parseDouble</code>.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">12 — String Methoden</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>03 — Operatoren</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>03 — Operatoren</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Datentypen</h2>
+                <ul>
+                    <li class="fragment">Variablen speichern Daten eines bestimmten Typs</li>
+                    <li class="fragment">int für ganze Zahlen, double für Kommazahlen</li>
+                    <li class="fragment">Heute lernen wir: Wie rechnet man mit diesen Werten?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Der Plus-Operator (+)</h2>
+                <ul>
+                    <li class="fragment">Addiert zwei Zahlen</li>
+                    <li class="fragment">Kann auch Texte verbinden (String-Konkatenation)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int summe = 5 + 3;
+System.out.println(summe);  // 8
+
+String text = "Hallo " + "Welt";
+System.out.println(text);   // Hallo Welt</code></pre>
+            </section>
+
+            <section>
+                <h2>Der Minus-Operator (-)</h2>
+                <ul>
+                    <li class="fragment">Subtrahiert zwei Zahlen</li>
+                    <li class="fragment">Kann auch als Vorzeichen verwendet werden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int differenz = 10 - 3;
+System.out.println(differenz);  // 7
+
+int negativ = -5;
+System.out.println(negativ);    // -5</code></pre>
+            </section>
+
+            <section>
+                <h2>Der Mal-Operator (*)</h2>
+                <ul>
+                    <li class="fragment">Multipliziert zwei Zahlen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int produkt = 4 * 6;
+System.out.println(produkt);  // 24
+
+double flaeche = 2.5 * 3.0;
+System.out.println(flaeche);  // 7.5</code></pre>
+            </section>
+
+            <section>
+                <h2>Der Geteilt-Operator (/)</h2>
+                <ul>
+                    <li class="fragment">Dividiert zwei Zahlen</li>
+                    <li class="fragment">Achtung: Das Ergebnis hängt vom Datentyp ab!</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int a = 5 / 2;
+System.out.println(a);  // 2 (nicht 2.5!)
+
+double b = 5.0 / 2.0;
+System.out.println(b);  // 2.5</code></pre>
+            </section>
+
+            <section>
+                <h2>Ganzzahl- vs. Gleitkommadivision</h2>
+                <div class="highlight-box">
+                    <p><strong>Wichtig:</strong> Wenn beide Zahlen <code>int</code> sind, wird <strong>ganzzahlig</strong> dividiert!</p>
+                </div>
+                <pre class="fragment"><code class="language-java">int ergebnis1 = 7 / 3;     // 2 (Nachkommastellen fallen weg)
+double ergebnis2 = 7 / 3;   // 2.0 (immer noch int-Division!)
+double ergebnis3 = 7.0 / 3; // 2.333... (double-Division)</code></pre>
+            </section>
+
+            <section>
+                <h2>Punkt-vor-Strich-Regel</h2>
+                <ul>
+                    <li class="fragment">Auch in Java gilt: Punktrechnung vor Strichrechnung</li>
+                    <li class="fragment">Klammern verändern die Reihenfolge</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int a = 3 + 4 * 2;     // 11 (weil 4*2=8, dann +3)
+int b = (3 + 4) * 2;   // 14 (weil 3+4=7, dann *2)
+int c = 10 - 2 * 3;    // 4  (weil 2*3=6, dann 10-6)</code></pre>
+            </section>
+
+            <section>
+                <h2>Berechnungen mit Variablen</h2>
+                <ul>
+                    <li class="fragment">Variablen können in Berechnungen verwendet werden</li>
+                    <li class="fragment">Das Ergebnis kann in einer neuen Variable gespeichert werden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int preis = 19;
+int anzahl = 3;
+int gesamt = preis * anzahl;
+System.out.println("Gesamtpreis: " + gesamt);  // 57
+
+double laenge = 5.5;
+double breite = 3.2;
+double flaeche = laenge * breite;
+System.out.println("Flaeche: " + flaeche);</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiel: Fläche eines Rechtecks</h2>
+                <pre><code class="language-java">public class Rechteck {
+    public static void main(String[] args) {
+        double laenge = 8.5;
+        double breite = 4.2;
+
+        double flaeche = laenge * breite;
+        double umfang = 2 * (laenge + breite);
+
+        System.out.println("Laenge: " + laenge);
+        System.out.println("Breite: " + breite);
+        System.out.println("Flaeche: " + flaeche);
+        System.out.println("Umfang: " + umfang);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Häufige Fehler</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li class="fragment"><strong>Division vergessen:</strong> <code>5 / 2</code> ergibt 2, nicht 2.5!</li>
+                        <li class="fragment"><strong>Division durch 0:</strong> Führt zu einem Laufzeitfehler (ArithmeticException)</li>
+                        <li class="fragment"><strong>Falsche Klammerung:</strong> <code>3 + 4 * 2</code> ist nicht dasselbe wie <code>(3 + 4) * 2</code></li>
+                        <li class="fragment"><strong>Typkonflikt:</strong> Ein <code>int</code>-Ergebnis in einer <code>double</code>-Variable speichern (Nachkommastellen gehen verloren)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Summary</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Arithmetische Operatoren: +, -, *, /</li>
+                        <li>Ganzzahldivision: int / int = int (Nachkommastellen fallen weg)</li>
+                        <li>Gleitkommadivision: double / double = double</li>
+                        <li>Punkt-vor-Strich-Regel, Klammern für abweichende Reihenfolge</li>
+                        <li>Variablen können in Berechnungen kombiniert werden</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche klären wir den Unterschied zwischen Zuweisung und Anweisung — und es gibt eine große Übung zum Vertiefen!
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">03 — Operatoren</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>01 - Was ist Programmieren?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>01 -- Was ist Programmieren?</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Was ist ein Programm?</h2>
+                <ul>
+                    <li class="fragment">Ein Programm ist eine Folge von Anweisungen an den Computer</li>
+                    <li class="fragment">Diese Anweisungen werden in einer Programmiersprache geschrieben</li>
+                    <li class="fragment">Beispiele aus dem Alltag: Browser, Texteditor, Spiele, Navigations-App</li>
+                    <li class="fragment">Ein Computer tut nichts ohne ein Programm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Programmiersprachen im Überblick</h2>
+                <ul>
+                    <li class="fragment">Es gibt hunderte Programmiersprachen</li>
+                    <li class="fragment">Jede hat ihre Stärken und Einsatzgebiete</li>
+                    <li class="fragment">Beispiele: Java, Python, C++, JavaScript, Kotlin, Swift</li>
+                    <li class="fragment">Frage: Warum nicht einfach alle in einer Sprache schreiben?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Vorteile verschiedener Sprachen</h2>
+                <ul>
+                    <li class="fragment">Python -- einfach zu lernen, gut für Datenanalyse</li>
+                    <li class="fragment">C / C++ -- schnell, hardwarenah (Spiele, Betriebssysteme)</li>
+                    <li class="fragment">JavaScript -- läuft im Browser, Webentwicklung</li>
+                    <li class="fragment">Java -- plattformunabhängig, grosses Ökosystem</li>
+                    <li class="fragment">Kotlin -- moderne Alternative zu Java (Android)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Kompiliert vs. interpretiert</h2>
+                <ul>
+                    <li class="fragment"><strong>Kompiliert:</strong> Quellcode wird in Maschinencode uebersetzt</li>
+                    <li class="fragment">Beispiele: C, C++, Rust -- am Ende steht eine ausführbare Datei</li>
+                    <li class="fragment"><strong>Interpretiert:</strong> Quellcode wird Zeile für Zeile ausgeführt</li>
+                    <li class="fragment">Beispiele: Python, JavaScript -- kein separater Übersetzungsschritt</li>
+                    <li class="fragment">Vorteil kompiliert: schneller, Fehler früher erkannt</li>
+                    <li class="fragment">Vorteil interpretiert: flexibler, einfacher zu testen</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Java -- Das Beste aus beiden Welten?</h2>
+                <ul>
+                    <li class="fragment">Java ist <strong>keine</strong> rein kompilierte Sprache</li>
+                    <li class="fragment">Java ist <strong>keine</strong> rein interpretierte Sprache</li>
+                    <li class="fragment">Java kombiniert beide Ansätze</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die Java Virtual Machine (JVM)</h2>
+                <ul>
+                    <li class="fragment">Java-Quellcode (.java) wird zu Bytecode (.class) kompiliert</li>
+                    <li class="fragment">Die JVM führt den Bytecode aus (interpretiert ihn)</li>
+                    <li class="fragment">Die JVM ist selbst ein Programm -- eine "virtuelle Maschine"</li>
+                    <li class="fragment">"Write once, run anywhere" -- einmal kompiliert, überall lauffähig</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Java Compiler und JVM</h2>
+                <pre><code class="language-java">// Quellcode: Hallo.java
+public class Hallo {
+    public static void main(String[] args) {
+        System.out.println("Hallo Welt!");
+    }
+}</code></pre>
+                <pre class="fragment"><code>// Kompilieren mit javac:
+// javac Hallo.java -> erzeugt Hallo.class
+
+// Ausführen mit JVM:
+// java Hallo -> gibt "Hallo Welt!" aus</code></pre>
+            </section>
+
+            <section>
+                <h2>Computational Thinking</h2>
+                <ul>
+                    <li class="fragment">Problemlösen mit den Methoden der Informatik</li>
+                    <li class="fragment"><strong>Dekomposition:</strong> Problem in Teilprobleme zerlegen</li>
+                    <li class="fragment"><strong>Mustererkennung:</strong> Ähnlichkeiten zu bekannten Problemen finden</li>
+                    <li class="fragment"><strong>Abstraktion:</strong> Wesentliches vom Unwesentlichen trennen</li>
+                    <li class="fragment"><strong>Algorithmen:</strong> Schritte zur Lösung formulieren</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Algorithmus -- Beispiel "Kaffee kochen"</h2>
+                <ol>
+                    <li class="fragment">Wasser in die Kanne füllen</li>
+                    <li class="fragment">Wasser in den Tank gießen</li>
+                    <li class="fragment">Filtertüte einlegen und Kaffeepulver einfüllen</li>
+                    <li class="fragment">Kaffeemaschine einschalten</li>
+                    <li class="fragment">Warten, bis der Kaffee durchgelaufen ist</li>
+                    <li class="fragment">Kaffee in die Tasse giessen</li>
+                    <li class="fragment">Entscheidung: Ist genug Kaffee da? --> Ja: Trinken / Nein: Wiederholen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Flowchart -- Ablauf visualisieren</h2>
+                <ul>
+                    <li class="fragment">Ein Flowchart (Flussdiagramm) visualisiert einen Algorithmus</li>
+                    <li class="fragment"><strong>Rechteck:</strong> Aktion / Schritt</li>
+                    <li class="fragment"><strong>Raute:</strong> Entscheidung (ja/nein)</li>
+                    <li class="fragment"><strong>Pfeil:</strong> Ablaufrichtung</li>
+                    <li class="fragment">Ideal, um Logik zu planen, bevor man Code schreibt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Leitfrage der Stunde</h2>
+                <div class="highlight-box">
+                    <p>"Was machen wir, wenn wir programmieren?"</p>
+                    <ul>
+                        <li class="fragment">Wir überlegen: Was soll das Programm tun?</li>
+                        <li class="fragment">Wir zerlegen das Problem in Schritte</li>
+                        <li class="fragment">Wir schreiben diese Schritte als Code</li>
+                        <li class="fragment">Wir testen, ob das Programm richtig arbeitet</li>
+                        <li class="fragment">Wir verbessern und wiederholen</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Summary</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Programme sind Anweisungen an den Computer</li>
+                        <li>Verschiedene Sprachen fuer verschiedene Zwecke</li>
+                        <li>Compiliert vs. interpretiert -- Java macht beides</li>
+                        <li>Die JVM macht Java plattformunabhaengig</li>
+                        <li>Computational Thinking hilft beim Problemloesen</li>
+                        <li>Flowcharts visualisieren Algorithmen</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche schreiben wir das erste Programm! Wir lernen die grundlegenden Datentypen in Java kennen.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">01 - Was ist Programmieren?</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

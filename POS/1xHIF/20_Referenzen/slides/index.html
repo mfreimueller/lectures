@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>20 — Referenzen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>20 — Referenzen</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Objekte im Speicher</h2>
+                <pre><code class="language-java">Person p = new Person("Anna", 25);</code></pre>
+                <p>Was passiert im Speicher?</p>
+                <ul>
+                    <li class="fragment"><code>new</code> erzeugt ein Objekt auf dem Heap</li>
+                    <li class="fragment"><code>p</code> speichert nicht das Objekt, sondern die <strong>Adresse</strong></li>
+                    <li class="fragment">Diese Adresse nennt man <strong>Referenz</strong></li>
+                </ul>
+                <div class="highlight-box fragment">p enthält: 0x7ff3a1 (Adresse, nicht das Objekt!)</div>
+            </section>
+
+            <section>
+                <h2>Was sind Referenzen?</h2>
+                <p>Eine Referenz ist der Verweis auf ein Objekt — vergleichbar mit einer Adresse.</p>
+                <pre><code class="language-java">Person p1;          // noch keine Referenz (null)
+p1 = new Person();  // p1 zeigt auf ein Objekt
+
+Person p2 = p1;     // p2 zeigt auf DASSELBE Objekt</code></pre>
+                <p class="fragment">p1 und p2 sind zwei Referenzen auf EIN Objekt.</p>
+            </section>
+
+            <section>
+                <h2>Aliasing</h2>
+                <p>Wenn zwei Referenzen auf dasselbe Objekt zeigen, spricht man von <strong>Aliasing</strong>.</p>
+                <pre><code class="language-java">Person a = new Person("Anna", 25);
+Person b = a;    // Aliasing: a und b zeigen auf dasselbe Objekt
+
+b.setName("Maria");
+System.out.println(a.getName()); // "Maria"</code></pre>
+                <div class="highlight-box fragment">Die Änderung über b wirkt sich auch auf a aus!</div>
+            </section>
+
+            <section>
+                <h2>Visualisierung von Referenzen</h2>
+                <pre><code class="language-java">Person a = new Person("Anna", 25);
+Person b = a;
+Person c = new Person("Bob", 30);</code></pre>
+                <div class="highlight-box">Speicher:<br>
+                a ──&gt; { "Anna", 25 } &lt;── b<br>
+                c ──&gt; { "Bob", 30 }</div>
+                <p class="fragment">a und b teilen sich ein Objekt, c zeigt auf ein separates.</p>
+            </section>
+
+            <section>
+                <h2>null — "keine Referenz"</h2>
+                <p><code>null</code> bedeutet: Die Variable zeigt auf kein Objekt.</p>
+                <pre><code class="language-java">Person p = null;  // p zeigt auf nichts
+
+// p.setName("Test"); // NullPointerException!</code></pre>
+                <p class="fragment">Jeder Zugriff auf ein null-Objekt führt zu einer <strong>NullPointerException</strong>.</p>
+            </section>
+
+            <section>
+                <h2>NullPointerException vermeiden</h2>
+                <pre><code class="language-java">public void printPerson(Person p) {
+    if (p != null) {         // null-Prüfung!
+        System.out.println(p.getName());
+    } else {
+        System.out.println("Keine Person vorhanden");
+    }
+}</code></pre>
+                <div class="highlight-box fragment">Immer auf null prüfen, bevor Methoden aufgerufen werden!</div>
+            </section>
+
+            <section>
+                <h2>Objekte als Methodenparameter</h2>
+                <p>In Java werden Referenzen übergeben (Call by Value der Referenz).</p>
+                <pre><code class="language-java">public void altern(Person p) {
+    p.setAlter(p.getAlter() + 1);  // Ändert das Original!
+}
+
+public static void main(String[] args) {
+    Person anna = new Person("Anna", 25);
+    altern(anna);
+    System.out.println(anna.getAlter()); // 26
+}</code></pre>
+                <p class="fragment">Die Methode arbeitet auf dem originalen Objekt, nicht auf einer Kopie.</p>
+            </section>
+
+            <section>
+                <h2>Call by Value der Referenz</h2>
+                <pre><code class="language-java">public void verschieben(Person p) {
+    p = new Person("Neu", 0); // nur lokale Änderung
+}
+
+public static void main(String[] args) {
+    Person anna = new Person("Anna", 25);
+    verschieben(anna);
+    System.out.println(anna.getName()); // "Anna"
+}</code></pre>
+                <p class="fragment">Die Referenz selbst wird kopiert, nicht das Objekt. Neuzuweisung wirkt nicht nach außen.</p>
+            </section>
+
+            <section>
+                <h2>Arrays von Objekten</h2>
+                <pre><code class="language-java">Person[] team = new Person[3];
+team[0] = new Person("Anna", 25);
+team[1] = new Person("Bob", 30);
+team[2] = new Person("Clara", 28);
+
+for (Person p : team) {
+    System.out.println(p.getName());
+}
+
+team[0].setAlter(26); // Änderung direkt im Array</code></pre>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">Referenzen sind Adressen auf Objekte</li>
+                    <li class="fragment">Aliasing: Zwei Referenzen, ein Objekt</li>
+                    <li class="fragment"><code>null</code> = keine Referenz — vermeide NullPointerException</li>
+                    <li class="fragment">Objekt-Parameter: Änderungen wirken auf das Original</li>
+                    <li class="fragment">Arrays können Objekte speichern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übungen</h2>
+                <ul>
+                    <li><strong>Katas:</strong> Referenzen, null, Parameter</li>
+                    <li><strong>Exercise:</strong> Team-Verwaltung</li>
+                    <li><strong>Jahresprojekt:</strong> Raum-Karte mit Referenzen</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">20 — Referenzen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

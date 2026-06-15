@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>19 — this, Setter, Getter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>19 — this, Setter, Getter</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Konstruktoren</h2>
+                <div class="highlight-box">Ein Konstruktor initialisiert ein neues Objekt.</div>
+                <pre><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    public Person(String name, int alter) {
+        name = name;   // Problem!
+    }
+}</code></pre>
+                <p class="fragment">Was ist das Problem? Der Parameter <code>name</code> verdeckt das Attribut.</p>
+            </section>
+
+            <section>
+                <h2>Das this-Schlüsselwort</h2>
+                <p><code>this</code> verweist auf das aktuelle Objekt.</p>
+                <pre><code class="language-java">public class Person {
+    String name;
+    int alter;
+
+    public Person(String name, int alter) {
+        this.name = name;   // this.name = Attribut
+        this.alter = alter; // name = Parameter
+    }
+}</code></pre>
+                <p class="fragment">Löst die Kollision zwischen Parameter und Attribut.</p>
+            </section>
+
+            <section>
+                <h2>this ist optional</h2>
+                <p>Wenn keine Kollision besteht, kann <code>this</code> weggelassen werden.</p>
+                <pre><code class="language-java">public class Person {
+    String name;
+
+    public Person(String n) {
+        name = n;  // kein this nötig
+    }
+
+    public void print() {
+        System.out.println(name); // this.name wäre auch ok
+    }
+}</code></pre>
+                <p class="fragment">Viele Teams verwenden <code>this</code> trotzdem konsequent zur Klarheit.</p>
+            </section>
+
+            <section>
+                <h2>Private Attribute</h2>
+                <p>Attribute sollten <code>private</code> sein — nur innerhalb der Klasse sichtbar.</p>
+                <pre><code class="language-java">public class Person {
+    private String name;
+    private int alter;
+}</code></pre>
+                <div class="highlight-box fragment">Warum private? Kapselung (Encapsulation)!</div>
+                <ul>
+                    <li class="fragment">Zugriff kontrollieren</li>
+                    <li class="fragment">Interne Implementierung ändern ohne externe Effekte</li>
+                    <li class="fragment">Ungültige Werte verhindern</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Getter</h2>
+                <p>Getter geben den Wert eines privaten Attributs zurück.</p>
+                <pre><code class="language-java">public class Person {
+    private String name;
+    private int alter;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAlter() {
+        return alter;
+    }
+}</code></pre>
+                <p class="fragment">Konvention: <code>get</code> + Attributname mit Großbuchstaben.</p>
+            </section>
+
+            <section>
+                <h2>Setter</h2>
+                <p>Setter setzen den Wert eines privaten Attributs.</p>
+                <pre><code class="language-java">public class Person {
+    private String name;
+    private int alter;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAlter(int alter) {
+        this.alter = alter;
+    }
+}</code></pre>
+                <p class="fragment">Konvention: <code>set</code> + Attributname mit Großbuchstaben.</p>
+            </section>
+
+            <section>
+                <h2>Validierung im Setter</h2>
+                <p>Die Kontrolle: Setter können Werte prüfen und ablehnen.</p>
+                <pre><code class="language-java">public void setAlter(int alter) {
+    if (alter > 0 && alter &lt; 150) {
+        this.alter = alter;
+    } else {
+        System.out.println("Ungültiges Alter: " + alter);
+    }
+}</code></pre>
+                <div class="highlight-box fragment">Der Setter schützt das Objekt vor ungültigen Zuständen.</div>
+            </section>
+
+            <section>
+                <h2>Validierungsbeispiele</h2>
+                <pre><code class="language-java">public void setName(String name) {
+    if (name != null && !name.isEmpty()) {
+        this.name = name;
+    } else {
+        System.out.println("Name darf nicht leer sein!");
+    }
+}
+
+public void setPreis(double preis) {
+    if (preis > 0) {
+        this.preis = preis;
+    } else {
+        System.out.println("Preis muss positiv sein!");
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Kein Setter für schreibgeschützte Attribute</h2>
+                <p>Nicht jedes Attribut braucht einen Setter.</p>
+                <pre><code class="language-java">public class Person {
+    private final int id;    // final = einmalig gesetzt
+    private String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }  // KEIN Setter für id!
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Kapselung (Encapsulation)</h2>
+                <p>Daten und Methoden gehören zusammen — Zugriff von außen nur über definierte Schnittstellen.</p>
+                <div class="highlight-box">Prinzip: <strong>private</strong> Attribute, <strong>public</strong> Methoden</div>
+                <ul>
+                    <li class="fragment">Änderungen am Inneren der Klasse möglich</li>
+                    <li class="fragment">Zugriffe können protokolliert werden</li>
+                    <li class="fragment">Gültigkeitsprüfungen sind zentral möglich</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übersicht: Setter/Getter-Muster</h2>
+                <pre><code class="language-java">// Attribut
+private int alter;
+
+// Getter
+public int getAlter() {
+    return alter;
+}
+
+// Setter mit Validierung
+public void setAlter(int alter) {
+    if (alter > 0) {
+        this.alter = alter;
+    }
+}
+
+// Boolean: is-Statt get-Präfix
+private boolean aktiv;
+public boolean isAktiv() {
+    return aktiv;
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment"><code>this</code> = Verweis auf aktuelles Objekt</li>
+                    <li class="fragment">Setter/Getter = öffentliche Schnittstelle zu privaten Attributen</li>
+                    <li class="fragment">Validierung in Settern = Schutz vor ungültigen Werten</li>
+                    <li class="fragment">Kapselung = Kontrolle über den Zugriff auf Daten</li>
+                    <li class="fragment">Nicht für jedes Attribut braucht es einen Setter</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übungen</h2>
+                <ul>
+                    <li><strong>Katas:</strong> this, Setter/Getter, Validierung</li>
+                    <li><strong>Exercise:</strong> Bankkonto mit Setter/Getter</li>
+                    <li><strong>Große Übung:</strong> Online-Shop (Artikel + Warenkorb)</li>
+                    <li><strong>Jahresprojekt:</strong> Dungeon Crawler kapseln</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">19 — this, Setter, Getter</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>06 — User Input – Scanner, Random</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>06 — User Input – Scanner, Random</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Verzweigung</h2>
+                <ul>
+                    <li class="fragment">Verzweigungen mit if, else if, else</li>
+                    <li class="fragment">Bisher: Alle Werte fest im Code (hartcodiert)</li>
+                    <li class="fragment">Heute: Programme reagieren auf Benutzereingaben!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Interaktive Programme</h2>
+                <ul>
+                    <li class="fragment">Bisher: Werte direkt in den Quellcode geschrieben</li>
+                    <li class="fragment">Interaktive Programme lesen Eingaben vom Benutzer</li>
+                    <li class="fragment">Ablauf: <strong>Eingabe → Verarbeitung → Ausgabe</strong></li>
+                </ul>
+                <div class="highlight-box fragment">
+                    <p>Eingabe mit <code>Scanner</code>, Ausgabe mit <code>System.out.println</code></p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Die Scanner-Klasse</h2>
+                <ul>
+                    <li class="fragment"><code>Scanner</code> liest Benutzereingaben von der Tastatur</li>
+                    <li class="fragment">Muss importiert werden: <code>import java.util.Scanner;</code></li>
+                    <li class="fragment">Erzeugung: <code>Scanner scanner = new Scanner(System.in);</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-java">import java.util.Scanner;
+
+public class Eingabe {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Hier kommt die Eingabe...
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Scanner: nextLine() für Text</h2>
+                <ul>
+                    <li class="fragment"><code>nextLine()</code> liest eine ganze Textzeile ein</li>
+                    <li class="fragment">Gibt einen String zurück</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Scanner scanner = new Scanner(System.in);
+
+System.out.print("Wie heisst du? ");
+String name = scanner.nextLine();
+
+System.out.println("Hallo, " + name + "!");</code></pre>
+            </section>
+
+            <section>
+                <h2>Scanner: nextInt() für Zahlen</h2>
+                <ul>
+                    <li class="fragment"><code>nextInt()</code> liest eine ganze Zahl ein</li>
+                    <li class="fragment">Gibt einen int zurück</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Scanner scanner = new Scanner(System.in);
+
+System.out.print("Wie alt bist du? ");
+int alter = scanner.nextInt();
+
+if (alter >= 18) {
+    System.out.println("Du bist volljaehrig.");
+} else {
+    System.out.println("Du bist nicht volljaehrig.");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Zufallszahlen mit Random</h2>
+                <ul>
+                    <li class="fragment">Die Klasse <code>Random</code> erzeugt Zufallszahlen</li>
+                    <li class="fragment">Muss importiert werden: <code>import java.util.Random;</code></li>
+                    <li class="fragment">Erzeugung: <code>Random random = new Random();</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-java">import java.util.Random;
+
+public class Zufall {
+    public static void main(String[] args) {
+        Random random = new Random();
+
+        int zahl = random.nextInt(10);    // 0 bis 9
+        int zahl2 = random.nextInt(10) + 1; // 1 bis 10
+        double komma = random.nextDouble(); // 0.0 bis 1.0
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Random: nextInt(bound)</h2>
+                <ul>
+                    <li class="fragment"><code>random.nextInt(bound)</code> → 0 bis bound-1</li>
+                    <li class="fragment">Für 1 bis 10: <code>random.nextInt(10) + 1</code></li>
+                    <li class="fragment">Für Würfel (1–6): <code>random.nextInt(6) + 1</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-java">Random random = new Random();
+
+int wuerfel = random.nextInt(6) + 1;
+System.out.println("Du hast eine " + wuerfel + " gewuerfelt.");
+
+int muenze = random.nextInt(2);  // 0 oder 1
+if (muenze == 0) {
+    System.out.println("Kopf");
+} else {
+    System.out.println("Zahl");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Vollständiges Beispiel: Zahlenraten</h2>
+                <pre><code class="language-java">import java.util.Scanner;
+import java.util.Random;
+
+public class Zahlenraten {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        int geheimzahl = random.nextInt(10) + 1;
+
+        System.out.print("Rate eine Zahl (1-10): ");
+        int tipp = scanner.nextInt();
+
+        if (tipp == geheimzahl) {
+            System.out.println("Richtig! Du hast gewonnen!");
+        } else {
+            System.out.println("Falsch. Die Zahl war " + geheimzahl);
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Hinweis: Integer.parseInt</h2>
+                <ul>
+                    <li class="fragment">Manchmal möchte man einen String in eine Zahl umwandeln</li>
+                    <li class="fragment"><code>Integer.parseInt(text)</code> wandelt "123" in 123 um</li>
+                    <li class="fragment">Das Konzept wird später ausführlich behandelt (Thema Convert)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">String eingabe = "42";
+int zahl = Integer.parseInt(eingabe);
+System.out.println(zahl + 1);  // 43 (nicht "421")</code></pre>
+            </section>
+
+            <section>
+                <h2>Häufige Fehler</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li class="fragment"><strong>Import vergessen:</strong> <code>Scanner</code> und <code>Random</code> müssen importiert werden</li>
+                        <li class="fragment"><strong>nextInt() nach nextLine():</strong> nextInt() lässt oft einen Zeilenumbruch im Puffer — Vorsicht!</li>
+                        <li class="fragment"><strong>Falscher bound:</strong> <code>random.nextInt(10)</code> = 0–9, nicht 1–10</li>
+                        <li class="fragment"><strong>Eingabe-Fehler:</strong> Bei Text auf nextInt() → Programm stürzt ab</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Summary</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Scanner liest Benutzereingaben (nextLine, nextInt)</li>
+                        <li>Random erzeugt Zufallszahlen (nextInt, nextDouble)</li>
+                        <li>Importieren nicht vergessen: java.util.Scanner, java.util.Random</li>
+                        <li>Interaktive Programme: Eingabe → Verarbeitung → Ausgabe</li>
+                        <li>Integer.parseInt zum Umwandeln von String in int</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir Schleifen kennen — mit while können wir Dinge wiederholen.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">06 — User Input – Scanner, Random</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

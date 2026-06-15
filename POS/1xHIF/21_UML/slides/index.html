@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>21 — UML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>21 — UML</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Was ist UML?</h2>
+                <p>UML = <strong>U</strong>nified <strong>M</strong>odeling <strong>L</strong>anguage</p>
+                <ul>
+                    <li class="fragment">Standardisierte Notation für Softwaredesign</li>
+                    <li class="fragment">Visuelle Darstellung von Code-Strukturen</li>
+                    <li class="fragment">Hilft beim Planen, Kommunizieren und Dokumentieren</li>
+                </ul>
+                <div class="highlight-box fragment">UML ist die gemeinsame Sprache zwischen Entwicklern!</div>
+            </section>
+
+            <section>
+                <h2>Klassendiagramm: Grundform</h2>
+                <p>Eine Klasse wird als Kasten mit drei Bereichen dargestellt:</p>
+                <div class="highlight-box">
+                ┌─────────────────────┐<br>
+                │      Person         │  &lt;— Klassenname<br>
+                ├─────────────────────┤<br>
+                │ - name: String      │  &lt;— Attribute<br>
+                │ - alter: int        │<br>
+                ├─────────────────────┤<br>
+                │ + Person(name,alter)│  &lt;— Methoden<br>
+                │ + getName(): String │<br>
+                │ + setName(name)     │<br>
+                └─────────────────────┘
+                </div>
+            </section>
+
+            <section>
+                <h2>Sichtbarkeiten (Visibilitäten)</h2>
+                <p>Jedes Attribut und jede Methode hat eine Sichtbarkeit:</p>
+                <table>
+                    <tr><th>Symbol</th><th>Bedeutung</th><th>Java</th></tr>
+                    <tr><td><code>+</code></td><td>public</td><td>für alle sichtbar</td></tr>
+                    <tr><td><code>-</code></td><td>private</td><td>nur in der Klasse</td></tr>
+                    <tr><td><code>#</code></td><td>protected</td><td>nur in Subklassen</td></tr>
+                </table>
+                <pre><code class="language-java">public class Person {
+    private String name;   // - name
+    public String getName() { ... }  // + getName()
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Assoziationen</h2>
+                <p>Eine Assoziation zeigt eine Beziehung zwischen zwei Klassen.</p>
+                <pre><code>┌────────┐               ┌────────┐
+│ Person │───────────────│ Adresse│
+└────────┘               └────────┘</code></pre>
+                <p class="fragment">Eine einfache Linie bedeutet: Person hat eine Adresse.</p>
+                <pre class="fragment"><code class="language-java">public class Person {
+    private Adresse adresse;  // Assoziation
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Multiplizitäten</h2>
+                <p>Multiplizitäten geben an, wie viele Objekte beteiligt sind.</p>
+                <div class="highlight-box">
+                <pre>┌────────┐  1          *  ┌────────┐
+│  Auto  │───────────────│   Rad  │
+└────────┘               └────────┘</pre>
+                </div>
+                <table>
+                    <tr><th>Notation</th><th>Bedeutung</th></tr>
+                    <tr><td>1</td><td>genau eines</td></tr>
+                    <tr><td>*</td><td>beliebig viele (0..*)</td></tr>
+                    <tr><td>0..1</td><td>optional (0 oder 1)</td></tr>
+                    <tr><td>1..*</td><td>mindestens eines</td></tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>Assoziationen in Java</h2>
+                <pre><code class="language-java">// 1:1 Assoziation
+public class Person {
+    private Adresse adresse;
+}
+
+// 1:* Assoziation
+public class Auto {
+    private Rad[] raeder = new Rad[4];
+}
+
+// 0..1 Assoziation
+public class Bestellung {
+    private Kunde kunde;  // kann null sein
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Gerichtete Assoziation</h2>
+                <p>Ein Pfeil zeigt die Richtung der Beziehung an.</p>
+                <pre><code>┌───────────┐     ┌──────────────┐
+│  Student  │─────│    Course    │
+└───────────┘     └──────────────┘
+        1                    *</code></pre>
+                <p class="fragment">Ein Student besucht beliebig viele Kurse.</p>
+                <pre class="fragment"><code class="language-java">public class Student {
+    private Course[] kurse;
+}
+
+public class Course {
+    // kennt seine Studenten nicht (keine Referenz)
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Vererbung (Generalisierung)</h2>
+                <p>Ein Dreieck zeigt die Vererbung an.</p>
+                <div class="highlight-box">
+                <pre>    ┌───────────┐
+    │   Tier    │
+    └─────┬─────┘
+          │  (Dreieck)
+    ┌─────┴─────┐
+    │   Hund    │
+    └───────────┘</pre>
+                </div>
+                <pre class="fragment"><code class="language-java">public class Tier { }
+public class Hund extends Tier { }</code></pre>
+            </section>
+
+            <section>
+                <h2>Vollständiges Beispiel: Bibliothek</h2>
+                <pre><code>┌─────────────┐              ┌───────────┐
+│ Bibliothek  │1             *│   Buch    │
+├─────────────┤──────────────├───────────┤
+│ - name      │              │ - titel   │
+│ - adresse   │              │ - isbn    │
+├─────────────┤              ├───────────┤
+│ + buchHinzufügen(Buch)     │ + getTitel│
+└─────────────┘              └───────────┘</code></pre>
+                <pre class="fragment"><code class="language-java">public class Bibliothek {
+    private String name;
+    private String adresse;
+    private Buch[] buecher;
+
+    public void buchHinzufuegen(Buch b) { ... }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Vom UML zum Code</h2>
+                <p>Schritte:</p>
+                <ol>
+                    <li class="fragment">Jeder Kasten wird eine Klasse</li>
+                    <li class="fragment">Attribute werden zu Feldern (mit Typ)</li>
+                    <li class="fragment">Methoden werden zu Methoden (mit Rückgabetyp)</li>
+                    <li class="fragment">Assoziationen werden zu Referenzen</li>
+                    <li class="fragment">Multiplizitäten bestimmen Array oder einzelne Variable</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <ul>
+                    <li class="fragment">UML = Visuelle Darstellung von Code</li>
+                    <li class="fragment">Klassendiagramm: Kasten mit Name, Attributen, Methoden</li>
+                    <li class="fragment">Sichtbarkeiten: + (public), - (private), # (protected)</li>
+                    <li class="fragment">Assoziationen = Referenzen im Code</li>
+                    <li class="fragment">Multiplizitäten = 1, *, 0..1, 1..*</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Übungen</h2>
+                <ul>
+                    <li><strong>Katas:</strong> UML lesen, UML aus Code, Multiplizitäten</li>
+                    <li><strong>Exercise:</strong> UML to Code (Student/Course)</li>
+                    <li><strong>Jahresprojekt:</strong> UML-Diagramm zeichnen</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">21 — UML</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

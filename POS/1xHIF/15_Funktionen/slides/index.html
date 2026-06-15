@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>15 — Funktionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>15 — Funktionen</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Problem: Code wiederholt sich</h2>
+                <pre><code class="language-java">int a = 5, b = 3;
+int sum1 = a + b;
+System.out.println("Summe: " + sum1);
+
+int c = 10, d = 7;
+int sum2 = c + d;
+System.out.println("Summe: " + sum2);
+// Gleicher Code, nur andere Variablen!</code></pre>
+                <p class="fragment">Das verletzt das <strong>DRY-Prinzip</strong>: Don't Repeat Yourself!</p>
+            </section>
+
+            <section>
+                <h2>Was sind Funktionen?</h2>
+                <ul>
+                    <li class="fragment">Eine Funktion (Methode) ist ein wiederverwendbarer Code-Block</li>
+                    <li class="fragment">Sie hat einen Namen, optional Parameter und einen Rückgabewert</li>
+                    <li class="fragment">Einmal definiert — beliebig oft aufrufbar</li>
+                    <li class="fragment">In Java schreiben wir Methoden in einer Klasse</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Methoden-Syntax</h2>
+                <pre><code class="language-java">public static Rückgabetyp methodenName(Parameterliste) {
+    // Methodenkörper
+    return wert; // nur wenn Rückgabetyp != void
+}</code></pre>
+                <ul>
+                    <li class="fragment"><code>public static</code> — Zugriffsmodifizierer (später mehr)</li>
+                    <li class="fragment"><code>Rückgabetyp</code> — z. B. <code>int</code>, <code>double</code>, <code>boolean</code>, <code>void</code></li>
+                    <li class="fragment"><code>methodenName</code> — frei wählbar (CamelCase)</li>
+                    <li class="fragment"><code>Parameterliste</code> — Eingabewerte, z. B. <code>int a, int b</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: sayHello</h2>
+                <pre><code class="language-java">public static void sayHello() {
+    System.out.println("Hallo!");
+}
+
+public static void main(String[] args) {
+    sayHello(); // Aufruf der Methode
+    sayHello(); // nochmal aufrufen
+}</code></pre>
+                <p class="fragment">Ausgabe: "Hallo!" zweimal</p>
+            </section>
+
+            <section>
+                <h2>Parameter</h2>
+                <ul>
+                    <li class="fragment">Parameter sind Eingabewerte für die Methode</li>
+                    <li class="fragment">Sie werden in der Klammer nach dem Methodennamen definiert</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public static void greet(String name) {
+    System.out.println("Hallo, " + name + "!");
+}
+
+public static void main(String[] args) {
+    greet("Anna"); // Parameter: "Anna"
+    greet("Max");  // Parameter: "Max"
+}</code></pre>
+                <p class="fragment">Ausgabe: "Hallo, Anna!" und "Hallo, Max!"</p>
+            </section>
+
+            <section>
+                <h2>Rückgabewerte</h2>
+                <ul>
+                    <li class="fragment">Eine Methode kann ein Ergebnis zurückgeben (mit <code>return</code>)</li>
+                    <li class="fragment">Der Rückgabetyp wird vor dem Methodennamen angegeben</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public static int add(int a, int b) {
+    return a + b; // Ergebnis zurückgeben
+}
+
+public static void main(String[] args) {
+    int sum = add(3, 5);
+    System.out.println("3 + 5 = " + sum);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>void — kein Rückgabewert</h2>
+                <ul>
+                    <li class="fragment"><code>void</code> bedeutet: Die Methode gibt nichts zurück</li>
+                    <li class="fragment">Sie führt Anweisungen aus, liefert aber kein Ergebnis</li>
+                    <li class="fragment">Kein <code>return</code>-Wert nötig (nur <code>return;</code> zum vorzeitigen Beenden)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public static void printMenu() {
+    System.out.println("1: Angreifen");
+    System.out.println("2: Inventar");
+    System.out.println("3: Beenden");
+    // kein return nötig
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Aufruf einer Funktion</h2>
+                <ul>
+                    <li class="fragment">Methodenaufruf: <code>methodenName(wert1, wert2, ...)</code></li>
+                    <li class="fragment">Die Werte müssen den Parametertypen entsprechen</li>
+                    <li class="fragment">Bei <code>void</code>: Aufruf als eigene Anweisung</li>
+                    <li class="fragment">Bei Rückgabewert: Aufruf in einem Ausdruck</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">sayHello();                     // void-Aufruf
+greet("Anna");                  // void-Aufruf mit Parameter
+int ergebnis = add(3, 5);       // Aufruf mit Rückgabewert
+System.out.println(add(10, 20));// Aufruf direkt in Ausgabe</code></pre>
+            </section>
+
+            <section>
+                <h2>Imperatives Paradigma</h2>
+                <ul>
+                    <li class="fragment">Bisher haben wir <strong>imperativ</strong> programmiert</li>
+                    <li class="fragment">Ein Programm ist eine Abfolge von Anweisungen</li>
+                    <li class="fragment">Funktionen helfen, diese Abfolge zu strukturieren</li>
+                    <li class="fragment">Das Programm wird zu einer Abfolge von Funktionsaufrufen</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public static void main(String[] args) {
+    printMenu();
+    int wahl = readChoice();
+    executeAction(wahl);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiele: addiere, istGerade</h2>
+                <pre><code class="language-java">public static int addiere(int a, int b) {
+    return a + b;
+}
+
+public static boolean istGerade(int number) {
+    return number % 2 == 0;
+}
+
+public static void main(String[] args) {
+    System.out.println(addiere(5, 3));
+    System.out.println(istGerade(4));
+    System.out.println(istGerade(7));
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Vorteile von Funktionen</h2>
+                <ul>
+                    <li class="fragment"><strong>Wiederverwendbarkeit:</strong> Einmal schreiben, mehrfach nutzen</li>
+                    <li class="fragment"><strong>Lesbarkeit:</strong> Code wird durch Methodennamen selbstdokumentierend</li>
+                    <li class="fragment"><strong>Wartbarkeit:</strong> Änderungen nur an einer Stelle</li>
+                    <li class="fragment"><strong>Testbarkeit:</strong> Einzelne Methoden können isoliert getestet werden</li>
+                    <li class="fragment"><strong>Struktur:</strong> Programm wird in überschaubare Teile zerlegt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Funktionen gliedern Code in wiederverwendbare Blöcke</li>
+                        <li>Syntax: <code>public static Rückgabe name(Parameter) { ... }</code></li>
+                        <li><code>void</code> = kein Rückgabewert</li>
+                        <li>Parameter = Eingabewerte</li>
+                        <li><code>return</code> = Rückgabewert</li>
+                        <li>DRY-Prinzip: Don't Repeat Yourself</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Ausblick</h2>
+                <div class="highlight-box">
+                    Nächste Woche ist eine reine Übungsstunde: Wir bauen eine REPL (Read-Eval-Print-Loop) — einen interaktiven Befehlsinterpreter.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">15 — Funktionen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

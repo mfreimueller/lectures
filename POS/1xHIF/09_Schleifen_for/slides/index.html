@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>09 — Schleifen – for</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>09 — Schleifen – for</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Schleifentypen</h2>
+                <ul>
+                    <li class="fragment"><strong>while:</strong> Kopfgesteuert — Bedingung vor dem Durchlauf</li>
+                    <li class="fragment"><strong>do-while:</strong> Fußgesteuert — Bedingung nach dem Durchlauf</li>
+                    <li class="fragment">Beide eignen sich für Zählschleifen, aber die Syntax ist etwas umständlich</li>
+                    <li class="fragment">Es gibt einen spezialisierten Schleifentyp für das Zählen: <strong>for</strong></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die for-Schleife: Syntax</h2>
+                <pre><code class="language-java">for (Initialisierung; Bedingung; Inkrement) {
+    // Schleifenkörper
+}</code></pre>
+                <ul>
+                    <li class="fragment"><strong>Initialisierung:</strong> Wird einmal am Anfang ausgeführt (z. B. <code>int i = 0</code>)</li>
+                    <li class="fragment"><strong>Bedingung:</strong> Wird vor jedem Durchlauf geprüft (z. B. <code>i &lt; 10</code>)</li>
+                    <li class="fragment"><strong>Inkrement:</strong> Wird nach jedem Durchlauf ausgeführt (z. B. <code>i++</code>)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>for-Schleife: Ablauf</h2>
+                <pre><code class="language-java">for (int i = 0; i &lt; 5; i++) {
+    System.out.println(i);
+}</code></pre>
+                <ol>
+                    <li class="fragment"><code>int i = 0</code> (Initialisierung — einmal)</li>
+                    <li class="fragment"><code>i &lt; 5</code> prüfen → true → Schleifenkörper ausführen</li>
+                    <li class="fragment"><code>i++</code> (Inkrement)</li>
+                    <li class="fragment">Zurück zu Schritt 2: <code>i &lt; 5</code> prüfen → ...</li>
+                    <li class="fragment">Wenn <code>i &lt; 5</code> false ist → Ende</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Beispiel: Zahlen 1–10</h2>
+                <pre><code class="language-java">// while-Version
+int i = 1;
+while (i &lt;= 10) {
+    System.out.println(i);
+    i++;
+}
+
+// for-Version
+for (int i = 1; i &lt;= 10; i++) {
+    System.out.println(i);
+}</code></pre>
+                <p class="fragment">Die for-Schleife ist kompakter — alles Wichtige in einer Zeile</p>
+            </section>
+
+            <section>
+                <h2>Umbau while → for: Schritt 1</h2>
+                <p>Gegeben: Eine while-Zählschleife</p>
+                <pre><code class="language-java">int i = 0;          // Initialisierung
+while (i &lt; 10) {    // Bedingung
+    System.out.println(i);
+    i++;            // Inkrement
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Umbau while → for: Schritt 2</h2>
+                <p>Erkenne die drei Teile und setze sie in die for-Syntax:</p>
+                <pre><code class="language-java">// Initialisierung: int i = 0
+// Bedingung:       i &lt; 10
+// Inkrement:       i++
+
+for (int i = 0; i &lt; 10; i++) {
+    System.out.println(i);
+}</code></pre>
+                <div class="highlight-box">
+                    <p>Initialisierung → Bedingung → Inkrement</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Beispiel: Rückwärts zählen</h2>
+                <pre><code class="language-java">// Von 10 bis 1 absteigend
+for (int i = 10; i &gt;= 1; i--) {
+    System.out.println(i);
+}</code></pre>
+                <ul>
+                    <li class="fragment">Start: 10</li>
+                    <li class="fragment">Bedingung: <code>i &gt;= 1</code></li>
+                    <li class="fragment">Inkrement: <code>i--</code> (dekrementieren)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Schrittweite</h2>
+                <pre><code class="language-java">// Alle geraden Zahlen von 0 bis 100
+for (int i = 0; i &lt;= 100; i += 2) {
+    System.out.println(i);
+}
+
+// Alle Dreier-Schritte von 0 bis 30
+for (int i = 0; i &lt;= 30; i += 3) {
+    System.out.println(i);
+}</code></pre>
+                <p class="fragment">Das Inkrement muss nicht <code>i++</code> sein — jede Änderung ist möglich</p>
+            </section>
+
+            <section>
+                <h2>Beispiel: Summe mit for</h2>
+                <pre><code class="language-java">int summe = 0;
+for (int i = 1; i &lt;= 100; i++) {
+    summe += i;
+}
+System.out.println("Summe 1..100 = " + summe);</code></pre>
+                <p class="fragment">Kompakt und lesbar — die for-Schleife ist ideal für Zählaufgaben</p>
+            </section>
+
+            <section>
+                <h2>Vergleich: Wann welcher Schleifentyp?</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>for:</strong> Wenn die Anzahl der Durchläufe bekannt ist (Zählschleife)</li>
+                        <li><strong>while:</strong> Wenn die Bedingung vom Programmverlauf abhängt</li>
+                        <li><strong>do-while:</strong> Wenn der Körper mindestens einmal ausgeführt werden muss</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Gemeinsamkeiten der Schleifen</h2>
+                <ul>
+                    <li class="fragment">Alle drei können <code>break</code> und <code>continue</code> verwenden</li>
+                    <li class="fragment">Alle drei brauchen eine Bedingung, die irgendwann false wird</li>
+                    <li class="fragment">Alle drei können ineinander verschachtelt werden</li>
+                    <li class="fragment">Die Wahl des Typs hängt vom <strong>Einsatzzweck</strong> ab</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Die <code>for</code>-Schleife ist eine spezialisierte Zählschleife</li>
+                        <li>Syntax: <code>for (init; bedingung; inkrement)</code></li>
+                        <li>Jede while-Zählschleife kann in eine for-Schleife umgebaut werden</li>
+                        <li>for: bekannte Anzahl; while: unbekannte Dauer; do-while: mindestens einmal</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir Arrays kennen — mehrere Werte in einer Variable speichern.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">09 — Schleifen – for</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>13 — Convert</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>13 — Convert</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: String-Methoden</h2>
+                <ul>
+                    <li class="fragment"><code>length()</code> — Länge eines Strings</li>
+                    <li class="fragment"><code>equals()</code> — Vergleich von Strings</li>
+                    <li class="fragment"><code>charAt()</code> — Zeichen an einer Position</li>
+                    <li class="fragment"><code>startsWith()</code> / <code>endsWith()</code> — Präfix/Suffix</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Warum Convert?</h2>
+                <ul>
+                    <li class="fragment"><code>Scanner.nextLine()</code> liefert immer einen <code>String</code></li>
+                    <li class="fragment">Für Berechnungen brauchen wir aber Zahlen (<code>int</code>, <code>double</code>)</li>
+                    <li class="fragment">Lösung: Convert-Methoden wandeln Strings in Zahlen um</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p><strong>Merke:</strong> Eingabe ist Text — Verarbeitung braucht Zahlen.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Integer.parseInt</h2>
+                <ul>
+                    <li class="fragment">Wandelt einen <code>String</code> in einen <code>int</code>-Wert um</li>
+                    <li class="fragment">Syntax: <code>int zahl = Integer.parseInt(text);</code></li>
+                    <li class="fragment">Der String muss eine gültige Ganzzahl enthalten (z. B. "42")</li>
+                    <li class="fragment">Leerzeichen werden nicht automatisch entfernt</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Integer.parseInt — Beispiel</h2>
+                <pre><code class="language-java">System.out.print("Gib dein Alter ein: ");
+String eingabe = scanner.nextLine();
+int alter = Integer.parseInt(eingabe);
+
+if (alter >= 18) {
+    System.out.println("Volljährig");
+} else {
+    System.out.println("Nicht volljährig");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Double.parseDouble</h2>
+                <ul>
+                    <li class="fragment">Wandelt einen <code>String</code> in einen <code>double</code>-Wert um</li>
+                    <li class="fragment">Syntax: <code>double zahl = Double.parseDouble(text);</code></li>
+                    <li class="fragment">Dezimaltrennzeichen ist der Punkt (wie im Englischen)</li>
+                    <li class="fragment">Bei deutscher Eingabe (Komma) vorher ersetzen: <code>text.replace(',', '.')</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Double.parseDouble — Beispiel</h2>
+                <pre><code class="language-java">System.out.print("Gib deine Größe in Metern ein: ");
+String eingabe = scanner.nextLine();
+eingabe = eingabe.replace(',', '.');
+double groesse = Double.parseDouble(eingabe);
+
+int zentimeter = (int) (groesse * 100);
+System.out.println("Das sind " + zentimeter + " cm");</code></pre>
+            </section>
+
+            <section>
+                <h2>Boolean.parseBoolean</h2>
+                <ul>
+                    <li class="fragment">Wandelt einen <code>String</code> in einen <code>boolean</code>-Wert um</li>
+                    <li class="fragment">Syntax: <code>boolean wert = Boolean.parseBoolean(text);</code></li>
+                    <li class="fragment">Gibt <code>true</code> nur bei <code>"true"</code> (Groß-/Kleinschreibung egal) zurück</li>
+                    <li class="fragment">Bei allen anderen Eingaben: <code>false</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-java">String eingabe = scanner.nextLine();
+boolean zustimmen = Boolean.parseBoolean(eingabe);
+if (zustimmen) {
+    System.out.println("Du stimmst zu.");
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Fehlerhafte Eingaben (Exceptions)</h2>
+                <ul>
+                    <li class="fragment">Was passiert bei <code>Integer.parseInt("Hallo")</code>?</li>
+                    <li class="fragment">Das Programm stürzt mit einer Exception ab!</li>
+                    <li class="fragment">Exception = Fehler zur Laufzeit</li>
+                    <li class="fragment">Später lernen wir <code>try-catch</code>, um Fehler abzufangen</li>
+                </ul>
+                <div class="fragment highlight-box">
+                    <p><strong>Merke:</strong> Ungültige Eingaben führen zu Programmabstürzen — fange sie ab!</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li><code>Integer.parseInt()</code> — String → int</li>
+                        <li><code>Double.parseDouble()</code> — String → double</li>
+                        <li><code>Boolean.parseBoolean()</code> — String → boolean</li>
+                        <li>Bei ungültigen Eingaben: Exception (Programmabsturz)</li>
+                        <li>Komma durch Punkt ersetzen bei deutscher Eingabe</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Ausblick</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir <code>switch-case</code> kennen — eine übersichtliche Alternative zu langen <code>if</code>-<code>else</code>-Kaskaden.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">13 — Convert</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>10 — Arrays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>10 — Arrays</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: for-Schleife</h2>
+                <pre><code class="language-java">for (int i = 0; i &lt; 10; i++) {
+    System.out.println(i);
+}</code></pre>
+                <ul>
+                    <li class="fragment">Die for-Schleife ist ideal, um eine bekannte Anzahl von Durchläufen zu steuern</li>
+                    <li class="fragment">Heute sehen wir, wofür Zählschleifen besonders nützlich sind</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Problem: Mehrere Werte verwalten</h2>
+                <ul>
+                    <li class="fragment">Bisher: Eine Variable = ein Wert</li>
+                    <li class="fragment">Was, wenn wir 100 Noten speichern wollen?</li>
+                    <li class="fragment">Lösung: 100 einzelne Variablen? — Viel zu umständlich!</li>
+                    <li class="fragment">Wir brauchen eine <strong>Sammlung</strong> von Werten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Array-Konzept</h2>
+                <div class="highlight-box">
+                    <p>Ein <strong>Array</strong> ist eine Sammlung von Werten <strong>desselben Datentyps</strong>.</p>
+                </div>
+                <ul>
+                    <li class="fragment">Alle Werte liegen <strong>hintereinander</strong> im Speicher</li>
+                    <li class="fragment">Jeder Wert hat eine <strong>Nummer</strong> (Index)</li>
+                    <li class="fragment">Der Index beginnt bei <strong>0</strong></li>
+                    <li class="fragment">Die Größe eines Arrays ist <strong>fest</strong> (nach der Erstellung)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Array-Deklaration und Initialisierung</h2>
+                <pre><code class="language-java">// Deklaration: Ein Array für int-Werte
+int[] zahlen;
+
+// Initialisierung mit neuer Größe (5 Elemente)
+zahlen = new int[5];
+
+// Beides in einer Zeile:
+int[] zahlen = new int[5];</code></pre>
+                <ul>
+                    <li class="fragment">Die <code>[]</code> zeigen an: "Das ist ein Array"</li>
+                    <li class="fragment"><code>new int[5]</code> erstellt ein Array mit 5 Plätzen</li>
+                    <li class="fragment">Standardwerte: 0 für Zahlen, null für Objekte</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Array mit Werten initialisieren</h2>
+                <pre><code class="language-java">// Kurzform: Werte direkt angeben
+int[] noten = {2, 3, 1, 4, 2};
+
+// Längere Form:
+int[] noten = new int[]{2, 3, 1, 4, 2};
+
+// Auch mit Strings:
+String[] namen = {"Anna", "Ben", "Clara"};</code></pre>
+                <ul>
+                    <li class="fragment">Geschwungene Klammern <code>{ }</code> mit Komma-getrennten Werten</li>
+                    <li class="fragment">Die Größe ergibt sich aus der Anzahl der Werte</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Zugriff über Index</h2>
+                <pre><code class="language-java">int[] noten = {2, 3, 1, 4, 2};
+
+// Zugriff auf einzelne Elemente:
+System.out.println(noten[0]);  // 2 (erstes Element)
+System.out.println(noten[2]);  // 1 (drittes Element)
+System.out.println(noten[4]);  // 2 (letztes Element)
+
+// Wert ändern:
+noten[1] = 5;  // {2, 5, 1, 4, 2}</code></pre>
+                <ul>
+                    <li class="fragment">Index in eckigen Klammern <code>[ ]</code></li>
+                    <li class="fragment">Erster Index: <code>0</code>, letzter Index: <code>length - 1</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Arrays mit for-Schleifen durchlaufen</h2>
+                <pre><code class="language-java">int[] zahlen = {4, 8, 15, 16, 23, 42};
+
+// Alle Elemente ausgeben
+for (int i = 0; i &lt; zahlen.length; i++) {
+    System.out.println("Index " + i + ": " + zahlen[i]);
+}</code></pre>
+                <ul>
+                    <li class="fragment">Arrays und for-Schleifen sind ein <strong>natürliches Paar</strong></li>
+                    <li class="fragment">Die Laufvariable <code>i</code> dient als Index</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Die length-Eigenschaft</h2>
+                <pre><code class="language-java">int[] zahlen = {4, 8, 15, 16, 23, 42};
+
+System.out.println(zahlen.length);  // 6
+
+// length ist eine Eigenschaft (keine Methode!)
+// Keine Klammern bei length!</code></pre>
+                <ul>
+                    <li class="fragment">Mit <code>length</code> bekommt man die Größe des Arrays</li>
+                    <li class="fragment">Wichtig: <code>length</code> ist eine <strong>Eigenschaft</strong>, nicht <code>length()</code></li>
+                    <li class="fragment">Der letzte gültige Index ist immer <code>length - 1</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>ArrayIndexOutOfBoundsException</h2>
+                <pre><code class="language-java">int[] zahlen = {4, 8, 15, 16, 23, 42};
+System.out.println(zahlen[6]);  // Fehler!
+// Array hat Größe 6, gültige Indizes: 0-5</code></pre>
+                <div class="highlight-box">
+                    <p>Das Programm stürzt ab mit:<br>
+                    <code>Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException</code></p>
+                </div>
+                <ul>
+                    <li class="fragment">Zugriff auf einen Index außerhalb des gültigen Bereichs</li>
+                    <li class="fragment">Tipp: Immer <code>&lt; array.length</code> statt <code>&lt;= array.length</code> verwenden</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beispiel: Array befüllen und ausgeben</h2>
+                <pre><code class="language-java">int[] zahlen = new int[10];
+
+// Befüllen mit Werten 1..10
+for (int i = 0; i &lt; zahlen.length; i++) {
+    zahlen[i] = i + 1;
+}
+
+// Ausgeben
+for (int i = 0; i &lt; zahlen.length; i++) {
+    System.out.println(zahlen[i]);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Ein Array speichert mehrere Werte desselben Typs</li>
+                        <li>Deklaration: <code>int[] name = new int[größe];</code></li>
+                        <li>Zugriff über Index: <code>name[index]</code> (beginnt bei 0)</li>
+                        <li><code>length</code> gibt die Größe des Arrays an</li>
+                        <li>Arrays + for-Schleifen = ideale Kombination</li>
+                        <li>Achtung: <code>ArrayIndexOutOfBoundsException</code> bei ungültigem Index</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche sortieren wir Arrays — der Bubblesort-Algorithmus.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">10 — Arrays</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>

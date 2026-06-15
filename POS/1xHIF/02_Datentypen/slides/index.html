@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>02 — Datentypen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section class="center title-slide">
+                <h1>02 — Datentypen</h1>
+                <p class="institution">POS - 1xHIF</p>
+            </section>
+
+            <section>
+                <h2>Wiederholung: Was ist ein Programm?</h2>
+                <ul>
+                    <li class="fragment">Ein Programm ist eine Folge von Anweisungen</li>
+                    <li class="fragment">Diese Anweisungen verarbeiten Daten</li>
+                    <li class="fragment">Daten können Zahlen, Texte oder Wahrheitswerte sein</li>
+                    <li class="fragment">Frage: Wie merkt sich ein Programm Daten?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Variablen — Wofür brauchen wir sie?</h2>
+                <ul>
+                    <li class="fragment">Eine Variable ist ein "Behälter" für einen Wert</li>
+                    <li class="fragment">Jede Variable hat einen Namen und einen Datentyp</li>
+                    <li class="fragment">Der Datentyp bestimmt, welche Werte gespeichert werden können</li>
+                    <li class="fragment">Beispiel: <code>int alter = 17;</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Datentyp boolean</h2>
+                <ul>
+                    <li class="fragment">Nur zwei Werte: <code>true</code> oder <code>false</code></li>
+                    <li class="fragment">Wird für Wahrheitswerte verwendet</li>
+                    <li class="fragment">Beispiel: Ist die Tür offen? Ist der Spieler am Leben?</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">boolean istTuerOffen = true;
+boolean spielerLebt = false;</code></pre>
+            </section>
+
+            <section>
+                <h2>Datentyp int</h2>
+                <ul>
+                    <li class="fragment">Ganze Zahlen (ohne Nachkommastellen)</li>
+                    <li class="fragment">Beispiele: 42, -3, 0, 1_000_000</li>
+                    <li class="fragment">Wird für Zählungen, Alter, Punktestände verwendet</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">int alter = 17;
+int punkte = 2500;</code></pre>
+            </section>
+
+            <section>
+                <h2>Datentyp double</h2>
+                <ul>
+                    <li class="fragment">Gleitkommazahlen (mit Nachkommastellen)</li>
+                    <li class="fragment">Beispiele: 3.14, -0.5, 99.99</li>
+                    <li class="fragment">Wird für Größen, Gewichte, Preise verwendet</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">double koerpergroesse = 1.78;
+double preis = 19.99;</code></pre>
+            </section>
+
+            <section>
+                <h2>Datentyp String</h2>
+                <ul>
+                    <li class="fragment">Text — eine Zeichenkette</li>
+                    <li class="fragment">Wird in doppelten Anführungszeichen geschrieben</li>
+                    <li class="fragment">Beispiele: "Hallo", "Max Mustermann", "123"</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">String name = "Max Mustermann";
+String begruessung = "Hallo Welt!";</code></pre>
+            </section>
+
+            <section>
+                <h2>Datentyp char</h2>
+                <ul>
+                    <li class="fragment">Ein einzelnes Zeichen</li>
+                    <li class="fragment">Wird in einfachen Anführungszeichen geschrieben</li>
+                    <li class="fragment">Beispiele: 'A', '?', '3', '\n' (Zeilenumbruch)</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">char anfangsbuchstabe = 'M';
+char buchstabe = 'A';</code></pre>
+            </section>
+
+            <section>
+                <h2>Deklaration und Initialisierung</h2>
+                <ul>
+                    <li class="fragment"><strong>Deklaration:</strong> Datentyp und Name festlegen</li>
+                    <li class="fragment"><strong>Initialisierung:</strong> Ersten Wert zuweisen</li>
+                    <li class="fragment">Beides kann in einer Zeile passieren</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">// Deklaration ohne Initialisierung
+int x;
+// Initialisierung (später)
+x = 10;
+
+// Deklaration + Initialisierung in einer Zeile
+int y = 20;</code></pre>
+            </section>
+
+            <section>
+                <h2>Ausgabe mit System.out.println</h2>
+                <ul>
+                    <li class="fragment">Mit <code>System.out.println()</code> geben wir Werte aus</li>
+                    <li class="fragment">Wir können Text und Variablen kombinieren</li>
+                    <li class="fragment">Der <code>+</code>-Operator verbindet Texte</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">String name = "Anna";
+int alter = 16;
+System.out.println("Name: " + name);
+System.out.println("Alter: " + alter);</code></pre>
+            </section>
+
+            <section>
+                <h2>Erste Programme schreiben</h2>
+                <ul>
+                    <li class="fragment">Eine Java-Klasse mit <code>main</code>-Methode erstellen</li>
+                    <li class="fragment">Variablen deklarieren, initialisieren und ausgeben</li>
+                    <li class="fragment">Compilieren mit <code>javac</code>, ausführen mit <code>java</code></li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public class MeinProgramm {
+    public static void main(String[] args) {
+        String name = "Max";
+        int alter = 17;
+        double groesse = 1.85;
+        char initial = 'M';
+        boolean istVolljaehrig = false;
+
+        System.out.println("Name: " + name);
+        System.out.println("Alter: " + alter);
+        System.out.println("Größe: " + groesse);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Übersicht: Die fünf Datentypen</h2>
+                <table>
+                    <thead>
+                        <tr><th>Typ</th><th>Beschreibung</th><th>Beispiel</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment"><td><code>boolean</code></td><td>Wahrheitswert</td><td><code>true</code>, <code>false</code></td></tr>
+                        <tr class="fragment"><td><code>int</code></td><td>Ganze Zahl</td><td><code>42</code>, <code>-7</code></td></tr>
+                        <tr class="fragment"><td><code>double</code></td><td>Kommazahl</td><td><code>3.14</code>, <code>2.5</code></td></tr>
+                        <tr class="fragment"><td><code>String</code></td><td>Text</td><td><code>"Hallo"</code></td></tr>
+                        <tr class="fragment"><td><code>char</code></td><td>Einzelnes Zeichen</td><td><code>'A'</code>, <code>'?'</code></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Häufige Fehler</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li class="fragment"><strong>Falscher Typ:</strong> <code>int text = "Hallo";</code> → Compiler-Fehler</li>
+                        <li class="fragment"><strong>Fehlende Initialisierung:</strong> Variable wird vor der Wertzuweisung verwendet</li>
+                        <li class="fragment"><strong>Falsche Anführungszeichen:</strong> String braucht <code>"..."</code>, char braucht <code>'...'</code></li>
+                        <li class="fragment"><strong>Semikolon vergessen:</strong> Jede Anweisung endet mit <code>;</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Summary</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li>Variablen speichern Daten in festgelegten Datentypen</li>
+                        <li>Fünf grundlegende Typen: boolean, int, double, String, char</li>
+                        <li>Deklaration: Typ + Name; Initialisierung: erste Wertzuweisung</li>
+                        <li>Ausgabe mit System.out.println</li>
+                        <li>Compiler prüft Typ-Korrektheit</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="center">
+                <h2>Outlook</h2>
+                <div class="highlight-box">
+                    Nächste Woche lernen wir, wie man mit diesen Datentypen rechnen kann — arithmetische Operatoren.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: false,
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight]
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveal = document.querySelector('.reveal');
+            const footerHTML = `
+                <div class="footer">
+                    <div class="logo-container">
+                        <img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+                             alt="HTL Spengergasse Logo" class="school-logo">
+                    </div>
+                    <span class="date">02 — Datentypen</span>
+                </div>
+            `;
+            reveal.insertAdjacentHTML('beforeend', footerHTML);
+        });
+    </script>
+</body>
+</html>
