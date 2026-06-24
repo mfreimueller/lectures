@@ -31,7 +31,7 @@
             </section>
 
             <section>
-                <h2>Schema First — Typen definieren</h2>
+                <h2>Schema — Typen definieren (1/2)</h2>
                 <pre><code class="language-graphql">type Book {
     id: ID!
     isbn: String!
@@ -45,9 +45,11 @@ type Author {
     name: String!
     birthYear: Int
     books: [Book!]
-}
-
-type Query {
+}</code></pre>
+            </section>
+            <section>
+                <h2>Schema — Query, Mutation, Input (2/2)</h2>
+                <pre><code class="language-graphql">type Query {
     books: [Book!]!
     bookById(id: ID!): Book
 }
@@ -65,9 +67,8 @@ input BookInput {
             </section>
 
             <section>
-                <h2>Queries — Daten lesen</h2>
-                <pre><code class="language-graphql"># Der Client wählt genau die Felder, die er braucht
-query {
+                <h2>Queries — Einfache Abfragen</h2>
+                <pre><code class="language-graphql">query {
     books {
         id
         title
@@ -75,10 +76,11 @@ query {
             name
         }
     }
-}
-
-# Verschachtelte Queries
-query {
+}</code></pre>
+            </section>
+            <section>
+                <h2>Queries — Verschachtelte Abfragen</h2>
+                <pre><code class="language-graphql">query {
     bookById(id: 1) {
         title
         author {
@@ -110,27 +112,26 @@ query {
             </section>
 
             <section>
-                <h2>GraphQL in Spring Boot</h2>
+                <h2>GraphQL in Spring Boot — Setup</h2>
                 <pre><code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-graphql&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+                <p class="fragment">GraphiQL (Web-IDE) unter <code>/graphiql</code> verfügbar.</p>
+            </section>
+            <section>
+                <h2>GraphQL in Spring Boot — Controller</h2>
                 <pre><code class="language-java">@Controller
 public class BookController {
-
     @QueryMapping
     public List&lt;BookDTO&gt; books() { ... }
-
     @QueryMapping
     public BookDTO bookById(@Argument Long id) { ... }
-
     @MutationMapping
     public BookDTO createBook(@Valid @Argument BookInput input) { ... }
-
-    @SchemaMapping(typeName = "Book", field = "author")
+    @SchemaMapping
     public AuthorDTO getAuthor(BookDTO book) { ... }
 }</code></pre>
-                <p class="fragment">GraphiQL (Web-IDE) unter <code>/graphiql</code> verfügbar.</p>
             </section>
 
             <section>

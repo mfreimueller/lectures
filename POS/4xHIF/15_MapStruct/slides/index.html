@@ -112,16 +112,9 @@ public interface BookMapper {
                 <h2>@Mapping — Felder umbenennen</h2>
                 <pre><code class="language-java">@Mapper(componentModel = "spring")
 public interface BookMapper {
-
     @Mapping(source = "isbn", target = "isbn13")
     @Mapping(source = "publicationYear", target = "year")
-    @Mapping(target = "version", ignore = true)
     BookDTO toDto(Book book);
-
-    // Rückwärts: DTO → Entity
-    @Mapping(source = "isbn13", target = "isbn")
-    @Mapping(source = "year", target = "publicationYear")
-    Book toEntity(BookDTO dto);
 }</code></pre>
                 <ul>
                     <li class="fragment"><code>source</code> — Feld im Quellobjekt</li>
@@ -245,7 +238,6 @@ public class BookService {
                         <li>@Mapper und automatisches Field-Matching</li>
                         <li>@Mapping für Feld-Umbenennungen und Ignorieren</li>
                         <li>Flattened vs. Nested Relationship Mapping</li>
-                        <li>Custom Mappings mit @Named und expression</li>
                     </ul>
                 </div>
             </section>

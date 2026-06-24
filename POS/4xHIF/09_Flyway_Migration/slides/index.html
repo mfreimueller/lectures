@@ -157,13 +157,11 @@ CREATE TABLE book_category (
 
             <section>
                 <h2>Repair — Wenn was schiefgeht</h2>
-                <pre><code class="language-bash"># Status prüfen
-./mvnw flyway:info
+                <pre><code class="language-bash">./mvnw flyway:info
 
 # Fehlgeschlagene Migration reparieren
 ./mvnw flyway:repair
 
-# Oder via Maven Plugin
 ./mvnw flyway:migrate</code></pre>
                 <ul>
                     <li class="fragment"><code>flyway:repair</code> löscht fehlgeschlagene Einträge aus der History</li>
@@ -212,7 +210,6 @@ public abstract class RepositoryTest {
                         <li>Warum Schema-Migrationen notwendig sind</li>
                         <li>Flyway: versionierte SQL-Dateien</li>
                         <li>Namenskonvention V{Version}__{Beschreibung}.sql</li>
-                        <li>Spring Boot Auto-Konfiguration für Flyway</li>
                         <li>ddl-auto: validate statt update/create</li>
                         <li>Checksum-Integrität und Repair</li>
                     </ul>

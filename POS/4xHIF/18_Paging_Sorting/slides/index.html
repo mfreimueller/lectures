@@ -86,17 +86,11 @@ public class BookController {
 
             <section>
                 <h2>Sort — Sortierung definieren</h2>
-                <pre><code class="language-java">// Im Controller: sort Parameter
-// GET /api/books?sort=title,asc
+                <pre><code class="language-java">Sort sort = Sort.by("title").ascending();
 
-// Im Code:
-Sort sort = Sort.by("title").ascending();
-
-// Mehrere Kriterien:
 Sort sort = Sort.by("author").ascending()
                 .and(Sort.by("publicationYear").descending());
 
-// Über Sort.Order:
 Sort sort = Sort.by(
     new Sort.Order(Sort.Direction.ASC, "author"),
     new Sort.Order(Sort.Direction.DESC, "publicationYear")
@@ -106,28 +100,11 @@ Sort sort = Sort.by(
 
             <section>
                 <h2>Sort Injection verhindern</h2>
-                <pre><code class="language-java">@RestController
-public class BookController {
-
-    private static final Set&lt;String&gt; ALLOWED_SORT_FIELDS =
-        Set.of("id", "title", "author", "publicationYear");
-
-    private Sort sanitize(Sort sort) {
-        return sort.stream()
-            .filter(o -> ALLOWED_SORT_FIELDS.contains(o.getProperty()))
-            .map(o -> Sort.by(o.getDirection(), o.getProperty()))
-            .reduce(Sort::and)
-            .orElse(Sort.by("id"));
-    }
-
-    @GetMapping
-    public Page&lt;BookDTO&gt; getAll(Pageable pageable) {
-        Pageable safe = PageRequest.of(
-            pageable.getPageNumber(),
-            pageable.getPageSize(),
-            sanitize(pageable.getSort()));
-        return service.getAll(safe);
-    }
+                <pre><code class="language-java">private Sort sanitize(Sort sort) {
+    return sort.stream()
+        .filter(o -> ALLOWED_SORT_FIELDS.contains(o.getProperty()))
+        .reduce(Sort::and)
+        .orElse(Sort.by("id"));
 }</code></pre>
                 <p class="fragment highlight-box">Nie blind <code>sort</code> akzeptieren — whitelist erlaubte Felder!</p>
             </section>
@@ -238,7 +215,6 @@ public PagedResponse&lt;BookDTO&gt; getAll(
                         <li>Sort.by() und multiple Sortierkriterien</li>
                         <li>Sort Injection verhindern (Whitelist)</li>
                         <li>Pagination im Service-Layer</li>
-                        <li>Custom Page DTO + HATEOAS Navigation</li>
                     </ul>
                 </div>
             </section>

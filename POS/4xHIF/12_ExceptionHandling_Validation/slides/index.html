@@ -24,10 +24,10 @@
 
 // Morgen:
 { "message": "Member with id 42 not found",
-  "timestamp": "2024-11-20T10:30:00" }
-
-// Übermorgen:
-{ "errors": ["id must not be null"] }</code></pre>
+  "timestamp": "2024-11-20T10:30:00" }</code></pre>
+            </section>
+            <section>
+                <h2>Das Problem — Lösung</h2>
                 <p class="fragment highlight-box">Ziel: Einheitliches, standardisiertes Fehlerformat für die ganze API.</p>
             </section>
 
@@ -54,8 +54,7 @@ public class GlobalExceptionHandler {
     "type": "about:blank",
     "title": "Entity not found",
     "status": 404,
-    "detail": "Member with id 42 not found",
-    "instance": "/api/members/42"
+    "detail": "Member with id 42 not found"
 }</code></pre>
                 <ul>
                     <li class="fragment">Standardisiertes Fehlerformat (RFC 7807 / Problem Details)</li>
@@ -65,28 +64,28 @@ public class GlobalExceptionHandler {
             </section>
 
             <section>
-                <h2>Häufige Exception-Handler</h2>
+                <h2>Exception-Handler — 404 + 400</h2>
                 <pre><code class="language-java">@ControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ProblemDetail handleNotFound(EntityNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(404, ex.getMessage());
     }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleBadArgument(IllegalArgumentException ex) {
         return ProblemDetail.forStatusAndDetail(400, ex.getMessage());
     }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ProblemDetail handleConstraintViolation(
-            DataIntegrityViolationException ex) {
-        ProblemDetail problem = ProblemDetail.forStatus(409);
-        problem.setTitle("Data integrity violation");
-        problem.setDetail("This operation would violate a database constraint");
-        return problem;
-    }
+}</code></pre>
+            </section>
+            <section>
+                <h2>Exception-Handler — 409</h2>
+                <pre><code class="language-java">@ExceptionHandler(DataIntegrityViolationException.class)
+public ProblemDetail handleConstraintViolation(
+        DataIntegrityViolationException ex) {
+    ProblemDetail problem = ProblemDetail.forStatus(409);
+    problem.setTitle("Data integrity violation");
+    problem.setDetail("This operation would violate a database constraint");
+    return problem;
 }</code></pre>
             </section>
 
@@ -109,16 +108,9 @@ public Member createMember(@RequestBody Member member) {
             <section>
                 <h2>Bean Validation — Annotations</h2>
                 <pre><code class="language-java">public record CreateMemberCommand(
-    @NotBlank(message = "Name is required")
-    String name,
-
-    @NotBlank
-    @Email(message = "Must be a valid email address")
-    String email,
-
-    @Pattern(regexp = "^\\+?[0-9\\s-]{6,20}$",
-             message = "Invalid phone number")
-    String phone
+    @NotBlank(message = "Name is required") String name,
+    @NotBlank @Email String email,
+    @Pattern(regexp = "^\\+?[0-9\\s-]{6,20}$") String phone
 ) {}</code></pre>
                 <p>Wichtige Annotationen:</p>
                 <ul>
@@ -131,26 +123,23 @@ public Member createMember(@RequestBody Member member) {
 
             <section>
                 <h2>@Valid im Controller</h2>
-                <pre><code class="language-java">@RestController
-@RequestMapping("/api/members")
+                <pre><code class="language-java">@RestController @RequestMapping("/api/members")
 public class MemberController {
-
     private final MemberService memberService;
-
     @PostMapping
-    public Member createMember(
-            @Valid @RequestBody CreateMemberCommand command) {
-        return memberService.createMember(command);
+    public Member createMember(@Valid @RequestBody CreateMemberCommand cmd) {
+        return memberService.createMember(cmd);
     }
-
     @PutMapping("/{id}")
-    public Member updateMember(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateMemberCommand command) {
-        return memberService.updateMember(id, command);
+    public Member updateMember(@PathVariable Long id,
+            @Valid @RequestBody UpdateMemberCommand cmd) {
+        return memberService.updateMember(id, cmd);
     }
 }</code></pre>
-                <p class="fragment"><code>@Valid</code> löst die Validierung aus. Bei Fehlern → <code>MethodArgumentNotValidException</code>.</p>
+            </section>
+            <section>
+                <h2>@Valid — Wirkung</h2>
+                <p><code>@Valid</code> löst die Validierung aus. Bei Fehlern → <code>MethodArgumentNotValidException</code>.</p>
             </section>
 
             <section>
@@ -160,16 +149,16 @@ public ProblemDetail handleValidationErrors(
         MethodArgumentNotValidException ex) {
     ProblemDetail problem = ProblemDetail.forStatus(400);
     problem.setTitle("Validation failed");
-
     String errors = ex.getBindingResult()
-        .getFieldErrors()
-        .stream()
+        .getFieldErrors().stream()
         .map(e -> e.getField() + ": " + e.getDefaultMessage())
         .collect(Collectors.joining(", "));
-
     problem.setDetail(errors);
     return problem;
 }</code></pre>
+            </section>
+            <section>
+                <h2>Validation Errors — Response</h2>
                 <pre><code class="language-json">{
     "title": "Validation failed",
     "status": 400,
@@ -178,21 +167,24 @@ public ProblemDetail handleValidationErrors(
             </section>
 
             <section>
-                <h2>Custom Validator</h2>
+                <h2>Custom Validator — Annotation</h2>
                 <pre><code class="language-java">@Target(FIELD)
 @Retention(RUNTIME)
 @Constraint(validatedBy = IsbnValidator.class)
 public @interface ValidIsbn {
     String message() default "Invalid ISBN format";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
-}
-
-public class IsbnValidator implements ConstraintValidator<ValidIsbn, String> {
+    Class&lt;?&gt;[] groups() default {};
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}</code></pre>
+            </section>
+            <section>
+                <h2>Custom Validator — Implementierung</h2>
+                <pre><code class="language-java">public class IsbnValidator implements
+        ConstraintValidator&lt;ValidIsbn, String&gt; {
     @Override
     public boolean isValid(String isbn, ConstraintValidatorContext ctx) {
         if (isbn == null) return false;
-        return isbn.matches("^(\\\\d{13}|\\\\d{10})$");
+        return isbn.matches("^(\\d{13}|\\d{10})$");
     }
 }</code></pre>
                 <p class="fragment">Verwendung: <code>@ValidIsbn String isbn</code></p>

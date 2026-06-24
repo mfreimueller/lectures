@@ -231,10 +231,7 @@ logging:
 
             <section>
                 <h2>Profile aktivieren</h2>
-                <pre><code class="language-bash"># Kommandozeile
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-
-# Oder als Umgebungsvariable
+                <pre><code class="language-bash">./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 export SPRING_PROFILES_ACTIVE=prod
 ./mvnw spring-boot:run</code></pre>
                 <pre><code class="language-yaml"># application.yml (Default-Profile setzen)
@@ -249,8 +246,7 @@ app.run(args);</code></pre>
 
             <section>
                 <h2>Mehrere Profile gleichzeitig</h2>
-                <pre><code class="language-bash"># Aktiviert dev + monitoring + tracing
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev,monitoring,tracing</code></pre>
+                <pre><code class="language-bash">./mvnw spring-boot:run -Dspring-boot.run.profiles=dev,monitoring,tracing</code></pre>
                 <pre><code class="language-yaml"># application.yml
 spring:
   profiles:
@@ -281,8 +277,7 @@ spring:
                         <li>@Value für einzelne Werte</li>
                         <li>@ConfigurationProperties für typsichere Config-Klassen</li>
                         <li>@Profile für umgebungsspezifische Beans</li>
-                        <li>Profile-spezifische Konfigurationsdateien</li>
-                        <li>Aktivierung von Profilen (CLI, Umgebungsvariablen, programmatisch)</li>
+                        <li>Profile-spezifische Konfigurationsdateien und Aktivierung (CLI, Umgebungsvariablen)</li>
                     </ul>
                 </div>
             </section>

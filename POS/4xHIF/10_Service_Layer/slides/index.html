@@ -144,20 +144,11 @@ public class LibraryService {
 
             <section>
                 <h2>@Transactional — Lösung</h2>
-                <pre><code class="language-java">@Service
-@Transactional  // Alle public Methoden sind transactional
+                <pre><code class="language-java">@Service @Transactional
 public class LibraryService {
-
     @Transactional(readOnly = true)
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
-    }
-
-    @Transactional
-    public Loan checkOutBook(Long memberId, Long bookId) {
-        // ... ganze Methode läuft in EINER Transaktion
-        // Fehler irgendwo → ALLES wird zurückgerollt
-    }
+    public List&lt;Book&gt; findAllBooks() { ... }
+    public Loan checkOutBook(Long memberId, Long bookId) { }
 }</code></pre>
                 <ul>
                     <li class="fragment">Entweder alles oder nichts — ACID</li>

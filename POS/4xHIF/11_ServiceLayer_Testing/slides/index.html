@@ -44,18 +44,9 @@
                 <h2>Mockito Annotations</h2>
                 <pre><code class="language-java">@ExtendWith(MockitoExtension.class)
 class LibraryServiceTest {
-
-    @Mock
-    private BookRepository bookRepository;
-
-    @Mock
-    private MemberRepository memberRepository;
-
-    @Mock
-    private LoanRepository loanRepository;
-
-    @InjectMocks
-    private LibraryService libraryService;
+    @Mock BookRepository bookRepository;
+    @Mock LoanRepository loanRepository;
+    @InjectMocks LibraryService libraryService;
 }</code></pre>
                 <ul>
                     <li class="fragment"><code>@Mock</code> — erzeugt einen Mock</li>

@@ -121,16 +121,12 @@ public Book partialUpdate(@PathVariable Long id, @RequestBody Map&lt;String, Obj
 
             <section>
                 <h2>@RequestParam — Query-Parameter</h2>
-                <pre><code class="language-java">// GET /api/books?author=Martin&year=2008
-@GetMapping
-public List&lt;Book&gt; search(
+                <pre><code class="language-java">@GetMapping List&lt;Book&gt; search(
         @RequestParam(required = false) String author,
         @RequestParam(required = false) Integer year,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
-
-    return repository.search(author, year, page, size);
-}</code></pre>
+    return repository.search(author, year, page, size); }</code></pre>
                 <ul>
                     <li class="fragment"><code>required = false</code> — Parameter ist optional</li>
                     <li class="fragment"><code>defaultValue</code> — Standardwert falls nicht angegeben</li>
@@ -140,12 +136,10 @@ public List&lt;Book&gt; search(
 
             <section>
                 <h2>@PathVariable — Pfadvariablen</h2>
-                <pre><code class="language-java">// GET /api/books/42/reviews/5
-@GetMapping("/{bookId}/reviews/{reviewId}")
+                <pre><code class="language-java">@GetMapping("/{bookId}/reviews/{reviewId}")
 public Review getReview(
         @PathVariable Long bookId,
         @PathVariable Long reviewId) {
-
     return reviewService.findReview(bookId, reviewId);
 }</code></pre>
                 <ul>
@@ -157,8 +151,7 @@ public Review getReview(
 
             <section>
                 <h2>@RequestBody — JSON empfangen</h2>
-                <pre><code class="language-java">// POST /api/books
-@PostMapping
+                <pre><code class="language-java">@PostMapping
 public ResponseEntity&lt;Book&gt; create(@Valid @RequestBody Book book) {
     Book saved = repository.save(book);
     URI location = URI.create("/api/books/" + saved.id());
@@ -255,7 +248,6 @@ public ResponseEntity&lt;Book&gt; create(@Valid @RequestBody Book book) {
                         <li>Request Mapping (@GetMapping, @PostMapping, etc.)</li>
                         <li>@RequestParam, @PathVariable, @RequestBody</li>
                         <li>ResponseEntity und HTTP-Statuscodes</li>
-                        <li>Jackson-Serialisierung (@JsonIgnore, @JsonProperty)</li>
                     </ul>
                 </div>
             </section>

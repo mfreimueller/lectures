@@ -178,10 +178,7 @@ public class HelloController {
 
             <section>
                 <h2>Testing in the Browser</h2>
-                <pre><code class="language-bash"># Start the application
-./mvnw spring-boot:run
-
-# Test endpoints
+                <pre><code class="language-bash">./mvnw spring-boot:run
 curl http://localhost:8080/hello
 curl http://localhost:8080/hello/Alice</code></pre>
                 <p class="fragment">Or simply open http://localhost:8080/hello in your browser.</p>
@@ -210,18 +207,11 @@ curl http://localhost:8080/hello/Alice</code></pre>
 
             <section>
                 <h2>Team Workflow</h2>
-                <pre><code class="language-bash"># Clone the repo
-git clone &lt;repo-url&gt;
-
-# Add your project files
+                <pre><code class="language-bash">git clone &lt;repo-url&gt;
 git add .
 git commit -m "Initial project setup"
 git push
-
-# Team member pulls changes
 git pull
-
-# Make changes and push
 git add .
 git commit -m "Added greeting endpoint"
 git push</code></pre>
@@ -236,7 +226,7 @@ git push</code></pre>
                         <li>Creating a Spring Boot project with Initializr</li>
                         <li>Writing a REST controller with @GetMapping</li>
                         <li>Returning JSON responses using records</li>
-                        <li>Setting up GitHub Classroom for team collaboration</li>
+
                     </ul>
                 </div>
             </section>

@@ -47,7 +47,6 @@
 ResponseEntity&lt;Book&gt; response = restTemplate.getForEntity(
     "http://api.example.com/books/42", Book.class);
 
-// Nächster Schritt manuell:
 Long authorId = response.getBody().getAuthorId();
 restTemplate.getForEntity(
     "http://api.example.com/authors/" + authorId, Author.class);</code></pre>
@@ -223,7 +222,6 @@ public interface BookMapper {
                         <li>HATEOAS-Prinzip — API als Hypertext</li>
                         <li>EntityModel und CollectionModel</li>
                         <li>WebMvcLinkBuilder und methodOn</li>
-                        <li>Pagination-Links (next/prev/first/last)</li>
                         <li>API Root Endpoint für vollständige Navigierbarkeit</li>
                     </ul>
                 </div>

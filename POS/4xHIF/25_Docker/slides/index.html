@@ -38,15 +38,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
 
             <section>
                 <h2>Multi-Stage Build</h2>
-                <pre><code class="language-dockerfile"># Stage 1: Build
-FROM maven:3.9-eclipse-temurin-17 AS build
+                <pre><code class="language-dockerfile">FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn package -DskipTests
 
-# Stage 2: Runtime (kleineres Image!)
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar

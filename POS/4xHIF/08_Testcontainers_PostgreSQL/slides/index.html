@@ -84,16 +84,11 @@
 
             <section>
                 <h2>PostgreSQLContainer — Setup</h2>
-                <pre><code class="language-java">@DataJpaTest
-@Testcontainers
+                <pre><code class="language-java">@DataJpaTest @Testcontainers
 class BookRepositoryTest {
-
-    @Container
-    static PostgreSQLContainer<?> postgres =
-        new PostgreSQLContainer<>("postgres:16")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test");
+    @Container static PostgreSQLContainer&lt;?&gt; postgres =
+        new PostgreSQLContainer&lt;&gt;("postgres:16")
+            .withDatabaseName("testdb").withUsername("test").withPassword("test");
 }</code></pre>
                 <ul>
                     <li class="fragment">@Testcontainers aktiviert automatische Lifecycle-Verwaltung</li>
@@ -131,10 +126,8 @@ class BookRepositoryTest {
                 <ol>
                     <li class="fragment">JUnit startet die Testklasse</li>
                     <li class="fragment">@Testcontainers erkennt @Container und startet PostgreSQL</li>
-                    <li class="fragment">Container meldet sich mit dynamischem Port (nicht 5432!)</li>
-                    <li class="fragment">@DynamicPropertySource injiziert JDBC-URL + Credentials</li>
-                    <li class="fragment">Spring konfiguriert DataSource mit diesen Werten</li>
-                    <li class="fragment">Tests laufen gegen echte PostgreSQL-Datenbank</li>
+                    <li class="fragment">Container meldet sich mit dynamischem Port; @DynamicPropertySource injiziert JDBC-URL + Credentials</li>
+                    <li class="fragment">Spring konfiguriert DataSource; Tests laufen gegen echte PostgreSQL-Datenbank</li>
                     <li class="fragment">Nach allen Tests: Container wird gestoppt</li>
                 </ol>
             </section>
