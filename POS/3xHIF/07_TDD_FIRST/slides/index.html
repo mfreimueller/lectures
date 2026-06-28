@@ -17,6 +17,42 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: JUnit 5</li>
+<li class="fragment">Review: Why Write Tests?</li>
+<li class="fragment">What is TDD?</li>
+<li class="fragment">Why TDD?</li>
+<li class="fragment">The TDD Cycle: Red</li>
+<li class="fragment">The TDD Cycle: Green</li>
+<li class="fragment">The TDD Cycle: Refactor</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">FIRST Principles</li>
+<li class="fragment">Fast Tests</li>
+<li class="fragment">Isolated Tests</li>
+<li class="fragment">Live Coding: FizzBuzz</li>
+<li class="fragment">Live Coding: Full FizzBuzz</li>
+<li class="fragment">Common Pitfalls</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the TDD Red-Green-Refactor cycle</li>
+<li class="fragment">I can apply FIRST principles to write better tests</li>
+<li class="fragment">I can write fast, isolated unit tests without external dependencies</li>
+<li class="fragment">I can implement FizzBuzz using strict TDD</li>
+<li class="fragment">I can use Mockito to isolate services for testing</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: JUnit 5</h2>
 <ul>
 <li class="fragment">@Test, @BeforeEach, @AfterEach</li>
@@ -55,6 +91,13 @@
 </section>
 
 <section>
+<h2>Reflection: Does TDD Really Improve Design?</h2>
+<div class="highlight-box">
+<p>Does writing tests first really produce better design, or does it just slow you down? Think about a time you wrote code without tests first &mdash; was the API cleaner or messier than when you wrote tests first?</p>
+</div>
+</section>
+
+<section>
 <h2>The TDD Cycle: Red</h2>
 <div class="highlight-box">
 <p>Write a test that fails.</p>
@@ -83,6 +126,11 @@ String fizzBuzz(int n) {
 </section>
 
 <section>
+<h2>Now Kata 4: String Calculator (TDD)</h2>
+<p>Implement StringCalculator incrementally following the Red-Green-Refactor cycle, starting with an empty string and adding support for delimiters.</p>
+</section>
+
+<section>
 <h2>The TDD Cycle: Refactor</h2>
 <div class="highlight-box">
 <p>Improve code without changing behavior.</p>
@@ -93,6 +141,11 @@ String fizzBuzz(int n) {
 <li class="fragment">Extract methods</li>
 <li class="fragment">All tests must stay green</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 3: Roman Numerals</h2>
+<p>Use strict TDD to convert integers to Roman numerals, building up from the simplest cases.</p>
 </section>
 
 <section>
@@ -107,6 +160,11 @@ String fizzBuzz(int n) {
 <tr class="fragment"><td>T</td><td><strong>Timely</strong> -- written before production code</td></tr>
 </tbody>
 </table>
+</section>
+
+<section>
+<h2>Now Kata 2: Prime Factors</h2>
+<p>Use TDD to implement prime factorization, leveraging parameterized tests for multiple inputs.</p>
 </section>
 
 <section>
@@ -126,6 +184,11 @@ String fizzBuzz(int n) {
 <li class="fragment">Use @BeforeEach to create fresh objects</li>
 <li class="fragment">Tests should run in any order</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 5: TDD with Mockito</h2>
+<p>Build UserRegistrationService using TDD with Mockito mocks to isolate the service from its dependencies.</p>
 </section>
 
 <section>
@@ -155,6 +218,11 @@ void testFizzBuzz(int input, String expected) {
     assertThat(FizzBuzz.of(input)).isEqualTo(expected);
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: FizzBuzz</h2>
+<p>Implement FizzBuzz using strict TDD Red-Green-Refactor cycle, starting from a failing test.</p>
 </section>
 
 <section>

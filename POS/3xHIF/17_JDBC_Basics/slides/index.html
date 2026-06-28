@@ -17,6 +17,42 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">What is JDBC?</li>
+<li class="fragment">JDBC Architecture</li>
+<li class="fragment">JDBC Drivers</li>
+<li class="fragment">Establishing a Connection</li>
+<li class="fragment">Connection Parameters</li>
+<li class="fragment">Statement Interface</li>
+<li class="fragment">Processing ResultSet</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">ResultSet Data Types</li>
+<li class="fragment">INSERT with Statement</li>
+<li class="fragment">UPDATE and DELETE</li>
+<li class="fragment">Handling SQLException</li>
+<li class="fragment">Resource Management</li>
+<li class="fragment">Complete CRUD Example</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the JDBC architecture and its core interfaces</li>
+<li class="fragment">I can establish a database connection using DriverManager</li>
+<li class="fragment">I can execute SQL queries and process ResultSet data</li>
+<li class="fragment">I can perform CRUD operations using Statement</li>
+<li class="fragment">I can manage JDBC resources safely with try-with-resources</li>
+</ul>
+</section>
+
+<section>
 <h2>What is JDBC?</h2>
 <p>JDBC (Java Database Connectivity) is the standard Java API for database-independent connectivity between Java applications and relational databases.</p>
 <ul>
@@ -66,6 +102,11 @@ try (Connection conn = DriverManager.getConnection(url, "postgres", "secret")) {
 <div class="highlight-box fragment">
 JDBC URL format: jdbc:postgresql://host:port/database
 </div>
+</section>
+
+<section>
+<h2>Now Kata 1: JDBC Connection</h2>
+<p>Write a program that loads the PostgreSQL JDBC driver, establishes a connection, and validates it</p>
 </section>
 
 <section>
@@ -138,6 +179,13 @@ String concatenation in SQL is vulnerable to injection attacks!
 </section>
 
 <section>
+<h2>Reflection: SQL Injection</h2>
+<div class="highlight-box">
+<p>SQL injection remains a top vulnerability decades after it was first documented. Why do developers still concatenate user input into SQL queries? Is it a knowledge gap, time pressure, or something else &mdash; and how do we break the cycle?</p>
+</div>
+</section>
+
+<section>
 <h2>UPDATE and DELETE</h2>
 <pre><code class="language-java">// UPDATE
 String sql = "UPDATE student SET grade = 2 WHERE id = 101";
@@ -152,6 +200,11 @@ if (deleted &gt; 0) {
     System.out.println("Student deleted successfully.");
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: CRUD Operations</h2>
+<p>Write a program that performs CRUD operations on a student table using Statement</p>
 </section>
 
 <section>
@@ -191,9 +244,14 @@ try {
 // Good: try-with-resources (Java 7+)
 try (Connection conn = DriverManager.getConnection(url, user, pass);
      Statement stmt = conn.createStatement()) {
-    // ...
+     // ...
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Transactional Batch Insert</h2>
+<p>Insert multiple students within a transaction, with rollback on failure</p>
 </section>
 
 <section>

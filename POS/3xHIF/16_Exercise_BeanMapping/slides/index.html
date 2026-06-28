@@ -17,6 +17,26 @@
 </section>
 
 <section>
+<h2>Agenda</h2>
+<ol>
+<li class="fragment">Exercise Overview</li>
+<li class="fragment">Core Mapping Logic</li>
+<li class="fragment">Type Conversion</li>
+<li class="fragment">Annotation-driven Mapping</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can build a BeanMapper that copies fields between objects using reflection</li>
+<li class="fragment">I can implement automatic type conversion between common Java types</li>
+<li class="fragment">I can design custom annotations to configure field mappings</li>
+<li class="fragment">I can understand how ORM frameworks like Hibernate and MapStruct work internally</li>
+</ul>
+</section>
+
+<section>
 <h2>Exercise Overview</h2>
 <p>Build a simple ORM-style BeanMapper using reflection:</p>
 <ul>
@@ -26,6 +46,13 @@
 <li class="fragment">Support annotation-driven mapping configuration</li>
 </ul>
 <div class="highlight-box fragment">This mirrors how Hibernate and MapStruct work internally.</div>
+</section>
+
+<section>
+<h2>Reflection: Framework Patterns</h2>
+<div class="highlight-box">
+<p>Frameworks like MapStruct and Hibernate use the exact same reflection patterns you are about to implement. Why is it important to understand these internals rather than just using the framework APIs? What could go wrong if you don't?</p>
+</div>
 </section>
 
 <section>
@@ -50,6 +77,11 @@
 </section>
 
 <section>
+<h2>Now Kata 1: Basic BeanMapper</h2>
+<p>Implement a basic BeanMapper that copies fields from source to target object using reflection</p>
+</section>
+
+<section>
 <h2>Type Conversion</h2>
 <pre><code class="language-java">private Object convert(Object value, Class&lt;?&gt; targetType) {
     if (value == null) return null;
@@ -69,6 +101,11 @@
 </section>
 
 <section>
+<h2>Now Kata 2: Type-converting BeanMapper</h2>
+<p>Extend BeanMapper with automatic type conversion between common Java types</p>
+</section>
+
+<section>
 <h2>Annotation-driven Mapping</h2>
 <pre><code class="language-java">@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -85,6 +122,11 @@ public class UserDto {
     @Mapping(source = "dateOfBirth")
     private String birthDate;  // LocalDate → String
 }</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Annotation-driven BeanMapper with @Mapping</h2>
+<p>Extend BeanMapper with @Mapping annotation for source/target field name mapping and custom converters</p>
 </section>
 
 <section>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>32 - Projekt WMC Testing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>32 - Projekt WMC Testing</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: JUnit 5 Basics</li>
+<li class="fragment">Review: TDD Principles</li>
+<li class="fragment">Unit Testing with Mockito</li>
+<li class="fragment">Repository Testing</li>
+<li class="fragment">Integration Testing REST Endpoints</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="6">
+<li class="fragment">Test Utility: Start/Stop Tomcat</li>
+<li class="fragment">Parameterized Tests</li>
+<li class="fragment">Validation Testing</li>
+<li class="fragment">Test Coverage with JaCoCo</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can write unit tests for services using Mockito mocks and @InjectMocks</li>
+<li class="fragment">I can write integration tests that start embedded Tomcat and send HTTP requests</li>
+<li class="fragment">I can write parameterized tests with @CsvSource for validation scenarios</li>
+<li class="fragment">I can measure test coverage with JaCoCo and interpret the results</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: JUnit 5 Basics</h2>
+<pre><code class="language-java">@Test
+void shouldReturnBookWhenFound() {
+    var result = bookService.findById(1L);
+    assertThat(result).isPresent();
+    assertThat(result.get().getTitle()).isEqualTo("The Hobbit");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Review: TDD Principles</h2>
+<ul>
+<li>Red: write a failing test first</li>
+<li class="fragment">Green: write minimal code to pass</li>
+<li class="fragment">Refactor: improve code while keeping tests green</li>
+<li class="fragment">FIRST: Fast, Isolated, Repeatable, Self-validating, Timely</li>
+</ul>
+</section>
+
+<section>
+<h2>Unit Testing with Mockito</h2>
+<pre><code class="language-java">@ExtendWith(MockitoExtension.class)
+class BookServiceTest {
+    @Mock
+    private BookRepository bookRepo;
+    @InjectMocks
+    private BookService bookService;
+
+    @Test
+    void shouldCreateBook() {
+        var dto = new CreateBookDto("Dune", "...", 1965, 1L);
+        when(bookRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+        var result = bookService.create(dto);
+        assertThat(result.getTitle()).isEqualTo("Dune");
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: Mockito Test</h2>
+<p>Write JUnit 5 tests for BookService using Mockito mocks for BookRepository.</p>
+</section>
+
+<section>
+<h2>Repository Testing</h2>
+        <pre><code class="language-java">@Test
+void shouldSaveAndFindBook() {
+    var category = new Category("Fiction");
+    var book = new PhysicalBook("Dune", "...", 1965, category, "A1", 3);
+    bookRepo.save(book);
+    var found = bookRepo.findById(book.getId());
+}
+</code></pre>
+<div class="highlight-box fragment">
+Use an in-memory H2 database for repository tests.
+</div>
+</section>
+
+<section>
+<h2>Integration Testing REST Endpoints</h2>
+<pre><code class="language-java">@Test
+void shouldCreateBookViaApi() throws Exception {
+    var tomcat = new Tomcat();
+    tomcat.setPort(0);
+    var ctx = tomcat.addContext("", "/");
+    Tomcat.addServlet(ctx, "api",
+        new FrontControllerServlet(routes));
+    ctx.addServletMappingDecoded("/api/*", "api");
+    tomcat.start();
+    var port = ctx.getConnector().getLocalPort();
+
+    var request = HttpRequest.newBuilder()
+        .uri(URI.create("http://localhost:" + port + "/api/books"))
+        .POST(BodyPublishers.ofString("{\"title\":\"Dune\"}"))
+        .build();
+    var response = HttpClient.newHttpClient()
+        .send(request, BodyHandlers.ofString());
+    assertThat(response.statusCode()).isEqualTo(201);
+    tomcat.stop();
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: REST Endpoint Test</h2>
+<p>Write an integration test that starts embedded Tomcat, sends HTTP requests, and asserts responses.</p>
+</section>
+
+<section>
+<h2>Test Utility: Start/Stop Tomcat</h2>
+<pre><code class="language-java">private Tomcat tomcat;
+private int port;
+
+@BeforeEach
+void setup() throws Exception {
+    tomcat = new Tomcat();
+    tomcat.setPort(0);
+    tomcat.getConnector();
+    var ctx = tomcat.addContext("", "/");
+    Tomcat.addServlet(ctx, "api",
+        new FrontControllerServlet(routes));
+    ctx.addServletMappingDecoded("/api/*", "api");
+    tomcat.start();
+    port = ctx.getConnector().getLocalPort();
+}
+
+@AfterEach
+void teardown() throws Exception {
+    tomcat.stop();
+}</code></pre>
+</section>
+
+<section>
+<h2>Parameterized Tests</h2>
+<pre><code class="language-java">@ParameterizedTest
+@CsvSource({
+    ", false",
+    "'', false",
+    "Dune, true"
+})
+void shouldValidateTitle(String title, boolean expected) {
+    var validator = new BookValidator();
+    assertThat(validator.isValidTitle(title)).isEqualTo(expected);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Validation Test</h2>
+<p>Write parameterized JUnit 5 tests for a BookValidator utility using @CsvSource.</p>
+</section>
+
+<section>
+<h2>Validation Testing</h2>
+<pre><code class="language-java">@Test
+void shouldRejectInvalidBook() {
+    var dto = new CreateBookDto("", "123", 1800, null);
+    var errors = BookValidator.validate(dto);
+    assertThat(errors)
+        .contains("title must not be blank")
+        .contains("isbn must be 13 digits");
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Test Coverage with JaCoCo</h2>
+        <pre><code class="language-xml"><plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.11</version>
+</plugin>
+</code></pre>
+<div class="highlight-box fragment">
+Goal: at least 70% line coverage.
+</div>
+</section>
+
+<section>
+<h2>Reflection: Is 70% Coverage Enough?</h2>
+<div class="highlight-box">
+<p>Is 70% line coverage a good target? Does high coverage guarantee good tests? What matters more: coverage percentage or test quality?</p>
+</div>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Unit test services with Mockito</li>
+<li>Test repositories with in-memory database</li>
+<li>Integration test REST endpoints</li>
+<li>Parameterized tests for validation</li>
+<li>JaCoCo for coverage measurement</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Finalization, documentation, and submission.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">32 - Projekt WMC Testing</span></div>');});
+</script>
+</body>
+</html>

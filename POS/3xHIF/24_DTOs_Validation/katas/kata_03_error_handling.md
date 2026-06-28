@@ -8,11 +8,11 @@
 
 ### Task
 
-Write a Java program that builds an error handling framework for a Javalin API:
+Write a Java program that builds an error handling framework for a Servlet-based API:
 1. Define a `ErrorResponse` record (status, message, details list)
 2. Create custom exceptions: `ResourceNotFoundException`, `ValidationException`
-3. Register exception mappers in Javalin
-4. Create endpoints that use the error handling
+3. Catch exceptions in the Front Controller's `service()` method and return JSON errors
+4. Create commands that use the error handling
 5. Return consistent JSON error responses
 
 ### Example Output

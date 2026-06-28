@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>31 - Projekt WMC REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>31 - Projekt WMC REST</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: REST Principles</li>
+<li class="fragment">Review: Front Controller</li>
+<li class="fragment">Command Structure</li>
+<li class="fragment">GET Commands</li>
+<li class="fragment">POST Command</li>
+<li class="fragment">PUT Command</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">DELETE Command</li>
+<li class="fragment">DTOs: Data Transfer Objects</li>
+<li class="fragment">Input Validation</li>
+<li class="fragment">Service Layer</li>
+<li class="fragment">Error Handling (Front Controller)</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can implement CRUD endpoints using the Command pattern with a Front Controller</li>
+<li class="fragment">I can create DTO records with static from(Entity) mapping methods</li>
+<li class="fragment">I can validate input data and return proper 400 error responses</li>
+<li class="fragment">I can separate business logic into a Service layer between Controllers and Repositories</li>
+<li class="fragment">I can handle errors consistently using exception handling in the Front Controller</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: REST Principles</h2>
+<ul>
+<li>GET: retrieve resources</li>
+<li class="fragment">POST: create resources</li>
+<li class="fragment">PUT: update/replace resources</li>
+<li class="fragment">DELETE: remove resources</li>
+<li class="fragment">Resource-based URLs: /api/books, /api/books/{id}</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Front Controller</h2>
+<pre><code class="language-java">var routes = new HashMap&lt;String, Command&gt;();
+Tomcat.addServlet(ctx, "api",
+    new FrontControllerServlet(routes));
+ctx.addServletMappingDecoded("/api/*", "api");</code></pre>
+</section>
+
+<section>
+<h2>Command Structure</h2>
+<pre><code class="language-java">public class BookCommandFactory {
+    private final BookService bookService;
+
+    public BookCommandFactory(BookService svc) {
+        this.bookService = svc;
+    }
+
+    public Map&lt;String, Command&gt; createRoutes() {
+        return Map.of(
+            "GET:/api/books",       new ListBooksCmd(bookService),
+            "GET:/api/books/{id}",   new GetBookCmd(bookService),
+            "POST:/api/books",       new CreateBookCmd(bookService),
+            "PUT:/api/books/{id}",   new UpdateBookCmd(bookService),
+            "DELETE:/api/books/{id}", new DeleteBookCmd(bookService));
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>GET Commands</h2>
+<pre><code class="language-java">public class ListBooksCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var books = bookService.findAll();
+        resp.setContentType("application/json");
+        new ObjectMapper().writeValue(resp.getWriter(),
+            books.stream().map(BookDto::from).toList());
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>POST Command</h2>
+<pre><code class="language-java">public class CreateBookCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var mapper = new ObjectMapper();
+        var dto = mapper.readValue(req.getReader(),
+            CreateBookDto.class);
+        if (dto.title() == null || dto.title().isBlank())
+            throw new BadRequestException("Title is required");
+        var book = bookService.create(dto);
+        resp.setStatus(201);
+        mapper.writeValue(resp.getWriter(),
+            BookDto.from(book));
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>PUT Command</h2>
+<pre><code class="language-java">public class UpdateBookCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var id = Long.parseLong(
+            req.getPathInfo().split("/")[1]);
+        var dto = new ObjectMapper().readValue(
+            req.getReader(), UpdateBookDto.class);
+        var book = bookService.update(id, dto);
+        new ObjectMapper().writeValue(
+            resp.getWriter(), BookDto.from(book));
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>DELETE Command</h2>
+<pre><code class="language-java">public class DeleteBookCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var id = Long.parseLong(
+            req.getPathInfo().split("/")[1]);
+        bookService.delete(id);
+        resp.setStatus(204);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: CRUD Controller</h2>
+<p>Implement Commands with full CRUD for a Book entity using the Front Controller pattern.</p>
+</section>
+
+<section>
+<h2>DTOs: Data Transfer Objects</h2>
+<pre><code class="language-java">public record BookDto(
+    Long id, String title, String isbn,
+    int publishedYear, String categoryName,
+    List&lt;String&gt; authorNames
+) {
+    public static BookDto from(Book book) {
+        return new BookDto(
+            book.getId(), book.getTitle(), book.getIsbn(),
+            book.getPublishedYear(), book.getCategory().getName(),
+            book.getAuthors().stream().map(Author::getName).toList()
+        );
+    }
+}
+
+public record CreateBookDto(
+    String title, String isbn, int publishedYear,
+    Long categoryId, List&lt;Long&gt; authorIds
+) {}
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: DTO Mapping</h2>
+<p>Create DTO records (BookDto, CreateBookDto, CategoryDto) with static from(Entity) mapping methods.</p>
+</section>
+
+<section>
+<h2>Input Validation</h2>
+<pre><code class="language-java">private void validate(CreateBookDto dto) {
+    var errors = new ArrayList&lt;String&gt;();
+    if (dto.title() == null || dto.title().isBlank())
+        errors.add("title is required");
+    if (dto.isbn() == null || !dto.isbn().matches("\\d{13}"))
+        errors.add("isbn must be 13 digits");
+    if (!errors.isEmpty())
+        throw new BadRequestException(
+            String.join("; ", errors));
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Validation</h2>
+<p>Add Jakarta Validation annotations to CreateBookDto and implement a validation utility returning 400 errors.</p>
+</section>
+
+<section>
+<h2>Service Layer</h2>
+<pre><code class="language-java">public class BookService {
+    private final BookRepository bookRepo;
+    private final CategoryRepository catRepo;
+
+    public Book create(CreateBookDto dto) {
+        var category = catRepo.findById(dto.categoryId())
+            .orElseThrow(() -> new NotFoundResponse("Category not found"));
+        var book = new Book(dto.title(), dto.isbn(), dto.publishedYear(), category);
+        return bookRepo.save(book);
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Discussion: Where Does Business Logic Belong?</h2>
+<div class="highlight-box">
+<p>Why is the Service layer the right place for business logic? What happens when you put business logic in Controllers or Repositories instead?</p>
+</div>
+</section>
+
+<section>
+<h2>Error Handling (Front Controller)</h2>
+<pre><code class="language-java">// In FrontControllerServlet.service():
+try {
+    cmd.execute(req, resp);
+} catch (BadRequestException e) {
+    resp.setStatus(400);
+    resp.setContentType("application/json");
+    mapper.writeValue(resp.getWriter(),
+        new ErrorDto(e.getMessage()));
+} catch (NotFoundException e) {
+    resp.setStatus(404);
+    mapper.writeValue(resp.getWriter(),
+        new ErrorDto(e.getMessage()));
+} catch (Exception e) {
+    resp.setStatus(500);
+    mapper.writeValue(resp.getWriter(),
+        new ErrorDto("Internal server error"));
+}</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Controller classes with route registration</li>
+<li>CRUD endpoints: GET, POST, PUT, DELETE</li>
+<li>DTOs for request/response mapping</li>
+<li>Input validation</li>
+<li>Consistent error handling</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Unit testing, validation, and error handling.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">31 - Projekt WMC REST</span></div>');});
+</script>
+</body>
+</html>

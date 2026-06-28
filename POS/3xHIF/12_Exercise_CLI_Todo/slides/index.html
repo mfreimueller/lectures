@@ -17,6 +17,27 @@
 </section>
 
 <section>
+<h2>Agenda</h2>
+<ol>
+<li class="fragment">Exercise Overview</li>
+<li class="fragment">Task Record</li>
+<li class="fragment">Repository Interface</li>
+<li class="fragment">CLI Command Structure</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can design a record-based domain model with enums</li>
+<li class="fragment">I can define and implement a repository interface using streams</li>
+<li class="fragment">I can build an interactive CLI shell using switch expressions</li>
+<li class="fragment">I can apply TDD to design APIs before writing implementation</li>
+<li class="fragment">I can filter and query data using stream operations</li>
+</ul>
+</section>
+
+<section>
 <h2>Exercise Overview</h2>
 <p>Build a CLI Todo application with the following components:</p>
 <ul>
@@ -26,6 +47,13 @@
 <li class="fragment">CLI shell — switch expression command parsing</li>
 </ul>
 <div class="highlight-box fragment">Apply TDD throughout the entire exercise.</div>
+</section>
+
+<section>
+<h2>Reflection: TDD and API Design</h2>
+<div class="highlight-box">
+<p>How does writing tests first change the way you think about API design? Before writing any implementation, think about what methods your repository needs &mdash; does TDD help you discover a cleaner interface?</p>
+</div>
 </section>
 
 <section>
@@ -44,6 +72,11 @@
 </section>
 
 <section>
+<h2>Now K1: Task Record with Stream Filtering</h2>
+<p>Create a Task record and TaskFilter class with stream-based filtering methods for priority, completion status, and tags.</p>
+</section>
+
+<section>
 <h2>Repository Interface</h2>
 <pre><code class="language-java">public interface TaskRepository {
     List&lt;Task&gt; findAll();
@@ -58,6 +91,11 @@
 </section>
 
 <section>
+<h2>Now K2: InMemoryTaskRepository</h2>
+<p>Define a TaskRepository interface and implement it using streams with sorted, groupingBy, and partitioningBy operations.</p>
+</section>
+
+<section>
 <h2>CLI Command Structure</h2>
 <pre><code class="language-java">switch (command) {
     case "add"  -> addTask(scanner);
@@ -67,6 +105,11 @@
     case "exit" -> { return; }
     default -> System.out.println("Unknown command");
 }</code></pre>
+</section>
+
+<section>
+<h2>Now K3: CLI Shell with Switch Expressions</h2>
+<p>Build an interactive CLI shell for the todo app using switch expressions for command parsing and routing.</p>
 </section>
 
 <section>

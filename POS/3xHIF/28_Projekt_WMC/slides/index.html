@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>28 - Projekt WMC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>28 - Projekt WMC</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: Layered Architecture</li>
+<li class="fragment">Review: Front Controller &amp; Servlets</li>
+<li class="fragment">POS-WMC Project Overview</li>
+<li class="fragment">Project Requirements</li>
+<li class="fragment">Choosing a Domain</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="6">
+<li class="fragment">Database Model: 6 Tables Minimum</li>
+<li class="fragment">Entity Relationships</li>
+<li class="fragment">Maven Project Setup</li>
+<li class="fragment">Layered Architecture</li>
+<li class="fragment">Project Deliverables This Week</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can choose a suitable project domain with at least 6 tables</li>
+<li class="fragment">I can design an ER diagram with 1:1, 1:n, and inheritance relationships</li>
+<li class="fragment">I can set up a Maven project with Tomcat, Hibernate, PostgreSQL, and Jackson dependencies</li>
+<li class="fragment">I can plan a layered architecture with Controller, Service, Repository, and Model packages</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Layered Architecture</h2>
+<ul>
+<li>Controller: handles HTTP requests and responses</li>
+<li class="fragment">Service: contains business logic</li>
+<li class="fragment">Repository: data access layer (JPA)</li>
+<li class="fragment">DTO: data transfer objects for request/response</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Front Controller &amp; Servlets</h2>
+<pre><code class="language-java">var routes = new HashMap&lt;String, Command&gt;();
+routes.put("GET:/api/items", (req, resp) -> {
+    resp.setContentType("application/json");
+    new ObjectMapper().writeValue(
+        resp.getWriter(), itemService.findAll());
+});
+Tomcat.addServlet(ctx, "api",
+    new FrontControllerServlet(routes));</code></pre>
+</section>
+
+<section>
+<h2>POS-WMC Project Overview</h2>
+<ul>
+<li>Solo project: REST API + Web Frontend</li>
+<li class="fragment">POS: backend (REST API with Servlets + JPA)</li>
+<li class="fragment">WMC: frontend (web UI)</li>
+<li class="fragment">Duration: weeks 28 to 33</li>
+<li class="fragment">Your own domain, your own database model</li>
+</ul>
+</section>
+
+<section>
+<h2>Project Requirements</h2>
+<ul>
+<li>At least 6 database tables</li>
+<li class="fragment">At least one 1:n relationship</li>
+<li class="fragment">At least one inheritance case</li>
+<li class="fragment">Authentication (login/registration)</li>
+<li class="fragment">Full CRUD for all entities</li>
+</ul>
+</section>
+
+<section>
+<h2>Reflection: Why Do These Requirements Exist?</h2>
+<div class="highlight-box">
+<p>Why do the project requirements (6 tables, inheritance, authentication) mirror real-world enterprise project constraints? What would happen if you skipped any of these in a production system?</p>
+</div>
+</section>
+
+<section>
+<h2>Choosing a Domain</h2>
+<p>Possible domains:</p>
+<ul>
+<li>Library management system</li>
+<li class="fragment">Fitness studio / gym</li>
+<li class="fragment">Restaurant / cafe</li>
+<li class="fragment">Hotel reservation system</li>
+<li class="fragment">E-commerce / shop</li>
+</ul>
+</section>
+
+<section>
+<h2>Now Kata 1: Project Domain Brainstorming</h2>
+<p>Brainstorm 3 different project domains with tables, relationships, and inheritance.</p>
+</section>
+
+<section>
+<h2>Database Model: 6 Tables Minimum</h2>
+<p>Example: Library</p>
+<ul>
+<li>User (auth)</li>
+<li class="fragment">Book, Author, Category</li>
+<li class="fragment">Loan (1:n between User and Book)</li>
+<li class="fragment">Review (1:n between User and Book)</li>
+<li class="fragment">Inheritance: PhysicalBook vs EBook</li>
+</ul>
+</section>
+
+<section>
+<h2>Now Kata 2: ER Diagram</h2>
+<p>Draw an ER diagram for your chosen project domain with at least 6 entities and all relationship types.</p>
+</section>
+
+<section>
+<h2>Entity Relationships</h2>
+<ul>
+<li><strong>1:1</strong> - e.g. User - Address</li>
+<li class="fragment"><strong>1:n</strong> - e.g. Category - Book</li>
+<li class="fragment"><strong>Inheritance</strong> - e.g. Book (PhysicalBook, EBook)</li>
+</ul>
+        <pre class="fragment"><code class="language-java">@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Book { }
+
+@Entity
+public class PhysicalBook extends Book { }
+
+@Entity
+public class EBook extends Book { }
+</code></pre>
+</section>
+
+<section>
+<h2>Maven Project Setup</h2>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+        &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+        &lt;version&gt;10.1.28&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+        &lt;version&gt;6.2.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+        &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+        &lt;version&gt;42.6.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+        &lt;version&gt;2.17.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+        &lt;version&gt;5.10.0&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+        &lt;artifactId&gt;mockito-core&lt;/artifactId&gt;
+        &lt;version&gt;5.4.0&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Maven Project Setup</h2>
+<p>Create a Maven project skeleton with proper package structure and dependencies.</p>
+</section>
+
+<section>
+<h2>Layered Architecture</h2>
+        <pre><code>src/main/java/com/example/project/
+  ├── controller/
+  ├── service/
+  ├── repository/
+  └── model/
+</code></pre>
+<div class="highlight-box fragment">
+Controller - Service - Repository: each layer has a clear responsibility.
+</div>
+</section>
+
+<section>
+<h2>Project Deliverables This Week</h2>
+<ul>
+<li>Domain decision and brief description</li>
+<li class="fragment">ER diagram (at least 6 tables)</li>
+<li class="fragment">Maven project skeleton with dependencies</li>
+<li class="fragment">Architecture plan (plan.md)</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>Choose your own project domain</li>
+<li>Define a database model with 6+ tables</li>
+<li>Set up the project with Maven, JPA, Servlets</li>
+<li>Plan the layered architecture</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Setup authentication and registration with JPA.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">28 - Projekt WMC</span></div>');});
+</script>
+</body>
+</html>

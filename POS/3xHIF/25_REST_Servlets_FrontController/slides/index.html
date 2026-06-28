@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>25 - REST_Servlets_FrontController</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>25 - REST_Servlets_FrontController</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: Servlet Basics</li>
+<li class="fragment">The Problem: One Servlet Per Path</li>
+<li class="fragment">Front Controller Pattern</li>
+<li class="fragment">Front Controller Structure</li>
+<li class="fragment">Command Interface</li>
+<li class="fragment">Route Registration</li>
+<li class="fragment">Front Controller Servlet</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">Path Variable Matching</li>
+<li class="fragment">JSON with Jackson</li>
+<li class="fragment">Serializing with ObjectMapper</li>
+<li class="fragment">Command: List Todos</li>
+<li class="fragment">Command: Create Todo</li>
+<li class="fragment">Structured Error Responses</li>
+<li class="fragment">Why Front Controller?</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the Front Controller pattern and why it solves routing problems</li>
+<li class="fragment">I can implement a Command interface for route handlers</li>
+<li class="fragment">I can register routes and dispatch requests to the correct command</li>
+<li class="fragment">I can use Jackson ObjectMapper for JSON serialization and deserialization</li>
+<li class="fragment">I can implement path variable matching with regex patterns</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: Servlet Basics</h2>
+<ul>
+<li class="fragment">HttpServlet handles doGet, doPost, doPut, doDelete</li>
+<li class="fragment">HttpServletRequest reads params, headers, body</li>
+<li class="fragment">HttpServletResponse writes status, content-type, body</li>
+<li class="fragment">Embedded Tomcat starts from a main() method</li>
+</ul>
+</section>
+
+<section>
+<h2>The Problem: One Servlet Per Path</h2>
+<ul>
+<li class="fragment">Last week: one servlet per path prefix</li>
+<li class="fragment">Path parsing with <code>getPathInfo()</code> is repetitive</li>
+<li class="fragment">Each servlet re-does JSON parsing, error handling</li>
+<li class="fragment">What if one servlet could route everything?</li>
+</ul>
+</section>
+
+<section>
+<h2>Front Controller Pattern</h2>
+<div class="highlight-box">
+<p>A single servlet receives all requests and dispatches them to handlers.</p>
+</div>
+<ul>
+<li class="fragment">One entry point for all HTTP requests</li>
+<li class="fragment">Cross-cutting concerns handled once (logging, auth)</li>
+<li class="fragment">Dispatches to Command objects based on path + method</li>
+</ul>
+</section>
+
+<section>
+<h2>Reflection: How does Spring's DispatcherServlet work under the hood?</h2>
+<div class="highlight-box">
+<p>This pattern is exactly what Spring does. Why is it important to understand the underlying mechanism instead of just using annotations?</p>
+</div>
+</section>
+
+<section>
+<h2>Front Controller Structure</h2>
+<pre><code class="language-plaintext">Client &rarr; FrontControllerServlet
+              |
+              | matches (method + path) &rarr; Command
+              |
+         +----+----+----+----+
+         |    |    |    |    |
+       Cmd1 Cmd2 Cmd3 Cmd4 Cmd5
+         |    |    |    |    |
+         v    v    v    v    v
+       Model / Service / Repository</code></pre>
+</section>
+
+<section>
+<h2>Command Interface</h2>
+<pre><code class="language-java">public interface Command {
+    void execute(HttpServletRequest req,
+                 HttpServletResponse resp)
+            throws Exception;
+}</code></pre>
+<div class="highlight-box fragment">
+<p>Each command handles one specific route + HTTP method.</p>
+</div>
+</section>
+
+<section>
+<h2>Route Registration</h2>
+<pre><code class="language-java">var routes = new HashMap&lt;String, Command&gt;();
+routes.put("GET:/api/todos",     new ListTodosCmd(repo));
+routes.put("POST:/api/todos",    new CreateTodoCmd(repo));
+routes.put("GET:/api/todos/{id}", new GetTodoCmd(repo));
+routes.put("DELETE:/api/todos/{id}", new DeleteTodoCmd(repo));</code></pre>
+</section>
+
+<section>
+<h2>Front Controller Servlet</h2>
+<pre><code class="language-java">@Override
+protected void service(HttpServletRequest req,
+                       HttpServletResponse resp)
+        throws ServletException, IOException {
+    var key = req.getMethod() + ":" + req.getPathInfo();
+    var cmd = routes.get(key);
+    if (cmd == null) {
+        resp.setStatus(404);
+        return;
+    }
+    cmd.execute(req, resp);
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: Front Controller Setup</h2>
+<p>Build a Front Controller servlet with Command interface and route dispatching.</p>
+</section>
+
+<section>
+<h2>Path Variable Matching</h2>
+<ul>
+<li class="fragment">Routes like <code>/api/todos/{id}</code> need pattern matching</li>
+<li class="fragment">Replace <code>{id}</code> with a regex group</li>
+<li class="fragment">Store compiled patterns instead of exact strings</li>
+</ul>
+<pre class="fragment"><code class="language-java">var pattern = Pattern.compile("/api/todos/(\\d+)");
+var matcher = pattern.matcher(req.getPathInfo());
+if (matcher.matches()) {
+    var id = Long.parseLong(matcher.group(1));
+}</code></pre>
+</section>
+
+<section>
+<h2>JSON with Jackson</h2>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+    &lt;version&gt;2.17.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</section>
+
+<section>
+<h2>Serializing with ObjectMapper</h2>
+<pre><code class="language-java">var mapper = new ObjectMapper();
+
+// Object &rarr; JSON
+resp.setContentType("application/json");
+mapper.writeValue(resp.getWriter(), todo);
+
+// JSON &rarr; Object
+var todo = mapper.readValue(req.getReader(), Todo.class);</code></pre>
+</section>
+
+<section>
+<h2>Command: List Todos</h2>
+<pre><code class="language-java">public class ListTodosCmd implements Command {
+    private final TodoRepository repo;
+    public ListTodosCmd(TodoRepository repo) {
+        this.repo = repo;
+    }
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        resp.setContentType("application/json");
+        new ObjectMapper().writeValue(
+            resp.getWriter(), repo.findAll());
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Command: Create Todo</h2>
+<pre><code class="language-java">public class CreateTodoCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var mapper = new ObjectMapper();
+        var todo = mapper.readValue(req.getReader(), Todo.class);
+        var saved = repo.save(todo);
+        resp.setStatus(201);
+        resp.setContentType("application/json");
+        mapper.writeValue(resp.getWriter(), saved);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: CRUD Commands with Jackson</h2>
+<p>Extend Front Controller with Todo CRUD commands using ObjectMapper.</p>
+</section>
+
+<section>
+<h2>Structured Error Responses</h2>
+<pre><code class="language-java">public record ErrorResponse(int status, String message) {}
+
+try {
+    cmd.execute(req, resp);
+} catch (Exception e) {
+    resp.setStatus(500);
+    resp.setContentType("application/json");
+    new ObjectMapper().writeValue(resp.getWriter(),
+        new ErrorResponse(500, e.getMessage()));
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Error Handling and Filtering</h2>
+<p>Add centralized error handling, exception types, and query parameter filtering.</p>
+</section>
+
+<section>
+<h2>Why Front Controller?</h2>
+<ul>
+<li class="fragment">Single entry point &rarr; consistent error handling</li>
+<li class="fragment">Commands are small, testable, single-purpose</li>
+<li class="fragment">Adding a route = add a Command, no servlet config</li>
+<li class="fragment">This is exactly how Spring's DispatcherServlet works</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Front Controller: one servlet dispatches to Commands</li>
+<li class="fragment">Command pattern: one class per route + method</li>
+<li class="fragment">Jackson ObjectMapper for JSON ser/des</li>
+<li class="fragment">Path variables via regex pattern matching</li>
+<li class="fragment">Centralized error handling in the front controller</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: Layered Architecture</p>
+<p>Controller &rarr; Service &rarr; Repository: separating concerns further.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">25 - REST_Servlets_FrontController</span></div>');});
+</script>
+</body>
+</html>

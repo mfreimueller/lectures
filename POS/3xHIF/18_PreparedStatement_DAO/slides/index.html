@@ -17,6 +17,41 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">SQL Injection - The Problem</li>
+<li class="fragment">SQL Injection Demo</li>
+<li class="fragment">PreparedStatement to the Rescue</li>
+<li class="fragment">PreparedStatement Benefits</li>
+<li class="fragment">Using PreparedStatement - INSERT</li>
+<li class="fragment">Using PreparedStatement - SELECT</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">Batch Processing</li>
+<li class="fragment">DAO Pattern - Motivation</li>
+<li class="fragment">DAO Interface</li>
+<li class="fragment">DAO Implementation</li>
+<li class="fragment">DAO in Practice</li>
+<li class="fragment">DAO with Connection Pooling</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain how SQL injection works and why string concatenation in SQL is dangerous</li>
+<li class="fragment">I can replace vulnerable Statement code with parameterized PreparedStatement queries</li>
+<li class="fragment">I can use batch processing to improve bulk operation performance</li>
+<li class="fragment">I can implement the DAO pattern to separate data access from business logic</li>
+<li class="fragment">I can integrate a DAO with connection pooling for production-ready data access</li>
+</ul>
+</section>
+
+<section>
 <h2>SQL Injection - The Problem</h2>
 <p>SQL injection occurs when untrusted user input is concatenated directly into SQL queries.</p>
 <pre><code class="language-java">// Vulnerable code
@@ -45,6 +80,13 @@ This deletes the entire students table! This is known as a "SQL injection attack
 </section>
 
 <section>
+<h2>Discussion: Why Does SQL Injection Persist?</h2>
+<div class="highlight-box">
+<p>SQL injection is still in the OWASP Top 10 despite being well-understood and easily preventable. Why? Discuss the human, organizational, and technical factors that keep this vulnerability alive.</p>
+</div>
+</section>
+
+<section>
 <h2>PreparedStatement to the Rescue</h2>
 <p>PreparedStatement uses parameterized queries - SQL and data are sent separately.</p>
 <pre><code class="language-java">// Safe: parameterized query
@@ -56,6 +98,11 @@ ResultSet rs = pstmt.executeQuery();
 <div class="highlight-box fragment">
 The database driver escapes the input automatically, preventing injection.
 </div>
+</section>
+
+<section>
+<h2>Now Kata 1: SQL Injection Fix</h2>
+<p>Write a vulnerable findStudentByName using Statement, then fix it with PreparedStatement</p>
 </section>
 
 <section>
@@ -170,7 +217,12 @@ Interfaces keep the data access contract database-independent.
                           rs.getString("email"), rs.getInt("grade"));
     }
 }
-</code></pre>
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: Student DAO Implementation</h2>
+<p>Implement the DAO pattern for a Student entity with PreparedStatement</p>
 </section>
 
 <section>
@@ -218,7 +270,12 @@ public class StudentDaoImpl implements StudentDao {
         } catch (SQLException e) { throw new RuntimeException(e); }
     }
 }
-</code></pre>
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Generic Base DAO</h2>
+<p>Build a generic base DAO that works with any entity type using reflection</p>
 </section>
 
 <section>

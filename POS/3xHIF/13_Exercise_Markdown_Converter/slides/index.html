@@ -17,6 +17,27 @@
 </section>
 
 <section>
+<h2>Agenda</h2>
+<ol>
+<li class="fragment">Exercise Overview</li>
+<li class="fragment">Tokenizer</li>
+<li class="fragment">Parser and AST</li>
+<li class="fragment">HTML Renderer</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can build a tokenizer that classifies Markdown text using sealed interfaces</li>
+<li class="fragment">I can parse tokens into an AST using records and sealed classes</li>
+<li class="fragment">I can render an AST to HTML using switch expressions and streams</li>
+<li class="fragment">I can apply TDD to each stage of a multi-stage text processing pipeline</li>
+<li class="fragment">I can explain why separating Tokenizer, Parser, and Renderer is good design</li>
+</ul>
+</section>
+
+<section>
 <h2>Exercise Overview</h2>
 <p>Build a Markdown to HTML converter in three stages:</p>
 <ol>
@@ -42,12 +63,29 @@ record CodeToken(String content) implements Token {}</code></pre>
 </section>
 
 <section>
+<h2>Now K1: Markdown Tokenizer</h2>
+<p>Create a tokenizer that reads Markdown text and produces tokens using a sealed interface hierarchy.</p>
+</section>
+
+<section>
 <h2>Parser and AST</h2>
 <pre><code class="language-java">sealed interface Block permits Heading, Paragraph, CodeBlock {}
 record Heading(int level, String text) implements Block {}
 record Paragraph(String text) implements Block {}
 record CodeBlock(String code) implements Block {}</code></pre>
 <p class="fragment">The parser converts a list of tokens into a list of block-level AST nodes.</p>
+</section>
+
+<section>
+<h2>Now K2: Markdown Parser with AST</h2>
+<p>Build a parser that converts tokens into an AST of Block records using sealed interfaces.</p>
+</section>
+
+<section>
+<h2>Reflection: Why Three Stages?</h2>
+<div class="highlight-box">
+<p>Why is separating Tokenizer, Parser, and Renderer into distinct stages good design? What would break if they were combined into one monolithic class? Think about testability, reusability, and adding new output formats.</p>
+</div>
 </section>
 
 <section>
@@ -65,6 +103,11 @@ private String renderBlock(Block block) {
         case CodeBlock c -> "&lt;pre&gt;&lt;code&gt;" + c.code() + "&lt;/code&gt;&lt;/pre&gt;";
     };
 }</code></pre>
+</section>
+
+<section>
+<h2>Now K3: HTML Renderer</h2>
+<p>Build an HTML renderer that walks the AST and produces valid HTML output using switch expressions.</p>
 </section>
 
 <section>

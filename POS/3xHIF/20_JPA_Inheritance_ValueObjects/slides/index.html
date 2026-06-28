@@ -17,6 +17,44 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">JPA Inheritance Overview</li>
+<li class="fragment">SINGLE_TABLE Strategy</li>
+<li class="fragment">SINGLE_TABLE - Table Structure</li>
+<li class="fragment">JOINED Strategy</li>
+<li class="fragment">JOINED - SQL Query</li>
+<li class="fragment">JOINED - Table Structure</li>
+<li class="fragment">TABLE_PER_CLASS Strategy</li>
+<li class="fragment">TABLE_PER_CLASS - Table Structure</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="9">
+<li class="fragment">Inheritance Strategy Comparison</li>
+<li class="fragment">Value Objects with @Embeddable</li>
+<li class="fragment">Using @Embedded</li>
+<li class="fragment">Value Object Examples</li>
+<li class="fragment">Repository Pattern</li>
+<li class="fragment">Generic Repository Implementation</li>
+<li class="fragment">Transaction Management</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the three JPA inheritance strategies and their trade-offs</li>
+<li class="fragment">I can map a class hierarchy using SINGLE_TABLE, JOINED, or TABLE_PER_CLASS</li>
+<li class="fragment">I can create value objects with @Embeddable and embed them with @Embedded</li>
+<li class="fragment">I can implement a generic JPA Repository for type-safe data access</li>
+<li class="fragment">I can manage transactions with explicit begin/commit/rollback boundaries</li>
+</ul>
+</section>
+
+<section>
 <h2>JPA Inheritance Overview</h2>
 <p>JPA supports three strategies for mapping class inheritance to database tables:</p>
 <ul>
@@ -177,6 +215,18 @@ public class Teacher extends Person {
 </section>
 
 <section>
+<h2>Now Kata 1: Inheritance Mapping</h2>
+<p>Map a Person hierarchy using both SINGLE_TABLE and JOINED strategies</p>
+</section>
+
+<section>
+<h2>Reflection: Choosing an Inheritance Strategy</h2>
+<div class="highlight-box">
+<p>There is no universally best inheritance strategy. Which would you choose for a real project &mdash; and why? Consider query performance, schema evolution, nullability, and team familiarity. When would you change your mind?</p>
+</div>
+</section>
+
+<section>
 <h2>Value Objects with @Embeddable</h2>
 <p>Value objects have no identity - they are defined solely by their attributes.</p>
 <pre><code class="language-java">@Embeddable
@@ -257,6 +307,11 @@ public class Email {
 </section>
 
 <section>
+<h2>Now Kata 2: Value Objects</h2>
+<p>Create @Embeddable Address, Email, Money and embed them in Student and Teacher entities</p>
+</section>
+
+<section>
 <h2>Repository Pattern</h2>
 <p>A Repository mediates between the domain and data mapping layers.</p>
         <pre><code class="language-java">public interface Repository&lt;T, ID&gt; {
@@ -314,6 +369,11 @@ The Repository pattern provides a collection-like interface for domain objects.
     // ...
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Generic Repository</h2>
+<p>Build a generic JPA Repository with transaction support</p>
 </section>
 
 <section>

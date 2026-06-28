@@ -17,6 +17,42 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: Stream Intermediate Operations</li>
+<li class="fragment">Review: Terminal Operations</li>
+<li class="fragment">What is collect?</li>
+<li class="fragment">Collectors.toList()</li>
+<li class="fragment">Collectors.toSet()</li>
+<li class="fragment">Collectors.toMap()</li>
+<li class="fragment">Collectors.joining()</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">Collectors.groupingBy()</li>
+<li class="fragment">groupingBy: Downstream Collector</li>
+<li class="fragment">groupingBy: Mapping Downstream</li>
+<li class="fragment">Collectors.partitioningBy()</li>
+<li class="fragment">partitioningBy with Downstream</li>
+<li class="fragment">Summary</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can use toList, toSet, toMap, and joining collectors to gather stream results</li>
+<li class="fragment">I can use groupingBy to classify data into categories</li>
+<li class="fragment">I can use partitioningBy to split data into two groups based on a predicate</li>
+<li class="fragment">I can chain downstream collectors for powerful aggregations</li>
+<li class="fragment">I can implement a custom Collector for specialized accumulation</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: Stream Intermediate Operations</h2>
 <ul>
 <li class="fragment">filter: select elements by predicate</li>
@@ -45,6 +81,11 @@
 <li class="fragment">Works with Collector implementations in java.util.stream.Collectors</li>
 <li class="fragment">More flexible than reduce for mutable accumulation</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 4: Custom Collector</h2>
+<p>Implement a StatisticsCollector that collects count, sum, min, max, and average from a stream of numbers.</p>
 </section>
 
 <section>
@@ -82,6 +123,13 @@ Map&lt;Integer, String&gt; idToName = people.stream()
 </section>
 
 <section>
+<h2>Reflection: Duplicate Keys in toMap</h2>
+<div class="highlight-box">
+<p>What happens when two elements produce the same key in toMap? The default behavior throws an exception &mdash; is that the right choice, or should it silently overwrite? How would you handle duplicates in a real application?</p>
+</div>
+</section>
+
+<section>
 <h2>Collectors.joining()</h2>
 <pre><code class="language-java">
 List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
@@ -92,6 +140,11 @@ String result = names.stream()
 // "Alice, Bob, Charlie"
 </code></pre>
 <p>Supports prefix and suffix: <code>joining(", ", "[", "]")</code> -> "[Alice, Bob, Charlie]"</p>
+</section>
+
+<section>
+<h2>Now Kata 1: Collect to List, Set, Map, String</h2>
+<p>Write methods using toList, toSet, toMap, and joining collectors to transform streams into various collection types.</p>
 </section>
 
 <section>
@@ -125,6 +178,11 @@ Map&lt;String, Double&gt; avgAgeByCity = people.stream()
 </section>
 
 <section>
+<h2>Now Kata 5: Multi-level Grouping</h2>
+<p>Use multi-level grouping with downstream collectors on Employee records to build complex data classifications.</p>
+</section>
+
+<section>
 <h2>groupingBy: Mapping Downstream</h2>
 <pre><code class="language-java">
 // Names per city (collect to List)
@@ -134,6 +192,11 @@ Map&lt;String, List&lt;String&gt;&gt; namesByCity = people.stream()
         Collectors.mapping(Person::name, Collectors.toList())
     ));
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: GroupingBy for Data Classification</h2>
+<p>Group people by city, count per city, and extract names by city using groupingBy with downstream collectors.</p>
 </section>
 
 <section>
@@ -160,6 +223,11 @@ Map&lt;Boolean, Long&gt; countEvenOdd = numbers.stream()
     ));
 // {false=3, true=3}
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: PartitioningBy with Downstream</h2>
+<p>Partition products by price threshold using various downstream collectors like counting, summing, and averaging.</p>
 </section>
 
 <section>

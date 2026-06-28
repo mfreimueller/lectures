@@ -17,6 +17,40 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Recap: Records</li>
+<li class="fragment">Recap: var</li>
+<li class="fragment">Default Methods</li>
+<li class="fragment">Default Methods: Usage</li>
+<li class="fragment">Default Method Inheritance</li>
+<li class="fragment">Static Methods in Interfaces</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">Pattern Matching for instanceof</li>
+<li class="fragment">Pattern Variables Scope</li>
+<li class="fragment">Pattern Matching with Records</li>
+<li class="fragment">Complex Pattern Matching</li>
+<li class="fragment">Text Blocks</li>
+<li class="fragment">Text Block Features</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can define interfaces with default and static methods</li>
+<li class="fragment">I can resolve default method inheritance conflicts</li>
+<li class="fragment">I can use pattern matching with instanceof and record patterns</li>
+<li class="fragment">I can write multiline strings using Text Blocks</li>
+</ul>
+</section>
+
+<section>
 <h2>Recap: Records</h2>
 <pre><code class="language-java">// Last week: Records
 public record Person(String name, int age) {}
@@ -85,6 +119,18 @@ public class C implements A, B {
 </section>
 
 <section>
+<h2>Discussion: The Diamond Problem</h2>
+<div class="highlight-box">
+<p>Java allows a class to implement multiple interfaces with default methods, which can lead to conflicts. Is multiple interface inheritance a good design choice, or does it introduce unnecessary complexity? How does Java's "class wins" and "subtype wins" rules help mitigate this?</p>
+</div>
+</section>
+
+<section>
+<h2>Now Kata 1: Default Methods</h2>
+<p>Define an Animal interface with a default speak() method and implement it with different animal records.</p>
+</section>
+
+<section>
 <h2>Static Methods in Interfaces</h2>
 <pre><code class="language-java">public interface MathUtils {
     static double circleArea(double radius) {
@@ -99,6 +145,11 @@ public class C implements A, B {
 <div class="highlight-box fragment">
 Static interface methods are utility methods that belong to the interface, not to instances.
 </div>
+</section>
+
+<section>
+<h2>Now Kata 4: Static Interface Methods</h2>
+<p>Create a MathUtils interface with static helper methods for common mathematical operations.</p>
 </section>
 
 <section>
@@ -156,6 +207,11 @@ if (obj instanceof Person(var name, Address(var street, var city))) {
 </section>
 
 <section>
+<h2>Now Kata 2: Pattern Matching</h2>
+<p>Refactor instanceof/cast code to use pattern matching with record patterns for cleaner type checks.</p>
+</section>
+
+<section>
 <h2>Text Blocks</h2>
 <p>Multiline strings introduced in Java 13 (preview) and finalized in Java 15.</p>
 <pre><code class="language-java">// Before
@@ -190,6 +246,16 @@ String html = """
     }
     """;
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Text Blocks</h2>
+<p>Generate HTML and JSON output using text blocks with dynamic values inserted via formatted().</p>
+</section>
+
+<section>
+<h2>Now Kata 5: Document Generator with Text Blocks</h2>
+<p>Define a Document interface with HtmlDocument and MarkdownDocument records that generate formatted output using text blocks.</p>
 </section>
 
 <section>

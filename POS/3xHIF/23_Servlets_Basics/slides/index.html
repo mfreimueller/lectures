@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>23 - Servlets_Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>23 - Servlets_Basics</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: HTTP &amp; REST</li>
+<li class="fragment">From Client to Server</li>
+<li class="fragment">What is a Servlet?</li>
+<li class="fragment">Jakarta Servlet API</li>
+<li class="fragment">HttpServlet Lifecycle</li>
+<li class="fragment">HttpServletRequest</li>
+<li class="fragment">HttpServletResponse</li>
+<li class="fragment">Maven Setup</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="9">
+<li class="fragment">Embedded Tomcat Server</li>
+<li class="fragment">Registering a Servlet</li>
+<li class="fragment">First Servlet: doGet</li>
+<li class="fragment">Reading Query Parameters</li>
+<li class="fragment">doPost: Receiving Data</li>
+<li class="fragment">Writing JSON Responses</li>
+<li class="fragment">Routing Without a Framework</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain what a Servlet is and how it fits into a Servlet container</li>
+<li class="fragment">I can start an embedded Tomcat server from a main method</li>
+<li class="fragment">I can register servlets programmatically and map them to URL paths</li>
+<li class="fragment">I can read request data using HttpServletRequest</li>
+<li class="fragment">I can write responses with status codes and content types using HttpServletResponse</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: HTTP & REST</h2>
+<ul>
+<li class="fragment">HTTP is a stateless request-response protocol</li>
+<li class="fragment">Methods: GET, POST, PUT, DELETE for CRUD</li>
+<li class="fragment">Status codes: 200, 201, 400, 404, 500</li>
+<li class="fragment">REST uses resource-oriented URIs (/api/users)</li>
+</ul>
+</section>
+
+<section>
+<h2>From Client to Server</h2>
+<ul>
+<li class="fragment">Last week: we built HTTP clients with HttpClient</li>
+<li class="fragment">Now: we build the server side ourselves</li>
+<li class="fragment">We use the bare-bone Servlet API — no framework</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Client (HttpClient) &larr; HTTP &rarr; Server (Servlet)</p>
+</div>
+</section>
+
+<section>
+<h2>What is a Servlet?</h2>
+<ul>
+<li class="fragment">A Java class that handles HTTP requests</li>
+<li class="fragment">Part of the Jakarta Servlet specification</li>
+<li class="fragment">Runs inside a Servlet Container (e.g., Tomcat)</li>
+<li class="fragment">The foundation of every Java web framework</li>
+</ul>
+</section>
+
+<section>
+<h2>Reflection: Why do all Java web frameworks build on Servlets?</h2>
+<div class="highlight-box">
+<p>What does it mean to build an abstraction layer? Why not write directly against raw TCP sockets?</p>
+</div>
+</section>
+
+<section>
+<h2>Jakarta Servlet API</h2>
+<ul>
+<li class="fragment"><code>jakarta.servlet.*</code> (not <code>javax.servlet</code>)</li>
+<li class="fragment">Tomcat 10+ uses the Jakarta namespace</li>
+<li class="fragment">Key classes: <code>HttpServlet</code>, <code>HttpServletRequest</code>, <code>HttpServletResponse</code></li>
+</ul>
+<div class="highlight-box fragment">
+<p>Spring Boot, Javalin, and all Java web frameworks build on top of Servlets.</p>
+</div>
+</section>
+
+<section>
+<h2>HttpServlet Lifecycle</h2>
+<pre><code class="language-java">public class MyServlet extends HttpServlet {
+    @Override
+    public void init() { /* called once on startup */ }
+
+    @Override
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp) { }
+
+    @Override
+    protected void doPost(HttpServletRequest req,
+                          HttpServletResponse resp) { }
+}</code></pre>
+</section>
+
+<section>
+<h2>HttpServletRequest</h2>
+<ul>
+<li class="fragment"><code>getParameter("name")</code> — query / form params</li>
+<li class="fragment"><code>getHeader("Content-Type")</code> — request headers</li>
+<li class="fragment"><code>getReader()</code> — raw request body</li>
+<li class="fragment"><code>getPathInfo()</code> — path after servlet mapping</li>
+<li class="fragment"><code>getMethod()</code> — GET, POST, PUT, DELETE</li>
+</ul>
+</section>
+
+<section>
+<h2>HttpServletResponse</h2>
+<ul>
+<li class="fragment"><code>setStatus(200)</code> — HTTP status code</li>
+<li class="fragment"><code>setContentType("application/json")</code></li>
+<li class="fragment"><code>getWriter()</code> — write text body</li>
+<li class="fragment"><code>getOutputStream()</code> — write binary body</li>
+<li class="fragment"><code>setHeader("Location", uri)</code> — response headers</li>
+</ul>
+</section>
+
+<section>
+<h2>Maven Setup</h2>
+<p>Embedded Tomcat dependency for <code>pom.xml</code>:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+    &lt;version&gt;10.1.28&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</section>
+
+<section>
+<h2>Embedded Tomcat Server</h2>
+<pre><code class="language-java">import org.apache.catalina.startup.Tomcat;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        var tomcat = new Tomcat();
+        tomcat.setPort(8080);
+        tomcat.getConnector();
+        tomcat.start();
+        tomcat.getServer().await();
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Registering a Servlet</h2>
+<pre><code class="language-java">var ctx = tomcat.addContext("", "/");
+Tomcat.addServlet(ctx, "hello", new HelloServlet());
+ctx.addServletMappingDecoded("/hello", "hello");
+Tomcat.addServlet(ctx, "api", new ApiServlet());
+ctx.addServletMappingDecoded("/api/*", "api");</code></pre>
+<div class="highlight-box fragment">
+<p>Programmatic registration — no XML, no annotations needed.</p>
+</div>
+</section>
+
+<section>
+<h2>Now Kata 1: Hello Servlet</h2>
+<p>Start embedded Tomcat, register servlets at /hello and /status that return plain text and JSON.</p>
+</section>
+
+<section>
+<h2>First Servlet: doGet</h2>
+<pre><code class="language-java">public class HelloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws IOException {
+        resp.setContentType("text/plain");
+        resp.setStatus(200);
+        resp.getWriter().println("Hello, Servlets!");
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Reading Query Parameters</h2>
+<pre><code class="language-java">@Override
+protected void doGet(HttpServletRequest req,
+                     HttpServletResponse resp)
+        throws IOException {
+    var name = req.getParameter("name");
+    if (name == null) name = "World";
+    resp.setContentType("text/plain");
+    resp.getWriter().println("Hello, " + name + "!");
+}</code></pre>
+<p class="fragment">Test: <code>curl http://localhost:8080/hello?name=Alice</code></p>
+</section>
+
+<section>
+<h2>doPost: Receiving Data</h2>
+<pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest req,
+                      HttpServletResponse resp)
+        throws IOException {
+    var body = req.getReader().lines()
+        .reduce("", String::concat);
+    resp.setContentType("text/plain");
+    resp.getWriter().println("Received: " + body);
+}</code></pre>
+<p class="fragment">Test: <code>curl -d 'hello' http://localhost:8080/hello</code></p>
+</section>
+
+<section>
+<h2>Now Kata 2: Query Params and POST Body</h2>
+<p>Write a servlet at /echo that echoes query params on GET and request body on POST.</p>
+</section>
+
+<section>
+<h2>Writing JSON Responses</h2>
+<pre><code class="language-java">resp.setContentType("application/json");
+resp.setCharacterEncoding("UTF-8");
+resp.setStatus(201);
+resp.getWriter().println(
+    "{\"id\":1,\"title\":\"Learn Servlets\"}");</code></pre>
+<div class="highlight-box fragment">
+<p>Set Content-Type before writing the body.</p>
+</div>
+</section>
+
+<section>
+<h2>Now Kata 3: JSON Todo API</h2>
+<p>Build a servlet at /api/todos/* with GET, POST, DELETE for in-memory todo CRUD using JSON.</p>
+</section>
+
+<section>
+<h2>Routing Without a Framework</h2>
+<ul>
+<li class="fragment">One servlet per path prefix (<code>/api/todos/*</code>)</li>
+<li class="fragment">Use <code>getPathInfo()</code> to distinguish sub-resources</li>
+<li class="fragment">Use <code>getMethod()</code> to dispatch GET vs POST</li>
+</ul>
+<pre class="fragment"><code class="language-java">var path = req.getPathInfo(); // "/42"
+var method = req.getMethod(); // "GET"</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<ul>
+<li class="fragment">Servlets handle HTTP requests at the lowest level</li>
+<li class="fragment">Embedded Tomcat starts from a plain main() method</li>
+<li class="fragment">Request data via HttpServletRequest</li>
+<li class="fragment">Response data via HttpServletResponse</li>
+<li class="fragment">No framework — just the bare Servlet API</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: DTOs, Validation, and Error Handling on top of Servlets.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">23 - Servlets_Basics</span></div>');});
+</script>
+</body>
+</html>

@@ -17,6 +17,41 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">From JDBC to JPA</li>
+<li class="fragment">JPA Architecture</li>
+<li class="fragment">Persistence Unit Configuration</li>
+<li class="fragment">Entity Mapping</li>
+<li class="fragment">EntityManager Operations</li>
+<li class="fragment">JPQL - JPA Query Language</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">JPQL vs SQL</li>
+<li class="fragment">@OneToOne Relationship</li>
+<li class="fragment">@OneToMany / @ManyToOne</li>
+<li class="fragment">@ManyToMany Relationship</li>
+<li class="fragment">Cascade Types</li>
+<li class="fragment">JPA vs JDBC DAO - Comparison</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the JPA architecture and the role of EntityManager</li>
+<li class="fragment">I can map Java classes to database tables using @Entity, @Table, @Id, and @Column</li>
+<li class="fragment">I can perform CRUD operations using EntityManager (persist, find, merge, remove)</li>
+<li class="fragment">I can model entity relationships using @OneToOne, @OneToMany, @ManyToOne, and @ManyToMany</li>
+<li class="fragment">I can write JPQL queries and understand the difference between JPQL and SQL</li>
+</ul>
+</section>
+
+<section>
 <h2>From JDBC to JPA</h2>
 <p>JDBC requires a lot of boilerplate code for common operations.</p>
         <pre><code class="language-java">// JPA: 1 line
@@ -24,6 +59,13 @@ entityManager.persist(student);
 </code></pre>
 <div class="highlight-box fragment">
 JPA eliminates boilerplate by mapping Java objects directly to database rows.
+</div>
+</section>
+
+<section>
+<h2>Reflection: Convenience vs Control</h2>
+<div class="highlight-box">
+<p>JPA eliminates boilerplate but hides the SQL. When would you choose JDBC over JPA, and when is JPA the clear winner? Discuss the trade-off between developer productivity and fine-grained control.</p>
 </div>
 </section>
 
@@ -114,6 +156,11 @@ tx.commit();
 </section>
 
 <section>
+<h2>Now Kata 1: JPA Entity CRUD</h2>
+<p>Create a JPA project with H2 database and implement CRUD for a Student entity</p>
+</section>
+
+<section>
 <h2>JPQL - JPA Query Language</h2>
 <p>JPQL queries entities (not tables) using Java class and field names:</p>
         <pre><code class="language-java">String jpql = "SELECT s FROM Student s WHERE s.grade &gt; :minGrade";
@@ -142,6 +189,11 @@ JPQL is database-independent - JPA generates the appropriate SQL dialect.
 "SELECT s.* FROM student s JOIN enrollment e ON s.id = e.student_id
  JOIN course c ON e.course_id = c.id WHERE c.name = ?"
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: JPQL Queries</h2>
+<p>Write and execute JPQL queries: find students by course, average grade, count per elective, etc.</p>
 </section>
 
 <section>
@@ -229,7 +281,12 @@ public class Elective {
     @ManyToMany(mappedBy = "electives")
     private List&lt;Student&gt; students = new ArrayList&lt;&gt;();
 }
-</code></pre>
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: School Domain Relationships</h2>
+<p>Model a school domain using JPA relationships (Course-Enrollment-Student, Student-Elective)</p>
 </section>
 
 <section>

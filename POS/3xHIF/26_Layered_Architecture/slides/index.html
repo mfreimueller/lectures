@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>26 - Servlets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>26 - Servlets: HttpServlet, Embedded Tomcat, Request/Response</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: HTTP &amp; REST</li>
+<li class="fragment">Servlet Container &amp; Embedded Tomcat</li>
+<li class="fragment">HttpServlet &amp; Lifecycle</li>
+<li class="fragment">HttpServletRequest – Reading Requests</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="5">
+<li class="fragment">HttpServletResponse – Writing Responses</li>
+<li class="fragment">Practical Example: Todo API</li>
+<li class="fragment">Recap &amp; Outlook</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can start an embedded Tomcat server</li>
+<li class="fragment">I can write an HttpServlet with doGet/doPost</li>
+<li class="fragment">I can read request data (parameters, headers, body)</li>
+<li class="fragment">I can manually produce JSON responses</li>
+<li class="fragment">I understand the servlet lifecycle</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: HTTP</h2>
+<ul>
+<li class="fragment">HTTP is a stateless request-response protocol</li>
+<li class="fragment">Methods: <code>GET</code> (read), <code>POST</code> (create), <code>PUT</code> (replace), <code>DELETE</code> (delete)</li>
+<li class="fragment">Status codes: <code>200</code> OK, <code>201</code> Created, <code>400</code> Bad Request, <code>404</code> Not Found, <code>500</code> Server Error</li>
+<li class="fragment">REST principle: Address resources via URIs (<code>/api/todos</code>)</li>
+</ul>
+<div class="highlight-box fragment">
+<p>A web server must speak HTTP – servlets are the Java standard API for it.</p>
+</div>
+</section>
+
+<section>
+<h2>Servlet Container</h2>
+<ul>
+<li class="fragment">A servlet container (e.g., Tomcat) is a Java program that hosts servlets</li>
+<li class="fragment">It receives HTTP requests and forwards them to the appropriate servlet</li>
+<li class="fragment">Classic: Tomcat is installed, servlets deployed as <code>.war</code> files</li>
+<li class="fragment">Modern: Embedded Tomcat – we start Tomcat from <code>main()</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Embedded Tomcat</h2>
+<p>Maven dependency:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-core&lt;/artifactId&gt;
+    &lt;version&gt;11.0.23&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p class="fragment">No external Tomcat installation needed – everything in a single <code>main()</code> method!</p>
+</section>
+
+<section>
+<h2>Starting Tomcat</h2>
+<pre><code class="language-java">import org.apache.catalina.startup.Tomcat;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        var tomcat = new Tomcat();
+        tomcat.setPort(8080);
+        tomcat.getConnector();
+
+        var ctx = tomcat.addContext("", "/");
+        Tomcat.addServlet(ctx, "hello", new HelloServlet());
+        ctx.addServletMappingDecoded("/hello", "hello");
+
+        tomcat.start();
+        tomcat.getServer().await();
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Starting Tomcat – Result</h2>
+<p class="fragment">The server runs until we stop it with <kbd>Ctrl+C</kbd>.</p>
+</section>
+
+<section>
+<h2>HttpServlet &amp; Lifecycle</h2>
+<pre><code class="language-java">public class MyServlet extends HttpServlet {
+
+    @Override
+    public void init() {
+        // Called once at startup
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp) {
+        // Called on every GET request
+    }
+
+    @Override
+    public void destroy() {
+        // Called on shutdown
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Servlet Lifecycle in Detail</h2>
+<table>
+<tr><th>Phase</th><th>When?</th><th>How often?</th></tr>
+<tr class="fragment"><td><code>init()</code></td><td>On first load of the servlet</td><td>Once</td></tr>
+<tr class="fragment"><td><code>service()</code></td><td>On every HTTP request</td><td>Thread-safe!</td></tr>
+<tr class="fragment"><td><code>doGet() / doPost()</code></td><td>Depending on HTTP method</td><td>Per request</td></tr>
+<tr class="fragment"><td><code>destroy()</code></td><td>On shutdown</td><td>Once</td></tr>
+</table>
+<div class="highlight-box fragment">
+<p>A servlet is instantiated <strong>once</strong> and serves <strong>all</strong> requests.</p>
+</div>
+</section>
+
+<section>
+<h2>HttpServletRequest – Methods (1)</h2>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td><code>getMethod()</code></td><td>HTTP method: GET, POST, PUT, DELETE</td></tr>
+<tr><td><code>getRequestURI()</code></td><td>Full path: <code>/api/todos/42</code></td></tr>
+<tr><td><code>getPathInfo()</code></td><td>Path after the servlet mapping</td></tr>
+<tr><td><code>getQueryString()</code></td><td>Query part: <code>?name=Alice</code></td></tr>
+</table>
+</section>
+
+<section>
+<h2>HttpServletRequest – Methods (2)</h2>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td><code>getParameter("key")</code></td><td>Read query/form parameters</td></tr>
+<tr><td><code>getHeader("Name")</code></td><td>Read HTTP headers</td></tr>
+<tr><td><code>getReader()</code></td><td>Request body as <code>BufferedReader</code></td></tr>
+<tr><td><code>getContentType()</code></td><td>Content-Type of the request</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Practice: GET with Query Parameters</h2>
+<pre><code class="language-java">@Override
+protected void doGet(HttpServletRequest req,
+                     HttpServletResponse resp)
+        throws IOException {
+    var name = req.getParameter("name");
+    if (name == null) name = "World";
+
+    resp.setContentType("text/plain");
+    resp.setStatus(200);
+    resp.getWriter().println("Hello, " + name + "!");
+}</code></pre>
+<p class="fragment">Test: <code>curl "http://localhost:8080/hello?name=Alice"</code></p>
+</section>
+
+<section>
+<h2>Practice: POST with Body</h2>
+<pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest req,
+                      HttpServletResponse resp)
+        throws IOException {
+    var body = req.getReader().lines()
+        .collect(Collectors.joining());
+
+    System.out.println("Received: " + body);
+
+    resp.setStatus(201);
+    resp.setContentType("text/plain");
+    resp.getWriter().println("OK: " + body.length() + " characters");
+}</code></pre>
+<p class="fragment">Test: <code>curl -d '{"title":"Learn"}' -H "Content-Type: application/json" http://localhost:8080/todos</code></p>
+</section>
+
+<section>
+<h2>HttpServletResponse – Methods (1/2)</h2>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td><code>setStatus(int)</code></td><td>Set HTTP status code</td></tr>
+<tr><td><code>setContentType(String)</code></td><td>Content-Type: <code>application/json</code></td></tr>
+<tr><td><code>setCharacterEncoding(String)</code></td><td>Encoding: <code>UTF-8</code></td></tr>
+</table>
+</section>
+
+<section>
+<h2>HttpServletResponse – Methods (2/2)</h2>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td><code>getWriter()</code></td><td>Text output stream</td></tr>
+<tr><td><code>getOutputStream()</code></td><td>Binary output stream</td></tr>
+<tr><td><code>setHeader(String, String)</code></td><td>Set response header</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Manual JSON Responses</h2>
+<pre><code class="language-java">resp.setContentType("application/json");
+resp.setCharacterEncoding("UTF-8");
+resp.setStatus(200);
+resp.getWriter().println("{\"id\":1,\"title\":\"Learn Servlets\"}");</code></pre>
+<div class="highlight-box fragment">
+<p>Later we'll use Jackson – for now, string concatenation is enough.</p>
+</div>
+</section>
+
+<section>
+<h2>Setting Status Codes Correctly</h2>
+<table>
+<tr><th>Situation</th><th>Status Code</th></tr>
+<tr><td>Resource found (GET)</td><td><code>200</code></td></tr>
+<tr><td>Resource created (POST)</td><td><code>201</code></td></tr>
+<tr><td>Validation error</td><td><code>400</code></td></tr>
+<tr><td>Resource not found</td><td><code>404</code></td></tr>
+<tr><td>Internal server error</td><td><code>500</code></td></tr>
+</table>
+<pre class="fragment"><code class="language-java">if (id == null) {
+    resp.sendError(400, "ID is missing");
+    return;
+}</code></pre>
+</section>
+
+<section>
+<h2>Setting &amp; Reading Headers</h2>
+<pre><code class="language-java">// Read request headers
+var auth = req.getHeader("Authorization");
+var lang = req.getHeader("Accept-Language");
+
+// Set response headers
+resp.setHeader("Location", "/api/todos/42");
+resp.setHeader("X-API-Version", "1.0");
+
+// CORS headers for browser clients
+resp.setHeader("Access-Control-Allow-Origin", "*");</code></pre>
+</section>
+
+<section>
+<h2>A Complete Todo Servlet</h2>
+<pre><code class="language-java">public class TodoServlet extends HttpServlet {
+    private final Map&lt;Long, String&gt; todos = new HashMap&lt;&gt;();
+    private long nextId = 1;
+
+    @Override
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        resp.setStatus(200);
+        var json = todos.entrySet().stream()
+            .map(e -> "{\"id\":" + e.getKey()
+                    + ",\"title\":\"" + e.getValue() + "\"}")
+            .toList()
+            .toString();
+        resp.getWriter().println(json);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>POST – Create a Todo</h2>
+<pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest req,
+                      HttpServletResponse resp)
+        throws IOException {
+    var body = req.getReader().readLine();
+    // body = "title=Learn"
+    var title = body.replace("title=", "");
+
+    var id = nextId++;
+    todos.put(id, title);
+
+    resp.setStatus(201);
+    resp.setContentType("application/json");
+    resp.getWriter().println(
+        "{\"id\":" + id + ",\"title\":\"" + title + "\"}");
+}</code></pre>
+</section>
+
+<section>
+<h2>DELETE – Delete a Todo</h2>
+<pre><code class="language-java">@Override
+protected void doDelete(HttpServletRequest req,
+                        HttpServletResponse resp) {
+    var path = req.getPathInfo(); // "/42"
+    if (path == null || path.equals("/")) {
+        resp.setStatus(400);
+        return;
+    }
+    var id = Long.parseLong(path.substring(1));
+    if (todos.remove(id) != null) {
+        resp.setStatus(204); // No Content
+    } else {
+        resp.setStatus(404);
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Error Handling in Servlets</h2>
+<pre><code class="language-java">@Override
+protected void doGet(HttpServletRequest req,
+                     HttpServletResponse resp)
+        throws IOException {
+    try {
+        var id = Long.parseLong(req.getParameter("id"));
+        var todo = todos.get(id);
+        if (todo == null) {
+            resp.sendError(404, "Todo not found");
+            return;
+        }
+        // ... write response
+    } catch (NumberFormatException e) {
+        resp.sendError(400, "Invalid ID");
+    }
+}</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: Add a Service Layer</h2>
+<p>Add a TodoService interface between Commands and Repository with validation logic.</p>
+</section>
+
+<section>
+<h2>Registering Multiple Servlets</h2>
+<pre><code class="language-java">Tomcat.addServlet(ctx, "todos", new TodoServlet());
+ctx.addServletMappingDecoded("/api/todos/*", "todos");
+Tomcat.addServlet(ctx, "users", new UserServlet());
+ctx.addServletMappingDecoded("/api/users/*", "users");</code></pre>
+<div class="highlight-box fragment">
+<p>Each servlet is responsible for a path range.</p>
+</div>
+</section>
+
+<section>
+<h2>Now Kata 1: Split a Fat Command</h2>
+<p>Extract a TodoRepository interface from a monolithic ListTodosCmd and implement InMemoryTodoRepository.</p>
+</section>
+
+<section>
+<h2>ServletConfig &amp; Init Parameters</h2>
+<pre><code class="language-java">public class ConfigServlet extends HttpServlet {
+    @Override
+    public void init() {
+        var dbUrl = getServletConfig()
+            .getInitParameter("db.url");
+        var maxSize = getServletConfig()
+            .getInitParameter("max.size");
+    }
+}
+
+// When registering:
+var servlet = Tomcat.addServlet(ctx, "config",
+    new ConfigServlet());
+servlet.setInitParameter("db.url",
+    "jdbc:postgresql://localhost/mydb");
+servlet.setInitParameter("max.size", "100");</code></pre>
+</section>
+
+<section>
+<h2>Thread Safety in Servlets</h2>
+<ul>
+<li class="fragment">A servlet is instantiated <strong>once</strong></li>
+<li class="fragment">All requests run <strong>in parallel</strong> in their own threads</li>
+<li class="fragment">Instance variables are shared by <strong>all</strong> threads</li>
+</ul>
+<div class="highlight-box fragment">
+<p>Thread safety must be considered! Use local variables or synchronization.</p>
+</div>
+<pre class="fragment"><code class="language-java">// OK: local variable (per request)
+public void doGet(...) {
+    var list = fetchFromDatabase(); // local
+}
+
+// Dangerous: shared state
+private int counter = 0; // not thread-safe!</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Test the Service Layer</h2>
+<p>Write JUnit 5 tests for TodoService using AssertJ and optionally Mockito.</p>
+</section>
+
+<section>
+<h2>Discussion: Why is shared mutable state in servlets dangerous?</h2>
+<div class="highlight-box">
+<p>Shared mutable state is one of the most common sources of production bugs in web applications. How do you prevent race conditions when a single servlet instance handles concurrent requests?</p>
+</div>
+</section>
+
+<section>
+<h2>Summary (1/2)</h2>
+<ul>
+<li class="fragment"><code>HttpServlet</code> is the Java standard API for HTTP handlers</li>
+<li class="fragment">Embedded Tomcat starts from <code>main()</code> – no external server needed</li>
+<li class="fragment"><code>HttpServletRequest</code> provides access to all request data</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary (2/2)</h2>
+<ul>
+<li class="fragment"><code>HttpServletResponse</code> controls status, headers, and body</li>
+<li class="fragment">Servlets are registered programmatically (no XML, no annotations)</li>
+<li class="fragment">Mind thread safety: prefer local variables</li>
+</ul>
+</section>
+
+<section class="center">
+<div class="highlight-box">
+<h2>Outlook</h2>
+<p>Next week: <strong>Exam 3</strong></p>
+<p>After that: DTOs, validation &amp; error handling – to make our API more robust.</p>
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">26 - Servlets: HttpServlet, Embedded Tomcat, Request/Response</span></div>');});
+</script>
+</body>
+</html>

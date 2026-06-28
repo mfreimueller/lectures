@@ -17,6 +17,35 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">JPA Recap - Entities and Relationships</li>
+<li class="fragment">JPA Recap - Inheritance and Value Objects</li>
+<li class="fragment">Exercise: School Management Data Layer</li>
+<li class="fragment">Domain Model</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="5">
+<li class="fragment">Testing with H2</li>
+<li class="fragment">Deliverables</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can define JPA entity classes with inheritance strategies</li>
+<li class="fragment">I can model relationships using @OneToMany, @ManyToMany, and @OneToOne</li>
+<li class="fragment">I can create embeddable value objects for Address, Email, and Money</li>
+<li class="fragment">I can implement generic and concrete Repository interfaces</li>
+<li class="fragment">I can write integration tests using H2 in-memory database</li>
+</ul>
+</section>
+
+<section>
 <h2>JPA Recap - Entities and Relationships</h2>
 <ul>
 <li>@Entity, @Id, @GeneratedValue for entity mapping</li>
@@ -51,6 +80,13 @@
 </section>
 
 <section>
+<h2>Reflection: How do you approach a complex domain model?</h2>
+<div class="highlight-box">
+<p>Why start with entities before repositories? What happens if you define queries before you understand the relationships between your domain objects?</p>
+</div>
+</section>
+
+<section>
 <h2>Domain Model</h2>
 <pre><code class="language-java">// Inheritance: Person -> Student, Teacher
 // Value Objects: Address, Email (embeddable)
@@ -65,6 +101,11 @@ Repository&lt;T, ID&gt; (interface)
   +-- TeacherRepository (extends JpaRepository)
   +-- CourseRepository (extends JpaRepository)
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: Entity Layer</h2>
+<p>Define all entity classes for a school management system with inheritance, value objects, and relationships.</p>
 </section>
 
 <section>
@@ -85,6 +126,11 @@ Repository&lt;T, ID&gt; (interface)
 </section>
 
 <section>
+<h2>Now Kata 2: Repository Layer</h2>
+<p>Implement a Repository layer with generic JpaRepository and custom JPQL query methods.</p>
+</section>
+
+<section>
 <h2>Deliverables</h2>
 <ul>
 <li>Entity classes with proper annotations and relationships</li>
@@ -93,6 +139,11 @@ Repository&lt;T, ID&gt; (interface)
 <li>Concrete repositories for Student, Teacher, Course</li>
 <li>Integration tests verifying CRUD, relationships, queries</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 3: Integration Tests</h2>
+<p>Write JUnit 5 integration tests for the Repository layer using H2 in-memory database.</p>
 </section>
 
 <section class="center">

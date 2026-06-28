@@ -17,6 +17,41 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: TDD Recap</li>
+<li class="fragment">Review: Why Design Matters</li>
+<li class="fragment">What are SOLID Principles?</li>
+<li class="fragment">SRP: Single Responsibility Principle</li>
+<li class="fragment">SRP: Violation Example</li>
+<li class="fragment">SRP: Solution</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">SRP: Benefits</li>
+<li class="fragment">OCP: Open-Closed Principle</li>
+<li class="fragment">OCP: Violation Example</li>
+<li class="fragment">OCP: Solution</li>
+<li class="fragment">OCP: Benefits</li>
+<li class="fragment">Summary: SRP + OCP</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the Single Responsibility Principle and identify violations</li>
+<li class="fragment">I can refactor a class with multiple responsibilities into focused classes</li>
+<li class="fragment">I can explain the Open-Closed Principle and its benefits</li>
+<li class="fragment">I can use interfaces to extend behavior without modifying existing code</li>
+<li class="fragment">I can apply SRP and OCP together to improve code design</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: TDD Recap</h2>
 <ul>
 <li class="fragment">Red: Write a failing test</li>
@@ -73,6 +108,13 @@ class Invoice {
 </section>
 
 <section>
+<h2>Discussion: Where Do You Draw the Line?</h2>
+<div class="highlight-box">
+<p>How do you identify when a class has "too many" responsibilities? Is "one reason to change" always clear, or does it depend on context? Discuss in pairs: where would you split the Invoice class, and why?</p>
+</div>
+</section>
+
+<section>
 <h2>SRP: Solution</h2>
 <pre><code class="language-java">
 class InvoiceCalculator { /* calculate total */ }
@@ -84,6 +126,11 @@ class EmailService { /* send email */ }
 </section>
 
 <section>
+<h2>Now Kata 1: SRP -- Extract Responsibilities</h2>
+<p>Refactor a UserService that handles validation, persistence, email, and logging into separate, focused classes.</p>
+</section>
+
+<section>
 <h2>SRP: Benefits</h2>
 <ul>
 <li class="fragment">Easier to understand</li>
@@ -91,6 +138,11 @@ class EmailService { /* send email */ }
 <li class="fragment">Easier to maintain (changes are localized)</li>
 <li class="fragment">Better reuse (small classes compose well)</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 4: SRP - Extract Validation</h2>
+<p>Extract validation, persistence, and logging from a UserController into separate, testable classes.</p>
 </section>
 
 <section>
@@ -137,12 +189,22 @@ class Rectangle implements Shape {
 </section>
 
 <section>
+<h2>Now Kata 2: OCP -- Reporting System</h2>
+<p>Introduce a ReportFormatter interface so new output formats can be added without modifying existing code.</p>
+</section>
+
+<section>
 <h2>OCP: Benefits</h2>
 <ul>
 <li class="fragment">Reduces risk of introducing bugs in working code</li>
 <li class="fragment">Encourages reuse through interfaces</li>
 <li class="fragment">Supports plugin-like architectures</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 5: OCP with Specification Pattern</h2>
+<p>Build a flexible product filtering system using the Specification pattern for composable, open-closed queries.</p>
 </section>
 
 <section>
@@ -153,6 +215,11 @@ class Rectangle implements Shape {
 <li class="fragment">Both rely on clean abstractions</li>
 <li class="fragment">Both make code more maintainable</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 3: Payroll System Refactoring</h2>
+<p>Refactor a Payroll class that violates both SRP and OCP, applying the Strategy pattern to separate concerns.</p>
 </section>
 
 <section class="center">

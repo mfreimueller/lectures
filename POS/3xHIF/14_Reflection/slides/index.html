@@ -17,6 +17,42 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">What is Reflection?</li>
+<li class="fragment">The Class Object</li>
+<li class="fragment">Inspecting Class Metadata</li>
+<li class="fragment">Inspecting Methods</li>
+<li class="fragment">Inspecting Fields</li>
+<li class="fragment">Inspecting Constructors</li>
+<li class="fragment">Dynamic Method Invocation</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">Dynamic Field Access</li>
+<li class="fragment">Working with Constructors</li>
+<li class="fragment">setAccessible and Encapsulation</li>
+<li class="fragment">Arrays via Reflection</li>
+<li class="fragment">Performance Considerations</li>
+<li class="fragment">Practical Use Cases</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain what Reflection is and why frameworks depend on it</li>
+<li class="fragment">I can inspect classes, methods, fields, and constructors at runtime using the Class object</li>
+<li class="fragment">I can invoke methods and access fields dynamically without compile-time type knowledge</li>
+<li class="fragment">I can create instances dynamically using Constructor.newInstance()</li>
+<li class="fragment">I can evaluate the performance and security trade-offs of using setAccessible()</li>
+</ul>
+</section>
+
+<section>
 <h2>What is Reflection?</h2>
 <p>Reflection is the ability of a program to inspect and modify its own structure and behavior at runtime.</p>
 <ul>
@@ -90,6 +126,11 @@ Class&lt;?&gt;[] paramTypes = ctor.getParameterTypes();</code></pre>
 </section>
 
 <section>
+<h2>Now Kata 1: Class Inspector</h2>
+<p>Write a utility class that uses reflection to print the structure of any given class (fields, constructors, methods)</p>
+</section>
+
+<section>
 <h2>Dynamic Method Invocation</h2>
 <pre><code class="language-java">Person p = new Person("Alice", 30);
 Class&lt;?&gt; clazz = p.getClass();
@@ -117,6 +158,11 @@ nameField.set(p, "Bob");</code></pre>
 </section>
 
 <section>
+<h2>Now Kata 2: Dynamic Getter/Setter Invoker</h2>
+<p>Implement a generic utility that uses reflection to invoke all getters and setters on any Java object</p>
+</section>
+
+<section>
 <h2>Working with Constructors</h2>
 <pre><code class="language-java">Class&lt;?&gt; clazz = Class.forName("Person");
 
@@ -136,6 +182,18 @@ Object person = ctor.newInstance("Alice", 30);
 <li class="fragment"><code>--add-opens</code> JVM flag to open packages for reflection</li>
 <li class="fragment">Use with caution — breaks encapsulation and can impact security</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 3: Private Field Accessor with Validation</h2>
+<p>Build a validation framework that uses reflection to read private fields and check for @NotNull constraints</p>
+</section>
+
+<section>
+<h2>Reflection: Is setAccessible Justified?</h2>
+<div class="highlight-box">
+<p>Is bypassing access control with setAccessible ever justified in production code? Consider frameworks like Spring, JPA, and Jackson &mdash; they all rely on it. Where do you draw the line between framework infrastructure and application code?</p>
+</div>
 </section>
 
 <section>

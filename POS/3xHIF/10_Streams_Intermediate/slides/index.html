@@ -17,6 +17,43 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: SOLID Recap</li>
+<li class="fragment">Review: From OOP to Functional</li>
+<li class="fragment">What is a Stream?</li>
+<li class="fragment">Stream Pipeline</li>
+<li class="fragment">filter</li>
+<li class="fragment">filter with Objects</li>
+<li class="fragment">map</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">map with Method References</li>
+<li class="fragment">flatMap</li>
+<li class="fragment">flatMap Example: Words</li>
+<li class="fragment">forEach</li>
+<li class="fragment">reduce</li>
+<li class="fragment">reduce: Finding Max</li>
+<li class="fragment">Summary</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain what a Stream is and how lazy evaluation works</li>
+<li class="fragment">I can use filter and map to transform collections declaratively</li>
+<li class="fragment">I can use flatMap to flatten nested data structures</li>
+<li class="fragment">I can use reduce to combine stream elements into a single value</li>
+<li class="fragment">I can choose between loops and streams based on readability</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: SOLID Recap</h2>
 <ul>
 <li class="fragment">SRP: Single responsibility</li>
@@ -44,6 +81,13 @@
 <li class="fragment">Supports pipelining: chain operations together</li>
 <li class="fragment">Lazy evaluation: intermediate ops are not executed until a terminal op is called</li>
 </ul>
+</section>
+
+<section>
+<h2>Reflection: Streams vs. Loops</h2>
+<div class="highlight-box">
+<p>Do streams make code more readable or more cryptic? When would you prefer a traditional for-loop over a stream pipeline? Discuss with your neighbor: what makes a stream pipeline "good" vs. "over-engineered"?</p>
+</div>
 </section>
 
 <section>
@@ -86,6 +130,11 @@ List&lt;Person&gt; named = people.stream()
 </section>
 
 <section>
+<h2>Now Kata 1: Filter and Map</h2>
+<p>Write methods that use stream filter and map operations to transform and select data from collections.</p>
+</section>
+
+<section>
 <h2>map</h2>
 <p>Transforms each element using a function.</p>
 <pre><code class="language-java">
@@ -110,6 +159,11 @@ List&lt;Integer&gt; lengths = names.stream()
 
 // Result: [5, 3, 7]
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 4: Advanced flatMap</h2>
+<p>Use flatMap on a nested School/Department/Teacher structure with Optional fields to extract and flatten data.</p>
 </section>
 
 <section>
@@ -144,6 +198,11 @@ List&lt;String&gt; words = sentences.stream()
 </section>
 
 <section>
+<h2>Now Kata 2: flatMap Nested Collections</h2>
+<p>Flatten lists of lists, extract words from sentences, and get unique characters using flatMap.</p>
+</section>
+
+<section>
 <h2>forEach</h2>
 <p>Performs an action on each element (terminal operation).</p>
 <pre><code class="language-java">List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie");
@@ -154,6 +213,11 @@ names.stream()
 <div class="highlight-box fragment">
 <p>Prefer toList() over forEach for collecting results!</p>
 </div>
+</section>
+
+<section>
+<h2>Now Kata 5: Stream Pipeline with Peek</h2>
+<p>Debug stream pipelines using peek() and a custom DebugCollector to inspect intermediate results.</p>
 </section>
 
 <section>
@@ -182,6 +246,11 @@ Optional&lt;Integer&gt; max = numbers.stream()
 
 max.ifPresent(System.out::println); // 9
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: reduce Pipeline</h2>
+<p>Use reduce for sum of lengths, longest string, factorial, and concatenation with a custom delimiter.</p>
 </section>
 
 <section>

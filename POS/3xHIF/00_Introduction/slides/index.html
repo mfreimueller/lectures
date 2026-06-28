@@ -17,6 +17,41 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Welcome to POS</li>
+<li class="fragment">Course Topics</li>
+<li class="fragment">Grading</li>
+<li class="fragment">Tooling Setup</li>
+<li class="fragment">Installing JDK</li>
+<li class="fragment">Maven Setup</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">IDE Setup</li>
+<li class="fragment">Local Variable Type Inference</li>
+<li class="fragment">var Restrictions</li>
+<li class="fragment">var with Collections</li>
+<li class="fragment">Records (Java 16+)</li>
+<li class="fragment">Record Features</li>
+<li class="fragment">Using Records</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can set up a Java development environment with JDK, Maven, and an IDE</li>
+<li class="fragment">I can use var to declare local variables when the type is obvious</li>
+<li class="fragment">I can define and use Records as immutable data carriers</li>
+<li class="fragment">I can create a Maven project and manage dependencies</li>
+</ul>
+</section>
+
+<section>
 <h2>Welcome to POS</h2>
 <p>Object-oriented programming with modern Java.</p>
 <ul>
@@ -78,6 +113,11 @@ mvn exec:java -Dexec.mainClass="com.example.App"
 </section>
 
 <section>
+<h2>Now Kata 3: Maven</h2>
+<p>Create a Maven project with multiple classes and add a Guava dependency to your pom.xml.</p>
+</section>
+
+<section>
 <h2>IDE Setup</h2>
 <ul>
 <li>IntelliJ IDEA: Open the pom.xml file</li>
@@ -132,6 +172,11 @@ for (var entry : map.entrySet()) {
 </section>
 
 <section>
+<h2>Now Kata 1: Hello World</h2>
+<p>Write a program using var to declare a greeting and print it along with the current date/time.</p>
+</section>
+
+<section>
 <h2>Records (Java 16+)</h2>
 <p>A Record is a transparent carrier for immutable data.</p>
 <pre><code class="language-java">// After: Record
@@ -161,6 +206,13 @@ Records automatically generate constructor, accessors, equals, hashCode, and toS
 </section>
 
 <section>
+<h2>Reflection: When to Use Records?</h2>
+<div class="highlight-box">
+<p>Records are great for immutable data carriers, but when should you still use a full class? Consider: validation logic, mutable state, inheritance, and complex behavior. Can you think of a real-world example where a Record would be the wrong choice?</p>
+</div>
+</section>
+
+<section>
 <h2>Using Records</h2>
 <pre><code class="language-java">var p = new Point(3, 4);
 System.out.println(p.x());    // 3 (accessor, not getX!)
@@ -173,6 +225,11 @@ if (p instanceof Point(int x, int y)) {
     System.out.println(x + ", " + y);
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: Records</h2>
+<p>Define a Book record with validation in a compact constructor and an age() method that calculates years since publication.</p>
 </section>
 
 <section>

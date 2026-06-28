@@ -17,6 +17,43 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">What are Annotations?</li>
+<li class="fragment">Built-in Annotations</li>
+<li class="fragment">Defining Custom Annotations</li>
+<li class="fragment">@Retention Policy</li>
+<li class="fragment">@Target Element Types</li>
+<li class="fragment">Annotation Elements</li>
+<li class="fragment">Runtime Annotation Processing</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">Processing Class-level Annotations</li>
+<li class="fragment">Processing Field-level Annotations</li>
+<li class="fragment">Processing Method-level Annotations</li>
+<li class="fragment">Repeatable Annotations</li>
+<li class="fragment">Real-world: JPA Annotations</li>
+<li class="fragment">Real-world: Jackson</li>
+<li class="fragment">Real-world: JUnit</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain what annotations are and how they enable declarative programming</li>
+<li class="fragment">I can define custom annotations with @Retention, @Target, and default values</li>
+<li class="fragment">I can process annotations at runtime using reflection on classes, fields, and methods</li>
+<li class="fragment">I can implement repeatable annotations and understand their container pattern</li>
+<li class="fragment">I can recognize how real-world frameworks like JPA, Jackson, and JUnit use annotations</li>
+</ul>
+</section>
+
+<section>
 <h2>What are Annotations?</h2>
 <p>Annotations are metadata attached to Java source code elements (classes, methods, fields, etc.).</p>
 <ul>
@@ -24,7 +61,14 @@
 <li class="fragment">Do not directly affect program execution</li>
 <li class="fragment">Can be processed at compile time, class loading, or runtime</li>
 </ul>
-<div class="highlight-box fragment">Annotations enable declarative programming — you say <em>what</em> to do, not <em>how</em>.</div>
+<div class="highlight-box fragment">Annotations enable declarative programming &mdash; you say <em>what</em> to do, not <em>how</em>.</div>
+</section>
+
+<section>
+<h2>Discussion: Declarative vs Imperative</h2>
+<div class="highlight-box">
+<p>How do annotations change the way we write code? Does declarative style (&ldquo;what&rdquo;) make code easier or harder to understand compared to imperative style (&ldquo;how&rdquo;)? Discuss with examples from your own experience.</p>
+</div>
 </section>
 
 <section>
@@ -113,6 +157,11 @@ if (clazz.isAnnotationPresent(LogExecutionTime.class)) {
 </section>
 
 <section>
+<h2>Now Kata 2: @ToString Annotation Processor</h2>
+<p>Implement a @ToString annotation and processor that generates string representation of annotated objects</p>
+</section>
+
+<section>
 <h2>Processing Field-level Annotations</h2>
 <pre><code class="language-java">for (Field field : clazz.getDeclaredFields()) {
     if (field.isAnnotationPresent(NotNull.class)) {
@@ -136,6 +185,11 @@ if (clazz.isAnnotationPresent(LogExecutionTime.class)) {
             + " took " + duration + "ns");
     }
 }</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: @LogExecutionTime Annotation</h2>
+<p>Define a @LogExecutionTime annotation and write a processor that measures and logs method execution time</p>
 </section>
 
 <section>
@@ -186,6 +240,12 @@ public class User {
 <li>Jackson uses @JsonProperty, @JsonIgnore for serialization</li>
 </ul>
 </section>
+
+<section>
+<h2>Now Kata 3: Annotation-driven JSON Serializer</h2>
+<p>Implement a mini JSON serializer using @JsonProperty and @JsonIgnore annotations</p>
+</section>
+
 <section>
 <h2>Real-world: JUnit</h2>
 <pre><code class="language-java">@Test

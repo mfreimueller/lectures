@@ -17,6 +17,27 @@
 </section>
 
 <section>
+<h2>Agenda</h2>
+<ol>
+<li class="fragment">Legacy Code Example</li>
+<li class="fragment">Refactoring Targets</li>
+<li class="fragment">Demo: Person to Record</li>
+<li class="fragment">Demo: Anonymous Class to Lambda</li>
+<li class="fragment">Exercise Workflow</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can identify refactoring opportunities in legacy Java code</li>
+<li class="fragment">I can replace verbose classes with Records where appropriate</li>
+<li class="fragment">I can convert anonymous inner classes to lambda expressions</li>
+<li class="fragment">I can apply modern Java features incrementally while preserving behavior</li>
+</ul>
+</section>
+
+<section>
 <h2>Legacy Code Example</h2>
 <pre><code class="language-java">// Java 7 style: verbose, lots of boilerplate
 public class Person {
@@ -42,10 +63,27 @@ Today we refactor this to modern Java.
 </section>
 
 <section>
+<h2>Reflection: Refactoring Without Tests</h2>
+<div class="highlight-box">
+<p>Refactoring legacy code without a test suite is like defusing a bomb blindfolded. Why is it so dangerous? How should a team approach legacy code that has no tests? Should you write tests first, or refactor incrementally?</p>
+</div>
+</section>
+
+<section>
+<h2>Now Kata 3: Full Refactoring</h2>
+<p>Refactor a legacy order processing system by applying multiple modern Java features at once.</p>
+</section>
+
+<section>
 <h2>Demo: Person to Record</h2>
 <pre><code class="language-java">// After: 3 lines instead of 30+
 public record Person(String name, int age) {}
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: Basic Refactoring</h2>
+<p>Refactor a Java 7 Employee class to use Records, lambdas, and streams.</p>
 </section>
 
 <section>
@@ -63,6 +101,16 @@ button.addActionListener(e -> System.out.println("Clicked!"));
 </section>
 
 <section>
+<h2>Now Kata 2: Pattern Matching and Switch Refactoring</h2>
+<p>Refactor an instanceof/cast chain to use a sealed interface with a switch expression.</p>
+</section>
+
+<section>
+<h2>Now Kata 4: Streams Refactoring</h2>
+<p>Convert an imperative loop-based algorithm to use streams with lambdas and method references.</p>
+</section>
+
+<section>
 <h2>Exercise Workflow</h2>
 <ol>
 <li>Review the legacy code</li>
@@ -70,6 +118,11 @@ button.addActionListener(e -> System.out.println("Clicked!"));
 <li class="fragment">Run tests after each step</li>
 <li class="fragment">Compare before and after</li>
 </ol>
+</section>
+
+<section>
+<h2>Now Kata 5: Full Modern Java Migration</h2>
+<p>Migrate a legacy Order class to a Record with a sealed status hierarchy and modern processing patterns.</p>
 </section>
 
 </div></div>

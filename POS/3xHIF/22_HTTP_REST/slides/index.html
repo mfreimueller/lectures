@@ -17,6 +17,41 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: JDBC Recap</li>
+<li class="fragment">Review: Repository Pattern</li>
+<li class="fragment">What is HTTP?</li>
+<li class="fragment">HTTP Structure</li>
+<li class="fragment">HTTP Methods</li>
+<li class="fragment">HTTP Status Codes</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">REST Principles</li>
+<li class="fragment">REST Resource Design</li>
+<li class="fragment">Java HttpClient</li>
+<li class="fragment">HttpClient: GET Request</li>
+<li class="fragment">HttpClient: POST Request</li>
+<li class="fragment">Parsing JSON with Records</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the HTTP request-response model and its components</li>
+<li class="fragment">I can choose the correct HTTP method and status code for a given operation</li>
+<li class="fragment">I can design RESTful resource URIs following best practices</li>
+<li class="fragment">I can use Java HttpClient to send GET and POST requests</li>
+<li class="fragment">I can parse JSON responses into Java records</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: JDBC Recap</h2>
 <ul>
 <li class="fragment">JDBC provides database access via Connection, Statement, ResultSet</li>
@@ -100,6 +135,13 @@ Accept: application/json
 </section>
 
 <section>
+<h2>Reflection: Is REST the only way to build APIs?</h2>
+<div class="highlight-box">
+<p>When might you choose RPC or GraphQL instead of REST? What trade-offs do you make with each approach?</p>
+</div>
+</section>
+
+<section>
 <h2>REST Resource Design</h2>
 <pre><code class="language-http">
 GET    /api/users        # List all users
@@ -146,6 +188,11 @@ System.out.println("Body: " + response.body());
 </section>
 
 <section>
+<h2>Now Kata 1: Fetch Posts</h2>
+<p>Create an HttpClient, send a GET request to jsonplaceholder, and print status and body.</p>
+</section>
+
+<section>
 <h2>HttpClient: POST Request</h2>
 <pre><code class="language-java">
 var json = "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}";
@@ -178,6 +225,11 @@ var title = response.body()
 </section>
 
 <section>
+<h2>Now Kata 2: Parse and Filter Posts</h2>
+<p>Define a Post record, fetch posts, parse JSON, filter by userId, and print titles.</p>
+</section>
+
+<section>
 <h2>Summary</h2>
 <ul>
 <li class="fragment">HTTP is a stateless request-response protocol</li>
@@ -196,6 +248,11 @@ var title = response.body()
 <li class="fragment">Use timeouts to avoid blocking indefinitely</li>
 <li class="fragment">Set proper headers (Content-Type, Accept)</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 3: REST Client Library</h2>
+<p>Build a reusable REST client with GET, POST, PUT, DELETE, error handling, and custom headers.</p>
 </section>
 
 <section class="center">

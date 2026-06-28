@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>29 - Projekt WMC Setup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="center title-slide">
+<h1>29 - Projekt WMC Setup</h1>
+<p class="institution">POS - 3xHIF</p>
+</section>
+
+<section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: JPA Entity Basics</li>
+<li class="fragment">Review: Servlet Routes</li>
+<li class="fragment">User Entity Design</li>
+<li class="fragment">Password Hashing with BCrypt</li>
+<li class="fragment">JWT Token Authentication</li>
+<li class="fragment">JWT Utility Class</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="7">
+<li class="fragment">Registration Endpoint</li>
+<li class="fragment">Login Endpoint</li>
+<li class="fragment">AuthService</li>
+<li class="fragment">UserRepository</li>
+<li class="fragment">Role-Based Access</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can design a User entity with secure password storage using BCrypt</li>
+<li class="fragment">I can generate and validate JWT tokens with HMAC-SHA256 signing</li>
+<li class="fragment">I can implement registration and login endpoints that return JWT tokens</li>
+<li class="fragment">I can build an AuthService that orchestrates user registration and authentication</li>
+<li class="fragment">I can implement role-based access control using JWT claims</li>
+</ul>
+</section>
+
+<section>
+<h2>Review: JPA Entity Basics</h2>
+<pre><code class="language-java">@Entity
+@Table(name = "users")
+public class User {
+    @Id @GeneratedValue
+    private Long id;
+    private String username;
+    private String email;
+    private String passwordHash;
+    private String role;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Review: Servlet Routes</h2>
+<pre><code class="language-java">app.post("/api/register", ctx -> {
+    var dto = ctx.bodyAsClass(RegisterRequest.class);
+    var user = authService.register(dto);
+    ctx.status(201).json(user);
+});
+</code></pre>
+</section>
+
+<section>
+<h2>User Entity Design</h2>
+<ul>
+<li>id (Long, auto-generated)</li>
+<li class="fragment">username (unique, not null)</li>
+<li class="fragment">email (unique, not null)</li>
+<li class="fragment">passwordHash (not null - store hash, NOT plaintext)</li>
+<li class="fragment">role (String - USER or ADMIN)</li>
+</ul>
+</section>
+
+<section>
+<h2>Password Hashing with BCrypt</h2>
+        <pre><code class="language-java">String hash = BCrypt.withDefaults()
+    .hashToString(12, password.toCharArray());
+BCrypt.Result result = BCrypt.verifyer()
+    .verify(password.toCharArray(), hash);
+</code></pre>
+<div class="highlight-box fragment">
+Never store plaintext passwords! Always use a strong hashing algorithm like BCrypt.
+</div>
+</section>
+
+<section>
+<h2>Now Kata 1: Password Hashing</h2>
+<p>Read a password, hash it with BCrypt, and verify it against the hash.</p>
+</section>
+
+<section>
+<h2>JWT Token Authentication</h2>
+<ul>
+<li>JWT (JSON Web Token) for stateless auth</li>
+<li class="fragment">Contains: subject (userId), role, issuedAt, expiration</li>
+<li class="fragment">Signed with a secret key</li>
+<li class="fragment">Sent via Authorization: Bearer header</li>
+</ul>
+</section>
+
+<section>
+<h2>Discussion: Stateless JWT vs Server-Side Sessions</h2>
+<div class="highlight-box">
+<p>What are the pros and cons of stateless JWT authentication vs server-side sessions? When would you choose each approach?</p>
+</div>
+</section>
+
+<section>
+<h2>JWT Utility Class</h2>
+<pre><code class="language-java">public class JwtUtil {
+    private static final String SECRET = "my-secret-key-min-256-bits-long";
+
+    public static String generate(Long userId, String role) {
+        return Jwts.builder()
+            .subject(userId.toString())
+            .claim("role", role)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + 86400000))
+            .signWith(getKey())
+            .compact();
+    }
+
+    public static Claims validate(String token) {
+        return Jwts.parser()
+            .verifyWith(getKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: JWT Token Utility</h2>
+<p>Create a JwtUtil class with generate and validate methods using HMAC-SHA256.</p>
+</section>
+
+<section>
+<h2>Registration Endpoint</h2>
+<pre><code class="language-java">app.post("/api/register", ctx -> {
+    var req = ctx.bodyAsClass(RegisterRequest.class);
+    if (req.username() == null || req.password() == null) {
+        throw new BadRequestResponse("Missing fields");
+    }
+    var user = authService.register(req);
+    var token = JwtUtil.generate(user.getId(), user.getRole());
+    ctx.status(201).json(new AuthResponse(token, user));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Login Endpoint</h2>
+<pre><code class="language-java">app.post("/api/login", ctx -> {
+    var req = ctx.bodyAsClass(LoginRequest.class);
+    var user = authService.login(req);
+    var token = JwtUtil.generate(user.getId(), user.getRole());
+    ctx.json(new AuthResponse(token, user));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Now Kata 3: Login Endpoint</h2>
+<p>Implement a POST /api/login servlet that accepts JSON, verifies credentials with BCrypt, and returns a JWT.</p>
+</section>
+
+<section>
+<h2>AuthService</h2>
+<pre><code class="language-java">public class AuthService {
+    private final UserRepository userRepo;
+
+    public User register(RegisterRequest req) {
+        if (userRepo.findByUsername(req.username()).isPresent()) {
+            throw new ConflictResponse("Username already exists");
+        }
+        var hash = BCrypt.withDefaults()
+            .hashToString(12, req.password().toCharArray());
+        var user = new User(req.username(), req.email(), hash, "USER");
+        return userRepo.save(user);
+    }
+
+    public User login(LoginRequest req) {
+        var user = userRepo.findByUsername(req.username())
+            .orElseThrow(() -> new UnauthorizedResponse("Invalid credentials"));
+        var result = BCrypt.verifyer()
+            .verify(req.password().toCharArray(), user.getPasswordHash());
+        if (!result.verified) {
+            throw new UnauthorizedResponse("Invalid credentials");
+        }
+        return user;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>UserRepository</h2>
+<pre><code class="language-java">public class UserRepository {
+    private final EntityManager em;
+
+    public UserRepository(EntityManager em) {
+        this.em = em;
+    }
+
+    public Optional&lt;User&gt; findByUsername(String username) {
+        return em.createQuery("SELECT u FROM User u WHERE u.username = :name", User.class)
+            .setParameter("name", username)
+            .getResultStream()
+            .findFirst();
+    }
+
+    public User save(User user) {
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        return user;
+    }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Role-Based Access</h2>
+<ul>
+<li>Filter or middleware checks JWT before protected routes</li>
+<li class="fragment">Admin routes: require role "ADMIN"</li>
+<li class="fragment">User routes: require role "USER" or "ADMIN"</li>
+</ul>
+        <pre class="fragment"><code class="language-java">app.before("/api/admin/*", ctx -> {
+    var token = ctx.header("Authorization");
+    if (token == null || !token.startsWith("Bearer ")) {
+        throw new UnauthorizedResponse("Missing token");
+    }
+    var claims = JwtUtil.validate(token.substring(7));
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Summary</h2>
+<div class="highlight-box">
+<ul>
+<li>User entity with id, username, email, passwordHash, role</li>
+<li>BCrypt for secure password hashing</li>
+<li>JWT for stateless authentication</li>
+<li>Registration and login endpoints</li>
+<li>Role-based access control preparation</li>
+</ul>
+</div>
+</section>
+
+<section class="center">
+<h2>Outlook</h2>
+<div class="highlight-box">
+Next week: Define all JPA entities with relationships and inheritance.
+</div>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({controls:true,progress:true,center:false,hash:true,slideNumber:'c/t',transition:'slide',backgroundTransition:'fade',plugins:[RevealHighlight]});
+document.addEventListener('DOMContentLoaded',function(){const r=document.querySelector('.reveal');r.insertAdjacentHTML('beforeend','<div class="footer"><div class="logo-container"><img src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png" alt="HTL Spengergasse Logo" class="school-logo"></div><span class="date">29 - Projekt WMC Setup</span></div>');});
+</script>
+</body>
+</html>

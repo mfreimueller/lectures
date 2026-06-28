@@ -17,6 +17,42 @@
 </section>
 
 <section>
+<h2>Agenda (1/2)</h2>
+<ol>
+<li class="fragment">Review: SRP &amp; OCP</li>
+<li class="fragment">Review: Why SOLID Matters</li>
+<li class="fragment">LSP: Liskov Substitution Principle</li>
+<li class="fragment">LSP: Classic Violation</li>
+<li class="fragment">LSP: Solution</li>
+<li class="fragment">ISP: Interface Segregation Principle</li>
+<li class="fragment">ISP: Violation Example</li>
+</ol>
+</section>
+
+<section>
+<h2>Agenda (2/2)</h2>
+<ol start="8">
+<li class="fragment">ISP: Solution</li>
+<li class="fragment">DIP: Dependency Inversion Principle</li>
+<li class="fragment">DIP: Violation Example</li>
+<li class="fragment">DIP: Solution</li>
+<li class="fragment">DIP: Benefits</li>
+<li class="fragment">Summary: All SOLID Principles</li>
+</ol>
+</section>
+
+<section>
+<h2>Learning Objectives</h2>
+<ul>
+<li class="fragment">I can explain the Liskov Substitution Principle and identify inheritance violations</li>
+<li class="fragment">I can refactor Square/Rectangle inheritance to use a common Shape interface</li>
+<li class="fragment">I can split fat interfaces into smaller, client-specific interfaces</li>
+<li class="fragment">I can apply Dependency Inversion to decouple high-level and low-level modules</li>
+<li class="fragment">I can refactor code to depend on abstractions using dependency injection</li>
+</ul>
+</section>
+
+<section>
 <h2>Review: SRP & OCP</h2>
 <ul>
 <li class="fragment">SRP: One reason to change per class</li>
@@ -65,6 +101,13 @@ class Square extends Rectangle {
 </section>
 
 <section>
+<h2>Reflection: Why Is Square/Rectangle So Common?</h2>
+<div class="highlight-box">
+<p>The Square-is-a-Rectangle problem appears in almost every OOP course. Why is this violation so tempting? What does it teach us about the limits of inheritance and when composition might be a better choice?</p>
+</div>
+</section>
+
+<section>
 <h2>LSP: Solution</h2>
 <ul>
 <li class="fragment">Use composition instead of inheritance</li>
@@ -74,6 +117,11 @@ class Square extends Rectangle {
     int area();
 }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 1: LSP -- Rectangle/Square</h2>
+<p>Refactor a Square/Rectangle inheritance hierarchy to use a common Shape interface with no mutators.</p>
 </section>
 
 <section>
@@ -111,6 +159,11 @@ interface Sleepable { void sleep(); }
 class HumanWorker implements Workable, Eatable, Sleepable { /* all */ }
 class RobotWorker implements Workable { /* only work */ }
 </code></pre>
+</section>
+
+<section>
+<h2>Now Kata 2: ISP -- Printer Interface</h2>
+<p>Split a bloated MultiFunctionPrinter interface into smaller interfaces: Printer, Scanner, FaxMachine, and Stapler.</p>
 </section>
 
 <section>
@@ -158,6 +211,11 @@ class NotificationService {
 </section>
 
 <section>
+<h2>Now Kata 3: DIP -- Notification System</h2>
+<p>Refactor NotificationService to use a MessageSender abstraction with constructor-based dependency injection.</p>
+</section>
+
+<section>
 <h2>DIP: Benefits</h2>
 <ul>
 <li class="fragment">Loosely coupled code</li>
@@ -165,6 +223,11 @@ class NotificationService {
 <li class="fragment">Easier to swap implementations</li>
 <li class="fragment">Follows naturally from OCP</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 4: DIP with Factory Pattern</h2>
+<p>Refactor ReportGenerator to depend on a Report abstraction via a Factory pattern for creating report types.</p>
 </section>
 
 <section>
@@ -176,6 +239,11 @@ class NotificationService {
 <li class="fragment"><strong>ISP:</strong> Small, focused interfaces</li>
 <li class="fragment"><strong>DIP:</strong> Depend on abstractions</li>
 </ul>
+</section>
+
+<section>
+<h2>Now Kata 5: Full SOLID Refactoring</h2>
+<p>Refactor a monolithic Printer class that violates LSP, ISP, and DIP into a clean, SOLID-compliant design.</p>
 </section>
 
 <section class="center">
