@@ -2,27 +2,66 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>04 — Zuweisung, Anweisung</title>
+    <title>04 - Zuweisung, Anweisung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>04 — Zuweisung, Anweisung</h1>
+                <h1>04 - Zuweisung, Anweisung</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Operatoren</li>
+<li>Ausdruck (Expression)</li>
+<li>Anweisung (Statement)</li>
+<li>Zuweisung als Ausdruck</li>
+<li>Werte überschreiben</li>
+<li>Zusammengesetzte Zuweisungen</li>
+<li>Beispiel: Zusammengesetzte Zuweisungen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Zuweisung vs. Vergleich</li>
+<li>Praktisches Beispiel: Kontostand</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Ausdrücke (Expressions) und Anweisungen (Statements) unterscheiden</li>
+<li>Ich kann Zuweisungen als Ausdruck verstehen</li>
+<li>Ich kann zusammengesetzte Zuweisungen verwenden</li>
+<li>Ich kann Zuweisung und Vergleich auseinanderhalten</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Operatoren</h2>
                 <ul>
                     <li class="fragment">Arithmetische Operatoren: +, -, *, /</li>
                     <li class="fragment">Berechnungen mit Variablen</li>
                     <li class="fragment">Heute: Was ist der Unterschied zwischen einer Zuweisung und einer Anweisung?</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: = vs. ==</h2>
+                <div class="highlight-box">
+                    <p>Lest diese beiden Zeilen laut vor: <code>x = 5</code> und <code>x == 5</code>. Hören sie sich gleich an? Warum ist die Verwechslung einer der häufigsten Programmierfehler? Welche Konsequenzen kann das haben?</p>
+                </div>
             </section>
 
             <section>
@@ -153,6 +192,18 @@ boolean istGleich = (x == 5);  // Vergleich: ist x gleich 5? → true</code></pr
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Zuweisung erkennen</strong> – Erkennt Zuweisungen in verschiedenen Code-Beispielen.</li>
+                        <li><strong>Werte überschreiben</strong> – Verfolgt, wie sich Variablenwerte durch Überschreiben ändern.</li>
+                        <li><strong>Zusammengesetzte Zuweisungen</strong> – Wendet zusammengesetzte Zuweisungen an.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Summary</h2>
                 <div class="highlight-box">
                     <ul>
@@ -162,6 +213,13 @@ boolean istGleich = (x == 5);  // Vergleich: ist x gleich 5? → true</code></pr
                         <li>Zusammengesetzte Zuweisungen: +=, -=, *=, /=</li>
                         <li>= vs. ==: Zuweisung vs. Vergleich</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Spieler hat jetzt Lebenspunkte, die sich im Kampf ändern. Simuliert eine Kampfrunde mit zusammengesetzten Zuweisungen.</p>
                 </div>
             </section>
 

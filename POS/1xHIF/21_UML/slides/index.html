@@ -2,21 +2,53 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>21 — UML</title>
+    <title>21 - UML</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>21 — UML</h1>
+                <h1>21 - UML</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Was ist UML?</li>
+<li>Klassendiagramm: Grundform</li>
+<li>Sichtbarkeiten (Visibilitäten)</li>
+<li>Assoziationen</li>
+<li>Multiplizitäten</li>
+<li>Assoziationen in Java</li>
+<li>Gerichtete Assoziation</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Vererbung (Generalisierung)</li>
+<li>Vollständiges Beispiel: Bibliothek</li>
+<li>Vom UML zum Code</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann die Notation von Klassendiagrammen lesen</li>
+<li>Ich kann einfache UML-Klassendiagramme erstellen</li>
+<li>Ich kann Beziehungen zwischen Klassen modellieren</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Was ist UML?</h2>
                 <p>UML = <strong>U</strong>nified <strong>M</strong>odeling <strong>L</strong>anguage</p>
                 <ul>
@@ -24,14 +56,20 @@
                     <li class="fragment">Visuelle Darstellung von Code-Strukturen</li>
                     <li class="fragment">Hilft beim Planen, Kommunizieren und Dokumentieren</li>
                 </ul>
-                <div class="highlight-box fragment">UML ist die gemeinsame Sprache zwischen Entwicklern!</div>
+                <div class="highlight-box fragment"><p>UML ist die gemeinsame Sprache zwischen Entwicklern!</p></div>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Ein Klassendiagramm zeichnen</h2>
+                <div class="highlight-box">
+                    <p>Euer Partner beschreibt ein einfaches System (z. B. «eine Bibliothek mit Büchern und Mitgliedern»). Ihr zeichnet das UML-Klassendiagramm auf Papier. Wechselt die Rollen. Vergleicht eure Diagramme — sind sie gleich?</p>
+                </div>
             </section>
 
             <section>
                 <h2>Klassendiagramm: Grundform</h2>
                 <p>Eine Klasse wird als Kasten mit drei Bereichen dargestellt:</p>
-                <div class="highlight-box">
-                ┌─────────────────────┐<br>
+                <div class="highlight-box"><p>┌─────────────────────┐<br>
                 │      Person         │  &lt;— Klassenname<br>
                 ├─────────────────────┤<br>
                 │ - name: String      │  &lt;— Attribute<br>
@@ -40,8 +78,7 @@
                 │ + Person(name,alter)│  &lt;— Methoden<br>
                 │ + getName(): String │<br>
                 │ + setName(name)     │<br>
-                └─────────────────────┘
-                </div>
+                └─────────────────────┘</p></div>
             </section>
 
             <section>
@@ -168,6 +205,18 @@ public class Hund extends Tier { }</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>UML lesen</strong> – Liest und interpretiert UML-Klassendiagramme.</li>
+                        <li><strong>UML aus Code</strong> – Erstellt UML-Diagramme aus vorhandenem Code.</li>
+                        <li><strong>Multiplizitäten</strong> – Modelliert Multiplizitäten in UML.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <ul>
                     <li class="fragment">UML = Visuelle Darstellung von Code</li>
@@ -181,10 +230,15 @@ public class Hund extends Tier { }</code></pre>
             <section>
                 <h2>Übungen</h2>
                 <ul>
-                    <li><strong>Katas:</strong> UML lesen, UML aus Code, Multiplizitäten</li>
                     <li><strong>Exercise:</strong> UML to Code (Student/Course)</li>
-                    <li><strong>Jahresprojekt:</strong> UML-Diagramm zeichnen</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Erstelle ein UML-Klassendiagramm des gesamten Dungeon Crawlers.</p>
+                </div>
             </section>
 
         </div>

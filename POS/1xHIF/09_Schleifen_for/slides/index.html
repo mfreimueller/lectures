@@ -2,21 +2,54 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>09 — Schleifen – for</title>
+    <title>09 - Schleifen – for</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>09 — Schleifen – for</h1>
+                <h1>09 - Schleifen – for</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Schleifentypen</li>
+<li>Die for-Schleife: Syntax</li>
+<li>for-Schleife: Ablauf</li>
+<li>Beispiel: Zahlen 1 - 10</li>
+<li>Umbau while → for: Schritt 1</li>
+<li>Umbau while → for: Schritt 2</li>
+<li>Beispiel: Rückwärts zählen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Beispiel: Schrittweite</li>
+<li>Beispiel: Summe mit for</li>
+<li>Vergleich: Wann welcher Schleifentyp?</li>
+<li>Gemeinsamkeiten der Schleifen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann die for-Schleife anwenden</li>
+<li>Ich kann verschiedene Schleifentypen vergleichen und auswählen</li>
+<li>Ich kann for-Schleifen mit verschiedenen Schrittweiten einsetzen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Schleifentypen</h2>
                 <ul>
                     <li class="fragment"><strong>while:</strong> Kopfgesteuert — Bedingung vor dem Durchlauf</li>
@@ -24,6 +57,13 @@
                     <li class="fragment">Beide eignen sich für Zählschleifen, aber die Syntax ist etwas umständlich</li>
                     <li class="fragment">Es gibt einen spezialisierten Schleifentyp für das Zählen: <strong>for</strong></li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: For-Schleifen im Vergleich</h2>
+                <div class="highlight-box">
+                    <p>Schreibt einen for-Schleifen-Kopf, der die geraden Zahlen von 0 bis 10 ausgibt. Schreibt dann einen, der von 10 bis 0 rückwärts zählt. Vergleicht mit eurem Partner: Wie viele verschiedene Lösungen habt ihr gefunden?</p>
+                </div>
             </section>
 
             <section>
@@ -53,7 +93,7 @@
             </section>
 
             <section>
-                <h2>Beispiel: Zahlen 1–10</h2>
+                <h2>Beispiel: Zahlen 1 - 10</h2>
                 <pre><code class="language-java">// while-Version
 int i = 1;
 while (i &lt;= 10) {
@@ -152,6 +192,19 @@ System.out.println("Summe 1..100 = " + summe);</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Umbau while → for</strong> – Baut eine while-Schleife in eine for-Schleife um.</li>
+                        <li><strong>For-Schleife rückwärts</strong> – Zählt mit einer for-Schleife rückwärts.</li>
+                        <li><strong>Schrittweite</strong> – Nutzt verschiedene Schrittweiten in for-Schleifen.</li>
+                        <li><strong>Potenzen</strong> – Berechnet Potenzen mit einer for-Schleife.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -160,6 +213,13 @@ System.out.println("Summe 1..100 = " + summe);</code></pre>
                         <li>Jede while-Zählschleife kann in eine for-Schleife umgebaut werden</li>
                         <li>for: bekannte Anzahl; while: unbekannte Dauer; do-while: mindestens einmal</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler bekommt mehrere Gegner. Der Spieler kämpft gegen eine Gruppe von 3 Goblins. Verwendet eine for-Schleife, um nacheinander gegen jeden Goblin anzutreten.</p>
                 </div>
             </section>
 

@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>05 — Verzweigung</title>
+    <title>05 - Verzweigung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
@@ -12,17 +12,57 @@
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>05 — Verzweigung</h1>
+                <h1>05 - Verzweigung</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Zuweisung und Anweisung</li>
+<li>Vergleichsoperatoren</li>
+<li>Die if-Anweisung</li>
+<li>Der else-Zweig</li>
+<li>if-else if-else-Kaskaden</li>
+<li>Verschachtelte if-Anweisungen</li>
+<li>Häufiger Fehler: = vs. ==</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Beispiel: Temperatur</li>
+<li>Beispiel: Punktestand</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Vergleichsoperatoren einsetzen</li>
+<li>Ich kann if-else-Verzweigungen programmieren</li>
+<li>Ich kann if-else-if-Kaskaden und verschachtelte if-Anweisungen anwenden</li>
+<li>Ich kann Zuweisung (=) und Vergleich (==) unterscheiden</li>
+<li>Ich kann praktische Beispiele mit Verzweigungen umsetzen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Zuweisung und Anweisung</h2>
                 <ul>
                     <li class="fragment">Ausdruck (Expression) = Code, der einen Wert ergibt</li>
                     <li class="fragment">Anweisung (Statement) = vollständige Handlung mit ;</li>
                     <li class="fragment">Heute: Programme, die Entscheidungen treffen!</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Entscheidungen programmieren</h2>
+                <div class="highlight-box">
+                    <p>Euer Partner beschreibt eine tägliche Entscheidung (z. B. Was frühstücken? Regenschirm mitnehmen?). Schreibt eine if-else-Anweisung dafür. Wechselt die Rollen und überprüft gegenseitig eure Logik.</p>
+                </div>
             </section>
 
             <section>
@@ -162,6 +202,19 @@ if (alter >= 18) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Positiv, negativ oder null</strong> – Prüft mit if-else, ob eine Zahl positiv, negativ oder null ist.</li>
+                        <li><strong>Notenstufen</strong> – Übersetzt Punktzahlen in Notenstufen.</li>
+                        <li><strong>Schaltjahr</strong> – Prüft, ob ein Jahr ein Schaltjahr ist.</li>
+                        <li><strong>Drei Zahlen vergleichen</strong> – Findet die grösste von drei Zahlen.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Summary</h2>
                 <div class="highlight-box">
                     <ul>
@@ -171,6 +224,13 @@ if (alter >= 18) {
                         <li>if-else if-else: mehrere Bedingungen nacheinander prüfen</li>
                         <li>= ist Zuweisung, == ist Vergleich — nicht verwechseln!</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler bekommt erste Spiellogik. Setzt drei Szenarien mit Verzweigungen um: Lebenspunkte-Prüfung, Gegner besiegt, Schlüssel gefunden.</p>
                 </div>
             </section>
 

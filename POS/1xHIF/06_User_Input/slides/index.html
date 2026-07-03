@@ -2,27 +2,67 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>06 — User Input – Scanner, Random</title>
+    <title>06 - User Input – Scanner, Random</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>06 — User Input – Scanner, Random</h1>
+                <h1>06 - User Input – Scanner, Random</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Verzweigung</li>
+<li>Interaktive Programme</li>
+<li>Die Scanner-Klasse</li>
+<li>Scanner: nextLine() für Text</li>
+<li>Scanner: nextInt() für Zahlen</li>
+<li>Zufallszahlen mit Random</li>
+<li>Random: nextInt(bound)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Vollständiges Beispiel: Zahlenraten</li>
+<li>Hinweis: Integer.parseInt</li>
+<li>Häufige Fehler</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann mit der Scanner-Klasse Benutzereingaben einlesen</li>
+<li>Ich kann mit Random Zufallszahlen erzeugen</li>
+<li>Ich kann Strings mit Integer.parseInt in Zahlen umwandeln</li>
+<li>Ich kann interaktive Programme entwickeln</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Verzweigung</h2>
                 <ul>
                     <li class="fragment">Verzweigungen mit if, else if, else</li>
                     <li class="fragment">Bisher: Alle Werte fest im Code (hartcodiert)</li>
                     <li class="fragment">Heute: Programme reagieren auf Benutzereingaben!</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Ein Zahlenratespiel entwerfen</h2>
+                <div class="highlight-box">
+                    <p>Entwerft zu zweit ein einfaches Zahlenratespiel auf Papier. Eine Person denkt sich die Regeln aus, die andere fragt: «Was passiert, wenn der Benutzer … eingibt?» Spielt 2–3 Runden und besprecht Grenzfälle.</p>
+                </div>
             </section>
 
             <section>
@@ -175,6 +215,18 @@ System.out.println(zahl + 1);  // 43 (nicht "421")</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Scanner-Grundlagen</strong> – Liest verschiedene Eingabetypen mit Scanner ein.</li>
+                        <li><strong>Zufallszahl erraten</strong> – Implementiert ein einfaches Zahlenratespiel.</li>
+                        <li><strong>Einmaleins-Abfrager</strong> – Ein Programm, das Kopfrechnen mit zufälligen Aufgaben trainiert.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Summary</h2>
                 <div class="highlight-box">
                     <ul>
@@ -184,6 +236,13 @@ System.out.println(zahl + 1);  // 43 (nicht "421")</code></pre>
                         <li>Interaktive Programme: Eingabe → Verarbeitung → Ausgabe</li>
                         <li>Integer.parseInt zum Umwandeln von String in int</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler wird interaktiv. Lest den Namen des Spielers ein und generiert einen zufälligen Gegner.</p>
                 </div>
             </section>
 

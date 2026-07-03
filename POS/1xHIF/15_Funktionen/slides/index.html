@@ -2,21 +2,55 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>15 — Funktionen</title>
+    <title>15 - Funktionen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>15 — Funktionen</h1>
+                <h1>15 - Funktionen</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Problem: Code wiederholt sich</li>
+<li>Was sind Funktionen?</li>
+<li>Methoden-Syntax</li>
+<li>Beispiel: sayHello</li>
+<li>Parameter</li>
+<li>Rückgabewerte</li>
+<li>void - kein Rückgabewert</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Aufruf einer Funktion</li>
+<li>Imperatives Paradigma</li>
+<li>Beispiele: addiere, istGerade</li>
+<li>Vorteile von Funktionen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann das Problem von Code-Wiederholungen beschreiben</li>
+<li>Ich kann Methoden mit Parametern und Rückgabewerten definieren</li>
+<li>Ich kann void und Rückgabetypen unterscheiden</li>
+<li>Ich kann die Vorteile von Funktionen nennen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Problem: Code wiederholt sich</h2>
                 <pre><code class="language-java">int a = 5, b = 3;
 int sum1 = a + b;
@@ -27,6 +61,13 @@ int sum2 = c + d;
 System.out.println("Summe: " + sum2);
 // Gleicher Code, nur andere Variablen!</code></pre>
                 <p class="fragment">Das verletzt das <strong>DRY-Prinzip</strong>: Don't Repeat Yourself!</p>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Methodensignaturen entwerfen</h2>
+                <div class="highlight-box">
+                    <p>Euer Partner beschreibt eine Berechnung (z. B. «Fläche eines Rechtecks»). Ihr schreibt die Methodensignatur auf Papier. Wechselt und prüft: Ist der Methodenname aussagekräftig? Sind die Parameternamen hilfreich?</p>
+                </div>
             </section>
 
             <section>
@@ -100,7 +141,7 @@ public static void main(String[] args) {
             </section>
 
             <section>
-                <h2>void — kein Rückgabewert</h2>
+                <h2>void - kein Rückgabewert</h2>
                 <ul>
                     <li class="fragment"><code>void</code> bedeutet: Die Methode gibt nichts zurück</li>
                     <li class="fragment">Sie führt Anweisungen aus, liefert aber kein Ergebnis</li>
@@ -172,6 +213,19 @@ public static void main(String[] args) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Erste Methode</strong> – Schreibt die erste eigene Methode.</li>
+                        <li><strong>Methode mit Parameter</strong> – Übergibt Parameter an Methoden.</li>
+                        <li><strong>Methode mit Rückgabewert</strong> – Gibt Werte aus Methoden zurück.</li>
+                        <li><strong>Boolesche Methode</strong> – Schreibt Methoden mit boolean-Rückgabe.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -186,8 +240,13 @@ public static void main(String[] args) {
 
             <section class="center">
                 <h2>Ausblick</h2>
+                <div class="highlight-box"><p>Nächste Woche ist eine reine Übungsstunde: Wir bauen eine REPL (Read-Eval-Print-Loop) — einen interaktiven Befehlsinterpreter.</p></div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
                 <div class="highlight-box">
-                    Nächste Woche ist eine reine Übungsstunde: Wir bauen eine REPL (Read-Eval-Print-Loop) — einen interaktiven Befehlsinterpreter.
+                    <p>Strukturiere deinen Dungeon Crawler mit Funktionen um.</p>
                 </div>
             </section>
 

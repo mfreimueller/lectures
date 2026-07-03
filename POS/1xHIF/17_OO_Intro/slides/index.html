@@ -2,21 +2,54 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>17 — OO Intro</title>
+    <title>17 - OO Intro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>17 — OO Intro</h1>
+                <h1>17 - OO Intro</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Bisher: prozedural</li>
+<li>Objektorientierung: Idee</li>
+<li>Klasse = Bauplan</li>
+<li>Objekt = Exemplar</li>
+<li>Attribute</li>
+<li>Methoden</li>
+<li>Beispiel: Person-Klasse</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Objekte erzeugen (instanziieren)</li>
+<li>public vs. private</li>
+<li>Attribut vs. Parameter vs. lokale Variable</li>
+<li>Vorteile von OO</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann das Konzept der objektorientierten Programmierung erklären</li>
+<li>Ich kann Klassen und Objekte unterscheiden</li>
+<li>Ich kann einfache Klassen mit Attributen und Methoden definieren</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Bisher: prozedural</h2>
                 <ul>
                     <li class="fragment">Bisher haben wir <strong>prozedural</strong> programmiert</li>
@@ -27,6 +60,13 @@
                 <pre class="fragment"><code class="language-java">String name = "Anna";
 int alter = 20;
 System.out.println(name + " ist " + alter);</code></pre>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Objekte im Alltag</h2>
+                <div class="highlight-box">
+                    <p>Beschreibt ein reales Objekt (z. B. «ein Auto» oder «eine Schülerin»). Euer Partner listet die Attribute (Farbe, Geschwindigkeit / Name, Note) und Methoden (fahren, bremsen / lernen, Prüfung ablegen) auf, die es als Java-Klasse hätte. Vergleicht eure Ergebnisse.</p>
+                </div>
             </section>
 
             <section>
@@ -181,6 +221,18 @@ p2.vorstellen();</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Einfache Klasse</strong> – Erstellt eine einfache Klasse.</li>
+                        <li><strong>Attribut-Zugriff</strong> – Greift auf Attribute von Objekten zu.</li>
+                        <li><strong>public/private</strong> – Wendet Sichtbarkeitsmodifier an.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -195,8 +247,13 @@ p2.vorstellen();</code></pre>
 
             <section class="center">
                 <h2>Ausblick</h2>
+                <div class="highlight-box"><p>Nächste Woche lernen wir Konstruktoren kennen — damit können wir Objekte mit Anfangswerten erstellen.</p></div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
                 <div class="highlight-box">
-                    Nächste Woche lernen wir Konstruktoren kennen — damit können wir Objekte mit Anfangswerten erstellen.
+                    <p>Baue den Dungeon Crawler objektorientiert um.</p>
                 </div>
             </section>
 

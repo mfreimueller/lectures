@@ -2,21 +2,55 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>11 — Sortieren von Arrays</title>
+    <title>11 - Sortieren von Arrays</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>11 — Sortieren von Arrays</h1>
+                <h1>11 - Sortieren von Arrays</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Arrays + Schleifen</li>
+<li>Warum sortieren?</li>
+<li>Bubblesort - Die Idee</li>
+<li>Beispiel: Schritt 1</li>
+<li>Beispiel: Schritt 2</li>
+<li>Beispiel: Schritt 3</li>
+<li>Bubblesort: Algorithmus</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Verschachtelte for-Schleifen</li>
+<li>Tausch zweier Elemente</li>
+<li>Optimierung: Frühzeitiger Abbruch</li>
+<li>Bubblesort Komplexität</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann die Notwendigkeit von Sortieralgorithmen erklären</li>
+<li>Ich kann Bubblesort implementieren und erklären</li>
+<li>Ich kann verschachtelte for-Schleifen verstehen</li>
+<li>Ich kann die Komplexität von Bubblesort einschätzen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Arrays + Schleifen</h2>
                 <pre><code class="language-java">int[] zahlen = {5, 2, 8, 1, 9};
 
@@ -31,6 +65,13 @@ for (int i = 0; i &lt; zahlen.length; i++) {
             </section>
 
             <section>
+                <h2>Partneraktivität: Bubblesort mit Karten</h2>
+                <div class="highlight-box">
+                    <p>Nehmt 5 Spielkarten (oder schreibt 5 Zahlen auf Papier). Sortiert sie Schritt für Schritt mit dem Bubblesort-Algorithmus: Eine Person vergleicht, die andere notiert die Durchgänge. Wie viele Durchgänge waren nötig?</p>
+                </div>
+            </section>
+
+            <section>
                 <h2>Warum sortieren?</h2>
                 <ul>
                     <li class="fragment">Sortierte Daten sind leichter zu durchsuchen</li>
@@ -41,7 +82,7 @@ for (int i = 0; i &lt; zahlen.length; i++) {
             </section>
 
             <section>
-                <h2>Bubblesort — Die Idee</h2>
+                <h2>Bubblesort - Die Idee</h2>
                 <div class="highlight-box">
                     <p>Größere Elemente "steigen nach oben" wie Blasen im Wasser.</p>
                 </div>
@@ -151,6 +192,18 @@ arr[j + 1] = temp;     // Setze gemerkten Wert an Position j+1</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Bubblesort implementieren</strong> – Implementiert den Bubblesort-Algorithmus.</li>
+                        <li><strong>Absteigend sortieren</strong> – Sortiert ein Array absteigend.</li>
+                        <li><strong>Tausch zählen</strong> – Zählt die Anzahl der Tauschvorgänge bei Bubblesort.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -159,6 +212,13 @@ arr[j + 1] = temp;     // Setze gemerkten Wert an Position j+1</code></pre>
                         <li>Nach jedem Durchlauf ist das größte Element ganz rechts</li>
                         <li>Optimierung: Frühzeitiger Abbruch, wenn kein Tausch mehr nötig</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Das Inventar-Array des Spielers soll alphabetisch sortiert werden können. Der Spieler wählt im Menü "Inventar sortieren". Dann wird das Inventar mit Bubblesort sortiert.</p>
                 </div>
             </section>
 

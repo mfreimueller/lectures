@@ -2,21 +2,50 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>13 — Convert</title>
+    <title>13 - Convert</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>13 — Convert</h1>
+                <h1>13 - Convert</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: String-Methoden</li>
+<li>Warum Convert?</li>
+<li>Integer.parseInt</li>
+<li>Integer.parseInt - Beispiel</li>
+<li>Double.parseDouble</li>
+<li>Double.parseDouble - Beispiel</li>
+<li>Boolean.parseBoolean</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Fehlerhafte Eingaben (Exceptions)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Strings mit parseInt und parseDouble in andere Datentypen konvertieren</li>
+<li>Ich kann fehlerhafte Eingaben erkennen und behandeln</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: String-Methoden</h2>
                 <ul>
                     <li class="fragment"><code>length()</code> — Länge eines Strings</li>
@@ -24,6 +53,13 @@
                     <li class="fragment"><code>charAt()</code> — Zeichen an einer Position</li>
                     <li class="fragment"><code>startsWith()</code> / <code>endsWith()</code> — Präfix/Suffix</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Was passiert bei falscher Eingabe?</h2>
+                <div class="highlight-box">
+                    <p>Was passiert, wenn ein Benutzer «Hallo» eingibt, wo eine Zahl erwartet wird? Diskutiert: Soll das Programm abstürzen, nochmal fragen oder einen Standardwert verwenden? Was wäre in einer Banking-App die richtige Strategie?</p>
+                </div>
             </section>
 
             <section>
@@ -49,7 +85,7 @@
             </section>
 
             <section>
-                <h2>Integer.parseInt — Beispiel</h2>
+                <h2>Integer.parseInt - Beispiel</h2>
                 <pre><code class="language-java">System.out.print("Gib dein Alter ein: ");
 String eingabe = scanner.nextLine();
 int alter = Integer.parseInt(eingabe);
@@ -72,7 +108,7 @@ if (alter >= 18) {
             </section>
 
             <section>
-                <h2>Double.parseDouble — Beispiel</h2>
+                <h2>Double.parseDouble - Beispiel</h2>
                 <pre><code class="language-java">System.out.print("Gib deine Größe in Metern ein: ");
 String eingabe = scanner.nextLine();
 eingabe = eingabe.replace(',', '.');
@@ -111,6 +147,18 @@ if (zustimmen) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>String to Int</strong> – Wandelt Strings mit Integer.parseInt in int um.</li>
+                        <li><strong>String to Double</strong> – Wandelt Strings mit Double.parseDouble in double um.</li>
+                        <li><strong>Boolean.parseBoolean</strong> – Nutzt Boolean.parseBoolean für boolean-Werte.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -125,8 +173,13 @@ if (zustimmen) {
 
             <section class="center">
                 <h2>Ausblick</h2>
+                <div class="highlight-box"><p>Nächste Woche lernen wir <code>switch-case</code> kennen — eine übersichtliche Alternative zu langen <code>if</code>-<code>else</code>-Kaskaden.</p></div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
                 <div class="highlight-box">
-                    Nächste Woche lernen wir <code>switch-case</code> kennen — eine übersichtliche Alternative zu langen <code>if</code>-<code>else</code>-Kaskaden.
+                    <p>Baue die Convert-Methoden in deinen Dungeon Crawler ein.</p>
                 </div>
             </section>
 

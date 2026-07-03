@@ -2,21 +2,55 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>12 — String Methoden</title>
+    <title>12 - String Methoden</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>12 — String Methoden</h1>
+                <h1>12 - String Methoden</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Strings</li>
+<li>Strings sind Objekte</li>
+<li>length() - Länge eines Strings</li>
+<li>equals() - Strings vergleichen</li>
+<li>equals() vs. ==</li>
+<li>charAt() - Zeichenzugriff</li>
+<li>charAt() mit Schleife</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>startsWith() / endsWith()</li>
+<li>startsWith/endsWith: Beispiele</li>
+<li>Methoden kombinieren</li>
+<li>Beispiel: Textanalyse</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Strings als Objekte verstehen</li>
+<li>Ich kann wichtige String-Methoden (length, equals, charAt) anwenden</li>
+<li>Ich kann equals und == unterscheiden</li>
+<li>Ich kann String-Methoden kombinieren und eine Textanalyse durchführen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Strings</h2>
                 <pre><code class="language-java">String name = "Alice";
 String gruss = "Hallo Welt!";
@@ -27,6 +61,13 @@ System.out.println(gruss);</code></pre>
                     <li class="fragment">Bisher: Strings als einfache Textvariablen</li>
                     <li class="fragment">Aber Strings können viel mehr — sie haben <strong>Methoden</strong></li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Wörter raten mit String-Methoden</h2>
+                <div class="highlight-box">
+                    <p>Eine Person denkt an ein Wort, die andere stellt Ja/Nein-Fragen mit String-Methoden (z. B. «Beginnt es mit A?», «Ist es länger als 5 Zeichen?»). Erratet das Wort in maximal 5 Fragen. Wechselt dann die Rollen.</p>
+                </div>
             </section>
 
             <section>
@@ -42,7 +83,7 @@ System.out.println(gruss);</code></pre>
             </section>
 
             <section>
-                <h2>length() — Länge eines Strings</h2>
+                <h2>length() - Länge eines Strings</h2>
                 <pre><code class="language-java">String text = "Hallo Welt!";
 int laenge = text.length();
 System.out.println(laenge);  // 11
@@ -56,7 +97,7 @@ System.out.println(leer.length());  // 0
             </section>
 
             <section>
-                <h2>equals() — Strings vergleichen</h2>
+                <h2>equals() - Strings vergleichen</h2>
                 <div class="highlight-box">
                     <p><strong>Strings vergleicht man mit <code>equals()</code>, NICHT mit <code>==</code></strong></p>
                 </div>
@@ -80,7 +121,7 @@ System.out.println(a.equals(c));   // true</code></pre>
             </section>
 
             <section>
-                <h2>charAt() — Zeichenzugriff</h2>
+                <h2>charAt() - Zeichenzugriff</h2>
                 <pre><code class="language-java">String text = "Java";
 char c = text.charAt(0);  // 'J'
 System.out.println(c);
@@ -179,6 +220,19 @@ System.out.println("Ist eine Frage: " + istFrage);</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>String-Länge</strong> – Bestimmt die Länge von Strings.</li>
+                        <li><strong>Zeichen durchlaufen</strong> – Durchläuft Zeichen mit charAt.</li>
+                        <li><strong>equals vs. ==</strong> – Vergleicht Strings mit equals und ==.</li>
+                        <li><strong>startsWith / endsWith</strong> – Prüft String-Anfänge und -Enden.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -188,6 +242,13 @@ System.out.println("Ist eine Frage: " + istFrage);</code></pre>
                         <li><code>startsWith(präfix)</code> / <code>endsWith(suffix)</code> — boolean-Prüfung</li>
                         <li>Methoden können kombiniert werden</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler soll Spielerbefehle analysieren können. Der Spieler gibt Kommandos wie "gehe norden", "nimm Schlüssel", "kämpfe". Verwende String-Methoden.</p>
                 </div>
             </section>
 

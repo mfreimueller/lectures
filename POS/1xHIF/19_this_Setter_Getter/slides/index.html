@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>19 — this, Setter, Getter</title>
+    <title>19 - this, Setter, Getter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
@@ -12,13 +12,46 @@
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>19 — this, Setter, Getter</h1>
+                <h1>19 - this, Setter, Getter</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Konstruktoren</li>
+<li>Das this-Schlüsselwort</li>
+<li>this ist optional</li>
+<li>Private Attribute</li>
+<li>Getter</li>
+<li>Setter</li>
+<li>Validierung im Setter</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Validierungsbeispiele</li>
+<li>Kein Setter für schreibgeschützte Attribute</li>
+<li>Kapselung (Encapsulation)</li>
+<li>Übersicht: Setter/Getter-Muster</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann das Schlüsselwort this verwenden</li>
+<li>Ich kann Setter und Getter zur Kapselung einsetzen</li>
+<li>Ich kann den Nutzen von Datenkapselung erklären</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Konstruktoren</h2>
-                <div class="highlight-box">Ein Konstruktor initialisiert ein neues Objekt.</div>
+                <div class="highlight-box"><p>Ein Konstruktor initialisiert ein neues Objekt.</p></div>
                 <pre><code class="language-java">public class Person {
     String name;
     public Person(String name) {
@@ -26,6 +59,13 @@
     }
 }</code></pre>
                 <p class="fragment">Was ist das Problem? Der Parameter <code>name</code> verdeckt das Attribut.</p>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Warum Kapselung?</h2>
+                <div class="highlight-box">
+                    <p>Warum sollten Attribute privat sein? Diskutiert: Was passiert, wenn jeder Code direkt die Daten eines Objekts ändern kann? Stellt euch ein Bankkonto vor — sollte jeder den Kontostand einfach auf 1.000.000 setzen können?</p>
+                </div>
             </section>
 
             <section>
@@ -67,7 +107,7 @@
     private String name;
     private int alter;
 }</code></pre>
-                <div class="highlight-box fragment">Warum private? Kapselung (Encapsulation)!</div>
+                <div class="highlight-box fragment"><p>Warum private? Kapselung (Encapsulation)!</p></div>
                 <ul>
                     <li class="fragment">Zugriff kontrollieren</li>
                     <li class="fragment">Interne Implementierung ändern ohne externe Effekte</li>
@@ -120,7 +160,7 @@
     else
         System.out.println("Ungültiges Alter: " + alter);
 }</code></pre>
-                <div class="highlight-box fragment">Der Setter schützt das Objekt vor ungültigen Zuständen.</div>
+                <div class="highlight-box fragment"><p>Der Setter schützt das Objekt vor ungültigen Zuständen.</p></div>
             </section>
 
             <section>
@@ -171,7 +211,7 @@ public void setPreis(double preis) {
             <section>
                 <h2>Kapselung (Encapsulation)</h2>
                 <p>Daten und Methoden gehören zusammen — Zugriff von außen nur über definierte Schnittstellen.</p>
-                <div class="highlight-box">Prinzip: <strong>private</strong> Attribute, <strong>public</strong> Methoden</div>
+                <div class="highlight-box"><p>Prinzip: <strong>private</strong> Attribute, <strong>public</strong> Methoden</p></div>
                 <ul>
                     <li class="fragment">Änderungen am Inneren der Klasse möglich</li>
                     <li class="fragment">Zugriffe können protokolliert werden</li>
@@ -204,6 +244,18 @@ public boolean isAktiv() {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>this-Schlüsselwort</strong> – Verwendet this zur Unterscheidung von Attributen und Parametern.</li>
+                        <li><strong>Setter und Getter</strong> – Implementiert Setter/Getter für private Attribute.</li>
+                        <li><strong>Validierung im Setter</strong> – Validiert Werte im Setter vor der Zuweisung.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <ul>
                     <li class="fragment"><code>this</code> = Verweis auf aktuelles Objekt</li>
@@ -217,11 +269,16 @@ public boolean isAktiv() {
             <section>
                 <h2>Übungen</h2>
                 <ul>
-                    <li><strong>Katas:</strong> this, Setter/Getter, Validierung</li>
                     <li><strong>Exercise:</strong> Bankkonto mit Setter/Getter</li>
                     <li><strong>Große Übung:</strong> Online-Shop (Artikel + Warenkorb)</li>
-                    <li><strong>Jahresprojekt:</strong> Dungeon Crawler kapseln</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Füge die Kapselung (private Attribute + Setter/Getter) zu deinen Dungeon Crawler-Klassen hinzu.</p>
+                </div>
             </section>
 
         </div>

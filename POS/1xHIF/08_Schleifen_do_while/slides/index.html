@@ -2,21 +2,56 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>08 — Schleifen – do-while</title>
+    <title>08 - Schleifen – do-while</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>08 — Schleifen – do-while</h1>
+                <h1>08 - Schleifen – do-while</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: while-Schleife</li>
+<li>Kopf- vs. fußgesteuerte Schleife</li>
+<li>Die do-while-Schleife: Syntax</li>
+<li>Beispiel: do-while</li>
+<li>while vs. do-while</li>
+<li>break - Schleife vorzeitig beenden</li>
+<li>break: Beispiel</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>continue - Durchlauf überspringen</li>
+<li>continue: Beispiel</li>
+<li>break vs. continue</li>
+<li>Menübeispiel mit do-while</li>
+<li>do-while mit break</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann kopf- und fußgesteuerte Schleifen unterscheiden</li>
+<li>Ich kann die do-while-Schleife anwenden</li>
+<li>Ich kann break und continue gezielt einsetzen</li>
+<li>Ich kann Menübeispiele mit do-while umsetzen</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: while-Schleife</h2>
                 <pre><code class="language-java">int i = 0;
 while (i &lt; 5) {
@@ -27,6 +62,13 @@ while (i &lt; 5) {
                     <li class="fragment"><strong>Kopfgesteuert:</strong> Bedingung wird vor dem Durchlauf geprüft</li>
                     <li class="fragment">Wenn die Bedingung von Anfang an false ist → 0 Durchläufe</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Wann do-while?</h2>
+                <div class="highlight-box">
+                    <p>Stellt euch ein Menüprogramm vor, das immer wieder angezeigt wird, bis der Benutzer «Beenden» wählt. Warum ist do-while dafür perfekt? Könnte man das auch mit while lösen? Diskutiert die Vor- und Nachteile.</p>
+                </div>
             </section>
 
             <section>
@@ -82,7 +124,7 @@ do {
             </section>
 
             <section>
-                <h2>break — Schleife vorzeitig beenden</h2>
+                <h2>break - Schleife vorzeitig beenden</h2>
                 <pre><code class="language-java">while (true) {
     System.out.print("Zahl eingeben: ");
     int zahl = scanner.nextInt();
@@ -113,7 +155,7 @@ System.out.println("Summe: " + summe);</code></pre>
             </section>
 
             <section>
-                <h2>continue — Durchlauf überspringen</h2>
+                <h2>continue - Durchlauf überspringen</h2>
                 <pre><code class="language-java">for (int i = 1; i &lt;= 10; i++) {
     if (i % 2 == 0) {
         continue;  // Überspringt den Rest des Durchlaufs
@@ -188,6 +230,19 @@ do {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>do-while Grundlagen</strong> – Nutzt do-while für eine Schleife, die mindestens einmal läuft.</li>
+                        <li><strong>break</strong> – Bricht eine Schleife vorzeitig ab.</li>
+                        <li><strong>continue</strong> – Überspringt Durchläufe mit continue.</li>
+                        <li><strong>Menü</strong> – Baut ein interaktives Menü mit do-while.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -197,6 +252,13 @@ do {
                         <li>do-while ideal für Menüs und Eingabeprüfungen</li>
                         <li>while: Bedingung vorher prüfen; do-while: Bedingung nachher prüfen</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler bekommt ein Kampfmenü in einer do-while-Schleife. Der Spieler und der Gegner haben Lebenspunkte. Bei "Angreifen" verliert der Gegner Schaden, bei "Heilen" erhält der Spieler HP.</p>
                 </div>
             </section>
 

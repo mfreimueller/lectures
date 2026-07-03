@@ -2,21 +2,55 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>07 — Schleifen – while</title>
+    <title>07 - Schleifen – while</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>07 — Schleifen – while</h1>
+                <h1>07 - Schleifen – while</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: User Input</li>
+<li>Wiederholung im Alltag</li>
+<li>Konzept der Wiederholung</li>
+<li>Die while-Schleife: Syntax</li>
+<li>Beispiel: Zahlen 1 bis 10</li>
+<li>Zählvariablen-Pattern</li>
+<li>While mit Zählvariable: Ablauf</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Endlosschleifen</li>
+<li>Endlosschleifen vermeiden</li>
+<li>Beispiel: Summe 1 bis n</li>
+<li>Beispiel: While mit User Input</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann das Konzept von Wiederholungen erklären</li>
+<li>Ich kann die while-Schleife anwenden</li>
+<li>Ich kann Endlosschleifen erkennen und vermeiden</li>
+<li>Ich kann while-Schleifen mit Benutzereingaben kombinieren</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: User Input</h2>
                 <ul>
                     <li class="fragment">Mit <code>Scanner</code> können wir Benutzereingaben lesen</li>
@@ -24,6 +58,13 @@
                     <li class="fragment">Mit <code>Random</code> können wir Zufallszahlen erzeugen</li>
                     <li class="fragment">Bisher: Einmalige Eingabe, einmalige Ausgabe</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Endlosschleifen</h2>
+                <div class="highlight-box">
+                    <p>Seht euch diesen Code an: <code>while (true) { System.out.println("Hallo"); }</code>. Was passiert, wenn man ihn ausführt? Wie müsste man den Code ändern, damit «Hallo» genau 5 Mal ausgegeben wird? Diskutiert mit eurem Partner.</p>
+                </div>
             </section>
 
             <section>
@@ -157,6 +198,19 @@ while (!eingabe.equals("quit")) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Zahlenreihe</strong> – Gibt Zahlen von 1 bis n mit einer while-Schleife aus.</li>
+                        <li><strong>Summe berechnen</strong> – Berechnet die Summe von 1 bis n.</li>
+                        <li><strong>Gerade Zahlen</strong> – Gibt alle geraden Zahlen bis n aus.</li>
+                        <li><strong>Countdown</strong> – Zählt von n bis 0 rückwärts.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -165,6 +219,13 @@ while (!eingabe.equals("quit")) {
                         <li>Endlosschleifen entstehen, wenn die Bedingung nie false wird</li>
                         <li>Mit while können wir benutzerdefinierte Wiederholungen steuern</li>
                     </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Der Dungeon Crawler bekommt eine Spielschleife: Der Spieler wird solange nach einer Aktion gefragt, bis er "quit" eingibt. Verwendet eine while-Schleife.</p>
                 </div>
             </section>
 

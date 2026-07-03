@@ -2,28 +2,69 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>22 — Java Doc</title>
+    <title>22 - Java Doc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>22 — Java Doc</h1>
+                <h1>22 - Java Doc</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Warum Dokumentation?</li>
+<li>Kommentar-Arten in Java</li>
+<li>JavaDoc für eine Methode</li>
+<li>Der @param-Tag</li>
+<li>Der @return-Tag</li>
+<li>Der @author-Tag</li>
+<li>Der @see-Tag</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>JavaDoc für Klassen</li>
+<li>JavaDoc für Attribute</li>
+<li>Vollständiges Beispiel</li>
+<li>JavaDoc generieren</li>
+<li>Best Practices</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann JavaDoc-Kommentare für Klassen und Methoden schreiben</li>
+<li>Ich kann die wichtigsten JavaDoc-Tags (@param, @return) anwenden</li>
+<li>Ich kann JavaDoc-Dokumentation generieren</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Warum Dokumentation?</h2>
                 <ul>
                     <li class="fragment">Code wird einmal geschrieben, aber oft gelesen</li>
                     <li class="fragment">Andere Entwickler müssen deinen Code verstehen</li>
                     <li class="fragment">Du selbst vergisst nach Wochen, was dein Code tut</li>
                 </ul>
-                <div class="highlight-box fragment">Guter Code ist selbsterklärend — aber nicht immer!</div>
+                <div class="highlight-box fragment"><p>Guter Code ist selbsterklärend — aber nicht immer!</p></div>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Wann sind Kommentare hilfreich?</h2>
+                <div class="highlight-box">
+                    <p>Findet eine Methode, die ihr oder euer Partner kürzlich geschrieben habt. Könntet ihr ohne Kommentare verstehen, was sie tut? Diskutiert: Wann ist ein Kommentar hilfreich, wann ist er nur Lärm? Was macht einen guten JavaDoc-Kommentar aus?</p>
+                </div>
             </section>
 
             <section>
@@ -216,6 +257,18 @@ public class Student {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Methode dokumentieren</strong> – Dokumentiert Methoden mit JavaDoc.</li>
+                        <li><strong>Klasse dokumentieren</strong> – Dokumentiert Klassen mit JavaDoc.</li>
+                        <li><strong>JavaDoc generieren</strong> – Generiert HTML-Dokumentation aus JavaDoc.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <ul>
                     <li class="fragment">JavaDoc = <code>/** ... */</code> für Dokumentation</li>
@@ -228,10 +281,15 @@ public class Student {
             <section>
                 <h2>Übungen</h2>
                 <ul>
-                    <li><strong>Katas:</strong> Methode dokumentieren, Klasse dokumentieren, JavaDoc generieren</li>
                     <li><strong>Exercise:</strong> Bibliothek vollständig dokumentieren</li>
-                    <li><strong>Jahresprojekt:</strong> Dungeon Crawler final dokumentieren</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Dokumentiere den gesamten Dungeon Crawler vollständig mit JavaDoc.</p>
+                </div>
             </section>
 
         </div>

@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>10 — Arrays</title>
+    <title>10 - Arrays</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
@@ -12,11 +12,43 @@
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>10 — Arrays</h1>
+                <h1>10 - Arrays</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: for-Schleife</li>
+<li>Problem: Mehrere Werte verwalten</li>
+<li>Array-Konzept</li>
+<li>Array-Deklaration und Initialisierung</li>
+<li>Array mit Werten initialisieren</li>
+<li>Zugriff über Index</li>
+<li>Arrays mit for-Schleifen durchlaufen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Die length-Eigenschaft</li>
+<li>ArrayIndexOutOfBoundsException</li>
+<li>Beispiel: Array befüllen und ausgeben</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Arrays deklarieren, initialisieren und auf Elemente zugreifen</li>
+<li>Ich kann Arrays mit for-Schleifen durchlaufen</li>
+<li>Ich kann die Grenzen von Arrays beachten (Index, Länge)</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: for-Schleife</h2>
                 <pre><code class="language-java">for (int i = 0; i &lt; 10; i++) {
     System.out.println(i);
@@ -25,6 +57,13 @@
                     <li class="fragment">Die for-Schleife ist ideal, um eine bekannte Anzahl von Durchläufen zu steuern</li>
                     <li class="fragment">Heute sehen wir, wofür Zählschleifen besonders nützlich sind</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: Warum beginnt der Index bei 0?</h2>
+                <div class="highlight-box">
+                    <p>Warum beginnt die Array-Indizierung bei 0 und nicht bei 1? Diskutiert mit eurem Partner: Wäre das Programmieren einfacher oder schwieriger, wenn man bei 1 beginnen würde? Was müsste sich sonst noch ändern?</p>
+                </div>
             </section>
 
             <section>
@@ -160,16 +199,30 @@ for (int i = 0; i &lt; zahlen.length; i++) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                <ul>
+                    <li><strong>Array erstellen und ausgeben</strong> – Erstellt ein Array und gibt alle Elemente aus.</li>
+                    <li><strong>Summe und Durchschnitt</strong> – Berechnet Summe und Durchschnitt eines Arrays.</li>
+                    <li><strong>Maximum suchen</strong> – Findet das grösste Element in einem Array.</li>
+                    <li><strong>Array umkehren</strong> – Kehrt die Reihenfolge eines Arrays um.</li>
+                </ul>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
-                <div class="highlight-box">
-                    <ul>
-                        <li>Ein Array speichert mehrere Werte desselben Typs</li>
-                        <li>Deklaration: <code>int[] name = new int[größe];</code></li>
-                        <li>Zugriff über Index: <code>name[index]</code> (beginnt bei 0)</li>
-                        <li><code>length</code> gibt die Größe des Arrays an</li>
-                        <li>Arrays + for-Schleifen = ideale Kombination</li>
-                    </ul>
-                </div>
+                <ul>
+                    <li>Ein Array speichert mehrere Werte desselben Typs</li>
+                    <li>Deklaration: <code>int[] name = new int[größe];</code></li>
+                    <li>Zugriff über Index: <code>name[index]</code> (beginnt bei 0)</li>
+                    <li><code>length</code> gibt die Größe des Arrays an</li>
+                    <li>Arrays + for-Schleifen = ideale Kombination</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <p>Der Spieler bekommt ein Inventar als String-Array. Gebt mit einer for-Schleife alle Items aus. Der Spieler kann ein Item über den Index auswählen.</p>
             </section>
 
             

@@ -2,21 +2,53 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>14 — switch-case</title>
+    <title>14 - switch-case</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>14 — switch-case</h1>
+                <h1>14 - switch-case</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Problem: Lange if-else-Kaskaden</li>
+<li>switch-case Syntax</li>
+<li>Beispiel: Wochentag</li>
+<li>Fall-through (ohne break)</li>
+<li>default-Zweig</li>
+<li>switch mit int</li>
+<li>switch mit char</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>switch mit String</li>
+<li>switch vs. if-else</li>
+<li>Beispiel: Menüauswahl</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann switch-case als Alternative zu if-else-Kaskaden einsetzen</li>
+<li>Ich kann die switch-case-Syntax mit break und default anwenden</li>
+<li>Ich kann switch mit verschiedenen Datentypen verwenden</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Problem: Lange if-else-Kaskaden</h2>
                 <pre><code class="language-java">if (tag == 1) {
     System.out.println("Montag");
@@ -26,6 +58,13 @@
     System.out.println("Mittwoch");
 } // ... und so weiter</code></pre>
                 <p class="fragment">Das ist umständlich und schwer lesbar!</p>
+            </section>
+
+            <section>
+                <h2>Partnerdiskussion: switch vs. if-else</h2>
+                <div class="highlight-box">
+                    <p>Euer Partner nennt einen Wochentag. Ihr sagt, was ihr an diesem Tag macht. Schreibt dann gemeinsam eine switch-Anweisung dafür. Warum ist switch hier besser als 7 if-else-Anweisungen? Gibt es auch Nachteile?</p>
+                </div>
             </section>
 
             <section>
@@ -191,6 +230,19 @@ switch (wahl) {
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Wochentag</strong> – Gibt den Wochentag per switch-case aus.</li>
+                        <li><strong>Monatsname</strong> – Gibt den Monatsnamen per switch-case aus.</li>
+                        <li><strong>Note in Text</strong> – Übersetzt Noten in Text mit switch.</li>
+                        <li><strong>switch mit String</strong> – Nutzt switch mit String-Vergleichen.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <div class="highlight-box">
                     <ul>
@@ -205,8 +257,13 @@ switch (wahl) {
 
             <section class="center">
                 <h2>Ausblick</h2>
+                <div class="highlight-box"><p>Nächste Woche lernen wir Funktionen (Methoden) kennen — Code in wiederverwendbare Blöcke auslagern.</p></div>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
                 <div class="highlight-box">
-                    Nächste Woche lernen wir Funktionen (Methoden) kennen — Code in wiederverwendbare Blöcke auslagern.
+                    <p>Baue switch-case in deinen Dungeon Crawler ein.</p>
                 </div>
             </section>
 

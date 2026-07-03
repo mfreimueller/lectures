@@ -2,21 +2,52 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>20 — Referenzen</title>
+    <title>20 - Referenzen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
 
             <section class="center title-slide">
-                <h1>20 — Referenzen</h1>
+                <h1>20 - Referenzen</h1>
                 <p class="institution">POS - 1xHIF</p>
             </section>
 
+            
             <section>
+                <h2>Agenda (1/2)</h2>
+                <ol>
+<li>Wiederholung: Objekte im Speicher</li>
+<li>Was sind Referenzen?</li>
+<li>Aliasing</li>
+<li>Visualisierung von Referenzen</li>
+<li>null - "keine Referenz"</li>
+<li>NullPointerException vermeiden</li>
+<li>Objekte als Methodenparameter</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/2)</h2>
+                <ol start="8">
+<li>Call by Value der Referenz</li>
+<li>Arrays von Objekten</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Lernziele</h2>
+                <ul>
+<li>Ich kann Referenz- und Wertetypen unterscheiden</li>
+<li>Ich kann das Verhalten von Objektreferenzen erklären</li>
+<li>Ich kann NullPointerException vermeiden</li>
+                </ul>
+            </section>
+
+<section>
                 <h2>Wiederholung: Objekte im Speicher</h2>
                 <pre><code class="language-java">Person p = new Person("Anna", 25);</code></pre>
                 <p>Was passiert im Speicher?</p>
@@ -25,7 +56,14 @@
                     <li class="fragment"><code>p</code> speichert nicht das Objekt, sondern die <strong>Adresse</strong></li>
                     <li class="fragment">Diese Adresse nennt man <strong>Referenz</strong></li>
                 </ul>
-                <div class="highlight-box fragment">p enthält: 0x7ff3a1 (Adresse, nicht das Objekt!)</div>
+                <div class="highlight-box fragment"><p>p enthält: 0x7ff3a1 (Adresse, nicht das Objekt!)</p></div>
+            </section>
+
+            <section>
+                <h2>Partneraktivität: Referenzen visualisieren</h2>
+                <div class="highlight-box">
+                    <p>Zeichnet auf Papier: <code>int a = 5; int b = a; b = 10;</code> — was ist <code>a</code>? Zeichnet dann: <code>Person p1 = new Person("Anna"); Person p2 = p1; p2.setName("Bob");</code> — was ist <code>p1.getName()</code>? Diskutiert den Unterschied.</p>
+                </div>
             </section>
 
             <section>
@@ -46,7 +84,7 @@ Person b = a;    // Aliasing: a und b zeigen auf dasselbe Objekt
 
 b.setName("Maria");
 System.out.println(a.getName()); // "Maria"</code></pre>
-                <div class="highlight-box fragment">Die Änderung über b wirkt sich auch auf a aus!</div>
+                <div class="highlight-box fragment"><p>Die Änderung über b wirkt sich auch auf a aus!</p></div>
             </section>
 
             <section>
@@ -54,14 +92,14 @@ System.out.println(a.getName()); // "Maria"</code></pre>
                 <pre><code class="language-java">Person a = new Person("Anna", 25);
 Person b = a;
 Person c = new Person("Bob", 30);</code></pre>
-                <div class="highlight-box">Speicher:<br>
+                <div class="highlight-box"><p>Speicher:<br>
                 a ──&gt; { "Anna", 25 } &lt;── b<br>
-                c ──&gt; { "Bob", 30 }</div>
+                c ──&gt; { "Bob", 30 }</p></div>
                 <p class="fragment">a und b teilen sich ein Objekt, c zeigt auf ein separates.</p>
             </section>
 
             <section>
-                <h2>null — "keine Referenz"</h2>
+                <h2>null - "keine Referenz"</h2>
                 <p><code>null</code> bedeutet: Die Variable zeigt auf kein Objekt.</p>
                 <pre><code class="language-java">Person p = null;  // p zeigt auf nichts
 
@@ -77,7 +115,7 @@ Person c = new Person("Bob", 30);</code></pre>
     else
         System.out.println("Keine Person vorhanden");
 }</code></pre>
-                <div class="highlight-box fragment">Immer auf null prüfen, bevor Methoden aufgerufen werden!</div>
+                <div class="highlight-box fragment"><p>Immer auf null prüfen, bevor Methoden aufgerufen werden!</p></div>
             </section>
 
             <section>
@@ -124,6 +162,18 @@ team[0].setAlter(26); // Änderung direkt im Array</code></pre>
             </section>
 
             <section>
+                <h2>Katas</h2>
+                <div class="highlight-box">
+                    <p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
+                    <ul>
+                        <li><strong>Referenzen verstehen</strong> – Untersucht das Verhalten von Objektreferenzen.</li>
+                        <li><strong>null und NullPointerException</strong> – Arbeitet mit null und fängt NullPointerExceptions.</li>
+                        <li><strong>Objekt als Parameter</strong> – Übergibt Objekte als Methodenparameter.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
                 <h2>Zusammenfassung</h2>
                 <ul>
                     <li class="fragment">Referenzen sind Adressen auf Objekte</li>
@@ -137,10 +187,15 @@ team[0].setAlter(26); // Änderung direkt im Array</code></pre>
             <section>
                 <h2>Übungen</h2>
                 <ul>
-                    <li><strong>Katas:</strong> Referenzen, null, Parameter</li>
                     <li><strong>Exercise:</strong> Team-Verwaltung</li>
-                    <li><strong>Jahresprojekt:</strong> Raum-Karte mit Referenzen</li>
                 </ul>
+            </section>
+
+            <section>
+                <h2>Jahresprojekt: Dungeon Crawler</h2>
+                <div class="highlight-box">
+                    <p>Erstelle eine Klasse Room für den Dungeon Crawler mit Referenzen zwischen Räumen.</p>
+                </div>
             </section>
 
         </div>
