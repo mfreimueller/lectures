@@ -305,10 +305,8 @@ li.unmarked {
  * BLOCKQUOTES WITH LOGO ACCENTS
  *********************************************/
 .reveal blockquote {
-    border-left: 6px solid var(--color-black);
     margin: 30px auto;
     padding: 20px 30px;
-    border-radius: 8px;
     font-size: 2em;
 
     /* Optional: Add logo icon */
