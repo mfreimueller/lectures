@@ -431,10 +431,9 @@ li.unmarked {
  * HIGHLIGHT BOXES WITH LOGO ICONS
  *********************************************/
 .reveal .highlight-box {
-    border-left: 6px solid var(--color-black);
+    font-style: italic;
     padding: 25px;
     margin: 30px auto;
-    border-radius: 8px;
 
     /* Optional: Add logo icon */
     /* position: relative; padding-left: 70px; */
