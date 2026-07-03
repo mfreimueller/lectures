@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,21 +19,21 @@
 <section>
 <h2>Agenda</h2>
 <ol>
-<li class="fragment">Exercise Overview</li>
-<li class="fragment">Tokenizer</li>
-<li class="fragment">Parser and AST</li>
-<li class="fragment">HTML Renderer</li>
+<li>Exercise Overview</li>
+<li>Tokenizer</li>
+<li>Parser and AST</li>
+<li>HTML Renderer</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can build a tokenizer that classifies Markdown text using sealed interfaces</li>
-<li class="fragment">I can parse tokens into an AST using records and sealed classes</li>
-<li class="fragment">I can render an AST to HTML using switch expressions and streams</li>
-<li class="fragment">I can apply TDD to each stage of a multi-stage text processing pipeline</li>
-<li class="fragment">I can explain why separating Tokenizer, Parser, and Renderer is good design</li>
+<li>I can build a tokenizer that classifies Markdown text using sealed interfaces</li>
+<li>I can parse tokens into an AST using records and sealed classes</li>
+<li>I can render an AST to HTML using switch expressions and streams</li>
+<li>I can apply TDD to each stage of a multi-stage text processing pipeline</li>
+<li>I can explain why separating Tokenizer, Parser, and Renderer is good design</li>
 </ul>
 </section>
 
@@ -45,7 +45,7 @@
 <li class="fragment"><strong>Parser</strong> — build an AST from tokens using records</li>
 <li class="fragment"><strong>Renderer</strong> — walk the AST and emit HTML</li>
 </ol>
-<div class="highlight-box fragment">Use TDD for every stage — write the test first!</div>
+<div class="highlight-box fragment"><p>Use TDD for every stage — write the test first!</p></div>
 </section>
 
 <section>

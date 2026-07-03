@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,32 +19,32 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: Layered Architecture</li>
-<li class="fragment">Review: Front Controller &amp; Servlets</li>
-<li class="fragment">POS-WMC Project Overview</li>
-<li class="fragment">Project Requirements</li>
-<li class="fragment">Choosing a Domain</li>
+<li>Review: Layered Architecture</li>
+<li>Review: Front Controller &amp; Servlets</li>
+<li>POS-WMC Project Overview</li>
+<li>Project Requirements</li>
+<li>Choosing a Domain</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="6">
-<li class="fragment">Database Model: 6 Tables Minimum</li>
-<li class="fragment">Entity Relationships</li>
-<li class="fragment">Maven Project Setup</li>
-<li class="fragment">Layered Architecture</li>
-<li class="fragment">Project Deliverables This Week</li>
+<li>Database Model: 6 Tables Minimum</li>
+<li>Entity Relationships</li>
+<li>Maven Project Setup</li>
+<li>Layered Architecture</li>
+<li>Project Deliverables This Week</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can choose a suitable project domain with at least 6 tables</li>
-<li class="fragment">I can design an ER diagram with 1:1, 1:n, and inheritance relationships</li>
-<li class="fragment">I can set up a Maven project with Tomcat, Hibernate, PostgreSQL, and Jackson dependencies</li>
-<li class="fragment">I can plan a layered architecture with Controller, Service, Repository, and Model packages</li>
+<li>I can choose a suitable project domain with at least 6 tables</li>
+<li>I can design an ER diagram with 1:1, 1:n, and inheritance relationships</li>
+<li>I can set up a Maven project with Tomcat, Hibernate, PostgreSQL, and Jackson dependencies</li>
+<li>I can plan a layered architecture with Controller, Service, Repository, and Model packages</li>
 </ul>
 </section>
 
@@ -204,9 +204,7 @@ public class EBook extends Book { }
   ├── repository/
   └── model/
 </code></pre>
-<div class="highlight-box fragment">
-Controller - Service - Repository: each layer has a clear responsibility.
-</div>
+<div class="highlight-box fragment"><p>Controller - Service - Repository: each layer has a clear responsibility.</p></div>
 </section>
 
 <section>
@@ -230,8 +228,6 @@ Controller - Service - Repository: each layer has a clear responsibility.
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

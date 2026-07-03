@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,29 +19,29 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">JPA Recap - Entities and Relationships</li>
-<li class="fragment">JPA Recap - Inheritance and Value Objects</li>
-<li class="fragment">Exercise: School Management Data Layer</li>
-<li class="fragment">Domain Model</li>
+<li>JPA Recap - Entities and Relationships</li>
+<li>JPA Recap - Inheritance and Value Objects</li>
+<li>Exercise: School Management Data Layer</li>
+<li>Domain Model</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="5">
-<li class="fragment">Testing with H2</li>
-<li class="fragment">Deliverables</li>
+<li>Testing with H2</li>
+<li>Deliverables</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can define JPA entity classes with inheritance strategies</li>
-<li class="fragment">I can model relationships using @OneToMany, @ManyToMany, and @OneToOne</li>
-<li class="fragment">I can create embeddable value objects for Address, Email, and Money</li>
-<li class="fragment">I can implement generic and concrete Repository interfaces</li>
-<li class="fragment">I can write integration tests using H2 in-memory database</li>
+<li>I can define JPA entity classes with inheritance strategies</li>
+<li>I can model relationships using @OneToMany, @ManyToMany, and @OneToOne</li>
+<li>I can create embeddable value objects for Address, Email, and Money</li>
+<li>I can implement generic and concrete Repository interfaces</li>
+<li>I can write integration tests using H2 in-memory database</li>
 </ul>
 </section>
 
@@ -144,13 +144,6 @@ Repository&lt;T, ID&gt; (interface)
 <section>
 <h2>Now Kata 3: Integration Tests</h2>
 <p>Write JUnit 5 integration tests for the Repository layer using H2 in-memory database.</p>
-</section>
-
-<section class="center">
-<h2>Good Luck!</h2>
-<div class="highlight-box">
-Apply everything from weeks 17-20 in this exercise. Use H2 for quick testing without needing PostgreSQL.
-</div>
 </section>
 
 </div></div>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,36 +19,36 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">What is Reflection?</li>
-<li class="fragment">The Class Object</li>
-<li class="fragment">Inspecting Class Metadata</li>
-<li class="fragment">Inspecting Methods</li>
-<li class="fragment">Inspecting Fields</li>
-<li class="fragment">Inspecting Constructors</li>
-<li class="fragment">Dynamic Method Invocation</li>
+<li>What is Reflection?</li>
+<li>The Class Object</li>
+<li>Inspecting Class Metadata</li>
+<li>Inspecting Methods</li>
+<li>Inspecting Fields</li>
+<li>Inspecting Constructors</li>
+<li>Dynamic Method Invocation</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="8">
-<li class="fragment">Dynamic Field Access</li>
-<li class="fragment">Working with Constructors</li>
-<li class="fragment">setAccessible and Encapsulation</li>
-<li class="fragment">Arrays via Reflection</li>
-<li class="fragment">Performance Considerations</li>
-<li class="fragment">Practical Use Cases</li>
+<li>Dynamic Field Access</li>
+<li>Working with Constructors</li>
+<li>setAccessible and Encapsulation</li>
+<li>Arrays via Reflection</li>
+<li>Performance Considerations</li>
+<li>Practical Use Cases</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain what Reflection is and why frameworks depend on it</li>
-<li class="fragment">I can inspect classes, methods, fields, and constructors at runtime using the Class object</li>
-<li class="fragment">I can invoke methods and access fields dynamically without compile-time type knowledge</li>
-<li class="fragment">I can create instances dynamically using Constructor.newInstance()</li>
-<li class="fragment">I can evaluate the performance and security trade-offs of using setAccessible()</li>
+<li>I can explain what Reflection is and why frameworks depend on it</li>
+<li>I can inspect classes, methods, fields, and constructors at runtime using the Class object</li>
+<li>I can invoke methods and access fields dynamically without compile-time type knowledge</li>
+<li>I can create instances dynamically using Constructor.newInstance()</li>
+<li>I can evaluate the performance and security trade-offs of using setAccessible()</li>
 </ul>
 </section>
 
@@ -60,7 +60,7 @@
 <li class="fragment">Invoke methods and access fields dynamically</li>
 <li class="fragment">Create instances without compile-time type knowledge</li>
 </ul>
-<div class="highlight-box fragment">Reflection is the foundation of frameworks like Spring, JPA, and Jackson.</div>
+<div class="highlight-box fragment"><p>Reflection is the foundation of frameworks like Spring, JPA, and Jackson.</p></div>
 </section>
 
 <section>
@@ -218,7 +218,7 @@ int value = (int) Array.get(array, 0);
 <li class="fragment">Use <code>MethodHandles</code> (Java 7+) for better performance</li>
 <li class="fragment"><code>invokedynamic</code> (Java 7+) enables efficient dynamic calls</li>
 </ul>
-<div class="highlight-box fragment">Prefer static types when possible. Use reflection only when necessary.</div>
+<div class="highlight-box fragment"><p>Prefer static types when possible. Use reflection only when necessary.</p></div>
 </section>
 
 <section>

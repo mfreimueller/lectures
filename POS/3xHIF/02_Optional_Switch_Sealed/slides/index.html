@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,35 +19,35 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Recap: Pattern Matching</li>
-<li class="fragment">Recap: Text Blocks</li>
-<li class="fragment">Optional: Motivation</li>
-<li class="fragment">Creating Optionals</li>
-<li class="fragment">Using Optional</li>
-<li class="fragment">Optional with Streams</li>
-<li class="fragment">Optional Best Practices</li>
+<li>Recap: Pattern Matching</li>
+<li>Recap: Text Blocks</li>
+<li>Optional: Motivation</li>
+<li>Creating Optionals</li>
+<li>Using Optional</li>
+<li>Optional with Streams</li>
+<li>Optional Best Practices</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="8">
-<li class="fragment">Switch Expressions: Motivation</li>
-<li class="fragment">Switch Expressions: Arrow Syntax</li>
-<li class="fragment">Switch with Pattern Matching</li>
-<li class="fragment">Sealed Classes: Motivation</li>
-<li class="fragment">Sealed Class Syntax</li>
-<li class="fragment">Sealed + Pattern Matching</li>
+<li>Switch Expressions: Motivation</li>
+<li>Switch Expressions: Arrow Syntax</li>
+<li>Switch with Pattern Matching</li>
+<li>Sealed Classes: Motivation</li>
+<li>Sealed Class Syntax</li>
+<li>Sealed + Pattern Matching</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can use Optional to handle potentially absent values safely</li>
-<li class="fragment">I can chain Optional operations with map and flatMap</li>
-<li class="fragment">I can write switch expressions using arrow syntax</li>
-<li class="fragment">I can define sealed class hierarchies with exhaustive pattern matching</li>
+<li>I can use Optional to handle potentially absent values safely</li>
+<li>I can chain Optional operations with map and flatMap</li>
+<li>I can write switch expressions using arrow syntax</li>
+<li>I can define sealed class hierarchies with exhaustive pattern matching</li>
 </ul>
 </section>
 
@@ -61,9 +61,7 @@ if (obj instanceof Point(int x, int y)) {
     System.out.println(x + ", " + y);
 }
 </code></pre>
-<div class="highlight-box">
-Pattern matching eliminates casts and improves readability.
-</div>
+<div class="highlight-box"><p>Pattern matching eliminates casts and improves readability.</p></div>
 </section>
 
 <section>
@@ -96,9 +94,7 @@ name.ifPresent(n -&gt; System.out.println(n.toUpperCase()));
 Optional&lt;String&gt; opt = Optional.ofNullable(nullableValue);
 Optional&lt;String&gt; empty = Optional.empty();
 </code></pre>
-<div class="highlight-box fragment">
-Always use Optional.ofNullable for values that may be null!
-</div>
+<div class="highlight-box fragment"><p>Always use Optional.ofNullable for values that may be null!</p></div>
 </section>
 
 <section>
@@ -190,9 +186,7 @@ switch (day) {
     default -&gt; "Midweek";
 };
 </code></pre>
-<div class="highlight-box fragment">
-Arrow syntax eliminates fall-through and can yield values.
-</div>
+<div class="highlight-box fragment"><p>Arrow syntax eliminates fall-through and can yield values.</p></div>
 </section>
 
 <section>
@@ -228,9 +222,7 @@ public record Circle(double radius) implements Shape {}
 public record Rectangle(double w, double h) implements Shape {}
 public record Triangle(double a, double b, double c) implements Shape {}
 </code></pre>
-<div class="highlight-box fragment">
-With sealed classes, the compiler knows all subtypes, enabling exhaustive pattern matching without a default clause.
-</div>
+<div class="highlight-box fragment"><p>With sealed classes, the compiler knows all subtypes, enabling exhaustive pattern matching without a default clause.</p></div>
 </section>
 
 <section>
@@ -264,9 +256,7 @@ public non-sealed class Motorcycle extends Vehicle {}
     };
 }
 </code></pre>
-<div class="highlight-box">
-When all sealed subtypes are covered in a switch, the compiler verifies exhaustiveness.
-</div>
+<div class="highlight-box"><p>When all sealed subtypes are covered in a switch, the compiler verifies exhaustiveness.</p></div>
 </section>
 
 <section>
@@ -285,8 +275,6 @@ When all sealed subtypes are covered in a switch, the compiler verifies exhausti
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

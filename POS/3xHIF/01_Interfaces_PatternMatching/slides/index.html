@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,34 +19,34 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Recap: Records</li>
-<li class="fragment">Recap: var</li>
-<li class="fragment">Default Methods</li>
-<li class="fragment">Default Methods: Usage</li>
-<li class="fragment">Default Method Inheritance</li>
-<li class="fragment">Static Methods in Interfaces</li>
+<li>Recap: Records</li>
+<li>Recap: var</li>
+<li>Default Methods</li>
+<li>Default Methods: Usage</li>
+<li>Default Method Inheritance</li>
+<li>Static Methods in Interfaces</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Pattern Matching for instanceof</li>
-<li class="fragment">Pattern Variables Scope</li>
-<li class="fragment">Pattern Matching with Records</li>
-<li class="fragment">Complex Pattern Matching</li>
-<li class="fragment">Text Blocks</li>
-<li class="fragment">Text Block Features</li>
+<li>Pattern Matching for instanceof</li>
+<li>Pattern Variables Scope</li>
+<li>Pattern Matching with Records</li>
+<li>Complex Pattern Matching</li>
+<li>Text Blocks</li>
+<li>Text Block Features</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can define interfaces with default and static methods</li>
-<li class="fragment">I can resolve default method inheritance conflicts</li>
-<li class="fragment">I can use pattern matching with instanceof and record patterns</li>
-<li class="fragment">I can write multiline strings using Text Blocks</li>
+<li>I can define interfaces with default and static methods</li>
+<li>I can resolve default method inheritance conflicts</li>
+<li>I can use pattern matching with instanceof and record patterns</li>
+<li>I can write multiline strings using Text Blocks</li>
 </ul>
 </section>
 
@@ -58,9 +58,7 @@ public record Person(String name, int age) {}
 var p = new Person("Alice", 30);
 System.out.println(p.name()); // accessor
 </code></pre>
-<div class="highlight-box">
-Records model immutable data concisely.
-</div>
+<div class="highlight-box"><p>Records model immutable data concisely.</p></div>
 </section>
 
 <section>
@@ -83,9 +81,7 @@ var numbers = List.of(1, 2, 3);
     }
 }
 </code></pre>
-<div class="highlight-box fragment">
-Default methods allow adding functionality to interfaces without breaking existing implementations.
-</div>
+<div class="highlight-box fragment"><p>Default methods allow adding functionality to interfaces without breaking existing implementations.</p></div>
 </section>
 
 <section>
@@ -142,9 +138,7 @@ public class C implements A, B {
     }
 }
 </code></pre>
-<div class="highlight-box fragment">
-Static interface methods are utility methods that belong to the interface, not to instances.
-</div>
+<div class="highlight-box fragment"><p>Static interface methods are utility methods that belong to the interface, not to instances.</p></div>
 </section>
 
 <section>
@@ -159,9 +153,7 @@ Static interface methods are utility methods that belong to the interface, not t
     System.out.println(s.length());
 }
 </code></pre>
-<div class="highlight-box fragment">
-No explicit cast needed; the pattern variable is already in scope.
-</div>
+<div class="highlight-box fragment"><p>No explicit cast needed; the pattern variable is already in scope.</p></div>
 </section>
 
 <section>
@@ -189,9 +181,7 @@ public static void printPoint(Object obj) {
         System.out.println("Point at (" + x + ", " + y + ")");
     }
 }</code></pre>
-<div class="highlight-box fragment">
-Record patterns destructure the record into its components.
-</div>
+<div class="highlight-box fragment"><p>Record patterns destructure the record into its components.</p></div>
 </section>
 
 <section>
@@ -269,8 +259,6 @@ String html = """
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

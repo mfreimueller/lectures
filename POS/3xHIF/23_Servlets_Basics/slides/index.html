@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,38 +19,38 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: HTTP &amp; REST</li>
-<li class="fragment">From Client to Server</li>
-<li class="fragment">What is a Servlet?</li>
-<li class="fragment">Jakarta Servlet API</li>
-<li class="fragment">HttpServlet Lifecycle</li>
-<li class="fragment">HttpServletRequest</li>
-<li class="fragment">HttpServletResponse</li>
-<li class="fragment">Maven Setup</li>
+<li>Review: HTTP &amp; REST</li>
+<li>From Client to Server</li>
+<li>What is a Servlet?</li>
+<li>Jakarta Servlet API</li>
+<li>HttpServlet Lifecycle</li>
+<li>HttpServletRequest</li>
+<li>HttpServletResponse</li>
+<li>Maven Setup</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="9">
-<li class="fragment">Embedded Tomcat Server</li>
-<li class="fragment">Registering a Servlet</li>
-<li class="fragment">First Servlet: doGet</li>
-<li class="fragment">Reading Query Parameters</li>
-<li class="fragment">doPost: Receiving Data</li>
-<li class="fragment">Writing JSON Responses</li>
-<li class="fragment">Routing Without a Framework</li>
+<li>Embedded Tomcat Server</li>
+<li>Registering a Servlet</li>
+<li>First Servlet: doGet</li>
+<li>Reading Query Parameters</li>
+<li>doPost: Receiving Data</li>
+<li>Writing JSON Responses</li>
+<li>Routing Without a Framework</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain what a Servlet is and how it fits into a Servlet container</li>
-<li class="fragment">I can start an embedded Tomcat server from a main method</li>
-<li class="fragment">I can register servlets programmatically and map them to URL paths</li>
-<li class="fragment">I can read request data using HttpServletRequest</li>
-<li class="fragment">I can write responses with status codes and content types using HttpServletResponse</li>
+<li>I can explain what a Servlet is and how it fits into a Servlet container</li>
+<li>I can start an embedded Tomcat server from a main method</li>
+<li>I can register servlets programmatically and map them to URL paths</li>
+<li>I can read request data using HttpServletRequest</li>
+<li>I can write responses with status codes and content types using HttpServletResponse</li>
 </ul>
 </section>
 
@@ -269,13 +269,6 @@ var method = req.getMethod(); // "GET"</code></pre>
 <li class="fragment">Response data via HttpServletResponse</li>
 <li class="fragment">No framework — just the bare Servlet API</li>
 </ul>
-</section>
-
-<section class="center">
-<div class="highlight-box">
-<h2>Outlook</h2>
-<p>Next week: DTOs, Validation, and Error Handling on top of Servlets.</p>
-</div>
 </section>
 
 </div></div>

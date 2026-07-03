@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,34 +19,34 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: JPA Entity Basics</li>
-<li class="fragment">Review: Servlet Routes</li>
-<li class="fragment">User Entity Design</li>
-<li class="fragment">Password Hashing with BCrypt</li>
-<li class="fragment">JWT Token Authentication</li>
-<li class="fragment">JWT Utility Class</li>
+<li>Review: JPA Entity Basics</li>
+<li>Review: Servlet Routes</li>
+<li>User Entity Design</li>
+<li>Password Hashing with BCrypt</li>
+<li>JWT Token Authentication</li>
+<li>JWT Utility Class</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Registration Endpoint</li>
-<li class="fragment">Login Endpoint</li>
-<li class="fragment">AuthService</li>
-<li class="fragment">UserRepository</li>
-<li class="fragment">Role-Based Access</li>
+<li>Registration Endpoint</li>
+<li>Login Endpoint</li>
+<li>AuthService</li>
+<li>UserRepository</li>
+<li>Role-Based Access</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can design a User entity with secure password storage using BCrypt</li>
-<li class="fragment">I can generate and validate JWT tokens with HMAC-SHA256 signing</li>
-<li class="fragment">I can implement registration and login endpoints that return JWT tokens</li>
-<li class="fragment">I can build an AuthService that orchestrates user registration and authentication</li>
-<li class="fragment">I can implement role-based access control using JWT claims</li>
+<li>I can design a User entity with secure password storage using BCrypt</li>
+<li>I can generate and validate JWT tokens with HMAC-SHA256 signing</li>
+<li>I can implement registration and login endpoints that return JWT tokens</li>
+<li>I can build an AuthService that orchestrates user registration and authentication</li>
+<li>I can implement role-based access control using JWT claims</li>
 </ul>
 </section>
 
@@ -93,9 +93,7 @@ public class User {
 BCrypt.Result result = BCrypt.verifyer()
     .verify(password.toCharArray(), hash);
 </code></pre>
-<div class="highlight-box fragment">
-Never store plaintext passwords! Always use a strong hashing algorithm like BCrypt.
-</div>
+<div class="highlight-box fragment"><p>Never store plaintext passwords! Always use a strong hashing algorithm like BCrypt.</p></div>
 </section>
 
 <section>
@@ -265,8 +263,6 @@ Never store plaintext passwords! Always use a strong hashing algorithm like BCry
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

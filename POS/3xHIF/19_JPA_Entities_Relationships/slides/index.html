@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,35 +19,35 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">From JDBC to JPA</li>
-<li class="fragment">JPA Architecture</li>
-<li class="fragment">Persistence Unit Configuration</li>
-<li class="fragment">Entity Mapping</li>
-<li class="fragment">EntityManager Operations</li>
-<li class="fragment">JPQL - JPA Query Language</li>
+<li>From JDBC to JPA</li>
+<li>JPA Architecture</li>
+<li>Persistence Unit Configuration</li>
+<li>Entity Mapping</li>
+<li>EntityManager Operations</li>
+<li>JPQL - JPA Query Language</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">JPQL vs SQL</li>
-<li class="fragment">@OneToOne Relationship</li>
-<li class="fragment">@OneToMany / @ManyToOne</li>
-<li class="fragment">@ManyToMany Relationship</li>
-<li class="fragment">Cascade Types</li>
-<li class="fragment">JPA vs JDBC DAO - Comparison</li>
+<li>JPQL vs SQL</li>
+<li>@OneToOne Relationship</li>
+<li>@OneToMany / @ManyToOne</li>
+<li>@ManyToMany Relationship</li>
+<li>Cascade Types</li>
+<li>JPA vs JDBC DAO - Comparison</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain the JPA architecture and the role of EntityManager</li>
-<li class="fragment">I can map Java classes to database tables using @Entity, @Table, @Id, and @Column</li>
-<li class="fragment">I can perform CRUD operations using EntityManager (persist, find, merge, remove)</li>
-<li class="fragment">I can model entity relationships using @OneToOne, @OneToMany, @ManyToOne, and @ManyToMany</li>
-<li class="fragment">I can write JPQL queries and understand the difference between JPQL and SQL</li>
+<li>I can explain the JPA architecture and the role of EntityManager</li>
+<li>I can map Java classes to database tables using @Entity, @Table, @Id, and @Column</li>
+<li>I can perform CRUD operations using EntityManager (persist, find, merge, remove)</li>
+<li>I can model entity relationships using @OneToOne, @OneToMany, @ManyToOne, and @ManyToMany</li>
+<li>I can write JPQL queries and understand the difference between JPQL and SQL</li>
 </ul>
 </section>
 
@@ -57,9 +57,7 @@
         <pre><code class="language-java">// JPA: 1 line
 entityManager.persist(student);
 </code></pre>
-<div class="highlight-box fragment">
-JPA eliminates boilerplate by mapping Java objects directly to database rows.
-</div>
+<div class="highlight-box fragment"><p>JPA eliminates boilerplate by mapping Java objects directly to database rows.</p></div>
 </section>
 
 <section>
@@ -168,9 +166,7 @@ List&lt;Student&gt; result = em.createQuery(jpql, Student.class)
     .setParameter("minGrade", 1)
     .getResultList();
 </code></pre>
-<div class="highlight-box fragment">
-JPQL is database-independent - JPA generates the appropriate SQL dialect.
-</div>
+<div class="highlight-box fragment"><p>JPQL is database-independent - JPA generates the appropriate SQL dialect.</p></div>
 </section>
 
 <section>
@@ -341,8 +337,6 @@ Student student = em.find(Student.class, id);
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,34 +19,34 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: Servlets Recap</li>
-<li class="fragment">Review: Current Limitations</li>
-<li class="fragment">What are DTOs?</li>
-<li class="fragment">DTO Example</li>
-<li class="fragment">Manual Validation</li>
-<li class="fragment">Custom Validation Annotations</li>
+<li>Review: Servlets Recap</li>
+<li>Review: Current Limitations</li>
+<li>What are DTOs?</li>
+<li>DTO Example</li>
+<li>Manual Validation</li>
+<li>Custom Validation Annotations</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Validation with Reflection</li>
-<li class="fragment">Annotated DTO</li>
-<li class="fragment">Integration with Servlets</li>
-<li class="fragment">Structured Error Responses</li>
-<li class="fragment">Exception Handling in Front Controller</li>
+<li>Validation with Reflection</li>
+<li>Annotated DTO</li>
+<li>Integration with Servlets</li>
+<li>Structured Error Responses</li>
+<li>Exception Handling in Front Controller</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain why DTOs separate API contracts from domain models</li>
-<li class="fragment">I can define request and response DTOs using Java records</li>
-<li class="fragment">I can create custom validation annotations with retention and target</li>
-<li class="fragment">I can implement a reflection-based validator that reads annotations</li>
-<li class="fragment">I can build structured error responses and centralized exception handling</li>
+<li>I can explain why DTOs separate API contracts from domain models</li>
+<li>I can define request and response DTOs using Java records</li>
+<li>I can create custom validation annotations with retention and target</li>
+<li>I can implement a reflection-based validator that reads annotations</li>
+<li>I can build structured error responses and centralized exception handling</li>
 </ul>
 </section>
 
@@ -275,14 +275,6 @@ catch (UserNotFoundException e) {
 <li class="fragment">Custom annotations + reflection enable reusable validation</li>
 <li class="fragment">Exception mappers centralize error handling</li>
 </ul>
-</section>
-
-<section class="center">
-<div class="highlight-box">
-<h2>Outlook</h2>
-<p>Next week: REST with Servlets — Front Controller &amp; Command patterns</p>
-<p>Routing all requests through one servlet and dispatching to commands.</p>
-</div>
 </section>
 
 </div></div>

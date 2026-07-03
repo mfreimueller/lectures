@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,34 +19,34 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: Reflection</li>
-<li class="fragment">Review: Annotations</li>
-<li class="fragment">Motivation</li>
-<li class="fragment">Annotation Design</li>
-<li class="fragment">Using the Annotations</li>
-<li class="fragment">Classpath Scanning</li>
+<li>Review: Reflection</li>
+<li>Review: Annotations</li>
+<li>Motivation</li>
+<li>Annotation Design</li>
+<li>Using the Annotations</li>
+<li>Classpath Scanning</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Recursive Directory Scan</li>
-<li class="fragment">Processing @Controller</li>
-<li class="fragment">Resolving Handler Arguments</li>
-<li class="fragment">@PathVariable Support</li>
-<li class="fragment">Putting It All Together</li>
+<li>Recursive Directory Scan</li>
+<li>Processing @Controller</li>
+<li>Resolving Handler Arguments</li>
+<li>@PathVariable Support</li>
+<li>Putting It All Together</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can define custom annotations for endpoint and HTTP method mapping</li>
-<li class="fragment">I can scan the classpath to find annotated classes at runtime</li>
-<li class="fragment">I can use reflection to process annotations and auto-register routes</li>
-<li class="fragment">I can resolve handler method arguments from HTTP requests</li>
-<li class="fragment">I can build a mini-framework that mimics Spring's auto-discovery</li>
+<li>I can define custom annotations for endpoint and HTTP method mapping</li>
+<li>I can scan the classpath to find annotated classes at runtime</li>
+<li>I can use reflection to process annotations and auto-register routes</li>
+<li>I can resolve handler method arguments from HTTP requests</li>
+<li>I can build a mini-framework that mimics Spring's auto-discovery</li>
 </ul>
 </section>
 
@@ -285,14 +285,6 @@ if (param.isAnnotationPresent(PathVariable.class)) {
 <li class="fragment">Front Controller commands are registered programmatically based on annotations</li>
 <li class="fragment">This pattern is the foundation of Spring Boot, Micronaut, Quarkus</li>
 </ul>
-</section>
-
-<section class="center">
-<div class="highlight-box">
-<h2>Outlook</h2>
-<p>Next up: Project WMC!</p>
-<p>Apply everything you learned in a team project over the next 6 weeks.</p>
-</div>
 </section>
 
 </div></div>

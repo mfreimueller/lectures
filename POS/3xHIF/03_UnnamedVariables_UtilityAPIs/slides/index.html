@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,33 +19,33 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Recap: Optional</li>
-<li class="fragment">Recap: Sealed + Pattern Matching</li>
-<li class="fragment">Unnamed Variables: Motivation</li>
-<li class="fragment">Unnamed Variables in Loops</li>
-<li class="fragment">Unnamed Variables in Pattern Matching</li>
-<li class="fragment">Unnamed Pattern Variables</li>
+<li>Recap: Optional</li>
+<li>Recap: Sealed + Pattern Matching</li>
+<li>Unnamed Variables: Motivation</li>
+<li>Unnamed Variables in Loops</li>
+<li>Unnamed Variables in Pattern Matching</li>
+<li>Unnamed Pattern Variables</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Flexible Constructor Bodies</li>
-<li class="fragment">Flexible Constructor Bodies (Java 22+)</li>
-<li class="fragment">Common Use Cases</li>
-<li class="fragment">Modern String APIs</li>
-<li class="fragment">Files and Collection APIs</li>
+<li>Flexible Constructor Bodies</li>
+<li>Flexible Constructor Bodies (Java 22+)</li>
+<li>Common Use Cases</li>
+<li>Modern String APIs</li>
+<li>Files and Collection APIs</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can use unnamed variables (_) to signal intentionally unused values</li>
-<li class="fragment">I can write validation logic before super() calls in constructors</li>
-<li class="fragment">I can use modern String, Files, and Collection APIs to reduce boilerplate</li>
-<li class="fragment">I can read and write files using the Files API</li>
+<li>I can use unnamed variables (_) to signal intentionally unused values</li>
+<li>I can write validation logic before super() calls in constructors</li>
+<li>I can use modern String, Files, and Collection APIs to reduce boilerplate</li>
+<li>I can read and write files using the Files API</li>
 </ul>
 </section>
 
@@ -55,9 +55,7 @@
     .map(User::email)
     .orElse("unknown@example.com");
 </code></pre>
-<div class="highlight-box">
-Optional helps avoid NullPointerException.
-</div>
+<div class="highlight-box"><p>Optional helps avoid NullPointerException.</p></div>
 </section>
 
 <section>
@@ -101,9 +99,7 @@ for (var _ : items) {
     counter++;
 }
 </code></pre>
-<div class="highlight-box fragment">
-Use _ when you need to iterate but dont need the element value.
-</div>
+<div class="highlight-box fragment"><p>Use _ when you need to iterate but dont need the element value.</p></div>
 </section>
 
 <section>
@@ -175,9 +171,7 @@ public class PositiveInt extends Number {
     }
 }
 </code></pre>
-<div class="highlight-box fragment">
-Statements that dont reference the instance being constructed can appear before super().
-</div>
+<div class="highlight-box fragment"><p>Statements that dont reference the instance being constructed can appear before super().</p></div>
 </section>
 
 <section>
@@ -275,8 +269,6 @@ var copy = List.copyOf(list);
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

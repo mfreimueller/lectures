@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,37 +19,37 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">What are Annotations?</li>
-<li class="fragment">Built-in Annotations</li>
-<li class="fragment">Defining Custom Annotations</li>
-<li class="fragment">@Retention Policy</li>
-<li class="fragment">@Target Element Types</li>
-<li class="fragment">Annotation Elements</li>
-<li class="fragment">Runtime Annotation Processing</li>
+<li>What are Annotations?</li>
+<li>Built-in Annotations</li>
+<li>Defining Custom Annotations</li>
+<li>@Retention Policy</li>
+<li>@Target Element Types</li>
+<li>Annotation Elements</li>
+<li>Runtime Annotation Processing</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="8">
-<li class="fragment">Processing Class-level Annotations</li>
-<li class="fragment">Processing Field-level Annotations</li>
-<li class="fragment">Processing Method-level Annotations</li>
-<li class="fragment">Repeatable Annotations</li>
-<li class="fragment">Real-world: JPA Annotations</li>
-<li class="fragment">Real-world: Jackson</li>
-<li class="fragment">Real-world: JUnit</li>
+<li>Processing Class-level Annotations</li>
+<li>Processing Field-level Annotations</li>
+<li>Processing Method-level Annotations</li>
+<li>Repeatable Annotations</li>
+<li>Real-world: JPA Annotations</li>
+<li>Real-world: Jackson</li>
+<li>Real-world: JUnit</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain what annotations are and how they enable declarative programming</li>
-<li class="fragment">I can define custom annotations with @Retention, @Target, and default values</li>
-<li class="fragment">I can process annotations at runtime using reflection on classes, fields, and methods</li>
-<li class="fragment">I can implement repeatable annotations and understand their container pattern</li>
-<li class="fragment">I can recognize how real-world frameworks like JPA, Jackson, and JUnit use annotations</li>
+<li>I can explain what annotations are and how they enable declarative programming</li>
+<li>I can define custom annotations with @Retention, @Target, and default values</li>
+<li>I can process annotations at runtime using reflection on classes, fields, and methods</li>
+<li>I can implement repeatable annotations and understand their container pattern</li>
+<li>I can recognize how real-world frameworks like JPA, Jackson, and JUnit use annotations</li>
 </ul>
 </section>
 
@@ -61,7 +61,7 @@
 <li class="fragment">Do not directly affect program execution</li>
 <li class="fragment">Can be processed at compile time, class loading, or runtime</li>
 </ul>
-<div class="highlight-box fragment">Annotations enable declarative programming &mdash; you say <em>what</em> to do, not <em>how</em>.</div>
+<div class="highlight-box fragment"><p>Annotations enable declarative programming &mdash; you say <em>what</em> to do, not <em>how</em>.</p></div>
 </section>
 
 <section>

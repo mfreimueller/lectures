@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,35 +19,35 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">SQL Injection - The Problem</li>
-<li class="fragment">SQL Injection Demo</li>
-<li class="fragment">PreparedStatement to the Rescue</li>
-<li class="fragment">PreparedStatement Benefits</li>
-<li class="fragment">Using PreparedStatement - INSERT</li>
-<li class="fragment">Using PreparedStatement - SELECT</li>
+<li>SQL Injection - The Problem</li>
+<li>SQL Injection Demo</li>
+<li>PreparedStatement to the Rescue</li>
+<li>PreparedStatement Benefits</li>
+<li>Using PreparedStatement - INSERT</li>
+<li>Using PreparedStatement - SELECT</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="7">
-<li class="fragment">Batch Processing</li>
-<li class="fragment">DAO Pattern - Motivation</li>
-<li class="fragment">DAO Interface</li>
-<li class="fragment">DAO Implementation</li>
-<li class="fragment">DAO in Practice</li>
-<li class="fragment">DAO with Connection Pooling</li>
+<li>Batch Processing</li>
+<li>DAO Pattern - Motivation</li>
+<li>DAO Interface</li>
+<li>DAO Implementation</li>
+<li>DAO in Practice</li>
+<li>DAO with Connection Pooling</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain how SQL injection works and why string concatenation in SQL is dangerous</li>
-<li class="fragment">I can replace vulnerable Statement code with parameterized PreparedStatement queries</li>
-<li class="fragment">I can use batch processing to improve bulk operation performance</li>
-<li class="fragment">I can implement the DAO pattern to separate data access from business logic</li>
-<li class="fragment">I can integrate a DAO with connection pooling for production-ready data access</li>
+<li>I can explain how SQL injection works and why string concatenation in SQL is dangerous</li>
+<li>I can replace vulnerable Statement code with parameterized PreparedStatement queries</li>
+<li>I can use batch processing to improve bulk operation performance</li>
+<li>I can implement the DAO pattern to separate data access from business logic</li>
+<li>I can integrate a DAO with connection pooling for production-ready data access</li>
 </ul>
 </section>
 
@@ -60,9 +60,7 @@ String sql = "SELECT * FROM users WHERE name = '" + username + "'";
 Statement stmt = conn.createStatement();
 ResultSet rs = stmt.executeQuery(sql); // Returns ALL users!
 </code></pre>
-<div class="highlight-box fragment danger">
-The input ' OR '1'='1 transforms the WHERE clause into: WHERE name = '' OR '1'='1' - which is always TRUE!
-</div>
+<div class="highlight-box fragment danger"><p>The input ' OR '1'='1 transforms the WHERE clause into: WHERE name = '' OR '1'='1' - which is always TRUE!</p></div>
 </section>
 
 <section>
@@ -74,9 +72,7 @@ SELECT * FROM students WHERE name = '';
 -- After concatenation
 SELECT * FROM students WHERE name = ''; DROP TABLE students; --'
 </code></pre>
-<div class="highlight-box fragment danger">
-This deletes the entire students table! This is known as a "SQL injection attack."
-</div>
+<div class="highlight-box fragment danger"><p>This deletes the entire students table! This is known as a "SQL injection attack."</p></div>
 </section>
 
 <section>
@@ -95,9 +91,7 @@ PreparedStatement pstmt = conn.prepareStatement(sql);
 pstmt.setString(1, username); // User input is treated as data, not SQL
 ResultSet rs = pstmt.executeQuery();
 </code></pre>
-<div class="highlight-box fragment">
-The database driver escapes the input automatically, preventing injection.
-</div>
+<div class="highlight-box fragment"><p>The database driver escapes the input automatically, preventing injection.</p></div>
 </section>
 
 <section>
@@ -186,9 +180,7 @@ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
     void delete(int id);
 }
 </code></pre>
-<div class="highlight-box fragment">
-Interfaces keep the data access contract database-independent.
-</div>
+<div class="highlight-box fragment"><p>Interfaces keep the data access contract database-independent.</p></div>
 </section>
 
 <section>
@@ -290,8 +282,6 @@ public class StudentDaoImpl implements StudentDao {
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

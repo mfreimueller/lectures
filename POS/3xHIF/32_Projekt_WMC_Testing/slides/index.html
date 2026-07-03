@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,31 +19,31 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: JUnit 5 Basics</li>
-<li class="fragment">Review: TDD Principles</li>
-<li class="fragment">Unit Testing with Mockito</li>
-<li class="fragment">Repository Testing</li>
-<li class="fragment">Integration Testing REST Endpoints</li>
+<li>Review: JUnit 5 Basics</li>
+<li>Review: TDD Principles</li>
+<li>Unit Testing with Mockito</li>
+<li>Repository Testing</li>
+<li>Integration Testing REST Endpoints</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="6">
-<li class="fragment">Test Utility: Start/Stop Tomcat</li>
-<li class="fragment">Parameterized Tests</li>
-<li class="fragment">Validation Testing</li>
-<li class="fragment">Test Coverage with JaCoCo</li>
+<li>Test Utility: Start/Stop Tomcat</li>
+<li>Parameterized Tests</li>
+<li>Validation Testing</li>
+<li>Test Coverage with JaCoCo</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can write unit tests for services using Mockito mocks and @InjectMocks</li>
-<li class="fragment">I can write integration tests that start embedded Tomcat and send HTTP requests</li>
-<li class="fragment">I can write parameterized tests with @CsvSource for validation scenarios</li>
-<li class="fragment">I can measure test coverage with JaCoCo and interpret the results</li>
+<li>I can write unit tests for services using Mockito mocks and @InjectMocks</li>
+<li>I can write integration tests that start embedded Tomcat and send HTTP requests</li>
+<li>I can write parameterized tests with @CsvSource for validation scenarios</li>
+<li>I can measure test coverage with JaCoCo and interpret the results</li>
 </ul>
 </section>
 
@@ -103,9 +103,7 @@ void shouldSaveAndFindBook() {
     var found = bookRepo.findById(book.getId());
 }
 </code></pre>
-<div class="highlight-box fragment">
-Use an in-memory H2 database for repository tests.
-</div>
+<div class="highlight-box fragment"><p>Use an in-memory H2 database for repository tests.</p></div>
 </section>
 
 <section>
@@ -202,9 +200,7 @@ void shouldRejectInvalidBook() {
     <version>0.8.11</version>
 </plugin>
 </code></pre>
-<div class="highlight-box fragment">
-Goal: at least 70% line coverage.
-</div>
+<div class="highlight-box fragment"><p>Goal: at least 70% line coverage.</p></div>
 </section>
 
 <section>
@@ -226,8 +222,6 @@ Goal: at least 70% line coverage.
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

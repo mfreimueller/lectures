@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,38 +19,38 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">JPA Inheritance Overview</li>
-<li class="fragment">SINGLE_TABLE Strategy</li>
-<li class="fragment">SINGLE_TABLE - Table Structure</li>
-<li class="fragment">JOINED Strategy</li>
-<li class="fragment">JOINED - SQL Query</li>
-<li class="fragment">JOINED - Table Structure</li>
-<li class="fragment">TABLE_PER_CLASS Strategy</li>
-<li class="fragment">TABLE_PER_CLASS - Table Structure</li>
+<li>JPA Inheritance Overview</li>
+<li>SINGLE_TABLE Strategy</li>
+<li>SINGLE_TABLE - Table Structure</li>
+<li>JOINED Strategy</li>
+<li>JOINED - SQL Query</li>
+<li>JOINED - Table Structure</li>
+<li>TABLE_PER_CLASS Strategy</li>
+<li>TABLE_PER_CLASS - Table Structure</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="9">
-<li class="fragment">Inheritance Strategy Comparison</li>
-<li class="fragment">Value Objects with @Embeddable</li>
-<li class="fragment">Using @Embedded</li>
-<li class="fragment">Value Object Examples</li>
-<li class="fragment">Repository Pattern</li>
-<li class="fragment">Generic Repository Implementation</li>
-<li class="fragment">Transaction Management</li>
+<li>Inheritance Strategy Comparison</li>
+<li>Value Objects with @Embeddable</li>
+<li>Using @Embedded</li>
+<li>Value Object Examples</li>
+<li>Repository Pattern</li>
+<li>Generic Repository Implementation</li>
+<li>Transaction Management</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain the three JPA inheritance strategies and their trade-offs</li>
-<li class="fragment">I can map a class hierarchy using SINGLE_TABLE, JOINED, or TABLE_PER_CLASS</li>
-<li class="fragment">I can create value objects with @Embeddable and embed them with @Embedded</li>
-<li class="fragment">I can implement a generic JPA Repository for type-safe data access</li>
-<li class="fragment">I can manage transactions with explicit begin/commit/rollback boundaries</li>
+<li>I can explain the three JPA inheritance strategies and their trade-offs</li>
+<li>I can map a class hierarchy using SINGLE_TABLE, JOINED, or TABLE_PER_CLASS</li>
+<li>I can create value objects with @Embeddable and embed them with @Embedded</li>
+<li>I can implement a generic JPA Repository for type-safe data access</li>
+<li>I can manage transactions with explicit begin/commit/rollback boundaries</li>
 </ul>
 </section>
 
@@ -322,9 +322,7 @@ public class Email {
     long count();
 }
 </code></pre>
-<div class="highlight-box fragment">
-The Repository pattern provides a collection-like interface for domain objects.
-</div>
+<div class="highlight-box fragment"><p>The Repository pattern provides a collection-like interface for domain objects.</p></div>
 </section>
 
 <section>
@@ -418,8 +416,6 @@ The Repository pattern provides a collection-like interface for domain objects.
 </ul>
 </div>
 </section>
-
-
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,36 +19,36 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: Stream Intermediate Operations</li>
-<li class="fragment">Review: Terminal Operations</li>
-<li class="fragment">What is collect?</li>
-<li class="fragment">Collectors.toList()</li>
-<li class="fragment">Collectors.toSet()</li>
-<li class="fragment">Collectors.toMap()</li>
-<li class="fragment">Collectors.joining()</li>
+<li>Review: Stream Intermediate Operations</li>
+<li>Review: Terminal Operations</li>
+<li>What is collect?</li>
+<li>Collectors.toList()</li>
+<li>Collectors.toSet()</li>
+<li>Collectors.toMap()</li>
+<li>Collectors.joining()</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="8">
-<li class="fragment">Collectors.groupingBy()</li>
-<li class="fragment">groupingBy: Downstream Collector</li>
-<li class="fragment">groupingBy: Mapping Downstream</li>
-<li class="fragment">Collectors.partitioningBy()</li>
-<li class="fragment">partitioningBy with Downstream</li>
-<li class="fragment">Summary</li>
+<li>Collectors.groupingBy()</li>
+<li>groupingBy: Downstream Collector</li>
+<li>groupingBy: Mapping Downstream</li>
+<li>Collectors.partitioningBy()</li>
+<li>partitioningBy with Downstream</li>
+<li>Summary</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can use toList, toSet, toMap, and joining collectors to gather stream results</li>
-<li class="fragment">I can use groupingBy to classify data into categories</li>
-<li class="fragment">I can use partitioningBy to split data into two groups based on a predicate</li>
-<li class="fragment">I can chain downstream collectors for powerful aggregations</li>
-<li class="fragment">I can implement a custom Collector for specialized accumulation</li>
+<li>I can use toList, toSet, toMap, and joining collectors to gather stream results</li>
+<li>I can use groupingBy to classify data into categories</li>
+<li>I can use partitioningBy to split data into two groups based on a predicate</li>
+<li>I can chain downstream collectors for powerful aggregations</li>
+<li>I can implement a custom Collector for specialized accumulation</li>
 </ul>
 </section>
 
@@ -239,14 +239,6 @@ Map&lt;Boolean, Long&gt; countEvenOdd = numbers.stream()
 <li class="fragment">partitioningBy for binary splits</li>
 <li class="fragment">Downstream collectors enable powerful aggregations</li>
 </ul>
-</section>
-
-<section class="center">
-<div class="highlight-box">
-<h2>Outlook</h2>
-<p>Next week: Exercise -- CLI Todo Application</p>
-<p>Apply streams, collections, and testing in a real project!</p>
-</div>
 </section>
 
 </div></div>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
 <div class="reveal"><div class="slides">
 
@@ -19,37 +19,37 @@
 <section>
 <h2>Agenda (1/2)</h2>
 <ol>
-<li class="fragment">Review: SOLID Recap</li>
-<li class="fragment">Review: From OOP to Functional</li>
-<li class="fragment">What is a Stream?</li>
-<li class="fragment">Stream Pipeline</li>
-<li class="fragment">filter</li>
-<li class="fragment">filter with Objects</li>
-<li class="fragment">map</li>
+<li>Review: SOLID Recap</li>
+<li>Review: From OOP to Functional</li>
+<li>What is a Stream?</li>
+<li>Stream Pipeline</li>
+<li>filter</li>
+<li>filter with Objects</li>
+<li>map</li>
 </ol>
 </section>
 
 <section>
 <h2>Agenda (2/2)</h2>
 <ol start="8">
-<li class="fragment">map with Method References</li>
-<li class="fragment">flatMap</li>
-<li class="fragment">flatMap Example: Words</li>
-<li class="fragment">forEach</li>
-<li class="fragment">reduce</li>
-<li class="fragment">reduce: Finding Max</li>
-<li class="fragment">Summary</li>
+<li>map with Method References</li>
+<li>flatMap</li>
+<li>flatMap Example: Words</li>
+<li>forEach</li>
+<li>reduce</li>
+<li>reduce: Finding Max</li>
+<li>Summary</li>
 </ol>
 </section>
 
 <section>
 <h2>Learning Objectives</h2>
 <ul>
-<li class="fragment">I can explain what a Stream is and how lazy evaluation works</li>
-<li class="fragment">I can use filter and map to transform collections declaratively</li>
-<li class="fragment">I can use flatMap to flatten nested data structures</li>
-<li class="fragment">I can use reduce to combine stream elements into a single value</li>
-<li class="fragment">I can choose between loops and streams based on readability</li>
+<li>I can explain what a Stream is and how lazy evaluation works</li>
+<li>I can use filter and map to transform collections declaratively</li>
+<li>I can use flatMap to flatten nested data structures</li>
+<li>I can use reduce to combine stream elements into a single value</li>
+<li>I can choose between loops and streams based on readability</li>
 </ul>
 </section>
 
@@ -266,14 +266,6 @@ max.ifPresent(System.out::println); // 9
 <li class="fragment">Terminal ops: forEach, reduce, collect</li>
 <li class="fragment">Lazy evaluation makes pipelines efficient</li>
 </ul>
-</section>
-
-<section class="center">
-<div class="highlight-box">
-<h2>Outlook</h2>
-<p>Next week: Streams Collectors</p>
-<p>groupingBy, partitioningBy, and more!</p>
-</div>
 </section>
 
 </div></div>
