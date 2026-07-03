@@ -24,16 +24,22 @@
 <li>Strings sind Objekte</li>
 <li>length() - Länge eines Strings</li>
 <li>equals() - Strings vergleichen</li>
-<li>equals() vs. ==</li>
-<li>charAt() - Zeichenzugriff</li>
-<li>charAt() mit Schleife</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>equals() vs. ==</li>
+<li>charAt() - Zeichenzugriff</li>
+<li>charAt() mit Schleife</li>
 <li>startsWith() / endsWith()</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>startsWith/endsWith: Beispiele</li>
 <li>Methoden kombinieren</li>
 <li>Beispiel: Textanalyse</li>
@@ -66,7 +72,7 @@ System.out.println(gruss);</code></pre>
             <section>
                 <h2>Partneraktivität: Wörter raten mit String-Methoden</h2>
                 <div class="highlight-box">
-                    <p>Eine Person denkt an ein Wort, die andere stellt Ja/Nein-Fragen mit String-Methoden (z. B. «Beginnt es mit A?», «Ist es länger als 5 Zeichen?»). Erratet das Wort in maximal 5 Fragen. Wechselt dann die Rollen.</p>
+                    <p>Eine Person denkt an ein Wort, die andere stellt Ja/Nein-Fragen mit String-Methoden (z. B. «Beginnt es mit A?», «Ist es länger als 5 Zeichen?»). Erratet das Wort in maximal 5 Fragen. Wechselt dann die Rollen.</p>
                 </div>
             </section>
 
@@ -104,7 +110,6 @@ System.out.println(leer.length());  // 0
                 <pre><code class="language-java">String a = "Hallo";
 String b = "Hallo";
 System.out.println(a.equals(b));   // true
-
 String c = new String("Hallo");
 System.out.println(a == c);        // false!
 System.out.println(a.equals(c));   // true</code></pre>
@@ -124,14 +129,10 @@ System.out.println(a.equals(c));   // true</code></pre>
                 <h2>charAt() - Zeichenzugriff</h2>
                 <pre><code class="language-java">String text = "Java";
 char c = text.charAt(0);  // 'J'
-System.out.println(c);
-
 System.out.println(text.charAt(1));  // 'a'
 System.out.println(text.charAt(2));  // 'v'
 System.out.println(text.charAt(3));  // 'a'
-
-// StringIndexOutOfBoundsException bei ungültigem Index!
-// System.out.println(text.charAt(10)); // Fehler!</code></pre>
+// StringIndexOutOfBoundsException bei ungültigem Index!</code></pre>
                 <ul>
                     <li class="fragment">Wie bei Arrays: Der Index beginnt bei <strong>0</strong></li>
                 </ul>
@@ -158,12 +159,8 @@ for (int i = 0; i &lt; text.length(); i++) {
             <section>
                 <h2>startsWith() / endsWith()</h2>
                 <pre><code class="language-java">String satz = "Hallo Welt!";
-
-// Beginnt der Satz mit "Hallo"?
 System.out.println(satz.startsWith("Hallo"));   // true
 System.out.println(satz.startsWith("Welt"));    // false
-
-// Endet der Satz mit "!"?
 System.out.println(satz.endsWith("!"));         // true
 System.out.println(satz.endsWith("t"));         // false</code></pre>
                 <ul>
@@ -179,7 +176,6 @@ String befehl = "gehe norden";
 if (befehl.startsWith("gehe")) {
     System.out.println("Bewegungsbefehl erkannt");
 }
-
 // Prüfen, ob ein Satz mit einem Fragezeichen endet
 String frage = "Wie heißt du?";
 if (frage.endsWith("?")) {
@@ -190,11 +186,8 @@ if (frage.endsWith("?")) {
             <section>
                 <h2>Methoden kombinieren</h2>
                 <pre><code class="language-java">String text = "  Java Programmierung  ";
-
-// Methoden können verkettet werden
 String bereinigt = text.trim().toUpperCase();
 System.out.println(bereinigt);  // "JAVA PROGRAMMIERUNG"
-
 // Schrittweise:
 String getrimmt = text.trim();
 String gross = getrimmt.toUpperCase();</code></pre>

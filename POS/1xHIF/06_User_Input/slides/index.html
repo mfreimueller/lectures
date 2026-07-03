@@ -24,6 +24,12 @@
 <li>Interaktive Programme</li>
 <li>Die Scanner-Klasse</li>
 <li>Scanner: nextLine() für Text</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
 <li>Scanner: nextInt() für Zahlen</li>
 <li>Zufallszahlen mit Random</li>
 <li>Random: nextInt(bound)</li>
@@ -31,7 +37,7 @@
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
+                <h2>Agenda (3/3)</h2>
                 <ol start="8">
 <li>Vollständiges Beispiel: Zahlenraten</li>
 <li>Hinweis: Integer.parseInt</li>
@@ -85,11 +91,9 @@
                     <li class="fragment">Erzeugung: <code>Scanner scanner = new Scanner(System.in);</code></li>
                 </ul>
                 <pre class="fragment"><code class="language-java">import java.util.Scanner;
-
 public class Eingabe {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // Hier kommt die Eingabe...
     }
 }</code></pre>
             </section>
@@ -101,10 +105,8 @@ public class Eingabe {
                     <li class="fragment">Gibt einen String zurück</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">Scanner scanner = new Scanner(System.in);
-
 System.out.print("Wie heisst du? ");
 String name = scanner.nextLine();
-
 System.out.println("Hallo, " + name + "!");</code></pre>
             </section>
 
@@ -115,14 +117,10 @@ System.out.println("Hallo, " + name + "!");</code></pre>
                     <li class="fragment">Gibt einen int zurück</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">Scanner scanner = new Scanner(System.in);
-
 System.out.print("Wie alt bist du? ");
 int alter = scanner.nextInt();
-
 if (alter >= 18) {
     System.out.println("Du bist volljaehrig.");
-} else {
-    System.out.println("Du bist nicht volljaehrig.");
 }</code></pre>
             </section>
 
@@ -134,16 +132,10 @@ if (alter >= 18) {
                     <li class="fragment">Erzeugung: <code>Random random = new Random();</code></li>
                 </ul>
                 <pre class="fragment"><code class="language-java">import java.util.Random;
-
-public class Zufall {
-    public static void main(String[] args) {
-        Random random = new Random();
-
-        int zahl = random.nextInt(10);    // 0 bis 9
-        int zahl2 = random.nextInt(10) + 1; // 1 bis 10
-        double komma = random.nextDouble(); // 0.0 bis 1.0
-    }
-}</code></pre>
+Random random = new Random();
+int zahl = random.nextInt(10);       // 0 bis 9
+int zahl2 = random.nextInt(10) + 1;  // 1 bis 10
+double komma = random.nextDouble();  // 0.0 bis 1.0</code></pre>
             </section>
 
             <section>
@@ -154,20 +146,14 @@ public class Zufall {
                     <li class="fragment">Für Würfel (1–6): <code>random.nextInt(6) + 1</code></li>
                 </ul>
                 <pre class="fragment"><code class="language-java">Random random = new Random();
-
 int wuerfel = random.nextInt(6) + 1;
 System.out.println("Du hast eine " + wuerfel + " gewuerfelt.");
-
 int muenze = random.nextInt(2);  // 0 oder 1
-if (muenze == 0) {
-    System.out.println("Kopf");
-} else {
-    System.out.println("Zahl");
-}</code></pre>
+System.out.println(muenze == 0 ? "Kopf" : "Zahl");</code></pre>
             </section>
 
             <section>
-                <h2>Vollständiges Beispiel: Zahlenraten</h2>
+                <h2>Zahlenraten — Setup</h2>
                 <pre><code class="language-java">import java.util.Scanner;
 import java.util.Random;
 
@@ -175,12 +161,13 @@ public class Zahlenraten {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-
         int geheimzahl = random.nextInt(10) + 1;
+        System.out.print("Rate eine Zahl (1-10): ");</code></pre>
+            </section>
 
-        System.out.print("Rate eine Zahl (1-10): ");
-        int tipp = scanner.nextInt();
-
+            <section>
+                <h2>Zahlenraten — Tipp prüfen</h2>
+                <pre><code class="language-java">        int tipp = scanner.nextInt();
         if (tipp == geheimzahl) {
             System.out.println("Richtig! Du hast gewonnen!");
         } else {

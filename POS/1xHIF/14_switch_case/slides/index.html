@@ -24,6 +24,12 @@
 <li>switch-case Syntax</li>
 <li>Beispiel: Wochentag</li>
 <li>Fall-through (ohne break)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
 <li>default-Zweig</li>
 <li>switch mit int</li>
 <li>switch mit char</li>
@@ -31,7 +37,7 @@
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
+                <h2>Agenda (3/3)</h2>
                 <ol start="8">
 <li>switch mit String</li>
 <li>switch vs. if-else</li>
@@ -70,15 +76,9 @@
             <section>
                 <h2>switch-case Syntax</h2>
                 <pre><code class="language-java">switch (ausdruck) {
-    case wert1:
-        // Code für wert1
-        break;
-    case wert2:
-        // Code für wert2
-        break;
-    default:
-        // Code für alle anderen Werte
-        break;
+    case wert1: /* Code */ break;
+    case wert2: /* Code */ break;
+    default: /* Code */ break;
 }</code></pre>
                 <ul>
                     <li class="fragment"><code>ausdruck</code> — ein int, char oder String</li>
@@ -89,7 +89,7 @@
             </section>
 
             <section>
-                <h2>Beispiel: Wochentag</h2>
+                <h2>Beispiel: Wochentag (1/2)</h2>
                 <pre><code class="language-java">switch (tag) {
     case 1:
         System.out.println("Montag");
@@ -99,8 +99,12 @@
         break;
     case 3:
         System.out.println("Mittwoch");
-        break;
-    case 4:
+        break;</code></pre>
+            </section>
+
+            <section>
+                <h2>Beispiel: Wochentag (2/2)</h2>
+                <pre><code class="language-java">    case 4:
         System.out.println("Donnerstag");
         break;
     case 5:
@@ -122,18 +126,14 @@
                     <li class="fragment">Kann nützlich sein für gemeinsame Aktionen</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">switch (note) {
-    case 1:
-    case 2:
-        System.out.println("Bestanden");
-        break;
-    case 3:
-    case 4:
-        System.out.println("Knapp bestanden");
-        break;
-    case 5:
-        System.out.println("Durchgefallen");
-        break;
+    case 1: case 2: System.out.println("Bestanden"); break;
+    case 3: case 4: System.out.println("Knapp bestanden"); break;
+    default: System.out.println("Durchgefallen");
 }</code></pre>
+            </section>
+
+            <section>
+                <h2>Fall-through — Wirkung</h2>
                 <p class="fragment">Hier haben Noten 1 und 2 die gleiche Ausgabe.</p>
             </section>
 
@@ -147,10 +147,7 @@
                 <pre class="fragment"><code class="language-java">switch (tag) {
     case 1: System.out.println("Montag"); break;
     case 2: System.out.println("Dienstag"); break;
-    // ...
-    default:
-        System.out.println("Ungültige Eingabe!");
-        break;
+    default: System.out.println("Ungültige Eingabe!"); break;
 }</code></pre>
             </section>
 
@@ -160,8 +157,7 @@
                     <li class="fragment">Der häufigste Fall: <code>switch</code> auf einer int-Variable</li>
                     <li class="fragment">Perfekt für Menüauswahl (1, 2, 3, ...)</li>
                 </ul>
-                <pre class="fragment"><code class="language-java">int auswahl = scanner.nextInt();
-switch (auswahl) {
+                <pre class="fragment"><code class="language-java">switch (auswahl) {
     case 1: System.out.println("Spiel starten"); break;
     case 2: System.out.println("Optionen"); break;
     case 3: System.out.println("Beenden"); break;
@@ -189,15 +185,9 @@ switch (buchstabe) {
                 </ul>
                 <pre class="fragment"><code class="language-java">String tier = scanner.nextLine();
 switch (tier) {
-    case "Hund":
-        System.out.println("Wuff");
-        break;
-    case "Katze":
-        System.out.println("Miau");
-        break;
-    default:
-        System.out.println("Unbekanntes Tier");
-        break;
+    case "Hund": System.out.println("Wuff"); break;
+    case "Katze": System.out.println("Miau"); break;
+    default: System.out.println("Unbekanntes Tier"); break;
 }</code></pre>
             </section>
 

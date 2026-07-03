@@ -45,12 +45,17 @@
             </section>
 
             <section>
-
-                <h2>Was ist eine REPL?</h2>
+                <h2>REPL — Die Schritte (1/2)</h2>
                 <ul>
                     <li class="fragment"><strong>R</strong>ead — Eingabe lesen</li>
                     <li class="fragment"><strong>E</strong>val — Eingabe verarbeiten</li>
                     <li class="fragment"><strong>P</strong>rint — Ergebnis ausgeben</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>REPL — Loop und Beispiele (2/2)</h2>
+                <ul>
                     <li class="fragment"><strong>L</strong>oop — Wiederholen</li>
                     <li class="fragment">Eine REPL ist ein interaktiver Befehlsinterpreter</li>
                     <li class="fragment">Bekannte Beispiele: Python-REPL, Node.js-REPL, die Konsole in Minecraft</li>
@@ -76,7 +81,6 @@ while (running) {
     String eingabe = scanner.nextLine();
     String[] teile = eingabe.split(" ", 2);
     String befehl = teile[0].toLowerCase();
-
     switch (befehl) {
         case "echo":
             System.out.println(teile[1]);
@@ -94,12 +98,10 @@ while (running) {
             <section>
                 <h2>Beispiel: Echo-REPL</h2>
                 <pre><code class="language-java">import java.util.Scanner;
-
 public class EchoRepl {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
-
         while (running) {
             System.out.print("> ");
             String eingabe = scanner.nextLine();

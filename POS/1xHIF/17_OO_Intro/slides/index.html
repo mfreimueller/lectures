@@ -24,16 +24,22 @@
 <li>Objektorientierung: Idee</li>
 <li>Klasse = Bauplan</li>
 <li>Objekt = Exemplar</li>
-<li>Attribute</li>
-<li>Methoden</li>
-<li>Beispiel: Person-Klasse</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>Attribute</li>
+<li>Methoden</li>
+<li>Beispiel: Person-Klasse</li>
 <li>Objekte erzeugen (instanziieren)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>public vs. private</li>
 <li>Attribut vs. Parameter vs. lokale Variable</li>
 <li>Vorteile von OO</li>
@@ -65,7 +71,7 @@ System.out.println(name + " ist " + alter);</code></pre>
             <section>
                 <h2>Partneraktivität: Objekte im Alltag</h2>
                 <div class="highlight-box">
-                    <p>Beschreibt ein reales Objekt (z. B. «ein Auto» oder «eine Schülerin»). Euer Partner listet die Attribute (Farbe, Geschwindigkeit / Name, Note) und Methoden (fahren, bremsen / lernen, Prüfung ablegen) auf, die es als Java-Klasse hätte. Vergleicht eure Ergebnisse.</p>
+                    <p>Beschreibt ein reales Objekt (z. B. «ein Auto» oder «eine Schülerin»). Euer Partner listet die Attribute (Farbe, Geschwindigkeit / Name, Note) und Methoden (fahren, bremsen / lernen, Prüfung ablegen) auf, die es als Java-Klasse hätte. Vergleicht eure Ergebnisse.</p>
                 </div>
             </section>
 
@@ -87,14 +93,9 @@ System.out.println(name + " ist " + alter);</code></pre>
                     <li class="fragment">Vergleich: Ein Bauplan für ein Haus — das Haus selbst ist das Objekt</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Person {
-    // Attribute (Eigenschaften)
     String name;
     int alter;
-
-    // Methoden (Verhalten)
-    void vorstellen() {
-        System.out.println("Hallo!");
-    }
+    void vorstellen() { ... }
 }</code></pre>
             </section>
 
@@ -134,9 +135,7 @@ Person p2 = new Person();
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Person {
     String name;
-
     void vorstellen() {
-        // Zugriff auf das Attribut name
         System.out.println("Hallo, ich bin " + name);
     }
 }</code></pre>
@@ -172,7 +171,6 @@ Person p2 = new Person();
                 <pre class="fragment"><code class="language-java">Person p1 = new Person();
 p1.name = "Anna";
 p1.vorstellen();
-
 Person p2 = new Person();
 p2.name = "Max";
 p2.vorstellen();</code></pre>
@@ -188,10 +186,9 @@ p2.vorstellen();</code></pre>
                     <li class="fragment"><strong>Kapselung:</strong> Daten sind privat, Methoden (Getter/Setter) sind öffentlich</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Person {
-    private String name;  // nicht direkt von außen änderbar
-
+    private String name;
     public void setName(String name) {
-        this.name = name; // Setter: kontrollierter Zugriff
+        this.name = name;
     }
 }</code></pre>
             </section>

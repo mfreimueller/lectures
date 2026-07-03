@@ -24,15 +24,15 @@
 <li>Ausdruck (Expression)</li>
 <li>Anweisung (Statement)</li>
 <li>Zuweisung als Ausdruck</li>
-<li>Werte überschreiben</li>
-<li>Zusammengesetzte Zuweisungen</li>
-<li>Beispiel: Zusammengesetzte Zuweisungen</li>
                 </ol>
             </section>
 
             <section>
                 <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <ol start="5">
+<li>Werte überschreiben</li>
+<li>Zusammengesetzte Zuweisungen</li>
+<li>Beispiel: Zusammengesetzte Zuweisungen</li>
 <li>Zuweisung vs. Vergleich</li>
 <li>Praktisches Beispiel: Kontostand</li>
                 </ol>
@@ -98,10 +98,7 @@ int y = 3 + 4;              // Deklaration + Zuweisung (Anweisung)</code></pre>
                 </ul>
                 <pre class="fragment"><code class="language-java">int x;
 int y;
-
 y = (x = 5);    // x = 5 ist ein Ausdruck mit Wert 5
-                // y bekommt also auch den Wert 5
-
 System.out.println(x);  // 5
 System.out.println(y);  // 5</code></pre>
             </section>
@@ -114,10 +111,8 @@ System.out.println(y);  // 5</code></pre>
                 </ul>
                 <pre class="fragment"><code class="language-java">int x = 10;
 System.out.println(x);  // 10
-
 x = 20;
 System.out.println(x);  // 20
-
 x = x + 5;
 System.out.println(x);  // 25</code></pre>
             </section>

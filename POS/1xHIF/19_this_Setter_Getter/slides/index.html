@@ -24,16 +24,22 @@
 <li>Das this-Schlüsselwort</li>
 <li>this ist optional</li>
 <li>Private Attribute</li>
-<li>Getter</li>
-<li>Setter</li>
-<li>Validierung im Setter</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>Getter</li>
+<li>Setter</li>
+<li>Validierung im Setter</li>
 <li>Validierungsbeispiele</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>Kein Setter für schreibgeschützte Attribute</li>
 <li>Kapselung (Encapsulation)</li>
 <li>Übersicht: Setter/Getter-Muster</li>
@@ -183,10 +189,10 @@ public void setPreis(double preis) {
             </section>
 
             <section>
-                <h2>Kein Setter für schreibgeschützte Attribute</h2>
+                <h2>Read-only Attribute — Person mit ID (1/2)</h2>
                 <p>Nicht jedes Attribut braucht einen Setter.</p>
                 <pre><code class="language-java">public class Person {
-    private final int id;    // final = einmalig gesetzt
+    private final int id;
     private String name;
 
     public Person(int id, String name) {
@@ -196,9 +202,14 @@ public void setPreis(double preis) {
 
     public int getId() {
         return id;
-    }  // KEIN Setter für id!
+    }
+}</code></pre>
+                <p class="fragment">Die ID wird nur im Konstruktor gesetzt — kein Setter!</p>
+            </section>
 
-    public String getName() {
+            <section>
+                <h2>Read-only — getName und setName (2/2)</h2>
+                <pre><code class="language-java">    public String getName() {
         return name;
     }
 
@@ -206,6 +217,7 @@ public void setPreis(double preis) {
         this.name = name;
     }
 }</code></pre>
+                <p class="fragment">Der Name ist änderbar, die ID bleibt konstant.</p>
             </section>
 
             <section>
@@ -221,22 +233,18 @@ public void setPreis(double preis) {
 
             <section>
                 <h2>Übersicht: Setter/Getter-Muster</h2>
-                <pre><code class="language-java">// Attribut
-private int alter;
+                <pre><code class="language-java">private int alter;
 
-// Getter
 public int getAlter() {
     return alter;
 }
 
-// Setter mit Validierung
 public void setAlter(int alter) {
     if (alter > 0) {
         this.alter = alter;
     }
 }
 
-// Boolean: is-Statt get-Präfix
 private boolean aktiv;
 public boolean isAktiv() {
     return aktiv;

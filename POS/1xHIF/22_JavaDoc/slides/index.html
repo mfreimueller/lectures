@@ -24,16 +24,22 @@
 <li>Kommentar-Arten in Java</li>
 <li>JavaDoc für eine Methode</li>
 <li>Der @param-Tag</li>
-<li>Der @return-Tag</li>
-<li>Der @author-Tag</li>
-<li>Der @see-Tag</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>Der @return-Tag</li>
+<li>Der @author-Tag</li>
+<li>Der @see-Tag</li>
 <li>JavaDoc für Klassen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>JavaDoc für Attribute</li>
 <li>Vollständiges Beispiel</li>
 <li>JavaDoc generieren</li>
@@ -201,7 +207,7 @@ private int[] grades;</code></pre>
             </section>
 
             <section>
-                <h2>Vollständiges Beispiel</h2>
+                <h2>Vollständiges Beispiel — Klasse und Konstruktor (1/2)</h2>
                 <pre><code class="language-java">/**
  * Repräsentiert einen Studenten mit Notenverwaltung.
  *
@@ -210,10 +216,8 @@ private int[] grades;</code></pre>
  */
 public class Student {
     private String name;
-
     /**
      * Erzeugt einen neuen Studenten.
-     *
      * @param name Der Name des Studenten
      * @param id   Die eindeutige ID
      */
@@ -221,10 +225,13 @@ public class Student {
         this.name = name;
         this.id = id;
     }
+}</code></pre>
+            </section>
 
-    /**
+            <section>
+                <h2>Vollständiges Beispiel — Methoden (2/2)</h2>
+                <pre><code class="language-java">    /**
      * Gibt den Namen des Studenten zurück.
-     *
      * @return Der Name als String
      */
     public String getName() {

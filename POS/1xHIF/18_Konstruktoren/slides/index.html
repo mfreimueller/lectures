@@ -24,17 +24,15 @@
 <li>Was ist ein Konstruktor?</li>
 <li>Default-Konstruktor</li>
 <li>Parametrisierter Konstruktor</li>
-<li>Beispiel: Book-Klasse</li>
-<li>Konstruktor-Überladung</li>
-<li>this-Schlüsselwort</li>
                 </ol>
             </section>
 
             <section>
                 <h2>Agenda (2/2)</h2>
-                <ol start="8">
-<li>Konstruktor vs. Methode</li>
-<li>Best Practices</li>
+                <ol start="5">
+<li>Beispiel: Book-Klasse</li>
+<li>Konstruktor-Überladung</li>
+<li>this-Schlüsselwort</li>
                 </ol>
             </section>
 
@@ -76,10 +74,7 @@ p.setAlter(20);
                     <li class="fragment">Er wird automatisch beim Erzeugen eines Objekts aufgerufen (<code>new</code>)</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Person {
-    String name;
-    int alter;
-
-    // Konstruktor
+    String name; int alter;
     public Person(String name, int alter) {
         this.name = name;
         this.alter = alter;
@@ -94,13 +89,9 @@ p.setAlter(20);
                     <li class="fragment">Java erzeugt ihn automatisch, wenn kein anderer Konstruktor definiert ist</li>
                     <li class="fragment">Er setzt die Attribute auf ihre Default-Werte (0, null, false)</li>
                 </ul>
-                <pre class="fragment"><code class="language-java">// Default-Konstruktor (automatisch erzeugt):
-public Person() {
-    // nichts — Attribute bleiben auf Default
+                <pre class="fragment"><code class="language-java">public Person() {
 }
-
-// Verwendung:
-Person p = new Person(); // Default-Konstruktor</code></pre>
+Person p = new Person();</code></pre>
                 <p class="fragment"><strong>Achtung:</strong> Sobald du einen eigenen Konstruktor definierst, gibt es keinen Default-Konstruktor mehr — außer du schreibst ihn selbst!</p>
             </section>
 
@@ -111,18 +102,11 @@ Person p = new Person(); // Default-Konstruktor</code></pre>
                     <li class="fragment">Das ist kürzer und sicherer als nachträgliches Setzen</li>
                 </ul>
                 <pre class="fragment"><code class="language-java">public class Person {
-    private String name;
-    private int alter;
-
-    // Parametrisierter Konstruktor
+    private String name; private int alter;
     public Person(String name, int alter) {
-        this.name = name;
-        this.alter = alter;
+        this.name = name; this.alter = alter;
     }
-}
-
-// Verwendung:
-Person p = new Person("Anna", 20); // alles in einer Zeile!</code></pre>
+}</code></pre>
             </section>
 
             <section>
@@ -131,7 +115,6 @@ Person p = new Person("Anna", 20); // alles in einer Zeile!</code></pre>
     private String title;
     private int pages;
 
-    // Konstruktor
     public Book(String title, int pages) {
         this.title = title;
         this.pages = pages;
@@ -150,11 +133,7 @@ Person p = new Person("Anna", 20); // alles in einer Zeile!</code></pre>
             </section>
 
             <section>
-                <h2>Konstruktor-Überladung</h2>
-                <ul>
-                    <li class="fragment">Eine Klasse kann mehrere Konstruktoren haben (Überladung)</li>
-                    <li class="fragment">Sie müssen sich in der Parameterliste unterscheiden</li>
-                </ul>
+                <h2>Konstruktor-Überladung (1/2)</h2>
                 <pre class="fragment"><code class="language-java">public class Book {
     private String title;
     private int pages;
@@ -166,13 +145,20 @@ Person p = new Person("Anna", 20); // alles in einer Zeile!</code></pre>
 
     public Book(String title) {
         this.title = title;
-        this.pages = 0; // Standardwert
-    }
-
-    public Book() {
-        this.title = "Unbekannt";
         this.pages = 0;
     }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>Konstruktor-Überladung (2/2)</h2>
+                <ul>
+                    <li class="fragment">Eine Klasse kann mehrere Konstruktoren haben (Überladung)</li>
+                    <li class="fragment">Sie müssen sich in der Parameterliste unterscheiden</li>
+                </ul>
+                <pre class="fragment"><code class="language-java">public Book() {
+    this.title = "Unbekannt";
+    this.pages = 0;
 }</code></pre>
             </section>
 

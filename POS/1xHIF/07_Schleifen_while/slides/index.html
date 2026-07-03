@@ -24,16 +24,22 @@
 <li>Wiederholung im Alltag</li>
 <li>Konzept der Wiederholung</li>
 <li>Die while-Schleife: Syntax</li>
-<li>Beispiel: Zahlen 1 bis 10</li>
-<li>Zählvariablen-Pattern</li>
-<li>While mit Zählvariable: Ablauf</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>Beispiel: Zahlen 1 bis 10</li>
+<li>Zählvariablen-Pattern</li>
+<li>While mit Zählvariable: Ablauf</li>
 <li>Endlosschleifen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>Endlosschleifen vermeiden</li>
 <li>Beispiel: Summe 1 bis n</li>
 <li>Beispiel: While mit User Input</li>
@@ -133,12 +139,10 @@ while (i &lt; 10) {    // 2. Bedingung
 
             <section>
                 <h2>While mit Zählvariable: Ablauf</h2>
-                <pre><code class="language-java">// i=0, Bedingung: 0&lt;10 → true → ausführen → i++
-// i=1, Bedingung: 1&lt;10 → true → ausführen → i++
-// i=2, Bedingung: 2&lt;10 → true → ausführen → i++
-// ...
-// i=9, Bedingung: 9&lt;10 → true → ausführen → i++
-// i=10, Bedingung: 10&lt;10 → false → ENDE</code></pre>
+                <pre><code class="language-java">// Start: i=0 → 0&lt;10 → true → ausführen → i=1
+// ... i=1,2,...,8 → Bedingung true → ausführen
+// i=9 → 9&lt;10 → true → ausführen → i=10
+// i=10 → 10&lt;10 → false → ENDE</code></pre>
                 <p class="fragment">10 Durchläufe: i = 0, 1, 2, ..., 9</p>
             </section>
 

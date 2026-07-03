@@ -24,6 +24,12 @@
 <li>Problem: Mehrere Werte verwalten</li>
 <li>Array-Konzept</li>
 <li>Array-Deklaration und Initialisierung</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
 <li>Array mit Werten initialisieren</li>
 <li>Zugriff über Index</li>
 <li>Arrays mit for-Schleifen durchlaufen</li>
@@ -31,7 +37,7 @@
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
+                <h2>Agenda (3/3)</h2>
                 <ol start="8">
 <li>Die length-Eigenschaft</li>
 <li>ArrayIndexOutOfBoundsException</li>
@@ -91,14 +97,11 @@
 
             <section>
                 <h2>Array-Deklaration und Initialisierung</h2>
-                <pre><code class="language-java">// Deklaration: Ein Array für int-Werte
+                <pre><code class="language-java">// Deklaration und Initialisierung in einer Zeile:
+int[] zahlen = new int[5];
+// Äquivalent separat:
 int[] zahlen;
-
-// Initialisierung mit neuer Größe (5 Elemente)
-zahlen = new int[5];
-
-// Beides in einer Zeile:
-int[] zahlen = new int[5];</code></pre>
+zahlen = new int[5];</code></pre>
                 <ul>
                     <li class="fragment">Die <code>[]</code> zeigen an: "Das ist ein Array"</li>
                     <li class="fragment"><code>new int[5]</code> erstellt ein Array mit 5 Plätzen</li>
@@ -108,14 +111,10 @@ int[] zahlen = new int[5];</code></pre>
 
             <section>
                 <h2>Array mit Werten initialisieren</h2>
-                <pre><code class="language-java">// Kurzform: Werte direkt angeben
+                <pre><code class="language-java">// Kurzform mit geschweiften Klammern:
 int[] noten = {2, 3, 1, 4, 2};
-
-// Längere Form:
-int[] noten = new int[]{2, 3, 1, 4, 2};
-
-// Auch mit Strings:
-String[] namen = {"Anna", "Ben", "Clara"};</code></pre>
+// Äquivalent mit new int[]:
+int[] noten = new int[]{2, 3, 1, 4, 2};</code></pre>
                 <ul>
                     <li class="fragment">Geschwungene Klammern <code>{ }</code> mit Komma-getrennten Werten</li>
                     <li class="fragment">Die Größe ergibt sich aus der Anzahl der Werte</li>
@@ -125,14 +124,10 @@ String[] namen = {"Anna", "Ben", "Clara"};</code></pre>
             <section>
                 <h2>Zugriff über Index</h2>
                 <pre><code class="language-java">int[] noten = {2, 3, 1, 4, 2};
-
-// Zugriff auf einzelne Elemente:
 System.out.println(noten[0]);  // 2 (erstes Element)
 System.out.println(noten[2]);  // 1 (drittes Element)
 System.out.println(noten[4]);  // 2 (letztes Element)
-
-// Wert ändern:
-noten[1] = 5;  // {2, 5, 1, 4, 2}</code></pre>
+noten[1] = 5;  // Wert ändern: {2, 5, 1, 4, 2}</code></pre>
                 <ul>
                     <li class="fragment">Index in eckigen Klammern <code>[ ]</code></li>
                     <li class="fragment">Erster Index: <code>0</code>, letzter Index: <code>length - 1</code></li>

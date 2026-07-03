@@ -24,6 +24,12 @@
 <li>Datei lesen mit FileReader</li>
 <li>BufferedReader - zeilenweise lesen</li>
 <li>Datei schreiben mit FileWriter</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
 <li>PrintWriter - bequemes Schreiben</li>
 <li>Problem: Ressourcen-Leaks</li>
 <li>try-with-resources</li>
@@ -31,7 +37,7 @@
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
+                <h2>Agenda (3/3)</h2>
                 <ol start="8">
 <li>try-with-resources für Schreiben</li>
 <li>IOException behandeln</li>
@@ -70,19 +76,16 @@
             <section>
                 <h2>Datei lesen mit FileReader</h2>
                 <pre><code class="language-java">import java.io.*;
-
 public class DateiLesen {
     public static void main(String[] args) {
         try {
             FileReader reader = new FileReader("test.txt");
             BufferedReader br = new BufferedReader(reader);
-
             String zeile = br.readLine();
             while (zeile != null) {
                 System.out.println(zeile);
                 zeile = br.readLine();
             }
-
             br.close();
         } catch (IOException e) {
             System.out.println("Fehler beim Lesen: " + e.getMessage());

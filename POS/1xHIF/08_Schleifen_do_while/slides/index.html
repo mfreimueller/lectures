@@ -24,16 +24,22 @@
 <li>Kopf- vs. fußgesteuerte Schleife</li>
 <li>Die do-while-Schleife: Syntax</li>
 <li>Beispiel: do-while</li>
-<li>while vs. do-while</li>
-<li>break - Schleife vorzeitig beenden</li>
-<li>break: Beispiel</li>
                 </ol>
             </section>
 
             <section>
-                <h2>Agenda (2/2)</h2>
-                <ol start="8">
+                <h2>Agenda (2/3)</h2>
+                <ol start="5">
+<li>while vs. do-while</li>
+<li>break - Schleife vorzeitig beenden</li>
+<li>break: Beispiel</li>
 <li>continue - Durchlauf überspringen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Agenda (3/3)</h2>
+                <ol start="9">
 <li>continue: Beispiel</li>
 <li>break vs. continue</li>
 <li>Menübeispiel mit do-while</li>
@@ -126,11 +132,8 @@ do {
             <section>
                 <h2>break - Schleife vorzeitig beenden</h2>
                 <pre><code class="language-java">while (true) {
-    System.out.print("Zahl eingeben: ");
     int zahl = scanner.nextInt();
-    if (zahl &lt; 0) {
-        break;  // Springt aus der Schleife
-    }
+    if (zahl &lt; 0) break;
     System.out.println("Quadrat: " + zahl * zahl);
 }</code></pre>
                 <ul>
@@ -200,16 +203,11 @@ while (i &lt; 20) {
                 <h2>Menübeispiel mit do-while</h2>
                 <pre><code class="language-java">int auswahl;
 do {
-    System.out.println("=== MENÜ ===");
-    System.out.println("1: Option A");
-    System.out.println("2: Option B");
-    System.out.println("0: Beenden");
+    System.out.println("=== MENÜ ===\n1: Option A\n2: Option B\n0: Beenden");
     System.out.print("Auswahl: ");
     auswahl = scanner.nextInt();
-
     if (auswahl == 1) { /* Option A */ }
     else if (auswahl == 2) { /* Option B */ }
-
 } while (auswahl != 0);</code></pre>
                 <p class="fragment">Das Menü wird immer mindestens einmal angezeigt</p>
             </section>
