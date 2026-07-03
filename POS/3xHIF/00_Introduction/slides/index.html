@@ -44,6 +44,8 @@
 <section>
 <h2>Learning Objectives</h2>
 <ul>
+<li class="fragment">I know the structure of this class</li>
+<li class="fragment">I know the grading criteria of this class</li>
 <li class="fragment">I can set up a Java development environment with JDK, Maven, and an IDE</li>
 <li class="fragment">I can use var to declare local variables when the type is obvious</li>
 <li class="fragment">I can define and use Records as immutable data carriers</li>
@@ -52,12 +54,12 @@
 </section>
 
 <section>
-<h2>Welcome to POS</h2>
-<p>Object-oriented programming with modern Java.</p>
+<h2>Welcome to POS in 3rd grade HIF</h2>
+<p>Our (programming / SE) goals:</p>
 <ul>
-<li>Course overview and organisation</li>
-<li>Topics: Records, Pattern Matching, Streams, JDBC, JPA, REST</li>
-<li class="fragment">Assessment: tests, exercises, project work</li>
+<li class="fragment">Moving towards modern Java</li>
+<li class="fragment">Creating our first complex(ish) software</li>
+<li class="fragment">Thinking about good software design</li>
 </ul>
 </section>
 
@@ -76,11 +78,15 @@
 <section>
 <h2>Grading</h2>
 <ul>
-<li>PLÜs</li>
-<li>Practical exercises and katas</li>
-<li>Revisions</li>
-<li>Active participation</li>
-<li>WMC project</li>
+<li>PLÜs: 50%</li>
+<li>Mitarbeit: 25%</li>
+<ul>
+    <li>Practical exercises</li>
+    <li>Revisions</li>
+    <li>Active participation</li>
+    <li>WMC project</li>
+</ul>
+<li>POS Logic: 25%</li>
 </ul>
 </section>
 
@@ -88,7 +94,7 @@
 <h2>Tooling Setup</h2>
 <p>Required tools for this course:</p>
 <ul>
-<li>JDK 17+ (we recommend JDK 21 LTS)</li>
+<li>JDK 25</li>
 <li>IntelliJ IDEA</li>
 <li>Maven</li>
 <li>Git for version control</li>
@@ -100,7 +106,7 @@
 <h2>Installing JDK</h2>
 <p>Download from <a href="https://adoptium.net">Adoptium</a> or use SDKMAN:</p>
 <pre><code class="language-bash"># Using SDKMAN
-sdk install java 21.0.2-tem
+sdk install java 25.0.3-tem
 java --version
 javac --version
 </code></pre>
@@ -108,24 +114,32 @@ javac --version
 
 <section>
 <h2>Maven Setup</h2>
-<pre><code class="language-bash">mvn archetype:generate -DgroupId=com.example -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart
-mvn package
-mvn exec:java -Dexec.mainClass="com.example.App"
+<p>Install via IntelliJ or use SDKMAN:</p>
+<pre><code class="language-bash"># Using SDKMAN
+sdk install maven
+mvn --version
 </code></pre>
-</section>
-
-<section>
-<h2>Now Kata 1: Maven</h2>
-<p>Create a Maven project with multiple classes and add a Guava dependency to your pom.xml.</p>
 </section>
 
 <section>
 <h2>IDE Setup</h2>
 <ul>
 <li>IntelliJ IDEA: Open the pom.xml file</li>
-<li class="fragment">VS Code: Install Extension Pack for Java</li>
 <li class="fragment">Enable auto-import for Maven projects</li>
 </ul>
+</section>
+
+<section>
+    <h2>Partner Discussion</h2>
+    <ul>
+        <li>Open the Student Grade Refactoring project in IntelliJ.</li>
+        <li class="fragment">Discuss the following questions with your partner:</li>
+        <ol class="fragment">
+            <li>What patterns do you notice about the variable declarations in GradeCalculator and Main?</li>
+            <li>What do you notice about StudentGrade (boilerplate code, mutability etc.)?</li>
+            <li>What problems could arise from having setters on StudentGrade?</li>
+        </ol>
+    </ul>
 </section>
 
 <section>
@@ -139,7 +153,9 @@ var message = "Hello, World!";
 var names = new ArrayList&lt;String&gt;();
 </code></pre>
 <div class="highlight-box fragment">
-Rule: Use var when the type is obvious from the right-hand side.
+    <p>
+        Rule: Use var when the type is obvious from the right-hand side.
+    </p>
 </div>
 </section>
 
@@ -174,7 +190,7 @@ for (var entry : map.entrySet()) {
 </section>
 
 <section>
-<h2>Now Kata 2: Hello World</h2>
+<h2>Now Kata 1: Hello World</h2>
 <p>Write a program using var to declare a greeting and print it along with the current date/time.</p>
 </section>
 
@@ -230,8 +246,18 @@ if (p instanceof Point(int x, int y)) {
 </section>
 
 <section>
-<h2>Now Kata 3: Records</h2>
+<h2>Now Kata 2: Records</h2>
 <p>Define a Book record with validation in a compact constructor and an age() method that calculates years since publication.</p>
+</section>
+
+<section>
+<h2>Now Kata 3: Maven Project</h2>
+<p>Setup a new Maven project and add an external dependency to count words from text files.</p>
+</section>
+
+<section>
+    <h2>Now Exercise: Student Grades Refactoring</h2>
+    <p>Refactor an existing application and migrate it from Java 11 to Java 25.</p>
 </section>
 
 <section>
