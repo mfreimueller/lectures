@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/theme.css">
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.min.css">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.css">
 <body>
     <div class="reveal">
         <div class="slides">
@@ -52,25 +52,58 @@
             <section>
                 <h2>Recap: 3rd Grade Stack</h2>
                 <ul>
-                    <li class="fragment">Java 17+ (Records, Streams, Optional, Pattern Matching)</li>
+                    <li class="fragment">Java 21+ (Records, Streams, Optional, Pattern Matching)</li>
                     <li class="fragment">JUnit 5, Mockito, AssertJ</li>
                     <li class="fragment">SOLID Principles, TDD, Layered Architecture</li>
                     <li class="fragment">JDBC, JPA, Hibernate, PostgreSQL</li>
-                    <li class="fragment">HTTP, REST, Javalin (our first REST framework)</li>
+                    <li class="fragment">HTTP, REST, Jakarta Servlet API (manual request handling, routing, JSON serialization)</li>
                 </ul>
             </section>
 
             <section>
-                <h2>From Javalin to Spring Boot</h2>
+                <h2>From Jakarta Servlet to Spring Boot</h2>
                 <div class="fragment">
-                    <p>Javalin: lightweight, minimal, great for learning REST fundamentals</p>
+                    <p>You've built REST endpoints with <code>doGet</code>/<code>doPost</code>, manual JSON parsing, and explicit status codes</p>
                 </div>
                 <div class="fragment">
-                    <p>Spring Boot: industry standard, full ecosystem, enterprise-ready</p>
+                    <p>Spring Boot eliminates the boilerplate while keeping full control over HTTP semantics</p>
                 </div>
                 <div class="fragment highlight-box">
-                    <p>Same REST concepts — different toolset</p>
+                    <p>Same HTTP/REST concepts — declarative instead of imperative</p>
                 </div>
+            </section>
+
+            <section>
+                <h2>Before: Jakarta Servlet</h2>
+                <pre><code class="language-java">@WebServlet("/api/books")
+public class BookServlet extends HttpServlet {
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    @Override
+    protected void doPost(HttpServletRequest req,
+            HttpServletResponse resp) throws IOException {
+        Book book = mapper.readValue(req.getInputStream(), Book.class);
+        // ... save to database ...
+        resp.setContentType("application/json");
+        resp.setStatus(201);
+        mapper.writeValue(resp.getOutputStream(), book);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>After: Spring Boot</h2>
+                <pre><code class="language-java">@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    @PostMapping
+    public ResponseEntity&lt;Book&gt; create(@RequestBody Book book) {
+        // ... save to database ...
+        return ResponseEntity.status(201).body(book);
+    }
+}</code></pre>
+                <p class="fragment">No manual JSON, no <code>setContentType</code>, no <code>InputStream</code> — Spring handles it all.</p>
             </section>
 
             <section>
@@ -81,6 +114,7 @@
                     <li class="fragment">Massive ecosystem: Security, Data, Cloud, Actuator</li>
                     <li class="fragment">Industry standard in Austrian enterprises</li>
                     <li class="fragment">Relevant for Matura and internships</li>
+                    <li class="fragment">Servlet Filters → Spring Security FilterChain (same concept, declarative config)</li>
                 </ul>
             </section>
 
@@ -89,7 +123,7 @@
                 <ul>
                     <li class="fragment">https://start.spring.io/</li>
                     <li class="fragment">Configure: Maven/Gradle, Java, Spring Boot version</li>
-                    <li class="fragment">Select dependencies (start with Spring Web + DevTools)</li>
+                    <li class="fragment">Select dependencies (start with Spring WebMVC + DevTools)</li>
                     <li class="fragment">Generate &rarr; download &rarr; extract &rarr; open in IDE</li>
                 </ul>
             </section>
@@ -116,13 +150,13 @@
                 <pre><code class="language-xml">&lt;parent&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
-    &lt;version&gt;3.2.0&lt;/version&gt;
+    &lt;version&gt;4.1.0&lt;/version&gt;
 &lt;/parent&gt;
 
 &lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;artifactId&gt;spring-boot-starter-webmvc&lt;/artifactId&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
             </section>
@@ -217,25 +251,16 @@ git commit -m "Added greeting endpoint"
 git push</code></pre>
             </section>
 
-            <section class="center">
-                <div class="highlight-box">
-                    <h2>What We Learned Today</h2>
-                    <ul>
-                        <li>Course structure and the year-long project</li>
-                        <li>Transition from Javalin to Spring Boot</li>
-                        <li>Creating a Spring Boot project with Initializr</li>
-                        <li>Writing a REST controller with @GetMapping</li>
-                        <li>Returning JSON responses using records</li>
+            <section>
+                <h2>What We Learned Today</h2>
+                <ul>
+                    <li>Course structure and the year-long project</li>
+                    <li>Why Spring Boot improves on manual Servlet programming</li>
+                    <li>Creating a Spring Boot project with Initializr</li>
+                    <li>Writing a REST controller with @GetMapping</li>
+                    <li>Returning JSON responses using records</li>
 
-                    </ul>
-                </div>
-            </section>
-
-            <section class="center">
-                <div class="highlight-box">
-                    <h2>Next Week</h2>
-                    <p>UML & DDD — Domain Modeling for Your Project</p>
-                </div>
+                </ul>
             </section>
 
         </div>
