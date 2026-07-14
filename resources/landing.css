@@ -1,10 +1,11 @@
 :root {
-  --color-black: #000;
-  --color-gray-dark: #212121;
-  --color-gray-medium: #616161;
-  --color-gray-light: #BDBDBD;
-  --color-white: #FFFFFF;
-  --color-offwhite: #FAFAFA;
+  --spg-red: #ED1944;
+  --spg-blue: #004A8D;
+  --spg-black: #1A1A1A;
+  --spg-gray: #5A5A5A;
+  --spg-light-gray: #EDEDED;
+  --spg-white: #FFFFFF;
+  --spg-offwhite: #FAFAFA;
   --font-primary: 'Helvetica Neue', Arial, sans-serif;
   --font-heading: 'Arial Black', Impact, sans-serif;
   --logo-width: 180px;
@@ -17,16 +18,16 @@
 body {
   margin: 0;
   font-family: var(--font-primary);
-  color: var(--color-gray-dark);
-  background: var(--color-offwhite);
+  color: var(--spg-black);
+  background: var(--spg-offwhite);
   line-height: 1.6;
 }
 
 .lp-header {
   text-align: center;
-  padding: 40px 20px 20px;
-  background: var(--color-white);
-  border-bottom: 2px solid var(--color-gray-light);
+  padding: 40px 20px 24px;
+  background: var(--spg-white);
+  border-bottom: 4px solid var(--spg-red);
 }
 
 .lp-logo {
@@ -37,21 +38,22 @@ body {
 
 .lp-title {
   font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 2em;
   margin: 0 0 8px;
-  color: var(--color-black);
+  color: var(--spg-red);
 }
 
 .lp-subtitle {
   margin: 0 0 16px;
-  color: var(--color-gray-medium);
+  color: var(--spg-gray);
   font-size: 1.1em;
 }
 
 .lp-meta-link {
   display: inline-block;
   margin-top: 8px;
-  color: var(--color-gray-medium);
+  color: var(--spg-gray);
   font-size: 0.9em;
 }
 
@@ -64,13 +66,13 @@ body {
 .lp-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--color-white);
+  background: var(--spg-white);
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .lp-table th {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--spg-red);
+  color: var(--spg-white);
   padding: 12px 14px;
   text-align: left;
   font-weight: 700;
@@ -82,31 +84,32 @@ body {
 
 .lp-table td {
   padding: 10px 14px;
-  border-bottom: 1px solid var(--color-gray-light);
+  border-bottom: 1px solid var(--spg-light-gray);
   font-size: 0.95em;
   vertical-align: middle;
 }
 
 .lp-table tbody tr:nth-child(even) {
-  background: rgba(25, 118, 210, 0.04);
+  background: var(--spg-light-gray);
 }
 
 .lp-table tbody tr:hover {
-  background: rgba(25, 118, 210, 0.1);
+  background: rgba(0, 74, 141, 0.08);
 }
 
 .lp-table a {
-  color: var(--color-black);
+  color: var(--spg-blue);
   text-decoration: none;
   font-weight: 600;
 }
 
 .lp-table a:hover {
+  color: var(--spg-red);
   text-decoration: underline;
 }
 
 .lp-table .col-desc {
-  color: var(--color-gray-medium);
+  color: var(--spg-gray);
   font-size: 0.88em;
 }
 
@@ -117,13 +120,13 @@ body {
   font-weight: 700;
   border-radius: 10px;
   white-space: nowrap;
-  background: var(--color-gray-light);
-  color: var(--color-gray-dark);
+  background: rgba(237, 25, 68, 0.1);
+  color: var(--spg-red);
 }
 
 .lp-badge--content {
-  background: #e0e0e0;
-  color: var(--color-gray-dark);
+  background: var(--spg-light-gray);
+  color: var(--spg-gray);
 }
 
 .lp-badge--milestone {
@@ -144,13 +147,17 @@ body {
 .lp-footer {
   text-align: center;
   padding: 30px 20px;
-  color: var(--color-gray-light);
+  color: var(--spg-gray);
   font-size: 0.85em;
 }
 
 .lp-footer a {
-  color: var(--color-gray-medium);
+  color: var(--spg-gray);
   text-decoration: none;
+}
+
+.lp-footer a:hover {
+  color: var(--spg-red);
 }
 
 @media (max-width: 640px) {
