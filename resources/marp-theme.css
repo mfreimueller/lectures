@@ -168,6 +168,11 @@ section.invert .highlight-box {
   border-left-color: var(--spg-blue);
 }
 
+/* Utility class carried over from the old Reveal.js theme */
+.centered {
+  text-align: center;
+}
+
 /* Pagination (bottom right — doesn't collide with the top-right logo) */
 section::after {
   color: var(--spg-gray);
