@@ -1,0 +1,212 @@
+/* @theme spengergasse */
+
+/*
+ * HTL Spengergasse — Marp theme
+ * Brand colors sourced from https://www.spengergasse.at (primary red #ED1944,
+ * secondary blue #004A8D). Logo is embedded as a base64 data URI so exported
+ * decks stay fully self-contained (no network dependency at presentation time).
+ *
+ * Usage in slide markdown front-matter:
+ *   ---
+ *   marp: true
+ *   theme: spengergasse
+ *   paginate: true
+ *   ---
+ *
+ * Title slide: add `<!-- _class: lead -->` to the first slide.
+ * Dark/section-divider slide: add `<!-- _class: invert -->`.
+ */
+
+@import 'default';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500,700');
+
+:root {
+  --spg-red: #ED1944;
+  --spg-blue: #004A8D;
+  --spg-black: #1A1A1A;
+  --spg-gray: #5A5A5A;
+  --spg-light-gray: #EDEDED;
+  --spg-white: #FFFFFF;
+
+  /* Logo mark, recolored from spengergasse_logo_small.jpg onto a transparent
+     background (source JPEG had a baked-in white background). Red variant for
+     light/dark slides, white variant for the solid-red title slide. */
+  --spg-logo: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABWAgMAAAAyBGnqAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAJUExURe0ZRO0ZRP///0hI4MEAAAABdFJOUwBA5thmAAAAAWJLR0QCZgt8ZAAAAAd0SU1FB+oHDggTMGDRGeEAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDctMTRUMDg6MTk6NDgrMDA6MDC3+VcHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA3LTE0VDA4OjE5OjQ4KzAwOjAwxqTvuwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wNy0xNFQwODoxOTo0OCswMDowMJGxzmQAAAETSURBVEjH7ZS7cQYhDISPQCWoH0ogkPpvxf8Beu1xM3bkwCYBvhHSAgvX5a3JdWys/YSbqrxwPXH6IecP7//8z3BW5HT3bjPni9y2GYXrNNLN59x8xYvPToPPuE/g4mJpmxZ+l5hcbboHut4FPXif74idx8g0lvyvXPZWjdORx7BwiZSFjxhnLvu4kaebyjr91mLCHmHLnedPgmzW4M1zx8EvtzY3wI8fjrdJUKZ5b2CafXdy4vzg5J7BsuaxjmU3H9/hLbhgWfMeljXekae3lssaH1BWogc5vq7IGVEH5FwoyJdD4erngXJQUIp68u4KnFOooyz0jbdY3DC/iXvjxSpp85z3y0VDnA+VnPke05mv8C/tcNQXqYIUvAAAAABJRU5ErkJggg==');
+  --spg-logo-white: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABWCAQAAADlY0nyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAd0SU1FB+oHDggUB5ctKikAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDctMTRUMDg6MjA6MDcrMDA6MDCgDGTfAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA3LTE0VDA4OjIwOjA3KzAwOjAw0VHcYwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wNy0xNFQwODoyMDowNyswMDowMIZE/bwAAAIKSURBVGje7ZrdloMwCISlx/d/5ezN9lhdDTMw+NMNV22MwxeKaSSxNpXYW9YqxK0AeispB1dDH8lJwV/qKJCDuQF00QNSC32SKaFb4upl0KfZgB7QA/oGNqAH9IC+gQ3oAT2gb2ADekB/G/T88Xn96llS0CLtgGjevby0XIXeDtpsgW7OzWeie4UIW6eHJ+ShW9ehP3C4MjITneuizhRy2mRYpFF0o6umobqTtUzBag+lgT0TZTJr2RqbjyMF1kD3443/FhS0op7JPJwCb4/8G9dA49GTVKlf0z1WGbjZO9LPwbZpWtLjGdi/lPOm4aT9qSjuFvqu6Ds50NuxxdFr5ulDVX+b2XfCPg9pRX+Vd27CQAHgNvT/do7OOimlyCkE1VmOsE7FeY9y+8cLpgH9pdD82/jaPp9jbxZg+nYtM3vs3cqUCsLg8fRoRa2F0F71L6tSAq0ZYNBi0LojVqEBRaA5R17vADYPrV+s0IqP/HNhoWsWhaQqB42JW+ebBJuBrl16E+r6nDagJWk4dP0rDuwBhUYFjWgNe9GmhwWuBLAxaEVqCDMbgc6lBmuANx9ahyxLEVVOY0CiFPGgr6nlOF41kcYjKIm1ApoDEWD3oZHk4CGQO7qev3A9rZvGpLq5SMfzM5XZ16VHAtuDtuC10gH5kTayPY/mKiPpYWCbBhtQZqqm1afFYOUfkHdroUfGaUoAAAAASUVORK5CYII=');
+}
+
+section {
+  position: relative;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--spg-black);
+  background-color: var(--spg-white);
+  padding: 55px 70px 70px;
+}
+
+/* Discreet logo, top right of every slide */
+section::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  width: 34px;
+  height: 34px;
+  background-image: var(--spg-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+/* Headings */
+section h1,
+section h2,
+section h3,
+section h4 {
+  font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+  color: var(--spg-black);
+  font-weight: 700;
+}
+
+section h1 {
+  font-size: 1.9em;
+  color: var(--spg-red);
+  border-bottom: 4px solid var(--spg-red);
+  padding-bottom: 0.2em;
+  margin-top: 0;
+}
+
+section h2 {
+  font-size: 1.5em;
+  border-left: 6px solid var(--spg-red);
+  padding-left: 0.35em;
+}
+
+section h3 {
+  font-size: 1.2em;
+  color: var(--spg-blue);
+}
+
+/* Links */
+section a {
+  color: var(--spg-blue);
+}
+
+section a:hover {
+  color: var(--spg-red);
+}
+
+/* Emphasis */
+section strong {
+  color: var(--spg-black);
+  font-weight: 700;
+}
+
+/* Code — inline code gets a light pill; fenced code blocks keep the
+   default theme's own (contrast-correct) syntax highlighting untouched */
+section :not(pre) > code {
+  background-color: var(--spg-light-gray);
+  color: var(--spg-black);
+  border-radius: 4px;
+}
+
+/* Tables */
+section table thead th {
+  background-color: var(--spg-red);
+  color: var(--spg-white);
+}
+
+section table tbody tr:nth-child(even) {
+  background-color: var(--spg-light-gray);
+}
+
+/* Blockquotes */
+section blockquote {
+  border-left: 6px solid var(--spg-red);
+  padding-left: 0.8em;
+  color: var(--spg-gray);
+  font-style: italic;
+}
+
+section blockquote > p::before,
+section blockquote > p::after {
+  content: none;
+}
+
+/* Pagination (bottom right — doesn't collide with the top-right logo) */
+section::after {
+  color: var(--spg-gray);
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.6em;
+}
+
+/* Title slide — <!-- _class: lead --> */
+section.lead {
+  background-color: var(--spg-red);
+  color: var(--spg-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+section.lead::before {
+  width: 64px;
+  height: 64px;
+  top: 40px;
+  right: 48px;
+  opacity: 1;
+  background-image: var(--spg-logo-white);
+}
+
+section.lead h1 {
+  color: var(--spg-white);
+  border-bottom: none;
+  font-size: 2.4em;
+}
+
+section.lead h2 {
+  color: var(--spg-white);
+  border-left: none;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+section.lead a {
+  color: var(--spg-white);
+  text-decoration: underline;
+}
+
+/* Section divider / dark slide — <!-- _class: invert --> */
+section.invert {
+  background-color: var(--spg-black);
+  color: var(--spg-white);
+}
+
+section.invert h1 {
+  color: var(--spg-red);
+}
+
+section.invert h2,
+section.invert h3,
+section.invert h4 {
+  color: var(--spg-white);
+}
+
+section.invert a {
+  color: #6FA8DC;
+}
+
+section.invert strong {
+  color: var(--spg-white);
+}
+
+section.invert :not(pre) > code {
+  background-color: #2A2A2A;
+  color: var(--spg-white);
+}
+
+section.invert blockquote {
+  color: var(--spg-light-gray);
+}
