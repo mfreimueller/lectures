@@ -133,6 +133,41 @@ section blockquote > p::after {
   content: none;
 }
 
+/* Highlight box — callout construct carried over from the old Reveal.js
+   theme, ported to the red/blue palette. Emitted as raw HTML by the
+   Reveal→Marp conversion script (POS/3xHIF migration). */
+section .highlight-box {
+  border-left: 6px solid var(--spg-blue);
+  background-color: var(--spg-light-gray);
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  margin: 0.8em 0;
+}
+
+section .highlight-box p,
+section .highlight-box li {
+  margin: 0.3em 0;
+}
+
+section .highlight-box h3 {
+  margin-top: 0;
+}
+
+section .highlight-box.warning {
+  border-left-color: #F57C00;
+  background-color: #FFF3E0;
+}
+
+section .highlight-box.danger {
+  border-left-color: var(--spg-red);
+  background-color: #FDE8ED;
+}
+
+section.invert .highlight-box {
+  background-color: #2A2A2A;
+  border-left-color: var(--spg-blue);
+}
+
 /* Pagination (bottom right — doesn't collide with the top-right logo) */
 section::after {
   color: var(--spg-gray);
