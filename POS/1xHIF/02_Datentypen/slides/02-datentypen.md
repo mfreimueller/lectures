@@ -191,6 +191,14 @@ System.out.println("Name: " + name);
 
 ## Übersicht: Die fünf Datentypen
 
+| Typ | Beschreibung | Beispiel |
+| --- | --- | --- |
+| `boolean` | Wahrheitswert | `true`, `false` |
+| `int` | Ganze Zahl | `42`, `-7` |
+| `double` | Kommazahl | `3.14`, `2.5` |
+| `String` | Text | `"Hallo"` |
+| `char` | Einzelnes Zeichen | `'A'`, `'?'` |
+
 ---
 
 ## Häufige Fehler

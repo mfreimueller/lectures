@@ -3,7 +3,7 @@ marp: true
 theme: spengergasse
 paginate: true
 size: 16:9
-lang: en
+lang: de
 ---
 
 <!-- _class: lead -->
@@ -149,6 +149,14 @@ Use strict TDD to convert integers to Roman numerals, building up from the simpl
 ---
 
 ## FIRST Principles
+
+| Letter | Meaning |
+| --- | --- |
+| F | **Fast** -- tests run quickly |
+| I | **Isolated** -- no test depends on another |
+| R | **Repeatable** -- same result every time |
+| S | **Self-validating** -- pass/fail clearly |
+| T | **Timely** -- written before production code |
 
 ---
 

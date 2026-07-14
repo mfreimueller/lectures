@@ -122,6 +122,13 @@ System.out.println(x);  // 25
 
 - Kurzschreibweisen für "Variable = Variable Operator Wert"
 
+| Operator | Bedeutung | Beispiel | Ergebnis (x startet bei 10) |
+| --- | --- | --- | --- |
+| `+=` | Addition | `x += 5` | 15 |
+| `-=` | Subtraktion | `x -= 3` | 7 |
+| `*=` | Multiplikation | `x *= 2` | 20 |
+| `/=` | Division | `x /= 4` | 2 |
+
 ---
 
 ## Beispiel: Zusammengesetzte Zuweisungen

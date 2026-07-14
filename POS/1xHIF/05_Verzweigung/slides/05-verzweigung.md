@@ -60,6 +60,15 @@ lang: de
 
 ## Vergleichsoperatoren
 
+| Operator | Bedeutung | Beispiel (wahr wenn) |
+| --- | --- | --- |
+| `<` | kleiner als | `3 < 5` |
+| `>` | größer als | `5 > 3` |
+| `<=` | kleiner oder gleich | `3 <= 3` |
+| `>=` | größer als | `5 >= 3` |
+| `==` | gleich | `3 == 3` |
+| `!=` | ungleich | `3 != 5` |
+
 ---
 
 ## Die if-Anweisung
