@@ -13,6 +13,26 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Problem: Telescoping Constructors
+2. Builder Pattern — Grundidee
+3. Fluent Interface
+4. Pizza Builder — Implementierung
+5. Query Builder — Beispiel
+6. Vor- und Nachteile
+
+---
+
+## Lernziele
+
+- Ich kann das Problem der Telescoping Constructors erklären
+- Ich kann ein Builder Pattern mit Fluent Interface implementieren
+- Ich kann Builder für komplexe Objekte mit vielen optionalen Feldern einsetzen
+- Ich kann Vor- und Nachteile des Builder Patterns abwägen
+
+---
+
 ## Problem: Telescoping Constructors
 
 ```java
@@ -129,4 +149,3 @@ String query = new QueryBuilder()
 - Builder ersetzt Telescoping Constructors
 - Fluent Interface = return this
 - Ideal für Objekte mit vielen optionalen Feldern
-- Nächstes Mal: Factory Pattern (Simple Factory, Factory Method, Abstract Factory)

@@ -13,6 +13,37 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Parallel Streams
+2. Parallel Streams — Wann hilft es?
+3. Custom Collectors — Collector-Interface
+4. Custom Collector Beispiel: toHistogram
+5. Advanced Collectors — teeing
+6. Advanced Collectors — filtering & flatMapping
+
+---
+
+## Agenda (2/2)
+
+7. takeWhile / dropWhile
+8. Stream-Quellen (Java 9+)
+9. Primitive Streams
+10. Gatherers (Java 22+)
+11. Stream-Pitfalls
+
+---
+
+## Lernziele
+
+- Ich kann Parallel Streams sinnvoll einsetzen und ihre Grenzen einschätzen
+- Ich kann eigene Collectors implementieren
+- Ich kann teeing, filtering und flatMapping als Advanced Collectors nutzen
+- Ich kenne takeWhile/dropWhile und Primitive Streams
+- Ich kenne typische Stream-Pitfalls und vermeide sie
+
+---
+
 ## Review: Stream-Grundlagen
 
 - **3xHIF Lektion 10:** filter, map, flatMap, reduce

@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Warum Alternativen zu MS Office?
+2. Open Source vs. Proprietär
+3. LibreOffice
+4. Writer - Word-Ersatz
+5. Calc - Excel-Ersatz
+6. Impress - PowerPoint-Ersatz
+
+---
+
+## Agenda (2/2)
+
+7. OpenDocument-Format (ODF)
+8. ODF-Formate im Detail
+9. Kompatibilitätstabelle
+10. Google Workspace
+11. OnlyOffice
+12. Vergleich: Alle Alternativen
+
+---
+
+## Lernziele
+
+- Ich kenne Gründe für den Einsatz von Open-Source-Alternativen zu MS Office
+- Ich kenne LibreOffice und seine Programme (Writer, Calc, Impress)
+- Ich kenne das OpenDocument-Format (ODF) und seine Vorteile
+- Ich kann LibreOffice, Google Workspace und OnlyOffice vergleichen
+- Ich kann die passende Office-Alternative für eine Situation auswählen
+
+---
+
 ## Warum Alternativen zu MS Office?
 
 - **Kosten:** MS Office ist teuer (Lizenzgebühren)
@@ -129,17 +161,9 @@ Komplexe Formatierungen können verloren gehen
 
 ---
 
-## Wann nehme ich was?
+## Zusammenfassung
 
 - **LibreOffice:** Tägliche Arbeit, wenn MS Office nicht verfügbar ist
 - **Google Workspace:** Teamarbeit, Cloud-Nutzung
 - **OnlyOffice:** Wenn MS-Office-Kompatibilität wichtig ist
 - **MS Office:** Wenn es vom Arbeitgeber vorgegeben ist
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Markdown I - Grundlagen</h3>
-</div>
-
-Eine einfache Auszeichnungssprache für Dokumente

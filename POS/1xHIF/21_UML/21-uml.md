@@ -70,16 +70,7 @@ UML = **U**nified **M**odeling **L**anguage
 
 Eine Klasse wird als Kasten mit drei Bereichen dargestellt:
 
-<div class="highlight-box"><p>┌─────────────────────┐<br/>
-                │      Person         │  &lt;— Klassenname<br/>
-                ├─────────────────────┤<br/>
-                │ - name: String      │  &lt;— Attribute<br/>
-                │ - alter: int        │<br/>
-                ├─────────────────────┤<br/>
-                │ + Person(name,alter)│  &lt;— Methoden<br/>
-                │ + getName(): String │<br/>
-                │ + setName(name)     │<br/>
-                └─────────────────────┘</p></div>
+![width:70% Person Klassendiagramm](puml/person.png)
 
 ---
 
@@ -106,11 +97,7 @@ public class Person {
 
 Eine Assoziation zeigt eine Beziehung zwischen zwei Klassen.
 
-```
-┌────────┐               ┌────────┐
-│ Person │───────────────│ Adresse│
-└────────┘               └────────┘
-```
+![width:60% PersonAdresse Assoziation](puml/person-adresse.png)
 
 Eine einfache Linie bedeutet: Person hat eine Adresse.
 
@@ -126,11 +113,7 @@ public class Person {
 
 Multiplizitäten geben an, wie viele Objekte beteiligt sind.
 
-<div class="highlight-box">
-<pre>┌────────┐  1          *  ┌────────┐
-│  Auto  │───────────────│   Rad  │
-└────────┘               └────────┘</pre>
-</div>
+![width:60% AutoRad Multiplizitäten](puml/auto-rad.png)
 
 | Notation | Bedeutung |
 | --- | --- |
@@ -163,12 +146,7 @@ public class Bestellung {
 
 Ein Pfeil zeigt die Richtung der Beziehung an.
 
-```
-┌───────────┐     ┌──────────────┐
-│  Student  │─────│    Course    │
-└───────────┘     └──────────────┘
-        1                    *
-```
+![width:60% StudentCourse Gerichtete Assoziation](puml/student-course.png)
 
 Ein Student besucht beliebig viele Kurse.
 
@@ -188,15 +166,7 @@ public class Course {
 
 Ein Dreieck zeigt die Vererbung an.
 
-<div class="highlight-box">
-<pre>    ┌───────────┐
-    │   Tier    │
-    └─────┬─────┘
-          │  (Dreieck)
-    ┌─────┴─────┐
-    │   Hund    │
-    └───────────┘</pre>
-</div>
+![width:50% TierHund Vererbung](puml/tier-hund.png)
 
 ```java
 public class Tier { }
@@ -207,16 +177,7 @@ public class Hund extends Tier { }
 
 ## Vollständiges Beispiel: Bibliothek
 
-```
-┌─────────────┐              ┌───────────┐
-│ Bibliothek  │1             *│   Buch    │
-├─────────────┤──────────────├───────────┤
-│ - name      │              │ - titel   │
-│ - adresse   │              │ - isbn    │
-├─────────────┤              ├───────────┤
-│ + buchHinzufügen(Buch)     │ + getTitel│
-└─────────────┘              └───────────┘
-```
+![width:75% BibliothekBuch Klassendiagramm](puml/bibliothek-buch.png)
 
 ```java
 public class Bibliothek {

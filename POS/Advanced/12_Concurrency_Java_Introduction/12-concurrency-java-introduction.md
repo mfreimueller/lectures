@@ -13,6 +13,41 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation
+2. Prozesse vs. Threads
+3. Thread-Erzeugung: extends Thread
+4. Thread-Erzeugung: implements Runnable
+5. Thread-Lebenszyklus
+6. Race Conditions
+7. Race Condition - Ablauf
+8. Lösung: synchronized
+
+---
+
+## Agenda (2/2)
+
+9. synchronized - Wirkung
+10. volatile
+11. Thread-Koordination: wait/notify
+12. wait/notify - Regeln
+13. Producer-Consumer Pattern
+14. Deadlocks
+15. Best Practices
+
+---
+
+## Lernziele
+
+- Ich kenne den Unterschied zwischen Prozessen und Threads
+- Ich kann Threads mit extends Thread und implements Runnable erzeugen
+- Ich kann Race Conditions erklären und mit synchronized vermeiden
+- Ich kenne den Unterschied zwischen synchronized und volatile
+- Ich kann wait/notify für die Thread-Koordination einsetzen und Deadlocks vermeiden
+
+---
+
 ## Motivation
 
 - Moderne CPUs haben mehrere Kerne — echte Parallelitat möglich
@@ -340,11 +375,3 @@ synchronized (lockB) {
 - volatile: Sichtbarkeit von Variablen (keine Atomaritat)
 - wait/notify: Koordination zwischen Threads (Producer-Consumer)
 - Deadlocks durch konsistente Lock-Reihenfolge vermeiden
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nachste Lektion: Fortgeschrittene Concurrency — Locks, Executors, ForkJoin, CompletableFuture</p>
-</div>

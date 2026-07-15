@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Was ist AsciiDoc?
+2. Markdown vs. AsciiDoc
+3. Überschriften in AsciiDoc
+4. Textformatierung
+5. Listen
+6. Links
+
+---
+
+## Agenda (2/2)
+
+7. Bilder
+8. Code
+9. Markdown vs. AsciiDoc - Vergleich
+10. AsciiDoctor
+11. VS Code Extension
+12. Ausgabeformate
+
+---
+
+## Lernziele
+
+- Ich weiß, was AsciiDoc ist und wie es sich von Markdown unterscheidet
+- Ich kann Überschriften, Textformatierung und Listen in AsciiDoc schreiben
+- Ich kann Links, Bilder und Code-Blöcke in AsciiDoc einfügen
+- Ich kenne AsciiDoctor und die VS Code Extension für AsciiDoc
+- Ich kenne die verschiedenen Ausgabeformate von AsciiDoc (HTML, PDF, EPUB, DocBook)
+
+---
+
 ## Recap: Markdown
 
 1. Wie erstellt man eine Tabelle in Markdown?
@@ -185,7 +217,7 @@ System.out.println("Hallo");
 
 ---
 
-## Syntax-Übersicht AsciiDoc
+## Zusammenfassung
 
 | Element | Syntax |
 | --- | --- |
@@ -201,11 +233,3 @@ System.out.println("Hallo");
 | Inline-Code | `code` |
 | Code-Block | ---- |
 | Code mit Sprache | [source,java] ---- |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: AsciiDoc II</h3>
-</div>
-
-TOC, Cross-References, Includes, Conditionals, Tabellen

@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Problem: Bedingte Summe
+2. Lösung: Bereichsfunktionen
+3. SUMIF - Syntax
+4. SUMIF - Beispiel
+5. COUNTIF
+6. AVERAGEIF
+
+---
+
+## Agenda (2/2)
+
+7. Vergleich: Normal vs. Bedingt
+8. Kriterien-Formate
+9. Wildcards in Kriterien
+10. SUMIFS - Mehrere Bedingungen
+11. SUMIFS - Beispiel
+12. COUNTIFS
+
+---
+
+## Lernziele
+
+- Ich kann Summen und Durchschnitte mit einer Bedingung berechnen (SUMIF, AVERAGEIF)
+- Ich kann Zellen mit COUNTIF bedingt zählen
+- Ich kenne verschiedene Kriterien-Formate und Wildcards
+- Ich kann mehrere Bedingungen mit SUMIFS und COUNTIFS kombinieren
+- Ich kenne den Unterschied zwischen SUMIF und SUMIFS in der Argumentreihenfolge
+
+---
+
 ## Wiederholung: Logische Funktionen
 
 1. Wie lautet die Syntax von IF?
@@ -178,7 +210,7 @@ Zählt Zeilen wo Kategorie = "POS" UND Betrag > 50
 
 ---
 
-## Übersicht Bereichsfunktionen
+## Zusammenfassung
 
 | Funktion | Beschreibung |
 | --- | --- |
@@ -187,11 +219,3 @@ Zählt Zeilen wo Kategorie = "POS" UND Betrag > 50
 | =AVERAGEIF(B; K; [M]) | Durchschnitt mit 1 Bedingung |
 | =SUMIFS(S; B1; K1; B2; K2) | Summe mit mehreren Bedingungen |
 | =COUNTIFS(B1; K1; B2; K2) | Zählen mit mehreren Bedingungen |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Suchen &amp; Referenzieren</h3>
-</div>
-
-VLOOKUP, XLOOKUP, INDEX/MATCH

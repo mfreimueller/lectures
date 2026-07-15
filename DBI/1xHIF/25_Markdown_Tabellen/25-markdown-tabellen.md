@@ -13,6 +13,29 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Tabellen - Grundsyntax
+2. Tabellen - Ausrichtung
+3. Komplexe Tabellen
+4. Checkboxen (Task-Listen)
+5. Checkboxen - Beispiel
+6. Zitate (Blockquotes)
+7. Horizontale Linien
+8. Rendering-Unterschiede
+9. Erweiterte Markdown-Features
+
+---
+
+## Lernziele
+
+- Ich kann Tabellen in Markdown erstellen und ausrichten
+- Ich kann Checkboxen (Task-Listen) verwenden
+- Ich kann Zitate mit Blockquotes formatieren
+- Ich kenne Rendering-Unterschiede zwischen Plattformen (GitHub, GitLab, VS Code, Obsidian)
+
+---
+
 ## Recap: Markdown I
 
 1. Wie schreibt man eine Überschrift Ebene 2?
@@ -152,8 +175,10 @@ Je nach Plattform gibt es zusätzliche Features:
 
 ---
 
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: AsciiDoc I</h3>
-</div>
+## Zusammenfassung
 
-Eine mächtigere Alternative zu Markdown
+- Tabellen: `| Spalte | Spalte |`, Ausrichtung mit `:---`, `:---:`, `---:`
+- Checkboxen: `- [ ]` offen, `- [x]` erledigt
+- Zitate mit `>` für Blockquotes
+- Horizontale Linien: `---`, `***`, `___`
+- Nicht jedes Feature wird überall gleich gerendert (GitHub, GitLab, VS Code, Obsidian)

@@ -13,6 +13,40 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Problem: Manuelle Formeln
+2. Lösung: Funktionen
+3. Aufbau einer Funktion
+4. Die wichtigsten Grundfunktionen
+5. Bereichsnotation
+6. Bereiche mit der Maus markieren
+7. =SUM() - Summe
+
+---
+
+## Agenda (2/2)
+
+8. =AVERAGE() - Durchschnitt
+9. =MIN() und =MAX()
+10. =COUNT() vs =COUNTA()
+11. Funktionen verschachteln
+12. AutoSumme-Button
+13. AutoSumme-Optionen
+14. Live-Demo: Noten-Tabelle
+
+---
+
+## Lernziele
+
+- Ich kann den Aufbau einer Excel-Funktion erklären (Name, Klammern, Argumente)
+- Ich kann SUM, AVERAGE, MIN, MAX, COUNT und COUNTA anwenden
+- Ich kenne den Unterschied zwischen COUNT und COUNTA
+- Ich kann Funktionen verschachteln
+- Ich kann die AutoSumme-Funktion nutzen
+
+---
+
 ## Wiederholung: Bezüge
 
 1. Was bedeutet $B$7?
@@ -191,11 +225,3 @@ Beispiel: =COUNT(A1:A5) bei Werten 100, 200, Hallo, 300, (leer) = 3
 | =COUNTA(A1:A5) | Zählt alle nicht-leeren Zellen |
 | =MIN(A1:A5) | Kleinster Wert |
 | =MAX(A1:A5) | Größter Wert |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Logische Funktionen</h3>
-</div>
-
-IF, AND, OR, NOT

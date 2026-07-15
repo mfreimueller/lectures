@@ -13,6 +13,34 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Warum Domain-Driven Design?
+2. Ubiquitous Language
+3. Bounded Context
+4. Entities
+5. Value Objects
+
+---
+
+## Agenda (2/2)
+
+6. Entities vs Value Objects — Entscheidung
+7. Aggregates
+8. Repositories
+9. Domain Events
+
+---
+
+## Lernziele
+
+- Ich kenne die Grundidee von Domain-Driven Design und die Ubiquitous Language
+- Ich kann Bounded Contexts voneinander abgrenzen
+- Ich kann zwischen Entities und Value Objects unterscheiden
+- Ich verstehe die Rolle von Aggregates, Repositories und Domain Events
+
+---
+
 ## Warum Domain-Driven Design?
 
 - Software bildet reale Geschaftsprozesse ab
@@ -158,4 +186,3 @@ public record BestellungAufgegeben(
 - Bounded Context grenzt Modelle voneinander ab
 - Entities haben Identitat, Value Objects sind Werte
 - Aggregates, Repositories und Domain Events strukturieren das Modell
-- Nachste Lektion: ACID — Datenbanktransaktionen

@@ -1,0 +1,9 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Student
+class Course
+Student "1" --> "*" Course
+@enduml

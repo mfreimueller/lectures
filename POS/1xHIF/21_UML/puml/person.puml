@@ -1,0 +1,14 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Person {
+    - name: String
+    - alter: int
+
+    + Person(name: String, alter: int)
+    + getName(): String
+    + setName(name: String)
+}
+@enduml

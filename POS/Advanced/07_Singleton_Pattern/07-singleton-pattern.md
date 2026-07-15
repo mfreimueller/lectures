@@ -13,6 +13,28 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Was ist ein Singleton?
+2. Klassisches Singleton
+3. Thread-Safety mit synchronized
+4. Double-Checked Locking
+5. Bill Pugh — Holder Pattern
+6. Enum Singleton
+7. Vor- und Nachteile
+8. Wann Singleton, wann nicht?
+
+---
+
+## Lernziele
+
+- Ich kann ein klassisches Singleton implementieren
+- Ich kenne die Thread-Safety-Probleme naiver Singleton-Implementierungen
+- Ich kann Double-Checked Locking, Bill-Pugh-Holder und Enum-Singleton unterscheiden
+- Ich kann einschätzen, wann ein Singleton angebracht ist und wann nicht
+
+---
+
 ## Was ist ein Singleton?
 
 - Stellt sicher, dass eine Klasse genau eine Instanz hat
@@ -155,4 +177,3 @@ Singleton.INSTANCE.doSomething();
 - Singleton = genau eine Instanz + globaler Zugriff
 - Vier Varianten: synchronized, DCL, Bill Pugh, Enum
 - Enum Singleton ist die sicherste Variante
-- Nächstes Mal: Facade Pattern

@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Modul-Überblick
+2. Bewertungskriterien
+3. 2er-Teams bilden
+4. Team-Regeln
+5. Themenkriterien
+6. Themen eingrenzen
+
+---
+
+## Agenda (2/2)
+
+7. Forschungsfragen
+8. Forschungsfragen - Beispiele
+9. Quellenarten
+10. Recherche-Techniken
+11. Feedback-Regeln
+12. Nächste Schritte
+
+---
+
+## Lernziele
+
+- Ich kenne die Bewertungskriterien für das PowerPoint-Modul
+- Ich kann mit meinem Team ein passendes Thema eingrenzen
+- Ich kann eine präzise Forschungsfrage formulieren
+- Ich kann Quellen nach ihrer Qualität einschätzen
+- Ich kann konstruktives Feedback geben
+
+---
+
 ## Modul-Überblick
 
 | Woche | Thema |
@@ -136,8 +168,10 @@ Begründungen liefern + Verbesserungsvorschläge
 
 ---
 
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Gute Präsentationen</h3>
-</div>
+## Zusammenfassung
 
-Dos & Don'ts, 10/20/30-Regel, Folienaufbau
+- Team und Thema werden heute gemeinsam festgelegt
+- Ein gutes Thema ist weder zu breit noch zu eng
+- Eine gute Forschungsfrage ist präzise und in 8 Minuten beantwortbar
+- Quellenqualität variiert: offizielle Doku vor Foren/Blogs
+- Feedback immer konstruktiv mit Begründung geben

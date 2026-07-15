@@ -13,6 +13,34 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation
+2. Java Iterable Interface
+3. Java Iterator Interface
+4. For-Each Schleife
+5. Custom Iterable — Range
+
+---
+
+## Agenda (2/2)
+
+6. Baum-Iterator — Inorder
+7. InorderIterator — Implementierung
+8. Externer vs. Interner Iterator
+9. Vorteile und Nachteile
+
+---
+
+## Lernziele
+
+- Ich kenne die Iterable- und Iterator-Interfaces in Java
+- Ich verstehe, wie die For-Each-Schleife auf Iterable basiert
+- Ich kann einen eigenen Iterator implementieren (z.B. für einen Baum)
+- Ich kann externen und internen Iterator unterscheiden
+
+---
+
 ## Motivation
 
 - Verschiedene Datenstrukturen (Liste, Set, Baum, Graph) sollen einheitlich durchlaufen werden

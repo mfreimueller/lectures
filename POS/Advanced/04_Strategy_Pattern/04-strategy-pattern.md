@@ -13,6 +13,34 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Das Problem
+2. Lösung: Strategy Pattern
+3. Struktur des Strategy Patterns
+4. Beispiel: Sortierstrategien
+5. BubbleSort als Strategie
+
+---
+
+## Agenda (2/2)
+
+6. Nutzung der Strategien
+7. Beispiel: Payment-Strategien
+8. Payment — Kontext
+9. Vor- und Nachteile
+
+---
+
+## Lernziele
+
+- Ich kann das Problem erklären, das das Strategy Pattern löst
+- Ich kenne die Struktur des Strategy Patterns (Context, Strategy-Interface, konkrete Strategien)
+- Ich kann das Strategy Pattern an einem eigenen Beispiel implementieren
+- Ich kann Vor- und Nachteile des Strategy Patterns abwägen
+
+---
+
 ## Das Problem
 
 ```java
@@ -193,4 +221,3 @@ public class ShoppingCart {
 - Drei Rollen: Strategy Interface, Concrete Strategies, Context
 - Ermöglicht Erweiterung ohne Modifikation (OCP)
 - Typische Anwendungen: Sortieren, Bezahlen, Validieren, Komprimieren
-- Nachste Lektion: Builder Pattern

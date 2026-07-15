@@ -13,6 +13,41 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Problemstellung
+2. Problemstellung - Beispiel
+3. Visitor Pattern - Lösung
+4. GoF Klassifikation
+5. Struktur
+6. Double Dispatch
+7. Double Dispatch - Ablauf
+8. Visitor Interface
+
+---
+
+## Agenda (2/2)
+
+9. Element Interface
+10. Konkrete Elemente
+11. Konkreter Visitor - AreaCalculator
+12. Konkreter Visitor - PerimeterCalculator
+13. Client-Code
+14. Vor- und Nachteile
+15. Alternative: Pattern Matching (Java 21+)
+
+---
+
+## Lernziele
+
+- Ich kann das Problem erklären, das das Visitor Pattern löst
+- Ich kann Double Dispatch erklären und im Code umsetzen
+- Ich kann Visitor- und Element-Interfaces implementieren
+- Ich kann einen konkreten Visitor für eine Elementhierarchie schreiben
+- Ich kenne Pattern Matching (Java 21+) als moderne Alternative zum Visitor Pattern
+
+---
+
 ## Problemstellung
 
 - Sie haben eine Objektstruktur mit verschiedenen Elementtypen (Circle, Rectangle, Triangle)
@@ -279,11 +314,3 @@ double calculateArea(Shape shape) {
 - accept-Methode in jedem Element ruft visit-Methode des Visitors
 - Neue Operationen = neue Visitor-Klasse (offen für Erweiterung)
 - Neue Elemente = Änderung aller Visitor (geschlossen für Änderung)
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nachste Lektion: Lazy Loading in Spring Boot - @Lazy, FetchType.LAZY, Lazy-Initialisierung</p>
-</div>

@@ -13,6 +13,36 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Warum Transaktionen?
+2. Das ACID-Akronym
+3. Atomicity
+4. Atomicity — Beispiel
+5. Consistency
+6. Isolation — Übersicht
+
+---
+
+## Agenda (2/2)
+
+7. Dirty Read
+8. Non-Repeatable Read
+9. Phantom Read
+10. Durability
+11. Write-Ahead Logging (WAL)
+
+---
+
+## Lernziele
+
+- Ich kenne die vier ACID-Eigenschaften: Atomicity, Consistency, Isolation, Durability
+- Ich kann Dirty Read, Non-Repeatable Read und Phantom Read unterscheiden
+- Ich verstehe, wie Write-Ahead Logging die Durability sicherstellt
+- Ich kann erklären, warum Transaktionen für Datenintegrität notwendig sind
+
+---
+
 ## Warum Transaktionen?
 
 - Datenbankoperationen müssen zuverlässig sein
@@ -183,4 +213,3 @@ Bei Absturz: Log wird beim Neustart abgespielt (Redo/Undo)
 - Consistency: Integritätsbedingungen bleiben erhalten
 - Isolation: Vier Stufen mit unterschiedlichen Anomalien
 - Durability: WAL sichert Daten gegen Abstürze
-- Nachste Lektion: Optimistic Locking

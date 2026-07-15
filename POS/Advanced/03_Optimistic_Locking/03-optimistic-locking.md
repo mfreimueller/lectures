@@ -13,6 +13,28 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Das Lost Update Problem
+2. Optimistic vs Pessimistic Locking
+3. Version Field Pattern
+4. Compare-and-Swap (CAS)
+5. CAS in Java
+6. Retry-Logik
+7. JPA @Version Annotation
+8. JPA — Beispiel
+
+---
+
+## Lernziele
+
+- Ich kann das Lost-Update-Problem erklären
+- Ich kenne den Unterschied zwischen Optimistic und Pessimistic Locking
+- Ich kann das Version-Field-Pattern und Compare-and-Swap anwenden
+- Ich kann Optimistic Locking mit JPA @Version umsetzen
+
+---
+
 ## Das Lost Update Problem
 
 ```java
@@ -168,4 +190,3 @@ catch (OptimisticLockException e) {
 - Retry-Logik behandelt OptimisticLockExceptions
 - JPA @Version automatisiert das Version-Management
 - Geeignet für Systeme mit wenigen Schreibkonflikten
-- Nachste Lektion: Strategy Pattern

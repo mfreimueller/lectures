@@ -1,0 +1,17 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Bibliothek {
+    - name: String
+    - adresse: String
+    + buchHinzufuegen(Buch)
+}
+class Buch {
+    - titel: String
+    - isbn: String
+    + getTitel(): String
+}
+Bibliothek "1" -- "*" Buch
+@enduml

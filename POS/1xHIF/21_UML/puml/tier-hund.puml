@@ -1,0 +1,9 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Tier
+class Hund
+Tier <|-- Hund
+@enduml

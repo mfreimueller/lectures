@@ -13,6 +13,39 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Was ist eine Lambda?
+2. Functional Interfaces
+3. Die wichtigsten Standard-FIs
+4. Lambda-Syntax im Detail
+5. Variable Capture & effectively final
+6. Methodenreferenzen — 4 Arten
+7. Methodenreferenzen — Praxisbeispiele
+
+---
+
+## Agenda (2/2)
+
+8. Funktionskomposition
+9. Lambda und this
+10. Exception-Handling in Lambdas
+11. Primitive Specializations
+12. Currying mit Lambdas
+13. Best Practices & Pitfalls
+
+---
+
+## Lernziele
+
+- Ich kann Lambdas und funktionale Interfaces korrekt einsetzen
+- Ich kenne die wichtigsten Standard-Functional-Interfaces
+- Ich verstehe Variable Capture und effectively final
+- Ich kann Methodenreferenzen und Funktionskomposition anwenden
+- Ich kenne Best Practices und typische Pitfalls bei Lambdas
+
+---
+
 ## Was ist eine Lambda?
 
 - Kompakte Schreibweise für eine anonyme Funktion
@@ -319,12 +352,3 @@ greet.apply("Welt");  // "Hallo Welt"
 - Komposition: andThen, compose, and, or, negate
 - Exception-Handling: Wrapper-Pattern mit eigenem ThrowingFunction
 - Primitive Specializations vermeiden Boxing
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nächste Lektion: Java Streams — Advanced</p>
-<p>Parallel Streams, Custom Collectors, takeWhile/dropWhile, Gatherers</p>
-</div>

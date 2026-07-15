@@ -13,6 +13,28 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Problem: Komplexe Subsysteme
+2. Facade Pattern — Konzept
+3. Facade vs Adapter
+4. Home Cinema — Subsystem-Klassen
+5. HomeCinemaFacade
+6. Database Facade — Idee
+7. Vor- und Nachteile
+8. Facade im realen Einsatz
+
+---
+
+## Lernziele
+
+- Ich kann das Problem komplexer Subsysteme erklären
+- Ich kann eine Facade implementieren, die ein Subsystem vereinfacht
+- Ich kann Facade von Adapter unterscheiden
+- Ich kenne reale Einsatzgebiete des Facade Patterns
+
+---
+
 ## Problem: Komplexe Subsysteme
 
 ```java
@@ -166,4 +188,3 @@ List<User> users = db.query("SELECT * FROM users",
 - Facade vereinfacht komplexe Subsysteme
 - Reduziert Kopplung zwischen Client und Subsystem
 - Facade != Adapter (vereinfachen vs. anpassen)
-- Nachstes Mal: Iterator Pattern

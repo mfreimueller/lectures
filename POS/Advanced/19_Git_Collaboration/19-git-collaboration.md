@@ -13,6 +13,44 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Remote-Repositories — Konzept
+2. Remote-Grundbefehle
+3. git clone — Repository kopieren
+4. git pull — Änderungen übernehmen
+5. Pull Requests — Konzept
+6. Pull Requests — Ablauf
+7. Pull Requests — Beispiel
+8. Code Review — Autor:innen
+9. Code Review — Reviewer
+
+---
+
+## Agenda (2/2)
+
+10. Branching-Strategien — Überblick
+11. GitFlow — Architektur
+12. GitFlow — Branches
+13. GitFlow — Arbeitsablauf
+14. GitHub Flow — Einfach & Effizient
+15. Forking-Workflow
+16. Forking — Beispiel
+17. Git in CI/CD
+18. CI/CD — Beispiel
+
+---
+
+## Lernziele
+
+- Ich kann mit Remote-Repositories arbeiten (clone, pull, push)
+- Ich kenne den Ablauf eines Pull Requests inklusive Code Review
+- Ich kann GitFlow und GitHub Flow als Branching-Strategien unterscheiden
+- Ich kenne den Forking-Workflow für externe Beiträge
+- Ich verstehe die Rolle von Git in CI/CD-Pipelines
+
+---
+
 ## Remote-Repositories — Konzept
 
 - **Remote:** Eine Kopie des Repositories auf einem anderen Rechner/Server

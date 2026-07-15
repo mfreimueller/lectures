@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Was ist Markdown?
+2. Wofür wird Markdown verwendet?
+3. Vorteile von Markdown
+4. Überschriften
+5. Textformatierung
+6. Ungeordnete Listen
+
+---
+
+## Agenda (2/2)
+
+7. Geordnete Listen
+8. Links
+9. Bilder
+10. Inline-Code
+11. Code-Blöcke
+12. Live-Demo
+
+---
+
+## Lernziele
+
+- Ich weiß, was Markdown ist und wofür es verwendet wird
+- Ich kann Überschriften, Textformatierung und Listen in Markdown schreiben
+- Ich kann Links und Bilder einfügen
+- Ich kann Inline-Code und Code-Blöcke mit Syntax-Highlighting verwenden
+- Ich kann eine einfache Markdown-Datei erstellen und in der Vorschau prüfen
+
+---
+
 ## Was ist Markdown?
 
 - Eine **einfache Auszeichnungssprache** (Markup Language)
@@ -180,7 +212,7 @@ echo "Hallo Welt"
 
 ---
 
-## Syntax-Übersicht
+## Zusammenfassung
 
 | Element | Syntax |
 | --- | --- |
@@ -193,11 +225,3 @@ echo "Hallo Welt"
 | Bild | ![Alt](URL) |
 | Inline-Code | `code` |
 | Code-Block | ``` ... ``` |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Markdown II</h3>
-</div>
-
-Tabellen, Checkboxen, Zitate, Horizontal Rules

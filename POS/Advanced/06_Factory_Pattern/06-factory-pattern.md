@@ -13,6 +13,28 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Warum Factory Patterns?
+2. Simple Factory — Konzept
+3. Simple Factory — Beispiel
+4. Factory Method — Konzept
+5. Factory Method — DocumentFactory
+6. Abstract Factory — Konzept
+7. Abstract Factory — UI Beispiel
+8. Vergleich der drei Varianten
+
+---
+
+## Lernziele
+
+- Ich kenne die drei Factory-Varianten: Simple Factory, Factory Method, Abstract Factory
+- Ich kann eine Simple Factory implementieren
+- Ich kann Factory Method mit Vererbung umsetzen
+- Ich kann Abstract Factory für zusammengehörige Produktfamilien einsetzen
+
+---
+
 ## Warum Factory Patterns?
 
 - Objekt-Erzeugung soll nicht über das ganze Projekt verstreut sein
@@ -167,4 +189,3 @@ class MacFactory implements UIFactory {
 - Simple Factory: zentrale Switch-Logik für Objekterzeugung
 - Factory Method: Subklassen entscheiden über konkrete Produkte
 - Abstract Factory: zusammengehorige Produktfamilien
-- Nachstes Mal: Singleton Pattern

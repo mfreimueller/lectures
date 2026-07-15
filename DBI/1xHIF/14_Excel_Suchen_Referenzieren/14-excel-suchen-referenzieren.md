@@ -13,6 +13,39 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Problem: Zwei Tabellen
+2. Manuelles Nachschlagen
+3. VLOOKUP - Syntax
+4. VLOOKUP - Beispiel
+5. Nachteile von VLOOKUP
+6. XLOOKUP - Syntax
+7. XLOOKUP - Beispiel
+
+---
+
+## Agenda (2/2)
+
+8. Vorteile von XLOOKUP
+9. INDEX allein
+10. MATCH allein
+11. INDEX + MATCH kombiniert
+12. Vorteile von INDEX/MATCH
+13. IFERROR - Fehler abfangen
+
+---
+
+## Lernziele
+
+- Ich kann Werte mit VLOOKUP in einer anderen Tabelle nachschlagen
+- Ich kenne die Vor- und Nachteile von VLOOKUP gegenüber XLOOKUP
+- Ich kann XLOOKUP für flexible Suchen einsetzen
+- Ich kann INDEX und MATCH kombinieren
+- Ich kann Suchfehler mit IFERROR abfangen
+
+---
+
 ## Wiederholung: Bereichsfunktionen
 
 1. Wie lautet die Syntax von SUMIF?
@@ -199,18 +232,10 @@ Oder mit XLOOKUP direkt: =XLOOKUP(...; "Nicht gefunden")
 
 ---
 
-## Vergleich aller Methoden
+## Zusammenfassung
 
 | Methode | Einfachheit | Flexibilität | Version |
 | --- | --- | --- | --- |
 | VLOOKUP | Sehr einfach | Niedrig | Alle |
 | XLOOKUP | Einfach | Hoch | Excel 2021+ |
 | INDEX/MATCH | Etwas komplex | Sehr hoch | Alle |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Text &amp; Datum Funktionen</h3>
-</div>
-
-LEFT, RIGHT, MID, LEN, TEXT, TODAY, DATEDIF

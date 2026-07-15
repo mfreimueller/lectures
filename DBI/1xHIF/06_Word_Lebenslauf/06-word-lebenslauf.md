@@ -13,6 +13,42 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Warum ein Lebenslauf?
+2. Persönliche Daten
+3. Optionale Angaben
+4. Foto - Optional in Österreich
+5. Foto: Dos & Don'ts
+6. Bildungsweg
+7. Praktika & Berufserfahrung
+8. Kenntnisse & Fähigkeiten
+
+---
+
+## Agenda (2/2)
+
+9. Interessen & Hobbies
+10. Ort, Datum, Unterschrift
+11. Länge & Rechtschreibung
+12. Dateiformat & E-Mail
+13. Layout-Variante: Klassisch tabellarisch
+14. Layout-Variante: Modern zweispaltig
+15. Umsetzung in Word
+16. Layout-Variante: Kreativ / One-Page
+
+---
+
+## Lernziele
+
+- Ich kenne die Pflicht- und optionalen Angaben eines Lebenslaufs
+- Ich kann einen tabellarischen Lebenslauf antichronologisch gliedern
+- Ich weiß, worauf bei einem Bewerbungsfoto zu achten ist
+- Ich kenne verschiedene Layout-Varianten für einen Lebenslauf
+- Ich kann einen Lebenslauf im richtigen Dateiformat exportieren
+
+---
+
 ## Warum ein Lebenslauf?
 
 - Das wichtigste Dokument bei einer Bewerbung
@@ -186,16 +222,10 @@ Max Mustermann
 
 ---
 
-## Was wir heute gelernt haben
+## Zusammenfassung
 
 - Antichronologisch: Aktuellstes zuerst
 - Tabellarisch: Klar und übersichtlich
 - 7-Sekunden-Regel für den ersten Eindruck
 - PDF zum Verschicken (nicht DOCX)
 - Rechtschreibprüfung vor jeder Abgabe
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Bewerbungsschreiben</h3>
-</div>

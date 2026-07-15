@@ -13,6 +13,40 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Die 10/20/30-Regel
+2. 10 Folien
+3. 30 Punkt Schriftgröße
+4. Less is More
+5. Eine Aussage pro Folie
+6. Bilder statt Text
+7. Aufbau einer Präsentation
+
+---
+
+## Agenda (2/2)
+
+8. Titelfolie & Agenda
+9. Inhalt & Zusammenfassung
+10. Kontrast & Farben
+11. Einheitlichkeit
+12. Weißraum & Animationen
+13. Schriftarten
+14. Dos & Don'ts
+
+---
+
+## Lernziele
+
+- Ich kenne die 10/20/30-Regel für Präsentationen
+- Ich kann Folien mit wenig Text und klaren Aussagen gestalten
+- Ich kann den typischen Aufbau einer Präsentation anwenden
+- Ich achte auf Kontrast, Einheitlichkeit und passende Schriftarten
+- Ich kenne die Dos & Don'ts guter Foliengestaltung
+
+---
+
 ## Was macht eine gute Präsentation aus?
 
 Überlegt kurz zu zweit: Was ist euch schon einmal positiv oder negativ aufgefallen?
@@ -153,8 +187,10 @@ Von Guy Kawasaki (Apple)
 
 ---
 
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Lizenzen &amp; Masterfolie</h3>
-</div>
+## Zusammenfassung
 
-Bildlizenzen, Quellenangaben, Masterfolie, Layouts
+- 10/20/30-Regel: max. 10 Folien, 20 Minuten, mind. 30 pt Schrift
+- Weniger Text, mehr aussagekräftige Bilder
+- Eine Kernaussage pro Folie
+- Einheitliches Design mit kontrastreichen Farben
+- Animationen zurückhaltend einsetzen

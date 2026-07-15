@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Absender & Empfänger
+2. Betreff & Anrede
+3. Die richtige Anrede
+4. Das 4-Absatz-Prinzip
+5. Die 4 Absätze im Detail
+6. Gute Formulierung
+
+---
+
+## Agenda (2/2)
+
+7. Schlechte Formulierung
+8. Bezug zum Unternehmen
+9. Positiv formulieren
+10. Dos & Don'ts
+11. Rechtschreibung & Länge
+12. Formelle Sprache
+
+---
+
+## Lernziele
+
+- Ich kenne den Aufbau eines Bewerbungsschreibens (Absender, Empfänger, Betreff, Anrede)
+- Ich kann das 4-Absatz-Prinzip anwenden
+- Ich kann konkrete, positive Formulierungen statt Floskeln verwenden
+- Ich kenne die richtige Anrede für verschiedene Situationen
+- Ich kann ein formelles Bewerbungsschreiben layouten und exportieren
+
+---
+
 ## Rückblick Lebenslauf
 
 1. In welcher Reihenfolge kommt der Bildungsweg?
@@ -147,18 +179,10 @@ Konkrete Beispiele sind viel aussagekräftiger!
 
 ---
 
-## Was wir heute gelernt haben
+## Zusammenfassung
 
 - Aufbau eines Bewerbungsschreibens
 - 4-Absatz-Prinzip: Einleitung, Motivation, Qualifikation, Abschluss
 - Richtige Anrede (Herr/Frau/Damen und Herren)
 - Konkrete Beispiele statt Floskeln
 - Dos & Don'ts der Formulierung
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Komplette Bewerbungsmappe</h3>
-</div>
-
-Deckblatt + Lebenslauf + Bewerbungsschreiben als ein Dokument

@@ -13,6 +13,40 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Branches — Was und warum?
+2. Mit Branches arbeiten
+3. Mergen: Fast-Forward
+4. Mergen: 3-Way-Merge
+5. Merge-Konflikte — Ursachen
+6. Merge-Konflikte auflösen
+7. Merge-Konflikt — Vorbereitung
+
+---
+
+## Agenda (2/2)
+
+8. Merge-Konflikt — Auflösung
+9. Merge-Tools & Strategien
+10. git rebase — Lineare Historie
+11. Rebase vs. Merge
+12. git stash — Arbeit Zwischenspeichern
+13. git reset & git revert
+14. Tagging — Versionen markieren
+
+---
+
+## Lernziele
+
+- Ich kann mit Branches arbeiten und sie mergen (Fast-Forward und 3-Way)
+- Ich kann Merge-Konflikte erkennen und auflösen
+- Ich kenne den Unterschied zwischen rebase und merge
+- Ich kann git stash, git reset und git revert gezielt einsetzen
+- Ich kann Versionen mit Tags markieren
+
+---
+
 ## Branches — Was und warum?
 
 - **Branch:** Ein beweglicher Zeiger auf einen Commit
@@ -281,11 +315,3 @@ git push origin v1.0.0
 - **Stash:** Arbeit temporär weglegen
 - **Reset vs. Revert:** Revert ist sicher für Shared Branches
 - **Tags:** Releases markieren
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nächste Lektion: <strong>Git Collaboration</strong> — Remote-Repositories, Pull Requests, GitFlow, Branching-Strategien</p>
-</div>

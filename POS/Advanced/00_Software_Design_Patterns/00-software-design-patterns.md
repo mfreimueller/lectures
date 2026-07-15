@@ -13,6 +13,34 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Was sind Design Patterns?
+2. Geschichte: Gang of Four (GoF)
+3. Die drei GoF-Kategorien
+4. Creational Patterns
+5. Structural Patterns
+
+---
+
+## Agenda (2/2)
+
+6. Behavioral Patterns
+7. Pattern Language
+8. Warum Patterns verwenden?
+9. Code-Beispiel: Pattern erkennen
+
+---
+
+## Lernziele
+
+- Ich kenne die drei GoF-Kategorien (Creational, Structural, Behavioral)
+- Ich kann Beispiele für jede Kategorie nennen
+- Ich verstehe, warum Design Patterns eine gemeinsame Sprache im Team schaffen
+- Ich kann ein Pattern im Code anhand seiner Struktur erkennen
+
+---
+
 ## Was sind Design Patterns?
 
 - Wiederkehrende Lösungen für wiederkehrende Probleme in der Softwareentwicklung
@@ -134,4 +162,3 @@ Welche Kategorie? -> Behavioral (Strategy Pattern)
 - Structural: Zusammensetzung (Adapter, Facade, Decorator)
 - Behavioral: Interaktion (Strategy, Observer, Iterator)
 - Patterns sind ein Kommunikationswerkzeug und keine fertigen Bibliotheken
-- Nachste Lektion: Domain-Driven Design

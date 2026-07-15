@@ -13,6 +13,40 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation
+2. Motivation - Beispiel
+3. Lazy vs. Eager Loading
+4. Lazy vs. Eager - Wann was?
+5. @Lazy in Spring
+6. Globale Lazy-Initialisierung
+7. @Lazy auf @Configuration
+
+---
+
+## Agenda (2/2)
+
+8. @Lazy auf @Bean
+9. JPA: FetchType.LAZY
+10. Hibernate Proxies
+11. Das N+1 Problem
+12. N+1 Problem - Erkennung
+13. Lösung: JOIN FETCH
+14. Lösung: @EntityGraph
+
+---
+
+## Lernziele
+
+- Ich kenne den Unterschied zwischen Lazy und Eager Loading
+- Ich kann @Lazy in Spring auf Beans und Konfigurationen anwenden
+- Ich kann FetchType.LAZY in JPA einsetzen und Hibernate-Proxies erklären
+- Ich kann das N+1-Problem erkennen
+- Ich kann das N+1-Problem mit JOIN FETCH oder @EntityGraph lösen
+
+---
+
 ## Motivation
 
 - Eine Spring-Anwendung kann Dutzende oder Hunderte von Beans haben
@@ -284,11 +318,3 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 - Hibernate verwendet Proxys für Lazy Loading
 - N+1 Problem: zu viele Queries durch Lazy Loading
 - Lösungen: JOIN FETCH, EntityGraph, Batch-Fetching
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nachste Lektion: Concurrency in Java - Grundlagen mit Threads, Runnable, synchronized, volatile</p>
-</div>

@@ -13,6 +13,28 @@ lang: de
 
 ---
 
+## Agenda
+
+1. Warum sind Lizenzen wichtig?
+2. CC0 - Public Domain
+3. CC-BY - Namensnennung
+4. Copyright - Alle Rechte vorbehalten
+5. Vergleich der Lizenzmodelle
+6. Quellenangaben richtig machen
+7. Beispiele für Quellenangaben
+8. CC0-Bildquellen
+
+---
+
+## Lernziele
+
+- Ich kenne die wichtigsten Lizenzmodelle für Bilder (CC0, CC-BY, Copyright)
+- Ich weiß, warum Urheberrecht auch bei Schulprojekten gilt
+- Ich kann eine korrekte Quellenangabe erstellen
+- Ich kenne verlässliche CC0-Bildquellen
+
+---
+
 ## Recap: Dos & Don'ts
 
 - 10/20/30-Regel: 10 Folien, 20 Minuten, 30 pt
@@ -105,3 +127,13 @@ Eine vollständige Quellenangabe enthält:
 - **Pexels** - Fotos und Videos, CC0
 - **Pixabay** - Fotos, Vektorgrafiken, CC0
 - Immer die Lizenz auf der jeweiligen Seite prüfen!
+
+---
+
+## Zusammenfassung
+
+- CC0: frei verwendbar ohne Namensnennung
+- CC-BY: frei verwendbar mit Namensnennung
+- Copyright: nur mit Erlaubnis des Urhebers
+- Quellenangabe: Autor, Titel, Lizenz, Quelle/URL
+- Unsplash, Pexels, Pixabay als verlässliche CC0-Quellen

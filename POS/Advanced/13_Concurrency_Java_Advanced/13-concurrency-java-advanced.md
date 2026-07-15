@@ -13,6 +13,39 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation
+2. Lock Interface & ReentrantLock
+3. ReentrantLock - Eigenschaften
+4. ReadWriteLock
+5. ExecutorService & Thread-Pools
+6. Thread-Pool Typen
+7. Callable & Future
+
+---
+
+## Agenda (2/2)
+
+8. invokeAll & invokeAny
+9. CompletableFuture - Grundlagen
+10. CompletableFuture - Verkettung
+11. CompletableFuture - Kombination
+12. Fork/Join Framework
+13. Fork/Join - Work Stealing
+
+---
+
+## Lernziele
+
+- Ich kann ReentrantLock und ReadWriteLock anstelle von synchronized einsetzen
+- Ich kann Aufgaben mit ExecutorService und Thread-Pools verwalten
+- Ich kann Callable/Future und invokeAll/invokeAny verwenden
+- Ich kann CompletableFuture verketten und kombinieren
+- Ich kenne das Fork/Join-Framework und Work Stealing
+
+---
+
 ## Recap: Lektion 12
 
 - Thread-Erzeugung (extends Thread / implements Runnable)
@@ -294,11 +327,3 @@ Long result = pool.invoke(new SumTask(array, 0, array.length));
 - Callable/Future: Aufgaben mit Rückgabewert
 - CompletableFuture: Asynchrone Verkettung und Kombination
 - Fork/Join: Divide-and-Conquer mit Work Stealing
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nachste Lektion: Moderne Java Concurrency — Virtual Threads, Structured Concurrency, Scoped Values (Java 19+)</p>
-</div>

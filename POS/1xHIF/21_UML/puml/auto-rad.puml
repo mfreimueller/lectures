@@ -1,0 +1,9 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Auto
+class Rad
+Auto "1" -- "*" Rad
+@enduml

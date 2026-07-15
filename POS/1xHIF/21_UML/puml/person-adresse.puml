@@ -1,0 +1,9 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Person
+class Adresse
+Person "1" -- "1" Adresse
+@enduml

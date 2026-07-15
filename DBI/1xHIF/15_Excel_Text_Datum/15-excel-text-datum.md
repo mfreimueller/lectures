@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. =LEFT() - Zeichen von links
+2. =RIGHT() - Zeichen von rechts
+3. =MID() - Zeichen ab Position
+4. =LEN() - Textlänge
+5. =TEXT() - Formatieren
+6. Text zusammenfügen
+
+---
+
+## Agenda (2/2)
+
+7. =TODAY() und =NOW()
+8. =YEAR(), =MONTH(), =DAY()
+9. =DATEDIF() - Datumsdifferenz
+10. DATEDIF-Einheiten
+11. Datum-Arithmetik
+12. Live-Demo: Altersberechnung
+
+---
+
+## Lernziele
+
+- Ich kann Texte mit LEFT, RIGHT und MID extrahieren
+- Ich kann die Textlänge mit LEN ermitteln und Texte verketten
+- Ich kann Werte mit TEXT() formatieren
+- Ich kann Datumsbestandteile mit YEAR, MONTH, DAY extrahieren
+- Ich kann Datumsdifferenzen mit DATEDIF berechnen
+
+---
+
 ## Wiederholung: Suchen-Funktionen
 
 1. Was sind die Nachteile von VLOOKUP?
@@ -210,7 +242,7 @@ Ergebnis: 16 (Jahre)
 
 ---
 
-## Übersicht Text-Funktionen
+## Zusammenfassung (1/2)
 
 | Funktion | Beschreibung |
 | --- | --- |
@@ -223,7 +255,7 @@ Ergebnis: 16 (Jahre)
 
 ---
 
-## Übersicht Datum-Funktionen
+## Zusammenfassung (2/2)
 
 | Funktion | Beschreibung |
 | --- | --- |
@@ -233,9 +265,3 @@ Ergebnis: 16 (Jahre)
 | =MONTH(Datum) | Monat extrahieren |
 | =DAY(Datum) | Tag extrahieren |
 | =DATEDIF(S; E; "E") | Differenz zwischen Daten |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Bedingte Formatierung &amp; Diagramme</h3>
-</div>

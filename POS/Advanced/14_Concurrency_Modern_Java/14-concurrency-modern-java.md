@@ -13,6 +13,38 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation
+2. Platform Threads vs. Virtual Threads
+3. Virtual Threads - Prinzip
+4. Virtual Threads erzeugen
+5. 100.000 Virtual Threads
+6. Virtual Threads - Einschränkungen
+7. Structured Concurrency - Konzept
+
+---
+
+## Agenda (2/2)
+
+8. StructuredTaskScope - ShutdownOnFailure
+9. StructuredTaskScope - ShutdownOnSuccess
+10. Structured Concurrency - Beispiel
+11. ScopedValue - Motivation
+12. ScopedValue vs. ThreadLocal
+13. ScopedValue - Beispiel
+
+---
+
+## Lernziele
+
+- Ich kenne den Unterschied zwischen Platform Threads und Virtual Threads
+- Ich kann Virtual Threads erzeugen und ihre Einschränkungen nennen
+- Ich kann Structured Concurrency mit StructuredTaskScope einsetzen
+- Ich kenne ScopedValue als Alternative zu ThreadLocal
+
+---
+
 ## Recap: Bisherige Concurrency-Lektionen
 
 - Lektion 12: Threads, Runnable, synchronized, volatile, wait/notify
@@ -251,12 +283,3 @@ Thread.startVirtualThread(() ->
 - Structured Concurrency: Strukturierte Lebenszyklen für Sub-Tasks
 - StructuredTaskScope: ShutdownOnFailure / ShutdownOnSuccess
 - ScopedValue: Scope-gebundene, immutable Kontextwerte (Alternative zu ThreadLocal)
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Diese Lektion schliesst den POS Advanced Zyklus ab. Herzlichen Gluckwunsch!</p>
-<p>Behandelte Themen: Design Patterns (Strategy, Builder, Factory, Singleton, Facade, Iterator, Visitor), DDD, ACID, Optimistic Locking, Lazy Loading, Concurrency (Grundlagen, Fortgeschritten, Modern).</p>
-</div>

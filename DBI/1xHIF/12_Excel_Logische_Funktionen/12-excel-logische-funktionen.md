@@ -13,6 +13,39 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Vergleichsoperatoren
+2. Ergebnis ist immer boolean
+3. IF - Einfache Entscheidung
+4. IF - Beispiel
+5. Verschachteltes IF
+6. IFS - Alternative bei vielen Bedingungen
+7. AND - Alle müssen wahr sein
+
+---
+
+## Agenda (2/2)
+
+8. OR - Mindestens eine wahr
+9. NOT - Umkehrung
+10. AND vs. OR - Wann verwenden?
+11. IF + AND kombinieren
+12. IF + OR kombinieren
+13. Typische Fehler
+
+---
+
+## Lernziele
+
+- Ich kann Vergleichsoperatoren in Excel-Formeln einsetzen
+- Ich kann Entscheidungen mit IF und IFS treffen
+- Ich kann IF verschachteln
+- Ich kann AND, OR und NOT zur Verknüpfung von Bedingungen nutzen
+- Ich kann IF mit AND/OR kombinieren
+
+---
+
 ## Wiederholung: Funktionen
 
 1. Welche Funktion berechnet den Durchschnitt?
@@ -187,7 +220,7 @@ Wenn mindestens einer der Tests >= 90 ist, gibt es "Mindestens eine Eins"
 
 ---
 
-## Übersicht Logische Funktionen
+## Zusammenfassung
 
 | Funktion | Erklärung |
 | --- | --- |
@@ -196,11 +229,3 @@ Wenn mindestens einer der Tests >= 90 ist, gibt es "Mindestens eine Eins"
 | =AND(Bed1; Bed2; ...) | Alle Bedingungen müssen wahr sein |
 | =OR(Bed1; Bed2; ...) | Mindestens eine Bedingung muss wahr sein |
 | =NOT(Bedingung) | Bedingung umkehren |
-
----
-
-<div class="highlight-box">
-<h3 class="centered">Nächste Woche: Bereichsfunktionen</h3>
-</div>
-
-SUMIF, COUNTIF, AVERAGEIF, SUMIFS

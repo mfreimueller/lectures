@@ -13,6 +13,37 @@ lang: de
 
 ---
 
+## Agenda (1/2)
+
+1. Motivation — Warum Versionsverwaltung?
+2. Was ist Git?
+3. Grundkonzepte
+4. Git konfigurieren
+5. Repository erstellen
+6. Die drei Zustände
+
+---
+
+## Agenda (2/2)
+
+7. Erste Schritte: add & commit
+8. Status & History anzeigen
+9. Änderungen vergleichen
+10. Dateien verschieben & löschen
+11. .gitignore — Dateien ausschließen
+12. Änderungen rückgängig machen
+
+---
+
+## Lernziele
+
+- Ich kann Git konfigurieren und ein Repository erstellen
+- Ich kenne die drei Zustände (modified, staged, committed)
+- Ich kann Änderungen committen, vergleichen und in der History nachvollziehen
+- Ich kann .gitignore einsetzen und Änderungen rückgängig machen
+
+---
+
 ## Motivation — Warum Versionsverwaltung?
 
 - Änderungen an Code nachvollziehbar dokumentieren
@@ -234,11 +265,3 @@ git revert HEAD
 - `git status`, `git log`, `git diff` — den Zustand verstehen
 - `.gitignore` hält das Repository sauber
 - `git restore` / `git reset` / `git revert` — Änderungen rückgängig machen
-
----
-
-## Ausblick
-
-<div class="highlight-box">
-<p>Nächste Lektion: <strong>Advanced Version Control</strong> — Branches, Mergen, Merge-Konflikte lösen, Rebase &amp; Stash</p>
-</div>
