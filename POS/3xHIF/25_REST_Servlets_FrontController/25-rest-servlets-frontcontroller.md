@@ -87,18 +87,7 @@ lang: en
 
 ## Front Controller Structure
 
-```plaintext
-Client → FrontControllerServlet
-              |
-              | matches (method + path) → Command
-              |
-         +----+----+----+----+
-         |    |    |    |    |
-       Cmd1 Cmd2 Cmd3 Cmd4 Cmd5
-         |    |    |    |    |
-         v    v    v    v    v
-       Model / Service / Repository
-```
+![width:700px Front Controller: Client dispatcht über FrontControllerServlet an eines von 5 Commands](mermaid/front-controller.svg)
 
 ---
 

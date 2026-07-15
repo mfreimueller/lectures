@@ -1,0 +1,13 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    Controller["Controller (REST-Endpunkte)"] --> Service["Service (Geschäftslogik)"] --> Repository["Repository (Datenbankzugriff)"]

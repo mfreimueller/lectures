@@ -1,0 +1,16 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart TD
+    App["Anwendung"] -->|"SLF4J API"| Facade["SLF4J Facade"]
+    Facade -->|"Logback Implementation"| Console["Console"]
+    Facade -->|"Logback Implementation"| File["File"]
+    Facade -->|"Logback Implementation"| Syslog["Syslog / ..."]

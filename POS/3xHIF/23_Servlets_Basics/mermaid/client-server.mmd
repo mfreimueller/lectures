@@ -1,0 +1,17 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+sequenceDiagram
+    participant C as Client (HttpClient)
+    participant S as Server (Servlet)
+
+    C->>S: HTTP Request
+    S-->>C: HTTP Response

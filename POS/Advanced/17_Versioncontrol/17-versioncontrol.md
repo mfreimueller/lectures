@@ -65,10 +65,7 @@ lang: de
 - Entwickelt von Linus Torvalds (2005) für den Linux-Kernel
 - De-facto-Standard in der Softwareentwicklung
 
-Zentral vs. Verteilt
-Zentral (SVN):    Server ── Client
-Verteilt (Git):   Server ── Client (vollständige Kopie)
-                            Client (vollständige Kopie)
+![width:450px Zentral (SVN) vs. Verteilt (Git)](mermaid/zentral-verteilt.svg)
 
 ---
 
@@ -122,14 +119,7 @@ git init
 
 ## Die drei Zustände
 
-```plaintext
-Working Directory    Staging Area    .git (Repository)
-     |                    |                |
-  modified  ────add────>  staged  ──commit──> committed
-     |                    |                |
-  untracked              (bereit für       (sicher
-  (neue Datei)            den Commit)       versioniert)
-```
+![width:60% Drei Zustände](puml/states.png)
 
 - **Modified:** Datei wurde geändert, aber noch nicht zum Commit vorgemerkt
 - **Staged:** Änderung ist für den nächsten Commit vorgemerkt

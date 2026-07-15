@@ -207,14 +207,7 @@ public class OrderItem {
 - Each context has its own model and its own ubiquitous language
 - Contexts communicate via events or APIs
 
-```plaintext
-┌──────────────────┐     ┌──────────────────┐
-│  Catalog Context │     │  Lending Context │
-│  Book: ISBN,     │     │  Book: copyId,   │
-│  Title, Author   │     │  condition,      │
-│                  │     │  location        │
-└──────────────────┘     └──────────────────┘
-```
+![width:60% Bounded Context: Book wird in Catalog- und Lending-Context unterschiedlich modelliert](puml/bounded-context.png)
 
 ---
 

@@ -1,0 +1,23 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart TD
+    Client["Client"] -->|"HTTP-Request"| FC["FrontControllerServlet"]
+    FC -->|"matches (method + path)"| Cmd1["Cmd1"]
+    FC --> Cmd2["Cmd2"]
+    FC --> Cmd3["Cmd3"]
+    FC --> Cmd4["Cmd4"]
+    FC --> Cmd5["Cmd5"]
+    Cmd1 --> MSR["Model / Service / Repository"]
+    Cmd2 --> MSR
+    Cmd3 --> MSR
+    Cmd4 --> MSR
+    Cmd5 --> MSR

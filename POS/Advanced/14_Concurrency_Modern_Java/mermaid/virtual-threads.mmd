@@ -1,0 +1,33 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    subgraph C1["Carrier Thread 1 (Platform Thread)"]
+        direction TB
+        VTA["VT-A"]
+        VTB["VT-B"]
+        VTC["VT-C"]
+        VTA ~~~ VTB ~~~ VTC
+    end
+    subgraph C2["Carrier Thread 2 (Platform Thread)"]
+        direction TB
+        VTD["VT-D"]
+        VTE["VT-E"]
+        VTD ~~~ VTE
+    end
+
+    VTA -- "blockiert (I/O): unmount" --> Blocked["VT-A wartet auf I/O"]
+    Blocked -- "I/O fertig: mount auf freien Carrier" --> C2
+
+    classDef c1Style fill:#EDEDED,stroke:#5A5A5A,stroke-width:2px
+    classDef c2Style fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class C1 c1Style
+    class C2 c2Style

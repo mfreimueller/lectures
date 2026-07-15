@@ -1,0 +1,19 @@
+@startuml
+
+package "Catalog Context" {
+    class "Book" as CatalogBook {
+        ISBN
+        Title
+        Author
+    }
+}
+
+package "Lending Context" {
+    class "Book" as LendingBook {
+        copyId
+        condition
+        location
+    }
+}
+
+@enduml

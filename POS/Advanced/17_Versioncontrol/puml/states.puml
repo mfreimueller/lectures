@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+
+rectangle "Working Directory" as WD
+rectangle "Staging Area" as SA
+rectangle ".git\n(Repository)" as REPO
+
+note bottom of WD
+modified
+or
+untracked
+end note
+
+note bottom of SA
+staged
+(ready for commit)
+end note
+
+note bottom of REPO
+committed
+(versioned)
+end note
+
+WD --> SA : git add
+SA --> REPO : git commit
+
+@enduml

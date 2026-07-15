@@ -1,0 +1,30 @@
+@startuml
+
+interface Visitor {
+    + visitCircle(Circle)
+    + visitRectangle(Rectangle)
+}
+
+interface Element {
+    + accept(Visitor)
+}
+
+class AreaCalculator {
+    + visitCircle(Circle)
+    + visitRectangle(Rectangle)
+}
+
+class Circle {
+    + accept(Visitor)
+}
+
+class Rectangle {
+    + accept(Visitor)
+}
+
+Visitor <|.. AreaCalculator
+Element <|.. Circle
+Element <|.. Rectangle
+Element ..> Visitor : accept(v)
+
+@enduml

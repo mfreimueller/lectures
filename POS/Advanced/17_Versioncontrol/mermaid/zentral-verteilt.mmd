@@ -1,0 +1,25 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    subgraph SVN["Zentral (SVN)"]
+        direction LR
+        SS[Server] --- SC[Client]
+    end
+    subgraph GIT["Verteilt (Git)"]
+        direction LR
+        GS[Server] --- GC["Client (vollständige Kopie)"]
+    end
+
+    classDef svnStyle fill:#EDEDED,stroke:#5A5A5A,stroke-width:2px
+    classDef gitStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class SVN svnStyle
+    class GIT gitStyle

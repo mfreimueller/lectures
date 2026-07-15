@@ -61,6 +61,10 @@ lang: en
 
 ![Liskov Principle Meme](liksov_principle.webp)
 
+<span style="font-size: 12px">
+Source: https://vishalchovatiya.com/posts/liskovs-substitution-principle-in-cpp-solid-as-a-rock/
+</span>
+
 ---
 
 ## Review: From OOP to Functional
@@ -97,7 +101,7 @@ List<String> result = list.stream()
     .collect(Collectors.toList());
 ```
 
-Source → Intermediate Operations → Terminal Operation
+![width:75% Stream Pipeline: Source, Intermediate Operations, Terminal Operation](mermaid/stream-pipeline.svg)
 
 ---
 

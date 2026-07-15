@@ -1,0 +1,21 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+sequenceDiagram
+    participant T1 as Thread 1
+    participant C as count (0)
+    participant T2 as Thread 2
+
+    T1->>C: liest count (0)
+    T2->>C: liest count (0)
+    T1->>C: erhöht auf 1, schreibt count = 1
+    T2->>C: erhöht auf 1, schreibt count = 1
+    Note over C: Ergebnis: 1 (statt 2!)

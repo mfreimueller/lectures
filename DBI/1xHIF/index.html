@@ -1,52 +1,187 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <title>DBI 1xHIF — Lecture Slides</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DBI — 1xHIF</title>
-  <style>
-    body { font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 800px; margin: 2em auto; padding: 0 1em; color: #1A1A1A; }
-    h1 { color: #ED1944; border-bottom: 3px solid #ED1944; padding-bottom: 0.3em; }
-    ul { list-style: none; padding: 0; }
-    li { padding: 0.3em 0; }
-    a { text-decoration: none; color: #004A8D; font-weight: 600; }
-    a:hover { color: #ED1944; text-decoration: underline; }
-  </style>
+  <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/landing.css">
 </head>
 <body>
-  <h1>DBI / 1xHIF</h1>
-<h2>Lessons</h2>
-<ul>
-      <li><a href="00_Introduction/slides/index.html">00_Introduction</a> ⬜</li>
-      <li><a href="01_Word_Formatierung_Style/slides/index.html">01_Word_Formatierung_Style</a> ⬜</li>
-      <li><a href="02_Word_Tabellen_Grafiken/slides/index.html">02_Word_Tabellen_Grafiken</a> ⬜</li>
-      <li><a href="03_Word_Layout_Seitenaufbau/slides/index.html">03_Word_Layout_Seitenaufbau</a> ⬜</li>
-      <li><a href="04_Word_Verweise_Verzeichnisse/slides/index.html">04_Word_Verweise_Verzeichnisse</a> ⬜</li>
-      <li><a href="05_Word_Serienbrief/slides/index.html">05_Word_Serienbrief</a> ⬜</li>
-      <li><a href="06_Word_Lebenslauf/slides/index.html">06_Word_Lebenslauf</a> ✅</li>
-      <li><a href="07_Word_Bewerbungsschreiben/slides/index.html">07_Word_Bewerbungsschreiben</a> ✅</li>
-      <li><a href="08_Word_Bewerbungsmappe/slides/index.html">08_Word_Bewerbungsmappe</a> ⬜</li>
-      <li><a href="09_Excel_Grundlagen/slides/index.html">09_Excel_Grundlagen</a> ⬜</li>
-      <li><a href="10_Excel_Bezuege/slides/index.html">10_Excel_Bezuege</a> ⬜</li>
-      <li><a href="11_Excel_Funktionen_Grundlagen/slides/index.html">11_Excel_Funktionen_Grundlagen</a> ✅</li>
-      <li><a href="12_Excel_Logische_Funktionen/slides/index.html">12_Excel_Logische_Funktionen</a> ✅</li>
-      <li><a href="13_Excel_Bereichsfunktionen/slides/index.html">13_Excel_Bereichsfunktionen</a> ✅</li>
-      <li><a href="14_Excel_Suchen_Referenzieren/slides/index.html">14_Excel_Suchen_Referenzieren</a> ✅</li>
-      <li><a href="15_Excel_Text_Datum/slides/index.html">15_Excel_Text_Datum</a> ✅</li>
-      <li><a href="16_Excel_Conditional_Diagramme/slides/index.html">16_Excel_Conditional_Diagramme</a> ⬜</li>
-      <li><a href="17_Excel_Konsolidierung/slides/index.html">17_Excel_Konsolidierung</a> ⬜</li>
-      <li><a href="18_PowerPoint_Teams_Themen/slides/index.html">18_PowerPoint_Teams_Themen</a> ✅</li>
-      <li><a href="19_PowerPoint_Gute_Praesentationen/slides/index.html">19_PowerPoint_Gute_Praesentationen</a> ✅</li>
-      <li><a href="20_PowerPoint_Master_Lizenzen/slides/index.html">20_PowerPoint_Master_Lizenzen</a> ✅</li>
-      <li><a href="21_PowerPoint_Vortrag_1/slides/index.html">21_PowerPoint_Vortrag_1</a> ⬜</li>
-      <li><a href="22_PowerPoint_Vortrag_2/slides/index.html">22_PowerPoint_Vortrag_2</a> ⬜</li>
-      <li><a href="23_Office_Alternativen/slides/index.html">23_Office_Alternativen</a> ✅</li>
-      <li><a href="24_Markdown_Grundlagen/slides/index.html">24_Markdown_Grundlagen</a> ✅</li>
-      <li><a href="25_Markdown_Tabellen/slides/index.html">25_Markdown_Tabellen</a> ✅</li>
-      <li><a href="26_AsciiDoc_Grundlagen/slides/index.html">26_AsciiDoc_Grundlagen</a> ✅</li>
-      <li><a href="27_AsciiDoc_Advanced/slides/index.html">27_AsciiDoc_Advanced</a> ⬜</li>
-      <li><a href="28_CSV/slides/index.html">28_CSV</a> ⬜</li>
-      <li><a href="29_JSON/slides/index.html">29_JSON</a> ⬜</li>
-      </ul>
+
+<header class="lp-header">
+  <img class="lp-logo" src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+       alt="HTL Spengergasse">
+  <h1 class="lp-title">DBI 1xHIF — Lecture Slides</h1>
+  <p class="lp-subtitle">Datenbanken &amp; Informationsverarbeitung &middot; HTL Spengergasse</p>
+</header>
+
+<main class="lp-container">
+  <table class="lp-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Thema</th>
+        <th class="col-desc">Beschreibung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lp-badge">00</span></td>
+        <td><a href="./00_Introduction/">Introduction</a></td>
+        <td class="col-desc">Kursüberblick, Office-365-Setup, GitHub</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">01</span></td>
+        <td><a href="./01_Word_Formatierung_Style/">Word: Formatierung &amp; Style</a></td>
+        <td class="col-desc">Zeichenformatierung, Absatzformatierung, Styles</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">02</span></td>
+        <td><a href="./02_Word_Tabellen_Grafiken/">Word: Tabellen &amp; Grafiken</a></td>
+        <td class="col-desc">Tabellen, Bilder, Formen, SmartArt</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">03</span></td>
+        <td><a href="./03_Word_Layout_Seitenaufbau/">Word: Layout &amp; Seitenaufbau</a></td>
+        <td class="col-desc">Ränder, Ausrichtung, Seitenumbrüche, Kopf-/Fußzeilen</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">04</span></td>
+        <td><a href="./04_Word_Verweise_Verzeichnisse/">Word: Verweise &amp; Verzeichnisse</a></td>
+        <td class="col-desc">Fußnoten, Inhaltsverzeichnis, Abbildungsverzeichnis</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">05</span></td>
+        <td><a href="./05_Word_Serienbrief/">Word: Serienbrief</a></td>
+        <td class="col-desc">Seriendruck, Datensource, Feldplatzhalter</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">06</span></td>
+        <td><a href="./06_Word_Lebenslauf/">Word: Lebenslauf</a></td>
+        <td class="col-desc">Aufbau, Formatierung, Inhalt eines Lebenslaufs</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">07</span></td>
+        <td><a href="./07_Word_Bewerbungsschreiben/">Word: Bewerbungsschreiben</a></td>
+        <td class="col-desc">Aufbau, Formulierungen, DIN 5008</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">08</span></td>
+        <td><a href="./08_Word_Bewerbungsmappe/">Word: Bewerbungsmappe</a></td>
+        <td class="col-desc">Zusammensetzung der Bewerbungsunterlagen</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">09</span></td>
+        <td><a href="./09_Excel_Grundlagen/">Excel: Grundlagen</a></td>
+        <td class="col-desc">Zellen, Datenklassen, einfache Formeln</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">10</span></td>
+        <td><a href="./10_Excel_Bezuege/">Excel: Bezüge</a></td>
+        <td class="col-desc">Relativ, absolut, gemischt</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">11</span></td>
+        <td><a href="./11_Excel_Funktionen_Grundlagen/">Excel: Funktionen Grundlagen</a></td>
+        <td class="col-desc">SUMME, MITTELWERT, ANZAHL, MIN, MAX</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">12</span></td>
+        <td><a href="./12_Excel_Logische_Funktionen/">Excel: Logische Funktionen</a></td>
+        <td class="col-desc">WENN, UND, ODER, WENNFEHLER</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">13</span></td>
+        <td><a href="./13_Excel_Bereichsfunktionen/">Excel: Bereichsfunktionen</a></td>
+        <td class="col-desc">SVERWEIS, WVERWEIS, INDEX, VERGLEICH</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">14</span></td>
+        <td><a href="./14_Excel_Suchen_Referenzieren/">Excel: Suchen &amp; Referenzieren</a></td>
+        <td class="col-desc">SVERWEIS, WVERWEIS, INDEX/Vergleich</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">15</span></td>
+        <td><a href="./15_Excel_Text_Datum/">Excel: Text &amp; Datum</a></td>
+        <td class="col-desc">TEXT, DATUM, JAHRTAG, TEILSTRING</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">16</span></td>
+        <td><a href="./16_Excel_Conditional_Diagramme/">Excel: Bedingte Formatierung &amp; Diagramme</a></td>
+        <td class="col-desc">Bedingte Formatierung, Diagramme</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">17</span></td>
+        <td><a href="./17_Excel_Konsolidierung/">Excel: Konsolidierung</a></td>
+        <td class="col-desc">Daten konsolidieren, Pivot-Tabellen</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">18</span></td>
+        <td><a href="./18_PowerPoint_Teams_Themen/">PowerPoint: Teams &amp; Themen</a></td>
+        <td class="col-desc">Designvorlagen, Farbthemen, Folienmaster</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">19</span></td>
+        <td><a href="./19_PowerPoint_Gute_Praesentationen/">PowerPoint: Gute Präsentationen</a></td>
+        <td class="col-desc">Gestaltungsregeln, Lesbarkeit, Aufbau</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">20</span></td>
+        <td><a href="./20_PowerPoint_Master_Lizenzen/">PowerPoint: Master &amp; Bildlizenzen</a></td>
+        <td class="col-desc">Folienmaster, Bildrechte, Creative Commons</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">21</span></td>
+        <td><a href="./21_PowerPoint_Vortrag_1/">PowerPoint: Vortrag 1</a></td>
+        <td class="col-desc">Präsentationstechnik, Übung</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">22</span></td>
+        <td><a href="./22_PowerPoint_Vortrag_2/">PowerPoint: Vortrag 2</a></td>
+        <td class="col-desc">Präsentationstechnik, Übung</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">23</span></td>
+        <td><a href="./23_Office_Alternativen/">Office: Alternativen</a></td>
+        <td class="col-desc">Google Docs, LibreOffice, Open-Source-Alternativen</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">24</span></td>
+        <td><a href="./24_Markdown_Grundlagen/">Markdown: Grundlagen</a></td>
+        <td class="col-desc">Syntax, Headings, Listen, Links, Code</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">25</span></td>
+        <td><a href="./25_Markdown_Tabellen/">Markdown: Tabellen &amp; mehr</a></td>
+        <td class="col-desc">Tabellen, Task-Listen, erweiterte Syntax</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">26</span></td>
+        <td><a href="./26_AsciiDoc_Grundlagen/">AsciiDoc: Grundlagen</a></td>
+        <td class="col-desc">Syntax, Headings, Listen, Admonitions</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">27</span></td>
+        <td><a href="./27_AsciiDoc_Advanced/">AsciiDoc: Advanced</a></td>
+        <td class="col-desc">Erweiterte AsciiDoc-Features</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">28</span></td>
+        <td><a href="./28_CSV/">CSV</a></td>
+        <td class="col-desc">Comma-Separated Values, Trennzeichen, Import/Export</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">29</span></td>
+        <td><a href="./29_JSON/">JSON</a></td>
+        <td class="col-desc">JavaScript Object Notation, Struktur, Validierung</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<footer class="lp-footer">
+  <p><a href="https://github.com/mfreimueller/lectures">Source on GitHub</a></p>
+</footer>
+
 </body>
 </html>

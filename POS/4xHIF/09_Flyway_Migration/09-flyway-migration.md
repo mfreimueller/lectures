@@ -44,10 +44,10 @@ lang: de
 ## Flyway — Konzept
 
 ```
-V1__Initial_schema.sql   ✅ ausgeführt
-V2__Add_members.sql      ✅ ausgeführt
-V3__Add_loans.sql        ⏳ wird beim nächsten Start ausgeführt
-V4__Add_indexes.sql      ⏳ wartet
+V1__Initial_schema.sql   ausgeführt
+V2__Add_members.sql      ausgeführt
+V3__Add_loans.sql        wird beim nächsten Start ausgeführt
+V4__Add_indexes.sql      wartet
 ```
 
 - Dateien in `src/main/resources/db/migration/`

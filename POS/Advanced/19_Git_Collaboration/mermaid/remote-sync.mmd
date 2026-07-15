@@ -1,0 +1,26 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    subgraph Lokal[Lokal]
+        direction LR
+        LM[main] --- LD[dev] --- LF[feature]
+    end
+    subgraph Remote[Remote origin]
+        direction LR
+        RM[main] --- RD[dev]
+    end
+    Lokal <-->|push / pull| Remote
+
+    classDef lokalStyle fill:#E8F0FA,stroke:#004A8D,stroke-width:2px
+    classDef remoteStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class Lokal lokalStyle
+    class Remote remoteStyle

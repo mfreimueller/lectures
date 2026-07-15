@@ -15,13 +15,7 @@ lang: de
 
 ## Layered Architecture Recap
 
-```
-Controller (REST-Endpunkte)
-    ↓
-Service (Geschäftslogik)
-    ↓
-Repository (Datenbankzugriff)
-```
+![width:750px Layered Architecture: Controller, Service, Repository](mermaid/layered-architecture.svg)
 
 - Jede Schicht hat eine klare Verantwortung
 - Service = die "Brain"-Schicht

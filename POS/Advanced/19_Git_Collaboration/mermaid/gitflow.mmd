@@ -1,0 +1,52 @@
+%%{init: {
+  'theme': 'base',
+  'gitGraph': {
+    'showCommitLabel': false,
+    'mainBranchName': 'main',
+    'rotateCommitLabel': false
+  },
+  'themeVariables': {
+    'git0': '#ED1944',
+    'git1': '#004A8D',
+    'git2': '#5A5A5A',
+    'git3': '#6FA8DC',
+    'git4': '#F57C00',
+    'gitBranchLabel0': '#FFFFFF',
+    'gitBranchLabel1': '#FFFFFF',
+    'gitBranchLabel2': '#FFFFFF',
+    'gitBranchLabel3': '#1A1A1A',
+    'gitBranchLabel4': '#FFFFFF',
+    'tagLabelColor': '#FFFFFF',
+    'tagLabelBackground': '#ED1944',
+    'tagLabelBorder': '#ED1944',
+    'tagLabelFontSize': '14px'
+  }
+}}%%
+gitGraph
+   commit
+   branch develop
+   checkout develop
+   commit
+   branch feature
+   checkout feature
+   commit
+   commit
+   checkout develop
+   merge feature
+   branch release
+   checkout release
+   commit
+   checkout main
+   merge release tag: "v1.0"
+   checkout develop
+   merge release
+   branch hotfix
+   checkout hotfix
+   commit
+   checkout main
+   merge hotfix tag: "v1.1"
+   checkout develop
+   merge hotfix
+   commit
+   checkout main
+   merge develop tag: "v2.0"

@@ -28,12 +28,13 @@ lang: de
 ## Agenda (2/2)
 
 8. @Lazy auf @Bean
-9. JPA: FetchType.LAZY
-10. Hibernate Proxies
-11. Das N+1 Problem
-12. N+1 Problem - Erkennung
-13. Lösung: JOIN FETCH
-14. Lösung: @EntityGraph
+9. JPA: FetchType.LAZY (1/2)
+10. JPA: FetchType.LAZY (2/2)
+11. Hibernate Proxies
+12. Das N+1 Problem
+13. N+1 Problem - Erkennung
+14. Lösung: JOIN FETCH
+15. Lösung: @EntityGraph
 
 ---
 
@@ -194,7 +195,7 @@ public class AppConfig {
 
 ---
 
-## JPA: FetchType.LAZY
+## JPA: FetchType.LAZY (1/2)
 
 ```java
 @Entity
@@ -215,6 +216,10 @@ public class OrderItem {
 }
 ```
 
+---
+
+## JPA: FetchType.LAZY (2/2)
+
 - FetchType.LAZY: items werden erst bei Zugriff geladen
 - FetchType.EAGER: items werden sofort per JOIN geladen
 
@@ -223,7 +228,7 @@ public class OrderItem {
 ## Hibernate Proxies
 
 - Bei FetchType.LAZY erzeugt Hibernate einen Proxy
-- Der Proxy ist eine Unterklasse der Entitat (z.B. Order$HibernateProxy$...)
+- Der Proxy ist eine Unterklasse der Entitat (z.B. `Order$HibernateProxy$...`)
 - Beim ersten Methodenaufruf auf dem Proxy wird die SQL-Query ausgeführt
 
 ```java

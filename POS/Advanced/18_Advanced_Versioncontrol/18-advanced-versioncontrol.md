@@ -29,11 +29,12 @@ lang: de
 
 8. Merge-Konflikt — Auflösung
 9. Merge-Tools & Strategien
-10. git rebase — Lineare Historie
-11. Rebase vs. Merge
-12. git stash — Arbeit Zwischenspeichern
-13. git reset & git revert
-14. Tagging — Versionen markieren
+10. git rebase — Lineare Historie (1/2)
+11. git rebase — Lineare Historie (2/2)
+12. Rebase vs. Merge
+13. git stash — Arbeit Zwischenspeichern
+14. git reset & git revert
+15. Tagging — Versionen markieren
 
 ---
 
@@ -54,11 +55,7 @@ lang: de
 - Typische Einsatzbereiche: Features, Bugfixes, Experimente
 - Haupt-Branch heißt standardmäßig `main` (früher `master`)
 
-```plaintext
-main:  A---B---C---D
-                   \
-feature:            E---F---G
-```
+![width:650px Branch main mit abzweigendem feature-Branch](mermaid/branches-basic.svg)
 
 ---
 
@@ -82,18 +79,11 @@ git switch -c feature/neues-feature
 
 ## Mergen: Fast-Forward
 
-```plaintext
-Vor Merge:
-main:  A---B---C
-               \
-feature:        D---E
+![width:600px Fast-Forward-Merge: main zeigt jetzt auf denselben Commit wie feature](mermaid/fast-forward.svg)
 
+```bash
 git switch main
 git merge feature
-
-Nach Merge (Fast-Forward):
-main:  A---B---C---D---E
-feature:            D---E
 ```
 
 - Fast-Forward: main war seit dem Branch-Start unverändert
@@ -104,19 +94,11 @@ feature:            D---E
 
 ## Mergen: 3-Way-Merge
 
-```plaintext
-Vor Merge:
-main:  A---B---C---F
-               \
-feature:        D---E
+![width:600px 3-Way-Merge: Merge-Commit M mit zwei Eltern](mermaid/three-way-merge.svg)
 
+```bash
 git switch main
 git merge feature
-
-Nach Merge:
-main:  A---B---C---F---M
-               \     /
-                D---E
 ```
 
 - Beide Branches haben seit der Abzweigung Änderungen
@@ -200,24 +182,29 @@ Feature-Änderung
 
 ---
 
-## git rebase — Lineare Historie
+## git rebase — Lineare Historie (1/2)
 
-```plaintext
-Vor Rebase:
-main:  A---B---C---F
-               \
-feature:        D---E
+<div style="display:flex; gap:2em; align-items:center; justify-content:center;">
+  <div style="text-align:center">
+    <strong>Vor Rebase</strong><br>
+    <img src="mermaid/rebase-before.svg" width="380">
+  </div>
+  <div style="text-align:center">
+    <strong>Nach Rebase</strong><br>
+    <img src="mermaid/rebase-after.svg" width="380">
+  </div>
+</div>
 
+```bash
 git switch feature
 git rebase main
-
-Nach Rebase:
-main:  A---B---C---F
-                   \
-feature:            D'---E'
-  
-D' und E' sind neue Commits (andere SHA-1 Hashes)
 ```
+
+D' und E' sind neue Commits (andere SHA-1 Hashes)
+
+---
+
+## git rebase — Lineare Historie (2/2)
 
 - Rebase setzt Commits eines Branches **oben auf** einen anderen Branch
 - Erzeugt eine **lineare** Historie (leichter nachvollziehbar)

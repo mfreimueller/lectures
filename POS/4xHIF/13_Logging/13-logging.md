@@ -8,7 +8,7 @@ lang: de
 
 <!-- _class: lead -->
 
-# 13 - Logging & SA1 Vorbereitung
+# 13 - Logging
 ## POS - 4xHIF
 
 ---
@@ -49,13 +49,7 @@ lang: de
 
 ## Logback — Default in Spring Boot
 
-```
-Anwendung
-    ↓ (SLF4J API)
-SLF4J Facade
-    ↓ (Logback Implementation)
-Console / File / Syslog / ...
-```
+![width:800px Logging-Fluss: Anwendung über SLF4J Facade zu Console/File/Syslog via Logback](mermaid/logback-flow.svg)
 
 Spring Boot bringt Logback mit — keine extra Dependency nötig.
 
@@ -108,10 +102,10 @@ public class LibraryService {
 ## Parameterized Logging
 
 ```java
-// ❌ Schlecht: String-Konkatenation (auch wenn Level deaktiviert!)
+// Schlecht: String-Konkatenation (auch wenn Level deaktiviert!)
 log.debug("User " + user.getId() + " logged in from " + ip);
 
-// ✅ Gut: Platzhalter (keine Kosten bei deaktiviertem Level)
+// Gut: Platzhalter (keine Kosten bei deaktiviertem Level)
 log.debug("User {} logged in from {}", user.getId(), ip);
 
 // Beliebig viele Platzhalter
@@ -238,21 +232,6 @@ logging:
 ```
 
 Ideal für Elasticsearch/Kibana (ELK-Stack).
-
----
-
-## SA 1 Vorbereitung
-
-<div class="highlight-box">
-<p><strong>SA 1 umfasst:</strong> Domain Layer, Persistence Layer, Unit Testing</p>
-<ul>
-<li>UML/PlantUML — Diagramme lesen und zeichnen</li>
-<li>JPA — @Entity, Repositories, Relationships, Queries</li>
-<li>Testcontainers — PostgreSQL in Tests</li>
-<li>Service Layer &amp; Testing — @Service, @Transactional, Command-Objekte, Mockito</li>
-<li>Logging — SLF4J, Log-Levels, Konfiguration</li>
-</ul>
-</div>
 
 ---
 

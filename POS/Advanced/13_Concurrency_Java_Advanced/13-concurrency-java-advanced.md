@@ -16,23 +16,27 @@ lang: de
 ## Agenda (1/2)
 
 1. Motivation
-2. Lock Interface & ReentrantLock
-3. ReentrantLock - Eigenschaften
-4. ReadWriteLock
-5. ExecutorService & Thread-Pools
-6. Thread-Pool Typen
-7. Callable & Future
+2. Lock Interface & ReentrantLock (1/2)
+3. Lock Interface & ReentrantLock (2/2)
+4. ReentrantLock - Eigenschaften
+5. ReadWriteLock (1/2)
+6. ReadWriteLock (2/2)
+7. ExecutorService & Thread-Pools
+8. Thread-Pool Typen
+9. Callable & Future (1/2)
 
 ---
 
 ## Agenda (2/2)
 
-8. invokeAll & invokeAny
-9. CompletableFuture - Grundlagen
-10. CompletableFuture - Verkettung
-11. CompletableFuture - Kombination
-12. Fork/Join Framework
-13. Fork/Join - Work Stealing
+10. Callable & Future (2/2)
+11. invokeAll & invokeAny
+12. CompletableFuture - Grundlagen
+13. CompletableFuture - Verkettung (1/2)
+14. CompletableFuture - Verkettung (2/2)
+15. CompletableFuture - Kombination
+16. Fork/Join Framework
+17. Fork/Join - Work Stealing
 
 ---
 
@@ -65,7 +69,7 @@ lang: de
 
 ---
 
-## Lock Interface & ReentrantLock
+## Lock Interface & ReentrantLock (1/2)
 
 ```java
 Lock lock = new ReentrantLock();
@@ -88,6 +92,10 @@ if (lock.tryLock(1, TimeUnit.SECONDS)) {
 }
 ```
 
+---
+
+## Lock Interface & ReentrantLock (2/2)
+
 - Explizites Lock — mehr Kontrolle als synchronized
 - ReentrantLock: Thread kann Lock mehrmals erwerben
 - Immer unlock() in finally-Block!
@@ -103,7 +111,7 @@ if (lock.tryLock(1, TimeUnit.SECONDS)) {
 
 ---
 
-## ReadWriteLock
+## ReadWriteLock (1/2)
 
 ```java
 ReadWriteLock rwLock = new ReentrantReadWriteLock();
@@ -124,6 +132,10 @@ try {
     rwLock.writeLock().unlock();
 }
 ```
+
+---
+
+## ReadWriteLock (2/2)
 
 - Optimiert für: viele Lese-, wenige Schreibzugriffe
 - Read-Lock: mehrere Threads gleichzeitig
@@ -163,7 +175,7 @@ ExecutorService executor.shutdown();
 
 ---
 
-## Callable & Future
+## Callable & Future (1/2)
 
 ```java
 Callable<String> task = () -> {
@@ -183,6 +195,10 @@ System.out.println("Ergebnis: " + result);
 
 executor.shutdown();
 ```
+
+---
+
+## Callable & Future (2/2)
 
 - Future.get() blockiert den aufrufenden Thread
 - Future.isDone() prüft, ob Task abgeschlossen ist
@@ -232,7 +248,7 @@ Integer result2 = future.get();  // wirft InterruptedException, ExecutionExcepti
 
 ---
 
-## CompletableFuture - Verkettung
+## CompletableFuture - Verkettung (1/2)
 
 ```java
 CompletableFuture
@@ -250,6 +266,10 @@ CompletableFuture
     .thenCompose(user -> fetchOrders(user.getId()))
     .thenAccept(orders -> orders.forEach(System.out::println));
 ```
+
+---
+
+## CompletableFuture - Verkettung (2/2)
 
 - thenApply: Transformiert Ergebnis (Function)
 - thenAccept: Konsumiert Ergebnis (Consumer)

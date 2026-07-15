@@ -57,15 +57,17 @@ lang: en
 
 ---
 
-## From Client to Server
+## From Client to Server (1/2)
 
 - Last week: we built HTTP clients with HttpClient
 - Now: we build the server side ourselves
 - We use the bare-bone Servlet API — no framework
 
-<div class="highlight-box">
-<p>Client (HttpClient) ← HTTP → Server (Servlet)</p>
-</div>
+---
+
+## From Client to Server (2/2)
+
+![width:800px](mermaid/client-server.svg)
 
 ---
 

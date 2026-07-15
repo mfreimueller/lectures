@@ -30,9 +30,10 @@ lang: de
 8. Funktionskomposition
 9. Lambda und this
 10. Exception-Handling in Lambdas
-11. Primitive Specializations
-12. Currying mit Lambdas
-13. Best Practices & Pitfalls
+11. Primitive Specializations (1/2)
+12. Primitive Specializations (2/2)
+13. Currying mit Lambdas
+14. Best Practices & Pitfalls
 
 ---
 
@@ -280,10 +281,14 @@ Function<String, String> safeRead = wrap(
 
 ---
 
-## Primitive Specializations
+## Primitive Specializations (1/2)
 
 - Generische FIs (z. B. `Function<T,R>`) vermeiden Boxing/Unboxing
 - Für primitive Typen gibt es spezialisierte Interfaces
+
+---
+
+## Primitive Specializations (2/2)
 
 ```java
 // Statt Boxing:

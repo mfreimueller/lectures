@@ -101,23 +101,7 @@ Verstoss gegen das Open/Closed-Prinzip!
 
 ## Struktur
 
-```plaintext
-+----------------+      +-------------------+
-|    Visitor     |      |    Element        |
-+----------------+      +-------------------+
-| +visitCircle() |<--+  | +accept(Visitor)  |
-| +visitRect()   |   |  +-------------------+
-| +visitTri()    |   |          ^
-+----------------+   |          |
-         ^           |   +------+------+
-         |           |   |             |
-+------------------+ | +---+       +---------+
-| AreaCalculator   | | |Circle|    |Rectangle|
-+------------------+ | +-------+  +---------+
-| +visitCircle()   |-+ |+accept()|  |+accept()|
-| +visitRect()     |   +-------+  +---------+
-+------------------+
-```
+![width:55% Visitor/Element-Struktur mit AreaCalculator, Circle und Rectangle](puml/visitor-structure.png)
 
 ---
 

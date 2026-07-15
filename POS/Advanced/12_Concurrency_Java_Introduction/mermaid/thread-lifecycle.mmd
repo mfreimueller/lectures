@@ -1,0 +1,22 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+stateDiagram-v2
+    direction LR
+    [*] --> NEW
+    NEW --> RUNNABLE
+    RUNNABLE --> RUNNING
+    RUNNING --> RUNNABLE
+    RUNNABLE --> Blocked
+    Blocked --> TERMINATED
+    TERMINATED --> [*]
+
+    state "BLOCKED / WAITING / TIMED_WAITING" as Blocked

@@ -1,0 +1,23 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+sequenceDiagram
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+
+    Note over T1: betritt synchronized(increment) -> erwirbt Lock
+    activate T1
+    Note over T2: wartet an der synchronized-Grenze (BLOCKED)
+    T1-->>T2: verlässt synchronized -> gibt Lock frei
+    deactivate T1
+    activate T2
+    Note over T2: erwirbt Lock, führt aus, gibt Lock frei
+    deactivate T2

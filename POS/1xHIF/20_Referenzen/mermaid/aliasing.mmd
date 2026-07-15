@@ -1,0 +1,20 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    a["a"] --> obj1["{ &quot;Anna&quot;, 25 }"]
+    b["b"] --> obj1
+    c["c"] --> obj2["{ &quot;Bob&quot;, 30 }"]
+
+    classDef varStyle fill:#EDEDED,stroke:#5A5A5A,stroke-width:2px
+    classDef objStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class a,b,c varStyle
+    class obj1,obj2 objStyle

@@ -58,12 +58,7 @@ lang: de
 - Typische Dienste: GitHub, GitLab, Bitbucket, Gitea
 - Standard-Name für das Haupt-Remote: `origin`
 
-```plaintext
-Lokal:     main ── dev ── feature
-             │ push / pull
-             v
-Remote:     main ── dev
-```
+![width:700px Lokal und Remote synchronisieren sich über push/pull](mermaid/remote-sync.svg)
 
 ---
 
@@ -181,19 +176,7 @@ git pull origin main
 
 ## GitFlow — Architektur
 
-```plaintext
-main ───── v1.0 ─────── v1.1 ─────── v2.0
-            \          / \          /
-develop      *────────*───*────────*
-             |  \         |  \
-feature      |   *─*─*    |   *─*─*
-             |            |
-release      |  *────────*|
-             |            |
-hotfix       |  *────*   |
-             |        |   |
-             v        v   v
-```
+![width:850px GitFlow-Branching-Modell](mermaid/gitflow.svg)
 
 ---
 
@@ -237,17 +220,13 @@ git push origin hotfix/1.2.1
 - Jedes Feature/ jeder Fix: Branch von main → PR zurück zu main
 - Nach Merge: Sofort deployen (Continuous Delivery)
 
-```plaintext
-main:  A──B────────────D──────────F
-           \          / \        /
-feature:    C──D──E──    E──F──G──
+![width:650px GitHub Flow: main mit einem Feature-Branch](mermaid/githubflow.svg)
 
 1. Branch von main
 2. Commits
 3. PR öffnen (early!)
 4. Review & Diskussion
 5. Merge & Deploy
-```
 
 ---
 

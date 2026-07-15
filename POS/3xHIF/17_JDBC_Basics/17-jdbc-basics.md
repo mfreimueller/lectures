@@ -64,10 +64,7 @@ JDBC (Java Database Connectivity) is the standard Java API for database-independ
 - **ResultSet** - represents query results
 - **SQLException** - handles database errors
 
-```java
-// Architecture overview
-DriverManager -> Connection -> Statement -> ResultSet
-```
+![width:70% JDBC Architecture: DriverManager, Connection, Statement, ResultSet](mermaid/jdbc-architecture.svg)
 
 ---
 

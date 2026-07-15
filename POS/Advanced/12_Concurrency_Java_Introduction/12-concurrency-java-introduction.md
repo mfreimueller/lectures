@@ -78,18 +78,15 @@ Direkter Speicherzugriff über gemeinsame Variablen
 ```java
 class MyThread extends Thread {
     private final String name;
-
     MyThread(String name) { this.name = name; }
 
     @Override
     public void run() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
             System.out.println(name + ": " + i);
-        }
     }
 }
 
-// Verwendung
 Thread t1 = new MyThread("Thread-A");
 Thread t2 = new MyThread("Thread-B");
 t1.start();  // startet neuen Thread
@@ -105,18 +102,15 @@ t2.start();
 ```java
 class MyTask implements Runnable {
     private final String name;
-
     MyTask(String name) { this.name = name; }
 
     @Override
     public void run() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
             System.out.println(name + ": " + i);
-        }
     }
 }
 
-// Verwendung
 Thread t1 = new Thread(new MyTask("Task-A"));
 Thread t2 = new Thread(new MyTask("Task-B"));
 t1.start();
@@ -130,18 +124,7 @@ t2.start();
 
 ## Thread-Lebenszyklus
 
-```plaintext
-  NEW
-   |
-   v
- RUNNABLE <--> RUNNING
-   |
-   v
- BLOCKED / WAITING / TIMED_WAITING
-   |
-   v
- TERMINATED
-```
+![width:750px Thread-Lebenszyklus: NEW, RUNNABLE, RUNNING, BLOCKED/WAITING/TIMED_WAITING, TERMINATED](mermaid/thread-lifecycle.svg)
 
 - **NEW:** erzeugt, noch nicht gestartet
 - **RUNNABLE:** bereit zur Ausführung (im Scheduler)
@@ -177,16 +160,7 @@ Counter counter = new Counter();
 
 ## Race Condition - Ablauf
 
-```plaintext
-count = 0
-
-Thread 1: liest count (0)
-Thread 2: liest count (0)
-Thread 1: erhöht auf 1, schreibt count = 1
-Thread 2: erhöht auf 1, schreibt count = 1
-
-Ergebnis: 1 (statt 2!)
-```
+![width:70% Race Condition: Thread 1 und Thread 2 lesen und schreiben count gleichzeitig](mermaid/race-condition.svg)
 
 Ursache: Gleichzeitiger Zugriff auf gemeinsamen Zustand ohne Synchronisation
 
@@ -222,12 +196,7 @@ public void increment() {
 
 ## synchronized - Wirkung
 
-```plaintext
-Thread 1: betritt synchronized(increment) -> erwirbt Lock
-Thread 2: wartet an der synchronized-Grenze (BLOCKED)
-Thread 1: verlasst synchronized -> gibt Lock frei
-Thread 2: erwirbt Lock, führt aus, gibt Lock frei
-```
+![width:65% Wirkung von synchronized: Thread 2 wartet, bis Thread 1 den Lock freigibt](mermaid/synchronized-effect.svg)
 
 - Nur ein Thread kann gleichzeitig in einem synchronized-Block auf demselben Objekt sein
 - Andere Threads müssen warten (BLOCKED-Zustand)

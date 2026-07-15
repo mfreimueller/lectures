@@ -84,18 +84,7 @@ Leichtgewichtiger Mount/Unmount auf Carrier Thread
 
 ## Virtual Threads - Prinzip
 
-```plaintext
-JVM (M : N Mapping)
-
-Carrier Thread 1 (Platform Thread) ---+--- VT-A, VT-B, VT-C
-Carrier Thread 2 (Platform Thread) ---+--- VT-D, VT-E
-...
-
-Wenn VT-A blockiert (z.B. I/O):
-   VT-A wird ausgehangt (unmount)
-   Carrier-1 führt VT-B weiter aus
-   Wenn I/O fertig: VT-A wird wieder auf einen freien Carrier gemountet
-```
+![width:950px M:N Mapping: Virtual Threads auf Carrier Threads, mit Unmount/Mount bei blockierendem I/O](mermaid/virtual-threads.svg)
 
 - Blockierende I/O-Operationen blockieren NICHT den Carrier Thread
 - Keine Thread-Pools mehr nötig — einfach für jede Aufgabe einen neuen Virtual Thread

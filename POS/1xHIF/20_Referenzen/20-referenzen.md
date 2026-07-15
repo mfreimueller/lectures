@@ -103,9 +103,7 @@ Person b = a;
 Person c = new Person("Bob", 30);
 ```
 
-<div class="highlight-box"><p>Speicher:<br/>
-                a ──&gt; { "Anna", 25 } &lt;── b<br/>
-                c ──&gt; { "Bob", 30 }</p></div>
+![width:600px Speicher: a und b zeigen auf dasselbe Objekt, c auf ein separates](mermaid/aliasing.svg)
 
 a und b teilen sich ein Objekt, c zeigt auf ein separates.
 
