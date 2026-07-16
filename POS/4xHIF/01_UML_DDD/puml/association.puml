@@ -1,0 +1,9 @@
+@startuml
+class Person {
+  # works at
+}
+class Address {
+}
+
+Person "1" --> "*" Address : lives at
+@enduml

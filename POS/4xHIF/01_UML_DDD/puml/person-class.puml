@@ -1,0 +1,9 @@
+@startuml
+class Person {
+  - name: String
+  - birthDate: LocalDate
+  + getName(): String
+  + getAge(): int
+  # validateAge(): boolean
+}
+@enduml

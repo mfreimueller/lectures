@@ -23,18 +23,7 @@ lang: de
 
 ## Recap: Visibility Notation
 
-```plaintext
-+---------------------------+
-|         Person            |
-+---------------------------+
-| - name: String            |
-| - birthDate: LocalDate    |
-+---------------------------+
-| + getName(): String       |
-| + getAge(): int           |
-| # validateAge(): boolean  |
-+---------------------------+
-```
+![width:40%](puml/person-class.png)
 
 ---
 
@@ -44,11 +33,7 @@ lang: de
 - "Has-a" or "knows about" relationship
 - Can have: multiplicity, role name, navigability
 
-```plaintext
-Person ──────────► Address
-    works at    1       *
-       (role)   (multiplicity)
-```
+![width:50%](puml/association.png)
 
 ---
 
@@ -75,10 +60,7 @@ The Person "knows about" an Address — but Address has its own lifecycle.
 - The child can exist independently of the parent
 - Drawn with an **empty diamond** on the parent side
 
-```plaintext
-Department ◊─────── Employee
-    (empty diamond = aggregation)
-```
+![width:40%](puml/aggregation.png)
 
 ---
 
@@ -104,10 +86,7 @@ public class Employee {
 - Drawn with a **filled diamond** on the parent side
 - Parent is responsible for child's lifecycle
 
-```plaintext
-Order ◆────── OrderItem
-    (filled diamond = composition)
-```
+![width:40%](puml/composition.png)
 
 ---
 
@@ -143,17 +122,7 @@ public class OrderItem {
 - Child inherits all non-private members
 - Java: `extends` for classes
 
-```plaintext
-     ┌───────┐
-     │ Animal │
-     └───┬───┘
-         ▲
-    ┌────┴────┐
-    │         │
- ┌──┴───┐ ┌──┴────┐
- │ Dog  │ │ Cat   │
- └──────┘ └───────┘
-```
+![width:40%](puml/inheritance.png)
 
 ---
 
@@ -163,15 +132,7 @@ public class OrderItem {
 - Class implements interface
 - Java: `implements`
 
-```plaintext
----◇ «interface»
-    │Borrowable│
-    └────┬─────┘
-         ⋮ (dashed)
-    ┌────┴────┐
-    │  Book   │
-    └─────────┘
-```
+![width:40%](puml/realization.png)
 
 ---
 

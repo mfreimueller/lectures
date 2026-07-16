@@ -1,0 +1,9 @@
+@startuml
+interface Borrowable {
+}
+
+class Book {
+}
+
+Borrowable <|.. Book
+@enduml
