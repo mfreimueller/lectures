@@ -1,0 +1,18 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    WD["Working Directory<br/><i>modified or untracked</i>"]
+    SA["Staging Area<br/><i>staged (ready for commit)</i>"]
+    REPO[".git (Repository)<br/><i>committed (versioned)</i>"]
+
+    WD -->|git add| SA
+    SA -->|git commit| REPO

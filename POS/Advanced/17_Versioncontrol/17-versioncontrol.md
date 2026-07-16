@@ -119,7 +119,7 @@ git init
 
 ## Die drei Zustände
 
-![width:60% Drei Zustände](puml/states.png)
+![width:60% Drei Zustände](mermaid/states.svg)
 
 - **Modified:** Datei wurde geändert, aber noch nicht zum Commit vorgemerkt
 - **Staged:** Änderung ist für den nächsten Commit vorgemerkt
