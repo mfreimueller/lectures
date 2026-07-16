@@ -8,63 +8,63 @@ lang: de
 
 <!-- _class: lead -->
 
-# 00 - Introduction & Spring Boot
+# 00 - Einführung & Spring Boot
 ## POS - 4xHIF
 
 ---
 
-## Course Overview
+## Kursübersicht
 
-- 4th Grade POS: Enterprise Software Engineering
-- Focus: Spring Boot ecosystem
-- Year-long group project in teams of 2-3
-- Two centralized exams (SA1, SA2)
-- Final project presentation at year end
-
----
-
-## Grading
-
-- 2 SA (schriftliche Arbeiten) — centrally defined
-- Group project — milestones, code reviews, final presentation
-- Katas and exercises — ongoing assessment
-- Code reviews — 3 peer reviews throughout the year
+- 4. Klasse POS: Enterprise Software Engineering
+- Schwerpunkt: Spring Boot Ökosystem
+- Ganzjähriges Gruppenprojekt in 2-3er Teams
+- Zwei zentrale Prüfungen (SA1, SA2)
+- Abschlusspräsentation am Jahresende
 
 ---
 
-## The Group Project
+## Bewertung
 
-- Choose your own domain (library, gym, restaurant, hotel, ...)
-- Build a full Spring Boot application over the year
-- REST API + Thymeleaf frontend + PostgreSQL + Docker
-- Milestones every 6-7 weeks (presentations + code reviews)
-- Final product: fully functional enterprise application
+- 2 SA (schriftliche Arbeiten) — zentral definiert
+- Gruppenprojekt — Meilensteine, Code Reviews, Abschlusspräsentation
+- Katas und Übungen — laufende Bewertung
+- Code Reviews — 3 Peer Reviews über das Jahr verteilt
 
 ---
 
-## Recap: 3rd Grade Stack
+## Das Gruppenprojekt
+
+- Eigenes Domain auswählen (Bibliothek, Fitnessstudio, Restaurant, Hotel, ...)
+- Über das Jahr eine vollständige Spring Boot Anwendung entwickeln
+- REST API + Thymeleaf Frontend + PostgreSQL + Docker
+- Meilensteine alle 6-7 Wochen (Präsentationen + Code Reviews)
+- Endergebnis: voll funktionsfähige Enterprise Anwendung
+
+---
+
+## Wiederholung: Stack der 3. Klasse
 
 - Java 21+ (Records, Streams, Optional, Pattern Matching)
 - JUnit 5, Mockito, AssertJ
-- SOLID Principles, TDD, Layered Architecture
+- SOLID Prinzipien, TDD, Layered Architecture
 - JDBC, JPA, Hibernate, PostgreSQL
-- HTTP, REST, Jakarta Servlet API (manual request handling, routing, JSON serialization)
+- HTTP, REST, Jakarta Servlet API (manuelles Request-Handling, Routing, JSON Serialisierung)
 
 ---
 
-## From Jakarta Servlet to Spring Boot
+## Von Jakarta Servlet zu Spring Boot
 
-You've built REST endpoints with doGet/doPost, manual JSON parsing, and explicit status codes
+Ihr habt REST Endpunkte mit doGet/doPost, manuellem JSON-Parsing und expliziten Status Codes gebaut
 
-Spring Boot eliminates the boilerplate while keeping full control over HTTP semantics
+Spring Boot eliminiert den Boilerplate-Code bei vollem Zugriff auf HTTP-Semantik
 
 <div class="highlight-box">
-<p>Same HTTP/REST concepts — declarative instead of imperative</p>
+<p>Gleiche HTTP/REST Konzepte — deklarativ statt imperativ</p>
 </div>
 
 ---
 
-## Before: Jakarta Servlet
+## Vorher: Jakarta Servlet
 
 ```java
 @WebServlet("/api/books")
@@ -85,7 +85,7 @@ public class BookServlet extends HttpServlet {
 
 ---
 
-## After: Spring Boot
+## Nachher: Spring Boot
 
 ```java
 @RestController
@@ -100,31 +100,31 @@ public class BookController {
 }
 ```
 
-No manual JSON, no `setContentType`, no `InputStream` — Spring handles it all.
+Kein manuelles JSON, kein `setContentType`, kein `InputStream` — Spring erledigt alles.
 
 ---
 
-## Why Spring Boot?
+## Warum Spring Boot?
 
-- Convention over Configuration — sensible defaults
-- Embedded Tomcat — no separate server needed
-- Massive ecosystem: Security, Data, Cloud, Actuator
-- Industry standard in Austrian enterprises
-- Relevant for Matura and internships
-- Servlet Filters → Spring Security FilterChain (same concept, declarative config)
+- Convention over Configuration — sinnvolle Standardwerte
+- Embedded Tomcat — kein separater Server nötig
+- Riesiges Ökosystem: Security, Data, Cloud, Actuator
+- Industriestandard in österreichischen Unternehmen
+- Relevant für Matura und Praktika
+- Servlet Filters → Spring Security FilterChain (gleiches Konzept, deklarative Konfiguration)
 
 ---
 
 ## Spring Initializr
 
 - https://start.spring.io/
-- Configure: Maven/Gradle, Java, Spring Boot version
-- Select dependencies (start with Spring WebMVC + DevTools)
-- Generate → download → extract → open in IDE
+- Konfigurieren: Maven/Gradle, Java, Spring Boot Version
+- Abhängigkeiten auswählen (starten mit Spring WebMVC + DevTools)
+- Generieren → downloaden → entpacken → im IDE öffnen
 
 ---
 
-## Project Structure
+## Projektstruktur
 
 ```plaintext
 project/
@@ -144,7 +144,7 @@ project/
 
 ---
 
-## pom.xml Essentials
+## pom.xml Grundlagen
 
 ```xml
 <parent>
@@ -163,7 +163,7 @@ project/
 
 ---
 
-## First REST Controller
+## Erster REST Controller
 
 ```java
 package at.spengergasse;
@@ -202,7 +202,7 @@ public class HelloController {
 
 ---
 
-## Returning JSON
+## JSON zurückgeben
 
 ```java
 // Using a record
@@ -218,11 +218,11 @@ public class HelloController {
 }
 ```
 
-Spring Boot automatically serializes records to JSON via Jackson.
+Spring Boot serialisiert Records automatisch zu JSON via Jackson.
 
 ---
 
-## Testing in the Browser
+## Testen im Browser
 
 ```bash
 ./mvnw spring-boot:run
@@ -230,26 +230,26 @@ curl http://localhost:8080/hello
 curl http://localhost:8080/hello/Alice
 ```
 
-Or simply open http://localhost:8080/hello in your browser.
+Oder einfach http://localhost:8080/hello im Browser öffnen.
 
 ---
 
 ## Spring Boot DevTools
 
-- Automatic restart when files change
-- LiveReload browser extension (optional)
-- Disabled in production by default
-- Included via `spring-boot-devtools` dependency
+- Automatischer Restart bei Dateiänderungen
+- LiveReload Browser Extension (optional)
+- Standardmäßig in Produktion deaktiviert
+- Wird über `spring-boot-devtools` Abhängigkeit eingebunden
 
 ---
 
 ## GitHub Classroom Setup
 
-- Accept the invitation link
-- Create or join your team
-- Clone the repository
-- Push your Spring Boot project
-- Verify: all team members can pull, modify, push
+- Einladungslink annehmen
+- Team erstellen oder beitreten
+- Repository klonen
+- Spring Boot Projekt pushen
+- Überprüfen: Alle Teammitglieder können pullen, ändern, pushen
 
 ---
 
@@ -268,10 +268,10 @@ git push
 
 ---
 
-## What We Learned Today
+## Was wir heute gelernt haben
 
-- Course structure and the year-long project
-- Why Spring Boot improves on manual Servlet programming
-- Creating a Spring Boot project with Initializr
-- Writing a REST controller with @GetMapping
-- Returning JSON responses using records
+- Kursstruktur und das ganzjährige Projekt
+- Warum Spring Boot die manuelle Servlet Programmierung verbessert
+- Erstellen eines Spring Boot Projekts mit Initializr
+- Schreiben eines REST Controllers mit @Mapping
+- JSON Antworten mit Records zurückgeben

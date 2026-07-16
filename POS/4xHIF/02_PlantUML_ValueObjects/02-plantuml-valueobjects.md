@@ -8,21 +8,21 @@ lang: de
 
 <!-- _class: lead -->
 
-# 02 - Plant UML & Value Objects
+# 02 - PlantUML & Value Objects
 ## POS - 4xHIF
 
 ---
 
-## Why PlantUML?
+## Warum PlantUML?
 
-- Text-based diagrams — version control friendly
-- Automatically generate diagrams from code
-- No drag-and-drop layout problems
-- Integrates with IntelliJ, VS Code, CI pipelines
+- Textbasierte Diagramme — versionierungsfreundlich
+- Diagramme automatisch aus Code generieren
+- Keine Drag-and-Drop Layout-Probleme
+- Integration mit IntelliJ, VS Code, CI Pipelines
 
 ---
 
-## PlantUML Syntax: Class
+## PlantUML Syntax: Klasse
 
 ```plaintext
 @startuml
@@ -39,7 +39,7 @@ class Person {
 
 ---
 
-## PlantUML: Relationships
+## PlantUML: Beziehungen
 
 ```plaintext
 @startuml
@@ -48,11 +48,11 @@ Person "1" --> "*" Book : owns
 @enduml
 ```
 
-`-->` = association with direction
+`-->` = Assoziation mit Richtung
 
 ---
 
-## PlantUML: Aggregation & Composition
+## PlantUML: Aggregation & Komposition
 
 ```plaintext
 @startuml
@@ -63,7 +63,7 @@ Order *-- OrderItem     ' composition (filled diamond)
 
 ---
 
-## PlantUML: Inheritance & Realization
+## PlantUML: Vererbung & Realisierung
 
 ```plaintext
 @startuml
@@ -75,18 +75,18 @@ Borrowable <|.. Book       ' realization (implements)
 
 ---
 
-## What are Value Objects?
+## Was sind Value Objects?
 
-- Objects defined **by their attributes**, not by identity
-- **Immutable** — cannot change after creation
-- **Structural equality** — two VOs are equal if all fields match
-- No side effects — operations return new instances
+- Objekte definiert **durch ihre Attribute**, nicht durch Identität
+- **Unveränderlich** — können nach der Erstellung nicht geändert werden
+- **Strukturelle Gleichheit** — zwei VOs sind gleich, wenn alle Felder übereinstimmen
+- Keine Nebeneffekte — Operationen geben neue Instanzen zurück
 
 ---
 
-## Value Object Examples
+## Value Object Beispiele
 
-| Bad (primitives) | Good (Value Objects) |
+| Schlecht (Primitivtypen) | Gut (Value Objects) |
 | --- | --- |
 | `String email` | `Email email` |
 | `double amount` | `Money price` |
@@ -95,7 +95,7 @@ Borrowable <|.. Book       ' realization (implements)
 
 ---
 
-## Implementing a Value Object
+## Ein Value Object implementieren
 
 ```java
 public record Email(String value) {
@@ -112,7 +112,7 @@ public record Email(String value) {
 }
 ```
 
-Records give us immutability, equals/hashCode, toString for free.
+Records geben uns Unveränderlichkeit, equals/hashCode, toString gratis.
 
 ---
 
@@ -140,16 +140,16 @@ public record Money(BigDecimal amount, Currency currency) {
 
 ---
 
-## RichTypes: Beyond Primitives
+## RichTypes: Jenseits von Primitivtypen
 
-- **Primitive Obsession** — using String, int, long for everything
-- **RichTypes** — wrap primitives in domain-meaningful types
-- Compiler catches errors: `CustomerId` vs `OrderId`
-- Validation lives in the type, not scattered across services
+- **Primitive Obsession** — String, int, long für alles verwenden
+- **RichTypes** — Primitivtypen in domänensinnvolle Typen verpacken
+- Compiler erkennt Fehler: `CustomerId` vs `OrderId`
+- Validierung lebt im Typ, nicht verstreut über Services
 
 ---
 
-## RichType Example
+## RichType Beispiel
 
 ```java
 // Before
@@ -174,12 +174,9 @@ public void placeOrder(CustomerId customerId,
 
 ---
 
-<div class="highlight-box">
-<h2>What We Learned Today</h2>
-<ul>
-<li>PlantUML syntax for class diagrams</li>
-<li>Value Objects: immutable, structural equality</li>
-<li>RichTypes to eliminate primitive obsession</li>
-<li>Validation at construction time</li>
-</ul>
-</div>
+## Was wir heute gelernt haben
+
+- PlantUML Syntax für Klassendiagramme
+- Value Objects: unveränderlich, strukturelle Gleichheit
+- RichTypes zur Eliminierung von Primitive Obsession
+- Validierung zur Konstruktionszeit

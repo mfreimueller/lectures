@@ -13,31 +13,31 @@ lang: de
 
 ---
 
-## Recap: UML Class Diagrams
+## Wiederholung: UML Klassendiagramme
 
-- Class: rectangle with name, attributes, methods
+- Klasse: Rechteck mit Name, Attribute, Methoden
 - `+` public, `-` private, `#` protected
-- Relationships: association, aggregation, composition, inheritance
+- Beziehungen: Assoziation, Aggregation, Komposition, Vererbung
 
 ---
 
-## Recap: Visibility Notation
+## Wiederholung: Sichtbarkeitsnotation
 
 ![width:40%](puml/person-class.png)
 
 ---
 
-## Association
+## Assoziation
 
-- A structural relationship between classes
-- "Has-a" or "knows about" relationship
-- Can have: multiplicity, role name, navigability
+- Strukturelle Beziehung zwischen Klassen
+- "Hat-eine" oder "kennt-eine" Beziehung
+- Kann haben: Multiplität, Rollenname, Navigierbarkeit
 
 ![width:50%](puml/association.png)
 
 ---
 
-## Association in Java
+## Assoziation in Java
 
 ```java
 public class Person {
@@ -50,21 +50,21 @@ public class Address {
 }
 ```
 
-The Person "knows about" an Address — but Address has its own lifecycle.
+Die Person "kennt" eine Address — aber Address hat ihren eigenen Lebenszyklus.
 
 ---
 
 ## Aggregation
 
-- Special form of association — "has-a" with *shared* ownership
-- The child can exist independently of the parent
-- Drawn with an **empty diamond** on the parent side
+- Spezialform der Assoziation — "hat-eine" mit *geteiltem* Besitz
+- Das Kind kann unabhängig vom Elternteil existieren
+- Wird mit **leerem Diamant** auf der Elternseite gezeichnet
 
 ![width:40%](puml/aggregation.png)
 
 ---
 
-## Aggregation Example
+## Aggregation Beispiel
 
 ```java
 public class Department {
@@ -79,18 +79,18 @@ public class Employee {
 
 ---
 
-## Composition
+## Komposition
 
-- Stronger form — "has-a" with *exclusive* ownership
-- Child **cannot** exist without the parent
-- Drawn with a **filled diamond** on the parent side
-- Parent is responsible for child's lifecycle
+- Stärkere Form — "hat-eine" mit *exklusivem* Besitz
+- Das Kind **kann** nicht ohne das Elternteil existieren
+- Wird mit **gefülltem Diamant** auf der Elternseite gezeichnet
+- Elternteil ist für den Lebenszyklus des Kindes verantwortlich
 
 ![width:40%](puml/composition.png)
 
 ---
 
-## Composition Example
+## Komposition Beispiel
 
 ```java
 public class Order {
@@ -105,68 +105,68 @@ public class OrderItem {
 
 ---
 
-## Aggregation vs. Composition
+## Aggregation vs. Komposition
 
-| Feature | Aggregation | Composition |
+| Merkmal | Aggregation | Komposition |
 | --- | --- | --- |
-| Ownership | Shared | Exclusive |
-| Lifecycle | Independent | Dependent on parent |
-| Diamond | Empty (◊) | Filled (◆) |
-| Example | Department + Employee | Order + OrderItem |
+| Besitz | Geteilt | Exklusiv |
+| Lebenszyklus | Unabhängig | Abhängig vom Elternteil |
+| Diamant | Leer (◊) | Gefüllt (◆) |
+| Beispiel | Department + Employee | Order + OrderItem |
 
 ---
 
-## Inheritance (Generalization)
+## Vererbung (Generalisierung)
 
-- "Is-a" relationship — arrow with **empty triangle**
-- Child inherits all non-private members
-- Java: `extends` for classes
+- "Ist-eine" Beziehung — Pfeil mit **leerem Dreieck**
+- Kind erbt alle nicht-private Mitglieder
+- Java: `extends` für Klassen
 
 ![width:40%](puml/inheritance.png)
 
 ---
 
-## Realization (Interface)
+## Realisierung (Interface)
 
-- Dashed line with **empty triangle**
-- Class implements interface
+- Gestrichelte Linie mit **leerem Dreieck**
+- Klasse implementiert Interface
 - Java: `implements`
 
 ![width:40%](puml/realization.png)
 
 ---
 
-## What is Domain-Driven Design?
+## Was ist Domain-Driven Design?
 
-- A software design methodology by Eric Evans (2003)
-- Focus on the **core domain** and domain logic
-- Model software after real-world business concepts
-- Bridge the gap between domain experts and developers
+- Software-Design Methode von Eric Evans (2003)
+- Fokus auf die **Kerndomain** und Domänenlogik
+- Software nach realen Geschäftskonzepten modellieren
+- Brücke zwischen Domänenexperten und Entwicklern schlagen
 
 ---
 
-## DDD: Key Concepts
+## DDD: Schlüsselkonzepte
 
-- **Ubiquitous Language** — common vocabulary used by developers AND domain experts
-- **Bounded Context** — explicit boundary around a domain model
-- **Entities** — objects with identity (e.g., a Person)
-- **Value Objects** — objects defined by their attributes (e.g., an Address)
+- **Ubiquitous Language** — gemeinsamer Wortschatz von Entwicklern UND Domänenexperten
+- **Bounded Context** — explizite Grenze um ein Domänenmodell
+- **Entities** — Objekte mit Identität (z.B. eine Person)
+- **Value Objects** — Objekte definiert durch ihre Attribute (z.B. eine Adresse)
 
 ---
 
 ## Ubiquitous Language
 
-- No translation layers: "Book", "Member", "Loan" in code = same terms in conversation
-- Avoid technical terms in the domain model
-- If the team says "check out a book", the code should have `checkOut(book, member)`
+- Keine Übersetzungsschichten: "Book", "Member", "Loan" im Code = gleiche Begriffe im Gespräch
+- Technische Begriffe im Domänenmodell vermeiden
+- Wenn das Team "ein Buch ausleihen" sagt, sollte der Code `checkOut(book, member)` haben
 
 ---
 
 ## Bounded Context
 
-- A *Book* in the "Catalog" context may have different attributes than in "Sales"
-- Each context has its own model and its own ubiquitous language
-- Contexts communicate via events or APIs
+- Ein *Book* im "Catalog"-Kontext kann andere Attribute haben als im "Sales"-Kontext
+- Jeder Kontext hat sein eigenes Modell und seine eigene Ubiquitous Language
+- Kontexte kommunizieren über Events oder APIs
 
 ![width:60% Bounded Context: Book wird in Catalog- und Lending-Context unterschiedlich modelliert](puml/bounded-context.png)
 
@@ -176,19 +176,16 @@ public class OrderItem {
 
 | Entities | Value Objects |
 | --- | --- |
-| Have identity (id) | No identity — defined by attributes |
-| Mutable | Immutable |
-| Equality by id | Equality by all attributes |
-| Example: Person, Order | Example: Address, Money, Color |
+| Haben Identität (id) | Keine Identität — definiert durch Attribute |
+| Veränderbar | Unveränderlich |
+| Gleichheit per id | Gleichheit per allen Attributen |
+| Beispiel: Person, Order | Beispiel: Address, Money, Color |
 
 ---
 
-<div class="highlight-box">
-<h2>What We Learned Today</h2>
-<ul>
-<li>UML: Association, Aggregation, Composition, Inheritance</li>
-<li>DDD: Ubiquitous Language, Bounded Context</li>
-<li>Entities vs. Value Objects</li>
-<li>How to evaluate a domain for the project</li>
-</ul>
-</div>
+## Was wir heute gelernt haben
+
+- UML: Assoziation, Aggregation, Komposition, Vererbung
+- DDD: Ubiquitous Language, Bounded Context
+- Entities vs. Value Objects
+- Wie man eine Domain für das Projekt bewertet
