@@ -183,18 +183,6 @@ public class OrderItem {
 
 ---
 
-## Project: Choosing Your Domain
-
-- At least **6 entities**
-- Meaningful business logic (beyond CRUD)
-- Multiple relationship types (1:1, 1:n, n:m)
-- Searchable, filterable lists
-- Something you find interesting!
-
-Next week: PlantUML your domain model
-
----
-
 <div class="highlight-box">
 <h2>What We Learned Today</h2>
 <ul>

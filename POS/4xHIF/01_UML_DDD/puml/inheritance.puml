@@ -1,4 +1,8 @@
 @startuml
+
+hide empty attributes
+hide empty methods
+
 class Animal {
 }
 class Dog {

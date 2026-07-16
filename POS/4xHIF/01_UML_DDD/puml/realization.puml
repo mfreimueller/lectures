@@ -1,4 +1,8 @@
 @startuml
+
+hide empty attributes
+hide empty methods
+
 interface Borrowable {
 }
 

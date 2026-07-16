@@ -211,15 +211,6 @@ src/main/java/com/example/project/
 
 ---
 
-## Project Deliverables This Week
-
-- Domain decision and brief description
-- ER diagram (at least 6 tables)
-- Maven project skeleton with dependencies
-- Architecture plan (plan.md)
-
----
-
 ## Summary
 
 <div class="highlight-box">

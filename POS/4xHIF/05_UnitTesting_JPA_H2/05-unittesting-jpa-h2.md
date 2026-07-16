@@ -121,17 +121,6 @@ void searchByTitle_shouldReturnEmptyForNoMatch() {
 
 ---
 
-## Project: Write Repository Tests
-
-- Write @DataJpaTest classes for all repositories
-- Cover: basic CRUD, relationships, custom queries
-- Test edge cases: empty results, duplicates, null values
-- Use AssertJ for readable assertions
-
-Next week: Code Review — inspect each other's JPA + tests!
-
----
-
 <div class="highlight-box">
 <h2>What We Learned Today</h2>
 <ul>

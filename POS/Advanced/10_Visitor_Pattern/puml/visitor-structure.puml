@@ -1,5 +1,8 @@
 @startuml
 
+hide empty attributes
+hide empty methods
+
 interface Visitor {
     + visitCircle(Circle)
     + visitRectangle(Rectangle)

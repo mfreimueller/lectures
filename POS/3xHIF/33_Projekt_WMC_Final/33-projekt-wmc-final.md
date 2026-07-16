@@ -174,16 +174,6 @@ Go through the final checklist verifying all project requirements are met.
 
 ---
 
-## Project Demo Tips
-
-- Prepare a short demo (3-5 minutes)
-- Show the ER diagram first
-- Demonstrate register/login
-- Show CRUD operations on a few entities
-- Run a test and show coverage
-
----
-
 ## Summary
 
 <div class="highlight-box">

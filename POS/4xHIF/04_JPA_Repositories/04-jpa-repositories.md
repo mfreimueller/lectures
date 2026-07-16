@@ -196,17 +196,6 @@ public interface BookRepository
 
 ---
 
-## Project: Apply JPA to Your Domain
-
-- Add `@Entity` to ALL your domain classes
-- Configure relationships with correct cascade/fetch
-- Create Repository interfaces for each aggregate root
-- Add helper methods for bidirectional relationships
-
-Next week: Unit testing your repositories with H2!
-
----
-
 <div class="highlight-box">
 <h2>What We Learned Today</h2>
 <ul>

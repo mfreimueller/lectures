@@ -174,17 +174,6 @@ public void placeOrder(CustomerId customerId,
 
 ---
 
-## Project: Domain Model as PlantUML
-
-- Convert your UML sketch to PlantUML
-- Identify Value Objects (Email, Money, Address, etc.)
-- Identify RichTypes for IDs and codes
-- Commit the .puml file to your repo
-
-Next week: Milestone 1 — Present your domain model!
-
----
-
 <div class="highlight-box">
 <h2>What We Learned Today</h2>
 <ul>

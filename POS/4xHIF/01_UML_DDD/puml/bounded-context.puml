@@ -1,5 +1,8 @@
 @startuml
 
+hide empty attributes
+hide empty methods
+
 package "Catalog Context" {
     class "Book" as CatalogBook {
         ISBN
