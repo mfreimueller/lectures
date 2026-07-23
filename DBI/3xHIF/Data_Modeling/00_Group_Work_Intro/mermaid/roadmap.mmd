@@ -1,0 +1,29 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    C1["1. Foundations
+    Entities, Attributes, Relationships"]
+    C2["2. Core ERM Modeling
+    Cardinalities, Specialization, Weak Entities"]
+    C3["3. Real-World Application
+    Model a live system yourself"]
+    C4["4. Advanced Concepts
+    Historization, Associative & Recursive
+    Relationships, Architecture"]
+    C5["5. Relational Mapping
+    From ERM/EER to Tables"]
+
+    C1 --> C2 --> C3 --> C4 --> C5
+
+    classDef default fill:#EDEDED,stroke:#5A5A5A,stroke-width:1px,color:#1A1A1A;
+    classDef current fill:#FDE8ED,stroke:#ED1944,stroke-width:2px,color:#1A1A1A;
+    class C1 current

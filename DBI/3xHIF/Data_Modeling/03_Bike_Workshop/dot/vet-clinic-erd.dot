@@ -1,0 +1,81 @@
+graph VetClinicERD {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.7;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    VetId [shape=ellipse, label=<<u>Vet Id</u>>];
+    VetName [shape=ellipse, label="Name"];
+    Address [shape=ellipse, label="Address"];
+    Street [shape=ellipse, label="Street", fontsize=11];
+    City [shape=ellipse, label="City", fontsize=11];
+    Phone [shape=ellipse, peripheries=2, label="Phone Numbers"];
+    Vet [shape=box, style=filled, fillcolor="#EDEDED", label="Veterinarian"];
+
+    responsible [shape=diamond, style=filled, fillcolor="white", label="responsible for"];
+
+    Pet [shape=box, style=filled, fillcolor="#EDEDED"];
+    PetId [shape=ellipse, label=<<u>Pet Id</u>>];
+    PetName [shape=ellipse, label="Name"];
+    Species [shape=ellipse, label="Species"];
+
+    requires [shape=diamond, style=filled, fillcolor="white", label="requires"];
+
+    Treatment [shape=box, style=filled, fillcolor="#EDEDED"];
+    TreatmentNr [shape=ellipse, label=<<u>Treatment Nr</u>>];
+    Diagnosis [shape=ellipse, label="Diagnosis"];
+
+    consistsOf [shape=diamond, style=filled, fillcolor="white", label="consists of"];
+
+    Step [shape=box, style=filled, fillcolor="#EDEDED"];
+    StepNr [shape=ellipse, label=<<u>Step Nr</u>>];
+    Description [shape=ellipse, label="Description"];
+    Cost [shape=ellipse, label="Cost"];
+
+    needs [shape=diamond, style=filled, fillcolor="white", label="needs"];
+
+    Supply [shape=box, style=filled, fillcolor="#EDEDED"];
+    SupplyId [shape=ellipse, label=<<u>Supply Id</u>>];
+    StockLevel [shape=ellipse, label="Stock Level"];
+
+    { rank=same; VetId; VetName; Address; Phone; }
+    { rank=same; PetId; PetName; Species; }
+    { rank=same; TreatmentNr; Diagnosis; }
+    { rank=same; StepNr; Description; Cost; }
+    { rank=same; SupplyId; StockLevel; }
+
+    VetId -- Vet;
+    VetName -- Vet;
+    Address -- Vet;
+    Address -- Street;
+    Address -- City;
+    Phone -- Vet;
+
+    Vet -- responsible [label="(0,n)"];
+    responsible -- Pet [label="(1,1)"];
+
+    Pet -- PetId;
+    Pet -- PetName;
+    Pet -- Species;
+
+    Pet -- requires [label="(1,n)"];
+    requires -- Treatment [label="(1,1)"];
+
+    Treatment -- TreatmentNr;
+    Treatment -- Diagnosis;
+
+    Treatment -- consistsOf [label="(1,n)"];
+    consistsOf -- Step [label="(1,1)"];
+
+    Step -- StepNr;
+    Step -- Description;
+    Step -- Cost;
+
+    Step -- needs [label="(0,n)"];
+    needs -- Supply [label="(0,n)"];
+
+    Supply -- SupplyId;
+    Supply -- StockLevel;
+}

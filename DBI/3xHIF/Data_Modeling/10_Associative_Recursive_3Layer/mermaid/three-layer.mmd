@@ -1,0 +1,45 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'clusterBkg': '#FFFFFF',
+    'clusterBorder': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '16px'
+  }
+}}%%
+flowchart LR
+    subgraph EXT["External Level"]
+        direction TB
+        EM1["View EM-1
+        AId, Name, Phone"]
+        EM2["View EM-2
+        AId, Name, Salary"]
+    end
+
+    subgraph CONC["Conceptual Level"]
+        direction TB
+        C["Employee
+        AId, Name, Phone,
+        Salary, City,
+        Marital Status"]
+    end
+
+    subgraph INT["Internal Level"]
+        direction TB
+        F1["File EmployeeA"]
+        F2["File EmployeeB"]
+    end
+
+    EXT -->|logical
+    independence| CONC
+    CONC -->|physical
+    independence| INT
+
+    classDef default fill:#EDEDED,stroke:#5A5A5A,stroke-width:1px,color:#1A1A1A;
+    style EXT fill:#ffffff,stroke:#5A5A5A,stroke-width:1px
+    style CONC fill:#ffffff,stroke:#5A5A5A,stroke-width:1px
+    style INT fill:#ffffff,stroke:#5A5A5A,stroke-width:1px

@@ -1,0 +1,18 @@
+digraph ISAPerson {
+    layout=dot;
+    rankdir=TB;
+    ranksep=0.45;
+    nodesep=0.5;
+    edge [dir=none, fontname="Helvetica", fontsize=11];
+    node [fontname="Helvetica", fontsize=15, shape=box, style=filled, fillcolor="#EDEDED"];
+
+    Person;
+    isa1 [shape=triangle, label="ISA", xlabel="(p,d)", fillcolor=white, style=filled, width=0.7, height=0.4, fixedsize=true, fontsize=11];
+    Student;
+    Teacher;
+
+    Person -> isa1;
+    isa1 -> Student;
+    isa1 -> Teacher;
+    { rank=same; Student; Teacher; }
+}

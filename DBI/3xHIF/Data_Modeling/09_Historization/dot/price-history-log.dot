@@ -1,0 +1,28 @@
+graph PriceHistoryLog {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.35;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    ProductId [shape=ellipse, label=<<u>Product Id</u>>];
+    ProductName [shape=ellipse, label="Name"];
+    Product [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    has [shape=diamond, peripheries=2, style=filled, fillcolor="white", label="has"];
+
+    PriceLog [shape=box, peripheries=2, style=filled, fillcolor="#EDEDED", label="Price Change Log"];
+    ChangedAt [shape=ellipse, label=<<u>Changed At</u><br/><i>(partial key)</i>>];
+    NewPrice [shape=ellipse, label="New Price"];
+
+    { rank=same; ProductId; ProductName; }
+    { rank=same; ChangedAt; NewPrice; }
+
+    ProductId -- Product;
+    ProductName -- Product;
+    Product -- has [label="(0,n)"];
+    has -- PriceLog [label="(1,1)"];
+    PriceLog -- ChangedAt;
+    PriceLog -- NewPrice;
+}

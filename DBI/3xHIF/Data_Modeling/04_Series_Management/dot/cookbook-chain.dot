@@ -1,0 +1,68 @@
+graph CookbookChain {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    ISBN [shape=ellipse, label=<<u>ISBN</u>>];
+    CBTitle [shape=ellipse, label="Title"];
+    AuthorName [shape=ellipse, label="Author Name"];
+    First [shape=ellipse, label="First Name", fontsize=11];
+    Last [shape=ellipse, label="Last Name", fontsize=11];
+    Tags [shape=ellipse, peripheries=2, label="Tags"];
+    Cookbook [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    has [shape=diamond, style=filled, fillcolor="white", label="has"];
+
+    Chapter [shape=box, style=filled, fillcolor="#EDEDED"];
+    ChapterId [shape=ellipse, label=<<u>Chapter Id</u>>];
+    ChapterTitle [shape=ellipse, label="Title"];
+
+    contains [shape=diamond, style=filled, fillcolor="white", label="contains"];
+
+    Recipe [shape=box, style=filled, fillcolor="#EDEDED"];
+    RecipeId [shape=ellipse, label=<<u>Recipe Id</u>>];
+    RecipeTitle [shape=ellipse, label="Title"];
+    PrepTime [shape=ellipse, label="Prep Time"];
+
+    uses [shape=diamond, style=filled, fillcolor="white", label="uses"];
+    Quantity [shape=ellipse, label="Quantity"];
+
+    Ingredient [shape=box, style=filled, fillcolor="#EDEDED"];
+    IngredientId [shape=ellipse, label=<<u>Ingredient Id</u>>];
+    IngredientName [shape=ellipse, label="Name"];
+
+    { rank=same; ISBN; CBTitle; AuthorName; Tags; }
+    { rank=same; ChapterId; ChapterTitle; }
+    { rank=same; RecipeId; RecipeTitle; PrepTime; }
+    { rank=same; IngredientId; IngredientName; }
+
+    ISBN -- Cookbook;
+    CBTitle -- Cookbook;
+    AuthorName -- Cookbook;
+    AuthorName -- First;
+    AuthorName -- Last;
+    Tags -- Cookbook;
+
+    Cookbook -- has [label="(1,n)"];
+    has -- Chapter [label="(1,1)"];
+
+    Chapter -- ChapterId;
+    Chapter -- ChapterTitle;
+
+    Chapter -- contains [label="(1,n)"];
+    contains -- Recipe [label="(1,1)"];
+
+    Recipe -- RecipeId;
+    Recipe -- RecipeTitle;
+    Recipe -- PrepTime;
+
+    Recipe -- uses [label="(1,n)"];
+    uses -- Ingredient [label="(0,n)"];
+    uses -- Quantity;
+
+    Ingredient -- IngredientId;
+    Ingredient -- IngredientName;
+}

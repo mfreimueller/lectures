@@ -1,0 +1,28 @@
+graph CompositeAttr {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    PersonId [shape=ellipse, label=<<u>Person Id</u>>];
+    Name [shape=ellipse, label="Name"];
+    First [shape=ellipse, label="First Name", fontsize=11];
+    Last [shape=ellipse, label="Last Name", fontsize=11];
+    Address [shape=ellipse, label="Address"];
+    Street [shape=ellipse, label="Street", fontsize=11];
+    City [shape=ellipse, label="City", fontsize=11];
+    Person [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    { rank=same; PersonId; Name; Address; }
+    { rank=same; First; Last; Street; City; }
+
+    PersonId -- Person;
+    Name -- Person;
+    Name -- First;
+    Name -- Last;
+    Address -- Person;
+    Address -- Street;
+    Address -- City;
+}

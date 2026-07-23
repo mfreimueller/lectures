@@ -1,0 +1,34 @@
+digraph Legend {
+    layout=dot;
+    rankdir=LR;
+    nodesep=0.6;
+    node [fontname="Helvetica", fontsize=14, style=filled, fillcolor="#EDEDED"];
+    edge [style=invis];
+
+    subgraph cluster_entity {
+        label="Entity";
+        fontname="Helvetica";
+        style=invis;
+        Strong [shape=box, label="Strong Entity"];
+    }
+    subgraph cluster_weak {
+        label="Weak Entity";
+        fontname="Helvetica";
+        style=invis;
+        Weak [shape=box, peripheries=2, label="Weak Entity"];
+    }
+    subgraph cluster_rel {
+        label="Relationship";
+        fontname="Helvetica";
+        style=invis;
+        Rel [shape=diamond, fillcolor="white", label="relates"];
+    }
+    subgraph cluster_idrel {
+        label="Identifying Relationship";
+        fontname="Helvetica";
+        style=invis;
+        IdRel [shape=diamond, peripheries=2, fillcolor="white", label="identifies"];
+    }
+
+    Strong -> Weak -> Rel -> IdRel;
+}

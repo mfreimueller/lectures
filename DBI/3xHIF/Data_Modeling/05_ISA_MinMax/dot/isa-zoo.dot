@@ -1,0 +1,30 @@
+digraph ISAZoo {
+    layout=dot;
+    rankdir=TB;
+    ranksep=0.45;
+    nodesep=0.5;
+    edge [dir=none, fontname="Helvetica", fontsize=11];
+    node [fontname="Helvetica", fontsize=15, shape=box, style=filled, fillcolor="#EDEDED"];
+
+    Animal;
+
+    isa1 [shape=triangle, label="ISA", xlabel="(t,d)", fillcolor=white, style=filled, width=0.7, height=0.4, fixedsize=true, fontsize=11];
+
+    Mammal;
+    Bird;
+
+    isa2 [shape=triangle, label="ISA", xlabel="(p,d)", fillcolor=white, style=filled, width=0.7, height=0.4, fixedsize=true, fontsize=11];
+
+    Carnivore;
+    Herbivore;
+
+    Animal -> isa1;
+    isa1 -> Mammal;
+    isa1 -> Bird;
+    { rank=same; Mammal; Bird; }
+
+    Mammal -> isa2;
+    isa2 -> Carnivore;
+    isa2 -> Herbivore;
+    { rank=same; Carnivore; Herbivore; }
+}

@@ -1,0 +1,18 @@
+digraph Cheatsheet {
+    layout=dot;
+    rankdir=LR;
+    nodesep=0.55;
+    node [fontname="Helvetica", fontsize=13, style=filled, fillcolor="#EDEDED"];
+    edge [style=invis];
+
+    Entity [shape=box, label="Entity"];
+    WeakEntity [shape=box, peripheries=2, label="Weak Entity"];
+    Rel [shape=diamond, fillcolor="white", label="Relationship"];
+    IdRel [shape=diamond, peripheries=2, fillcolor="white", label="Identifying\nRelationship"];
+    Key [shape=ellipse, fillcolor="white", label=<<u>Key Attribute</u>>];
+    Multi [shape=ellipse, peripheries=2, fillcolor="white", label="Multivalued"];
+    Derived [shape=ellipse, style="dashed,filled", fillcolor="white", label="Derived"];
+    ISA [shape=triangle, fillcolor="white", label="ISA", width=0.7, height=0.4, fixedsize=true, fontsize=11];
+
+    Entity -> WeakEntity -> Rel -> IdRel -> Key -> Multi -> Derived -> ISA;
+}

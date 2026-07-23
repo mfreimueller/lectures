@@ -1,0 +1,22 @@
+graph MinMaxExample {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    StudentId [shape=ellipse, label=<<u>Student Id</u>>];
+    Student [shape=box, style=filled, fillcolor="#EDEDED"];
+    attends [shape=diamond, style=filled, fillcolor="white", label="attends"];
+    Class [shape=box, style=filled, fillcolor="#EDEDED"];
+    ClassName [shape=ellipse, label=<<u>Class Name</u>>];
+
+    { rank=same; StudentId; }
+    { rank=same; ClassName; }
+
+    StudentId -- Student;
+    Student -- attends [label="(1,1)"];
+    attends -- Class [label="(17,36)"];
+    Class -- ClassName;
+}

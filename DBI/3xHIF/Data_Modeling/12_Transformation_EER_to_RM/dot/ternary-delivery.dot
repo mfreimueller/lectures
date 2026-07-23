@@ -1,0 +1,19 @@
+graph TernaryDelivery {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.5;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Customer [shape=box, style=filled, fillcolor="#EDEDED"];
+    delivers [shape=diamond, style=filled, fillcolor="white", label="delivers"];
+    Supplier [shape=box, style=filled, fillcolor="#EDEDED"];
+    Order [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    { rank=same; Customer; Order; }
+
+    Customer -- delivers [label="(0,n)"];
+    delivers -- Supplier [label="(0,n)"];
+    delivers -- Order [label="(1,1)"];
+}

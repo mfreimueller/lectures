@@ -1,0 +1,15 @@
+graph Rel1to1 {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Student [shape=box, style=filled, fillcolor="#EDEDED"];
+    isRep [shape=diamond, style=filled, fillcolor="white", label="is class rep of"];
+    Class [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    Student -- isRep [label="(0,1)"];
+    isRep -- Class [label="(1,1)"];
+}

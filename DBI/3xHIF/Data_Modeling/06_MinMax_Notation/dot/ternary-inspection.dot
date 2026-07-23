@@ -1,0 +1,21 @@
+graph TernaryInspection {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.5;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Inspector [shape=box, style=filled, fillcolor="#EDEDED"];
+    inspection [shape=diamond, style=filled, fillcolor="white", label="inspection"];
+    Property [shape=box, style=filled, fillcolor="#EDEDED"];
+    Buyer [shape=box, style=filled, fillcolor="#EDEDED", label="Client (as buyer)"];
+    ReportDate [shape=ellipse, label="Report Date"];
+
+    { rank=same; Inspector; Buyer; }
+
+    Inspector -- inspection [label="(0,n)"];
+    inspection -- Property [label="(0,n)"];
+    inspection -- Buyer [label="(0,n)"];
+    inspection -- ReportDate;
+}

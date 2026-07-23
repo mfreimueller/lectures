@@ -1,0 +1,28 @@
+graph BookCopy {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.35;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    InvNr [shape=ellipse, label=<<u>Inv Nr</u>>];
+    Title [shape=ellipse, label="Title"];
+    Book [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    has [shape=diamond, peripheries=2, style=filled, fillcolor="white", label="has"];
+
+    Copy [shape=box, peripheries=2, style=filled, fillcolor="#EDEDED"];
+    CopyNr [shape=ellipse, label=<<u>Copy Nr</u><br/><i>(partial key)</i>>];
+    Condition [shape=ellipse, label="Condition"];
+
+    { rank=same; InvNr; Title; }
+    { rank=same; CopyNr; Condition; }
+
+    InvNr -- Book;
+    Title -- Book;
+    Book -- has [label="(1,n)"];
+    has -- Copy [label="(1,1)"];
+    Copy -- CopyNr;
+    Copy -- Condition;
+}

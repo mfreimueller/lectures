@@ -118,17 +118,28 @@ Given a problem statement, first separate what you're modeling into **objects** 
 
 For each object/event, list every attribute that seems relevant — no structural rules yet, just capture everything. This produces the **Ur-Relations** (raw, unnormalized relations).
 
-| Examiner | Student | Exam | ExamFeeSettlement |
-|---|---|---|---|
-| ExaminerNo | StudentID | ExamID | ExaminerNo |
-| ExaminerName | Name | StudentID | Amount |
-| ExaminerData (address, phone, ...) | PersonalData | CourseNo | NumEnrolled |
-| BankDetails | | Semester | NumExaminees |
-| | | WeeklyHours | BankDetails |
-| | | Grade | CourseNo |
-| | | Failed | Semester |
-| | | Date | Date |
-| | | ExaminerNo | |
+| Examiner | Student |
+|---|---|
+| ExaminerNo | StudentID |
+| ExaminerName | Name |
+| ExaminerData (address, phone, ...) | PersonalData |
+| BankDetails | |
+
+---
+
+## Step 2: Assign Attributes → Ur-Relations (cont.)
+
+| Exam | ExamFeeSettlement |
+|---|---|
+| ExamID | ExaminerNo |
+| StudentID | Amount |
+| CourseNo | NumEnrolled |
+| Semester | NumExaminees |
+| WeeklyHours | BankDetails |
+| Grade | CourseNo |
+| Failed | Semester |
+| Date | Date |
+| ExaminerNo | |
 
 ---
 

@@ -1,0 +1,15 @@
+graph AssociativeBefore {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.4;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Theater [shape=box, style=filled, fillcolor="#EDEDED"];
+    plays [shape=diamond, style=filled, fillcolor="white", label="plays"];
+    Play [shape=box, style=filled, fillcolor="#EDEDED", label="Play"];
+
+    Theater -- plays [label="(0,n)"];
+    plays -- Play [label="(0,n)"];
+}

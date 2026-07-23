@@ -1,0 +1,19 @@
+graph CardinalityNtoN {
+    layout=neato;
+    overlap=false;
+    splines=line;
+    node [fontname="Helvetica", fontsize=16];
+    edge [fontname="Helvetica", fontsize=13];
+
+    Tourist [shape=box, style=filled, fillcolor="#EDEDED"];
+    City [shape=box, style=filled, fillcolor="#EDEDED"];
+    visits [shape=diamond, style=filled, fillcolor="white", label="visits"];
+
+    Tourist_Nr [shape=ellipse, label=<<u>Tourist Nr</u>>];
+    City_Name [shape=ellipse, label=<<u>City Name</u>>];
+
+    Tourist -- Tourist_Nr;
+    City -- City_Name;
+    Tourist -- visits [label="(0,n)"];
+    visits -- City [label="(0,n)"];
+}

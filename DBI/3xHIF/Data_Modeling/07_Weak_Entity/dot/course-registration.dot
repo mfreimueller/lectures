@@ -1,0 +1,30 @@
+graph CourseRegistration {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.35;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    CourseId [shape=ellipse, label=<<u>Course Id</u>>];
+    Description [shape=ellipse, label="Description"];
+    Course [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    has [shape=diamond, peripheries=2, style=filled, fillcolor="white", label="has"];
+
+    Registration [shape=box, peripheries=2, style=filled, fillcolor="#EDEDED"];
+    RegNr [shape=ellipse, label=<<u>Registration Nr</u><br/><i>(partial key)</i>>];
+    RegDate [shape=ellipse, label="Registration Date"];
+    StudentName [shape=ellipse, label="Student Name"];
+
+    { rank=same; CourseId; Description; }
+    { rank=same; RegNr; RegDate; StudentName; }
+
+    CourseId -- Course;
+    Description -- Course;
+    Course -- has [label="(0,n)"];
+    has -- Registration [label="(1,1)"];
+    Registration -- RegNr;
+    Registration -- RegDate;
+    Registration -- StudentName;
+}

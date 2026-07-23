@@ -1,0 +1,14 @@
+graph RecipeRecursive {
+    layout=dot;
+    rankdir=LR;
+    ranksep=1.4;
+    nodesep=0.6;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=12];
+
+    Recipe [shape=box, style=filled, fillcolor="#EDEDED"];
+    adaptedFrom [shape=diamond, style=filled, fillcolor="white", label="adapted from"];
+
+    Recipe -- adaptedFrom [label="(0,n)", headport=n];
+    adaptedFrom -- Recipe [label="(0,1)", headport=s];
+}

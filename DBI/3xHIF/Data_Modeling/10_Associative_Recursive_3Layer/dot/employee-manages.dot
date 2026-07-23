@@ -1,0 +1,14 @@
+graph EmployeeManages {
+    layout=dot;
+    rankdir=LR;
+    ranksep=1.4;
+    nodesep=0.6;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=12];
+
+    Employee [shape=box, style=filled, fillcolor="#EDEDED"];
+    manages [shape=diamond, style=filled, fillcolor="white", label="manages"];
+
+    Employee -- manages [label="(0,n)", headport=n];
+    manages -- Employee [label="(0,1)", headport=s];
+}

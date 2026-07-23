@@ -1,0 +1,30 @@
+graph PriceHistoryFromTo {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.35;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    ProductId [shape=ellipse, label=<<u>Product Id</u>>];
+    ProductName [shape=ellipse, label="Name"];
+    Product [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    has [shape=diamond, peripheries=2, style=filled, fillcolor="white", label="has"];
+
+    PriceHistory [shape=box, peripheries=2, style=filled, fillcolor="#EDEDED", label="Price History"];
+    ValidFrom [shape=ellipse, label=<<u>Valid From</u><br/><i>(partial key)</i>>];
+    ValidTo [shape=ellipse, label="Valid To"];
+    Price [shape=ellipse, label="Price"];
+
+    { rank=same; ProductId; ProductName; }
+    { rank=same; ValidFrom; ValidTo; Price; }
+
+    ProductId -- Product;
+    ProductName -- Product;
+    Product -- has [label="(0,n)"];
+    has -- PriceHistory [label="(1,1)"];
+    PriceHistory -- ValidFrom;
+    PriceHistory -- ValidTo;
+    PriceHistory -- Price;
+}

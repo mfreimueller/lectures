@@ -1,0 +1,15 @@
+graph Rel1toN {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Student [shape=box, style=filled, fillcolor="#EDEDED"];
+    attends [shape=diamond, style=filled, fillcolor="white", label="attends"];
+    Class [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    Student -- attends [label="(1,1)"];
+    attends -- Class [label="(17,36)"];
+}

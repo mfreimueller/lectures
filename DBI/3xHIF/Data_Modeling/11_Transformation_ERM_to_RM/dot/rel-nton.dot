@@ -1,0 +1,17 @@
+graph RelNtoN {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Teacher [shape=box, style=filled, fillcolor="#EDEDED"];
+    teaches [shape=diamond, style=filled, fillcolor="white", label="teaches"];
+    Class [shape=box, style=filled, fillcolor="#EDEDED"];
+    SchoolYear [shape=ellipse, label="School Year"];
+
+    Teacher -- teaches [label="(0,n)"];
+    teaches -- Class [label="(1,n)"];
+    teaches -- SchoolYear;
+}

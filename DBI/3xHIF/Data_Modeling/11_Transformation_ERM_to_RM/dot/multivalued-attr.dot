@@ -1,0 +1,17 @@
+graph MultivaluedAttr {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.8;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    PersonId [shape=ellipse, label=<<u>Person Id</u>>];
+    Person [shape=box, style=filled, fillcolor="#EDEDED"];
+    Phone [shape=ellipse, peripheries=2, label="Phone Number"];
+
+    { rank=same; PersonId; }
+
+    PersonId -- Person;
+    Person -- Phone;
+}

@@ -1,0 +1,37 @@
+graph AssociativeAfter {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.4;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Theater [shape=box, style=filled, fillcolor="#EDEDED"];
+    shownAt [shape=diamond, style=filled, fillcolor="white", label="shown at"];
+
+    Vorstellung [shape=box, peripheries=2, style="filled,diagonals", fillcolor="#EDEDED", label="Show\n(associative entity)"];
+    Beginn [shape=ellipse, label="Begin"];
+    Ende [shape=ellipse, label="End"];
+    Datum [shape=ellipse, label="Date"];
+
+    bought [shape=diamond, style=filled, fillcolor="white", label="bought by"];
+    Kunde [shape=box, style=filled, fillcolor="#EDEDED", label="Customer"];
+
+    of [shape=diamond, style=filled, fillcolor="white", label="of"];
+    Play [shape=box, style=filled, fillcolor="#EDEDED", label="Play"];
+
+    { rank=same; Beginn; Datum; Ende; }
+
+    Theater -- shownAt [label="(0,n)"];
+    shownAt -- Vorstellung [label="(1,1)"];
+
+    Vorstellung -- Beginn;
+    Vorstellung -- Datum;
+    Vorstellung -- Ende;
+
+    Vorstellung -- bought [label="(0,n)"];
+    bought -- Kunde [label="(0,n)"];
+
+    Vorstellung -- of [label="(1,1)"];
+    of -- Play [label="(0,n)"];
+}

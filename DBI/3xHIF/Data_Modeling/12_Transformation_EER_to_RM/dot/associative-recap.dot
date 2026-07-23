@@ -1,0 +1,35 @@
+graph AssociativeRecap {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.4;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    Theater [shape=box, style=filled, fillcolor="#EDEDED"];
+    shownAt [shape=diamond, style=filled, fillcolor="white", label="shown at"];
+
+    Vorstellung [shape=box, peripheries=2, style="filled,diagonals", fillcolor="#EDEDED", label="Show\n(associative entity)"];
+    Begin [shape=ellipse, label="Begin"];
+    Date [shape=ellipse, label="Date"];
+
+    bought [shape=diamond, style=filled, fillcolor="white", label="bought by"];
+    Customer [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    of [shape=diamond, style=filled, fillcolor="white", label="of"];
+    Play [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    { rank=same; Begin; Date; }
+
+    Theater -- shownAt [label="(0,n)"];
+    shownAt -- Vorstellung [label="(1,1)"];
+
+    Vorstellung -- Begin;
+    Vorstellung -- Date;
+
+    Vorstellung -- bought [label="(0,n)"];
+    bought -- Customer [label="(0,n)"];
+
+    Vorstellung -- of [label="(1,1)"];
+    of -- Play [label="(0,n)"];
+}

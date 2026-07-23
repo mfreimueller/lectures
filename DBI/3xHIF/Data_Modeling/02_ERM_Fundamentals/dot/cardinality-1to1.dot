@@ -1,0 +1,19 @@
+graph Cardinality1to1 {
+    layout=neato;
+    overlap=false;
+    splines=line;
+    node [fontname="Helvetica", fontsize=16];
+    edge [fontname="Helvetica", fontsize=13];
+
+    Driver [shape=box, style=filled, fillcolor="#EDEDED"];
+    License [shape=box, style=filled, fillcolor="#EDEDED", label="License"];
+    has [shape=diamond, style=filled, fillcolor="white", label="has"];
+
+    Driver_Nr [shape=ellipse, label=<<u>Driver Nr</u>>];
+    License_Nr [shape=ellipse, label=<<u>License Nr</u>>];
+
+    Driver -- Driver_Nr;
+    License -- License_Nr;
+    Driver -- has [label="(1,1)"];
+    has -- License [label="(1,1)"];
+}

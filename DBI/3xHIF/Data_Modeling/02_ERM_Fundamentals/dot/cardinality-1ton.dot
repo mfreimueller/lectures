@@ -1,0 +1,19 @@
+graph Cardinality1toN {
+    layout=neato;
+    overlap=false;
+    splines=line;
+    node [fontname="Helvetica", fontsize=16];
+    edge [fontname="Helvetica", fontsize=13];
+
+    Customer [shape=box, style=filled, fillcolor="#EDEDED"];
+    Order [shape=box, style=filled, fillcolor="#EDEDED"];
+    places [shape=diamond, style=filled, fillcolor="white", label="places"];
+
+    Customer_Nr [shape=ellipse, label=<<u>Customer Nr</u>>];
+    Order_Nr [shape=ellipse, label=<<u>Order Nr</u>>];
+
+    Customer -- Customer_Nr;
+    Order -- Order_Nr;
+    Customer -- places [label="(0,n)"];
+    places -- Order [label="(1,1)"];
+}

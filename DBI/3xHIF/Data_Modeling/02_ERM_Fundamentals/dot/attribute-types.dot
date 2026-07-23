@@ -1,0 +1,28 @@
+graph AttributeTypes {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    Person [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    PersonId [shape=ellipse, label=<<u>Person Id</u>>];
+    Name [shape=ellipse, label="Name"];
+    Phone [shape=ellipse, peripheries=2, label="Phone Numbers"];
+    Age [shape=ellipse, style=dashed, label="Age"];
+
+    FirstName [shape=ellipse, label="First Name", fontsize=12];
+    LastName [shape=ellipse, label="Last Name", fontsize=12];
+
+    { rank=same; PersonId; Name; Phone; Age; }
+    { rank=same; FirstName; LastName; }
+
+    Person -- PersonId;
+    Person -- Name;
+    Person -- Phone;
+    Person -- Age;
+    Name -- FirstName;
+    Name -- LastName;
+}

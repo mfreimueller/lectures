@@ -1,0 +1,32 @@
+graph SpeciesAnimal {
+    layout=dot;
+    rankdir=LR;
+    ranksep=0.9;
+    nodesep=0.3;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    ScientificName [shape=ellipse, label=<<u>Scientific Name</u>>];
+    AvgLifespan [shape=ellipse, label="Average Lifespan"];
+    Diet [shape=ellipse, label="Diet"];
+    Species [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    of [shape=diamond, style=filled, fillcolor="white", label="of species"];
+
+    Animal [shape=box, style=filled, fillcolor="#EDEDED"];
+    TagNr [shape=ellipse, label=<<u>Tag Nr</u>>];
+    BirthDate [shape=ellipse, label="Birth Date"];
+    Weight [shape=ellipse, label="Weight"];
+
+    { rank=same; ScientificName; AvgLifespan; Diet; }
+    { rank=same; TagNr; BirthDate; Weight; }
+
+    ScientificName -- Species;
+    AvgLifespan -- Species;
+    Diet -- Species;
+    Species -- of [label="(1,1)"];
+    of -- Animal [label="(0,n)"];
+    Animal -- TagNr;
+    Animal -- BirthDate;
+    Animal -- Weight;
+}

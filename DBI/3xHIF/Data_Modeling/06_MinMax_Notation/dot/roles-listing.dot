@@ -1,0 +1,52 @@
+graph RolesListing {
+    layout=dot;
+    rankdir=TB;
+    ranksep=0.7;
+    nodesep=0.4;
+    node [fontname="Helvetica", fontsize=14];
+    edge [fontname="Helvetica", fontsize=11];
+
+    ClientId [shape=ellipse, label=<<u>Client Id</u>>];
+    ClientName [shape=ellipse, label="Name"];
+    Client [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    sells [shape=diamond, style=filled, fillcolor="white", label="sells"];
+    buys [shape=diamond, style=filled, fillcolor="white", label="buys"];
+
+    PropertyId [shape=ellipse, label=<<u>Property Id</u>>];
+    Address [shape=ellipse, label="Address"];
+    Price [shape=ellipse, label="Price"];
+    Property [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    lists [shape=diamond, style=filled, fillcolor="white", label="lists"];
+    ListingExpiry [shape=ellipse, label="Listing Expiry"];
+
+    AgentId [shape=ellipse, label=<<u>Agent Id</u>>];
+    AgentName [shape=ellipse, label="Name"];
+    Agent [shape=box, style=filled, fillcolor="#EDEDED"];
+
+    { rank=same; ClientId; ClientName; }
+    { rank=same; sells; buys; }
+    { rank=same; PropertyId; Address; Price; }
+    { rank=same; AgentId; AgentName; }
+
+    ClientId -- Client;
+    ClientName -- Client;
+
+    Client -- sells [label="(0,n)"];
+    sells -- Property [label="(1,1)"];
+
+    Client -- buys [label="(0,n)"];
+    buys -- Property [label="(0,1)"];
+
+    PropertyId -- Property;
+    Address -- Property;
+    Price -- Property;
+
+    Property -- lists [label="(1,1)"];
+    lists -- Agent [label="(0,n)"];
+    lists -- ListingExpiry;
+
+    AgentId -- Agent;
+    AgentName -- Agent;
+}
