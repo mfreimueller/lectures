@@ -1,0 +1,30 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    C1["1. Foundations
+    Database Basics, SELECT"]
+    C2["2. Refining Queries
+    Advanced SELECT"]
+    C3["3. Combining Tables
+    Joins & Relationships"]
+    C4["4. Summarizing Data
+    Aggregation"]
+    C5["5. Grouping Results
+    GROUP BY & HAVING"]
+    C6["6. Changing Data & Schema
+    DML & DDL"]
+
+    C1 --> C2 --> C3 --> C4 --> C5 --> C6
+
+    classDef default fill:#EDEDED,stroke:#5A5A5A,stroke-width:1px,color:#1A1A1A;
+    classDef current fill:#FDE8ED,stroke:#ED1944,stroke-width:2px,color:#1A1A1A;
+    class C1 current

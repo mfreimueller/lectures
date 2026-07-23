@@ -1,0 +1,12 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+hide circle
+
+left to right direction
+entity PERSON_A
+entity PERSON_B
+PERSON_A ||--|| PERSON_B : loves
+
+@enduml
