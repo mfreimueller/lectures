@@ -1,0 +1,22 @@
+digraph planner_worker {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=12, fontcolor="#1A1A1A",
+          margin="0.16,0.10"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=10, fontcolor="#5A5A5A"];
+
+    plan [label="Planner\nzerlegt in unabhängige\nTeilaufgaben",
+          fillcolor="#FDE8ED", color="#ED1944"];
+    wa   [label="Worker A\neigener Worktree\nBranch feature/a"];
+    wb   [label="Worker B\neigener Worktree\nBranch feature/b"];
+    wc   [label="Worker C\neigener Worktree\nBranch feature/c"];
+    merge [label="Merge + Verify\nAggregator — oder Mensch"];
+
+    plan -> wa;
+    plan -> wb;
+    plan -> wc;
+    wa -> merge [label="PR"];
+    wb -> merge [label="PR"];
+    wc -> merge [label="PR"];
+}

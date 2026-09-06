@@ -1,0 +1,24 @@
+digraph rag_pipeline {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=12, fontcolor="#1A1A1A",
+          margin="0.16,0.10"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=10, fontcolor="#5A5A5A"];
+
+    docs   [label="Dokumente\nSchulordnung · Mitschrieb"];
+    chunks [label="Chunking\nAbsätze + Overlap"];
+    embed  [label="Embeddings"];
+    store  [label="Vektorstore\n(eine JSON-Datei genügt)",
+            fillcolor="#FDE8ED", color="#ED1944"];
+
+    frage  [label="Frage"];
+    qembed [label="Embedding\n der Frage"];
+    suche  [label="Kosinus-\nähnlichkeit"];
+    topk   [label="Top-K Chunks\n+ Quellenangabe"];
+    llm    [label="LLM antwortet\nnur aus dem Fund"];
+
+    docs -> chunks -> embed -> store;
+    frage -> qembed -> suche -> store;
+    store -> topk -> llm;
+}

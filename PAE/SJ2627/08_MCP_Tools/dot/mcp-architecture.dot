@@ -1,0 +1,19 @@
+digraph mcp_architecture {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=13, fontcolor="#1A1A1A",
+          margin="0.18,0.12"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=11, fontcolor="#5A5A5A"];
+
+    modell [label="Modell\n(Cloud oder lokal)", shape=box, style="dashed"];
+    host   [label="Host\neuer Harness · Claude Code · OpenCode",
+            fillcolor="#FDE8ED", color="#ED1944"];
+    server [label="MCP Server\nz.B. schul-api"];
+    angebot [label="Tools · Resources · Prompts",
+             shape=note, fillcolor="#FFFFFF"];
+
+    modell -> host [dir=both, label="Function Calling"];
+    host -> server [dir=both, label="JSON-RPC\nstdio / HTTP\n(MCP Client im Host)"];
+    server -> angebot;
+}

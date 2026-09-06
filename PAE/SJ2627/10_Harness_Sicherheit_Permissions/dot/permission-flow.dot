@@ -1,0 +1,27 @@
+digraph permission_flow {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=12, fontcolor="#1A1A1A",
+          margin="0.16,0.10"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=10, fontcolor="#5A5A5A"];
+
+    call  [label="Tool-Call\nim Loop"];
+    check [label="Was sagt\npermissions.json?",
+           shape=diamond, fillcolor="#FFFFFF", height=1.3];
+    auto  [label="AUTO\ndurchlassen + loggen"];
+    ask   [label="ASK\nLoop pausiert,\nMensch entscheidet",
+           fillcolor="#FFFFFF"];
+    deny  [label="DENY\nabgelehnt + loggen",
+           fillcolor="#FDE8ED", color="#ED1944"];
+
+    call -> check;
+    check -> auto [label="read_file\n(unkritisch)"];
+    check -> ask  [label="run_command\n(mächtig)"];
+    check -> deny [label="netz_*\n(Standard: zu)"];
+
+    auto -> log;
+    ask -> log [label="Entscheidung\nwird mitgeschrieben"];
+    deny -> log;
+    log [label="audit.log\n(append-only)", shape=note, fillcolor="#FFFFFF"];
+}

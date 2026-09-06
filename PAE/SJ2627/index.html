@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>PAE SJ 26/27 — Lecture Slides</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://mfreimueller.github.io/lectures/resources/landing.css">
+</head>
+<body>
+
+<header class="lp-header">
+  <img class="lp-logo" src="https://mfreimueller.github.io/lectures/resources/spengergasse_logo_300.png"
+       alt="HTL Spengergasse">
+  <h1 class="lp-title">Professional Agentic Engineering — Lecture Slides</h1>
+  <p class="lp-subtitle">Freigegenstand &middot; HTL Spengergasse &middot; Schuljahr 2026/27</p>
+</header>
+
+<main class="lp-container">
+  <table class="lp-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Thema</th>
+        <th>Typ</th>
+        <th class="col-desc">Beschreibung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lp-badge">00</span></td>
+        <td><a href="./00_Kickoff_Vibe_vs_Engineering/">Kickoff: Vibe vs. Engineering</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Kursüberblick, Begriffe, Setup, Übung „Vibe vs. Spec“</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">01</span></td>
+        <td><a href="./01_LLM_Fundamentals_Kosten/">LLM-Grundlagen &amp; Kosten</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Tokens, Kontextfenster, Temperatur, Preismodell, erster API-Client</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">02</span></td>
+        <td><a href="./02_Prompt_Engineering_Evals/">Prompt Engineering &amp; Evals</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Prompt-Anatomie, Few-Shot, JSON Schema, Eval-Runner mit Pass-Rate</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">03</span></td>
+        <td><a href="./03_Coding_Agent_Shootout/">Coding-Agent-Shootout</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Claude Code vs. Codex vs. OpenCode vs. Junie: identische Aufgabe, Bewertungsmatrix, Klassen-Leaderboard</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">04</span></td>
+        <td><a href="./04_Context_Engineering_Skills/">Context Engineering: Skills &amp; Subagents</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">AGENTS.md/CLAUDE.md, Skills, Subagents, Chaos-Repo agent-ready machen mit Vorher/Nachher-Messung</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">05</span></td>
+        <td><a href="./05_Spec_Driven_Development/">Spec-driven Development</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Issue → Spec → Plan → Implement → Verify; Akzeptanzkriterien, Plan-Modi, Vergleich zum Vibe-Ergebnis</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">06</span></td>
+        <td><a href="./06_Qualitaetssicherung_TDD_Review/">Qualitätssicherung: TDD, Hooks &amp; Review</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Tests als Leitplanken, Red-Green mit Agenten, Pre-Commit-Hooks, Agent-Review, halluzinierte APIs erkennen</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">07</span></td>
+        <td><a href="./07_Eigenbau_Agent_Loop/">Eigenbau-Agent: Der Loop</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Function Calling, Agent-Loop in TypeScript, Stop-Bedingungen, Transkripte — Harness v0.1</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">08</span></td>
+        <td><a href="./08_MCP_Tools/">MCP &amp; Tool-Design</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Model Context Protocol, eigener MCP-Server mit TS SDK, ein Server — zwei Hosts (v0.2)</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">09</span></td>
+        <td><a href="./09_RAG/">RAG</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Embeddings, Chunking, Kosinus-Suche, Golden-Questions-Eval (Recall@3) — Harness v0.3</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">10</span></td>
+        <td><a href="./10_Harness_Sicherheit_Permissions/">Sicherheit, Permissions &amp; Logging</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Prompt Injection (direkt/indirekt), Attack-&amp;-Defend-Day, Permission-Layer, Audit-Log — v0.4</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">11</span></td>
+        <td><a href="./11_Multi_Agent_Orchestrierung_A2A/">Multi-Agent &amp; A2A</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Planner/Worker, Subagents, Git Worktrees, Merge-Retro, MCP vs. A2A — v0.5 optional</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">12</span></td>
+        <td><a href="./12_Caching_Budget_Optimierung/">Caching, Budgets &amp; Optimierung</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Prompt-Caching, Compaction, Modell-Routing, Cost-Dashboard, Budget-Guardrails — v0.6</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">13</span></td>
+        <td><a href="./13_KI_Ready_Software_AI_Features/">KI-ready Software &amp; AI-Features</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">OpenAPI für Agenten, AI-Feature mit Schema/Refusal/Fallback-Guardrails, Cross-Team-Testing</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">14</span></td>
+        <td><a href="./14_Lokale_Modelle_Oekonomie/">Lokale Modelle &amp; Ökonomie</a></td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Ollama, Quantisierung, Energie &amp; TCO, Benchmark lokal vs. Cloud-Free-Tiers</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">15</span></td>
+        <td>Ethik, Recht &amp; Verantwortung</td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Urheberrecht, DSGVO, Usage-Policy; Meilenstein Projekt-Spec</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">16</span></td>
+        <td>Projekt-Sprint &amp; Generalprobe</td>
+        <td><span class="lp-badge lp-badge--content">Content</span></td>
+        <td class="col-desc">Betreuter Sprint am Abschlussprojekt, Dry-Run mit Peer-Feedback</td>
+      </tr>
+      <tr>
+        <td><span class="lp-badge">17</span></td>
+        <td>Demo Day &amp; Finale</td>
+        <td><span class="lp-badge lp-badge--presentation">Presentations</span></td>
+        <td class="col-desc">Abschlusspräsentationen (10′ Demo + 5′ Q&amp;A), Retrospektive &amp; Ausblick</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<footer class="lp-footer">
+  <p><a href="https://github.com/mfreimueller/lectures">Source on GitHub</a></p>
+</footer>
+
+</body>
+</html>

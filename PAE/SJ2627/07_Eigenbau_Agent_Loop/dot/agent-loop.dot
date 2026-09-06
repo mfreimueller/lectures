@@ -1,0 +1,22 @@
+digraph agent_loop {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=13, fontcolor="#1A1A1A",
+          margin="0.18,0.12"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=11, fontcolor="#5A5A5A"];
+
+    ziel  [label="User-Ziel"];
+    llm   [label="LLM denkt"];
+    check [label="Tool-Call\nnötig?", shape=diamond, fillcolor="#FFFFFF", height=1.2];
+    tool  [label="Tool ausführen\nErgebnis in Kontext"];
+    stop  [label="ERGEBNIS ✓\nLoop stoppt",
+           fillcolor="#FDE8ED", color="#ED1944"];
+
+    ziel -> llm;
+    llm -> check;
+    check -> tool [label=" ja "];
+    check -> stop [label=" nein "];
+    tool -> llm [label=" nächste Runde ",
+                 color="#ED1944", fontcolor="#ED1944", constraint=false];
+}

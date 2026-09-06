@@ -1,0 +1,22 @@
+digraph model_routing {
+    rankdir=LR;
+    bgcolor="transparent";
+    node [shape=box, style="rounded,filled", fillcolor="#EDEDED",
+          color="#5A5A5A", fontname="Helvetica", fontsize=12, fontcolor="#1A1A1A",
+          margin="0.16,0.10"];
+    edge [color="#5A5A5A", fontname="Helvetica", fontsize=10, fontcolor="#5A5A5A"];
+
+    task   [label="Teilaufgabe\nim Loop"];
+    router [label="Router\nRegel oder\nkleines Modell",
+            shape=diamond, fillcolor="#FFFFFF", height=1.4];
+    small  [label="Kleines Modell\nKlassifikation · Extraktion\ngünstig & schnell"];
+    large  [label="Großes Modell\nPlanung · Refactoring\nteuer & stark",
+            fillcolor="#FDE8ED", color="#ED1944"];
+    out    [label="Ergebnis\n→ Transcript"];
+
+    task -> router;
+    router -> small [label=" einfach "];
+    router -> large [label=" schwer "];
+    small -> out;
+    large -> out;
+}
