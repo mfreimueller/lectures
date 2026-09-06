@@ -52,7 +52,7 @@ Unsere (Programmier-/SE-)Ziele:
 
 - PLÜs: 50%
 - Mitarbeit: 50%
-  - Praktische Übungen
+  - Praktische Übungen (**mindestens 50% abgegeben**)
   - Wiederholungen
   - Aktive Mitarbeit
   - Mitschrift
