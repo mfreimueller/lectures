@@ -9,34 +9,36 @@ lang: de
 <!-- _class: lead -->
 
 # 18 - PowerPoint Team & Themen
-## DBI - 1AHIF
+## DBI - 1xHIF
 
 ---
 
 ## Agenda (1/2)
 
-1. Modul-Überblick
-2. Bewertungskriterien
-3. 2er-Teams bilden
-4. Team-Regeln
-5. Themenkriterien
-6. Themen eingrenzen
+1. Icebreaker: Die schlechteste Folie der Welt
+2. Modul-Überblick
+3. Bewertungskriterien
+4. 2er-Teams bilden
+5. Team-Regeln
+6. Themenkriterien
 
 ---
 
 ## Agenda (2/2)
 
-7. Forschungsfragen
-8. Forschungsfragen - Beispiele
-9. Quellenarten
-10. Recherche-Techniken
-11. Feedback-Regeln
-12. Nächste Schritte
+7. Themen eingrenzen
+8. Forschungsfragen
+9. Forschungsfragen - Beispiele
+10. Quellenarten
+11. Recherche-Techniken
+12. Feedback-Regeln
+13. Nächste Schritte
 
 ---
 
 ## Lernziele
 
+- Ich kann benennen, was eine Folie schlecht macht — bevor ich selbst eine baue
 - Ich kenne die Bewertungskriterien für das PowerPoint-Modul
 - Ich kann mit meinem Team ein passendes Thema eingrenzen
 - Ich kann eine präzise Forschungsfrage formulieren
@@ -45,15 +47,30 @@ lang: de
 
 ---
 
+## Icebreaker: Die schlechteste Folie der Welt
+
+Bevor wir irgendein Thema wählen: Bauen wir **gemeinsam** live eine möglichst
+schlechte Folie.
+
+- Zu viel Text? Rein damit.
+- 6 Schriftarten? Warum nicht.
+- Grelle Farben, wild fliegende Animationen?
+
+Danach: Jede Entscheidung einzeln begründen — **warum genau ist das schlecht?**
+
+---
+
 ## Modul-Überblick
 
 | Woche | Thema |
 | --- | --- |
 | 18 | Team & Themenfindung |
-| 19 | Gute Präsentationen |
-| 20 | Lizenzen & Masterfolie |
-| 21 | Vortrag 1 |
-| 22 | Vortrag 2 |
+| 19 | Folienmaster als Corporate-Design-System |
+| 20 | Gute Präsentationen: Inhalt & Formate |
+| 21 | Interaktive Präsentationen |
+| 22 | Automatisiert erzeugen |
+| 23 | Vortrag 1 |
+| 24 | Vortrag 2 |
 
 ---
 
@@ -128,13 +145,14 @@ Eine gute Forschungsfrage ist:
 
 ## Quellenarten
 
-| Quellenart | Beispiele | Bewertung |
-| --- | --- | --- |
-| Offizielle Doku | MDN, Microsoft Learn | 5* |
-| Fachartikel | ACM, IEEE | 4* |
-| Tutorials | FreeCodeCamp | 3* |
-| Wikipedia | Hintergrundwissen | 2* |
-| Foren/Blogs | Stack Overflow | 1* (kritisch prüfen) |
+| Quellenart | Beispiele |
+| --- | --- |
+| Offizielle Doku | MDN, Microsoft Learn |
+| Fachartikel | ACM, IEEE |
+| Tutorials | FreeCodeCamp |
+| Wikipedia | Hintergrundwissen |
+| Foren/Blogs | Stack Overflow |
+| KIs | ChatGPT, Claude ... |
 
 ---
 
@@ -170,6 +188,7 @@ Begründungen liefern + Verbesserungsvorschläge
 
 ## Zusammenfassung
 
+- Die schlechteste Folie der Welt zu bauen zeigt sofort, was man vermeiden sollte
 - Team und Thema werden heute gemeinsam festgelegt
 - Ein gutes Thema ist weder zu breit noch zu eng
 - Eine gute Forschungsfrage ist präzise und in 8 Minuten beantwortbar
