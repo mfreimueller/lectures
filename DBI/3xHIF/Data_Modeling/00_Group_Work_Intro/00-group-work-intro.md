@@ -24,7 +24,25 @@ model into database tables.
 
 ## Grading
 
-*Details will be announced in a later lesson.*
+<div class="highlight-box">
+<p>Data Modeling: 67%</p>
+<p>SQL: 33%</p>
+</div>
+
+---
+
+## Grading - Data Modeling
+
+- Exams: 50%
+- Class Participation (Mitarbeit): 50%
+   - Revisions
+   - Active Participation
+   - Exercise Completion
+
+<div class="highlight-box">
+<p>You <strong>must</strong> hand in <strong>at least 50%</strong> of the exercises for a positive grade.</p>
+</ul>
+</div>
 
 ---
 
