@@ -51,6 +51,8 @@ Our (database / SQL) goals:
 <p>SQL: 33%</p>
 </div>
 
+**You must be positive in both parts of DBI.**
+
 ---
 
 ## Grading - Data Modeling

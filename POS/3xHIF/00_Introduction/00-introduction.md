@@ -69,13 +69,23 @@ Our (programming / SE) goals:
 
 ## Grading
 
+<div class="highlight-box">
+<p>Programming / SE: 75%</p>
+<p>Logic: 25%</p>
+</div>
+
+**You must be positive in both parts of POS.**
+
+---
+
+## Grading
+
 - PLÜs: 50%
-- Mitarbeit: 25%
+- Mitarbeit: 50%
   - Practical exercises
   - Revisions
   - Active participation
   - WMC project
-- POS Logic: 25%
 
 ---
 

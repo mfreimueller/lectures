@@ -29,6 +29,8 @@ model into database tables.
 <p>SQL: 33%</p>
 </div>
 
+**You must be positive in both parts of DBI.**
+
 ---
 
 ## Grading - Data Modeling
