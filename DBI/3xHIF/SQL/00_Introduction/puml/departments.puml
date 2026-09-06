@@ -1,0 +1,12 @@
+@startuml
+
+hide methods
+hide circle
+
+entity departments {
+  * department_id : INT <<PK>>
+  --
+  name : VARCHAR(100)
+}
+
+@enduml

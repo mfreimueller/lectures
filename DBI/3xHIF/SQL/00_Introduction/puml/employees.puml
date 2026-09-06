@@ -1,0 +1,14 @@
+@startuml
+
+hide methods
+hide circle
+
+entity employees {
+  * id : INT <<PK>>
+  --
+  name : VARCHAR(100)
+  department_id : INT <<FK>>
+  salary : DECIMAL(8,2)
+}
+
+@enduml
