@@ -53,7 +53,7 @@ Our (programming / SE) goals:
 
 - Moving towards modern Java
 - Creating our first complex(ish) software
-- Thinking about good software design
+- Thinking about software design
 
 ---
 
@@ -120,6 +120,45 @@ mvn --version
 
 - IntelliJ IDEA: Open the pom.xml file
 - Enable auto-import for Maven projects
+
+---
+
+## Homework
+
+Complete the dev setup until the next POS lesson.
+
+---
+
+## 2nd grade - Brainstorming
+
+What concepts and language constructs did you learn last year?
+
+---
+
+## Collaborative Review
+
+- You will be put into groups.
+- Each group will receive one of the concepts discussed before.
+- You will work with this concept.
+- You present your results.
+
+---
+
+## Collaborative Review
+
+Your tasks in your group:
+
+- What is it?
+- What problem does it solve?
+- Come up with a short code example.
+
+<div class="highlight-box">
+<p>Remember: You don't have to get everything right. This is about finding out what we still remember.</p>
+</div>
+
+---
+
+# POS 3rd Grade 🥳
 
 ---
 
