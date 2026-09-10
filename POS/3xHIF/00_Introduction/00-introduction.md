@@ -61,7 +61,7 @@ Our (programming / SE) goals:
 
 - Java Language Features (Records, Sealed Classes, Pattern Matching)
 - Streams and Functional Programming
-- Testing with JUnit 5 and TDD
+- Testing with JUnit Jupiter and TDD
 - SOLID Principles
 - Project Work (WMC)
 
@@ -172,16 +172,6 @@ Your tasks in your group:
 
 ---
 
-## Partner Discussion
-
-- Open the Student Grade Refactoring project in IntelliJ.
-- Discuss the following questions with your partner:
-  1. What patterns do you notice about the variable declarations in GradeCalculator and Main?
-  2. What do you notice about StudentGrade (boilerplate code, mutability etc.)?
-  3. What problems could arise from having setters on StudentGrade?
-
----
-
 ## Local Variable Type Inference
 
 Introduced in Java 10: `var` keyword
@@ -233,12 +223,6 @@ for (var entry : map.entrySet()) {
     var value = entry.getValue();
 }
 ```
-
----
-
-## Now Kata 1: Hello World
-
-Write a program using var to declare a greeting and print it along with the current date/time.
 
 ---
 
@@ -297,24 +281,6 @@ if (p instanceof Point(int x, int y)) {
     System.out.println(x + ", " + y);
 }
 ```
-
----
-
-## Now Kata 2: Records
-
-Define a Book record with validation in a compact constructor and an age() method that calculates years since publication.
-
----
-
-## Now Kata 3: Maven Project
-
-Setup a new Maven project and add an external dependency to count words from text files.
-
----
-
-## Now Exercise: Student Grades Refactoring
-
-Refactor an existing application and migrate it from Java 11 to Java 25.
 
 ---
 
