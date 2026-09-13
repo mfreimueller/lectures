@@ -27,16 +27,17 @@ lang: de
 5. Datentyp double
 6. Datentyp String
 7. Datentyp char
-8. Deklaration und Initialisierung
+8. Speicherbedarf der Datentypen
+9. Deklaration und Initialisierung
 
 ---
 
 ## Agenda (3/3)
 
-9. Ausgabe mit System.out.println
-10. Erste Programme schreiben
-11. Übersicht: Die fünf Datentypen
-12. Häufige Fehler
+10. Ausgabe mit System.out.println
+11. Erste Programme schreiben
+12. Übersicht: Die fünf Datentypen
+13. Häufige Fehler
 
 ---
 
@@ -137,6 +138,22 @@ String begruessung = "Hallo Welt!";
 char anfangsbuchstabe = 'M';
 char buchstabe = 'A';
 ```
+
+---
+
+## Speicherbedarf der Datentypen
+
+- Jeder Datentyp belegt eine feste Anzahl an Bits/Bytes im Speicher
+- Je mehr Bits, desto mehr verschiedene Werte sind darstellbar
+- `String` hat keine feste Größe -- die Länge hängt vom Text ab
+
+| Typ | Größe | Wertebereich |
+| --- | --- | --- |
+| `boolean` | 1 Bit | `true`, `false` |
+| `int` | 4 Byte (32 Bit) | -2.147.483.648 … 2.147.483.647 |
+| `double` | 8 Byte (64 Bit) | ca. ±4,9·10⁻³²⁴ … ±1,8·10³⁰⁸ |
+| `char` | 2 Byte (16 Bit) | 0 … 65.535 |
+| `String` | variabel | abhängig von der Zeichenanzahl |
 
 ---
 

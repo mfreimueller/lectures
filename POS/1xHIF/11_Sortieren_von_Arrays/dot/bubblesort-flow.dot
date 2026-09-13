@@ -1,0 +1,37 @@
+digraph BubblesortFlow {
+    rankdir=TB;
+    ranksep=0.7;
+    nodesep=0.4;
+    node [fontname="Helvetica", fontsize=13, shape=box, style="rounded,filled", fillcolor="#EDEDED"];
+    edge [fontname="Helvetica", fontsize=11];
+
+    start [label="Neuer Durchlauf\n(äußere Schleife)", shape=ellipse, fillcolor="white"];
+    inner [label="Vergleiche zwei\nbenachbarte Elemente\n(innere Schleife)"];
+    decision [label="Linkes Element\ngrößer als rechtes?", shape=diamond, fillcolor="#FFF3CD"];
+    swap [label="Tauschen"];
+    nextpair [label="Weiter zum\nnächsten Paar"];
+
+    checkend [label="Durchlauf\nzu Ende?", shape=diamond, fillcolor="#FFF3CD"];
+    placed [label="Größtes verbleibendes\nElement ist richtig platziert"];
+    checkdone [label="Alles\nsortiert?", shape=diamond, fillcolor="#FFF3CD"];
+    done [label="Fertig sortiert!", shape=ellipse, fillcolor="#D4EDDA"];
+
+    { rank=same; start; inner; decision; swap; nextpair; }
+    { rank=same; done; checkdone; placed; checkend; }
+    done -> checkdone [style=invis];
+    checkdone -> placed [style=invis];
+    placed -> checkend [style=invis];
+
+    start -> inner;
+    inner -> decision;
+    decision -> swap [label="ja"];
+    decision -> nextpair [label="nein"];
+    swap -> nextpair;
+
+    nextpair -> checkend;
+    checkend -> inner [label="nein"];
+    checkend -> placed [label="ja"];
+    placed -> checkdone;
+    checkdone -> start [label="nein"];
+    checkdone -> done [label="ja"];
+}

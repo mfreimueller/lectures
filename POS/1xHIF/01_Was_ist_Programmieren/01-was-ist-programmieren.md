@@ -169,10 +169,17 @@ public class Hallo {
 ## Flowchart - Ablauf visualisieren
 
 - Ein Flowchart (Flussdiagramm) visualisiert einen Algorithmus
+- **Oval:** Start / Ende
 - **Rechteck:** Aktion / Schritt
 - **Raute:** Entscheidung (ja/nein)
 - **Pfeil:** Ablaufrichtung
 - Ideal, um Logik zu planen, bevor man Code schreibt
+
+---
+
+## Flowchart - Beispiel: Kaffee kochen
+
+![height:550px Flowchart: Kaffee kochen](mermaid/kaffee-flowchart.svg)
 
 ---
 

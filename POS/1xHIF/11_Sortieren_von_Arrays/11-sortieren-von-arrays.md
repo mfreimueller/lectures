@@ -137,20 +137,7 @@ for (int i = 0; i < zahlen.length; i++) {
 
 ## Bubblesort: Algorithmus
 
-```java
-int[] arr = {5, 2, 8, 1, 9};
-
-for (int i = 0; i < arr.length - 1; i++) {
-    for (int j = 0; j < arr.length - 1 - i; j++) {
-        if (arr[j] > arr[j + 1]) {
-            // Tauschen
-            int temp = arr[j];
-            arr[j] = arr[j + 1];
-            arr[j + 1] = temp;
-        }
-    }
-}
-```
+![width:1150px Flussdiagramm des Bubblesort-Algorithmus: äußere und innere Schleife, Vergleich, Tauschen und Abbruchbedingungen](dot/bubblesort-flow.svg)
 
 ---
 
@@ -178,22 +165,10 @@ arr[j + 1] = temp;     // Setze gemerkten Wert an Position j+1
 
 ## Optimierung: Frühzeitiger Abbruch
 
-```java
-for (int i = 0; i < arr.length - 1; i++) {
-    boolean getauscht = false;
+![width:950px Flussdiagramm: Wenn in einem Durchlauf nicht getauscht wurde, ist das Array bereits sortiert und die Schleife kann abbrechen](dot/early-exit-flow.svg)
 
-    for (int j = 0; j < arr.length - 1 - i; j++) {
-        if (arr[j] > arr[j + 1]) {
-            int temp = arr[j];
-            arr[j] = arr[j + 1];
-            arr[j + 1] = temp;
-            getauscht = true;
-        }
-    }
-
-    if (!getauscht) break; // Kein Tausch → Array ist sortiert
-}
-```
+- Idee: Wurde in einem ganzen Durchlauf **kein einziges Mal** getauscht, ist das Array schon sortiert
+- Dann müssen keine weiteren Durchläufe mehr gemacht werden
 
 ---
 

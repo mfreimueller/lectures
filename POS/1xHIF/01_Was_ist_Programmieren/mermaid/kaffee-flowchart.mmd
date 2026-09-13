@@ -1,0 +1,25 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart TD
+    start(["Start"]) --> vorbereiten["Kaffeemaschine vorbereiten"]
+    vorbereiten --> bruehen["Kaffee brühen lassen"]
+    bruehen --> eingiessen["Kaffee eingießen"]
+    eingiessen --> frage{"Genug Kaffee?"}
+    frage -->|Nein| eingiessen
+    frage -->|Ja| ende(["Ende"])
+
+    classDef actionStyle fill:#EDEDED,stroke:#5A5A5A,stroke-width:2px
+    classDef decisionStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    classDef terminalStyle fill:#E8F4FD,stroke:#1976D2,stroke-width:2px
+    class vorbereiten,bruehen,eingiessen actionStyle
+    class frage decisionStyle
+    class start,ende terminalStyle

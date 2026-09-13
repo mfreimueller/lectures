@@ -1,0 +1,19 @@
+digraph EarlyExitFlow {
+    rankdir=LR;
+    ranksep=0.6;
+    nodesep=0.35;
+    node [fontname="Helvetica", fontsize=13, shape=box, style="rounded,filled", fillcolor="#EDEDED"];
+    edge [fontname="Helvetica", fontsize=11];
+
+    start [label="Neuer Durchlauf\nbeginnt", shape=ellipse, fillcolor="white"];
+    pass [label="Durchlauf ausführen\n(vergleichen + ggf. tauschen)"];
+    check [label="Wurde in diesem\nDurchlauf getauscht?", shape=diamond, fillcolor="#FFF3CD"];
+    cont [label="Weiter mit dem\nnächsten Durchlauf"];
+    done [label="Array ist sortiert\n→ Abbruch", shape=ellipse, fillcolor="#D4EDDA"];
+
+    start -> pass;
+    pass -> check;
+    check -> cont [label="ja"];
+    check -> done [label="nein"];
+    cont -> start;
+}
