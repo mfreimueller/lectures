@@ -40,11 +40,7 @@ model into database tables.
    - Revisions
    - Active Participation
    - Exercise Completion
-
-<div class="highlight-box">
-<p>You <strong>must</strong> hand in <strong>at least 50%</strong> of the exercises for a positive grade.</p>
-</ul>
-</div>
+   - Project
 
 ---
 
