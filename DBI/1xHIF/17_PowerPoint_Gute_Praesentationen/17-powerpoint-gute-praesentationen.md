@@ -1,0 +1,232 @@
+---
+marp: true
+theme: spengergasse
+paginate: true
+size: 16:9
+lang: de
+---
+
+<!-- _class: lead -->
+
+# 17 - Gute Präsentationen: Inhalt & Formate
+## DBI - 1xHIF
+
+---
+
+## Agenda (1/3)
+
+1. Die 10/20/30-Regel
+2. 10 Folien
+3. 30 Punkt Schriftgröße
+4. Less is More
+5. Eine Aussage pro Folie
+6. Bilder statt Text
+7. Aufbau einer Präsentation
+
+---
+
+## Agenda (2/3)
+
+8. Titelfolie & Agenda
+9. Inhalt & Zusammenfassung
+10. Kontrast & Farben
+11. Einheitlichkeit
+12. Weißraum & Animationen
+13. Schriftarten
+14. Dos & Don'ts
+
+---
+
+## Agenda (3/3)
+
+15. Format-Vielfalt: Pecha Kucha
+16. Format-Vielfalt: Nur Bilder
+17. Anti-Beispiel reparieren
+
+---
+
+## Lernziele
+
+- Ich kenne die 10/20/30-Regel für Präsentationen
+- Ich kann Folien mit wenig Text und klaren Aussagen gestalten
+- Ich kann den typischen Aufbau einer Präsentation anwenden
+- Ich achte auf Kontrast, Einheitlichkeit und passende Schriftarten
+- Ich kenne die Dos & Don'ts guter Foliengestaltung
+- Ich kenne alternative Präsentationsformate (Pecha Kucha, reine Bildfolien)
+
+---
+
+## Was macht eine gute Präsentation aus?
+
+Überlegt kurz zu zweit: Was ist euch schon einmal positiv oder negativ aufgefallen?
+
+- Zu viel Text?
+- Unleserliche Schrift?
+- Unübersichtliche Folien?
+- Oder: Klar, verständlich, ansprechend?
+
+---
+
+## Die 10/20/30-Regel
+
+Von Guy Kawasaki (Apple)
+
+| Regel | Bedeutung |
+| --- | --- |
+| **10** | Maximal 10 Folien |
+| **20** | Maximal 20 Minuten Vortragszeit |
+| **30** | Schriftgröße mindestens 30 Punkt |
+
+---
+
+## 10 Folien
+
+- Nicht mehr als 10 Folien pro Präsentation
+- Eine Folie pro 2 Minuten Vortragszeit
+- Jede Folie vermittelt genau **eine** Kernaussage
+- Weniger Folien = mehr Konzentration auf das Wesentliche
+
+---
+
+## 30 Punkt Schriftgröße
+
+- Mindestens 30 pt für Fließtext
+- Überschriften: 36-44 pt
+- Das bedeutet: Maximal 6-8 Zeilen pro Folie
+- Wenn nicht alles auf die Folie passt: Kürzen!
+
+---
+
+## Less is More
+
+- Nie mehr als 6-8 Zeilen pro Folie
+- Nie mehr als 6-8 Wörter pro Zeile
+- Stichworte statt ganzer Sätze
+- **Goldene Regel:** Wenn der Zuschauer die Folie liest, hört er dir nicht zu
+
+---
+
+## Eine Aussage pro Folie
+
+- Jede Folie vermittelt genau einen Gedanken
+- Nicht mehrere Themen auf eine Folie packen
+- Sonst: Zuhörer wissen nicht, worauf sie achten sollen
+
+---
+
+## Bilder statt Text
+
+- Ein Bild sagt mehr als tausend Worte
+- Diagramme, Screenshots, Grafiken
+- Hilft beim Verständnis und bleibt besser im Gedächtnis
+- Aber: Bilder müssen eine aussagekräftig sein
+
+---
+
+## Aufbau einer Präsentation
+
+1. **Titelfolie:** Thema, Name, Datum
+2. **Agenda:** Struktur der Präsentation
+3. **Inhalt:** 3-5 Hauptpunkte
+4. **Zusammenfassung:** Kernaussagen wiederholen
+5. **Fragen / Danke:** Abschlussfolie
+
+---
+
+## Titelfolie & Agenda
+
+- **Titelfolie:** Thema, Name, Datum, Klasse
+- **Agenda:** 3-5 Punkte, Struktur zeigen
+- Die Agenda sagt dem Zuhörer, was ihn erwartet
+
+---
+
+## Inhalt & Zusammenfassung
+
+- **Inhaltsfolien:** Jeweils eine Kernaussage pro Folie
+- **Zusammenfassung:** Die wichtigsten Punkte wiederholen
+- "Sag ihnen, was du ihnen sagen wirst. Sag es ihnen. Sag ihnen, was du gesagt hast."
+
+---
+
+## Kontrast & Farben
+
+- Helle Schrift auf dunklem Hintergrund (oder umgekehrt)
+- Nicht mehr als 3-4 Farben verwenden
+- Farben bewusst einsetzen (z.B. Akzentfarbe für Wichtiges)
+- Rot-Grün-Schwäche beachten (ca. 8% der Männer)
+
+---
+
+## Einheitlichkeit
+
+- Gleiche Schriftart auf allen Folien
+- Gleiche Schriftgrößen für Überschriften und Text
+- Gleiche Farben auf allen Folien
+- Einheitlicher Aufbau (z.B. Überschrift immer oben links)
+
+---
+
+## Weißraum & Animationen
+
+- Genug Leerraum lassen - nicht überladen
+- Animationen **zurückhaltend** einsetzen
+- Nicht jeder Punkt muss hereinfliegen, drehen oder blitzen
+- Animationen nur, wenn sie das Verständnis fördern
+
+---
+
+## Schriftarten
+
+- Serifenlos für Bildschirm (Arial, Calibri, Helvetica)
+- Maximal 2 verschiedene Schriftarten
+- Einheitliche Schriftgrößen: Über=36pt, Text=30pt
+
+---
+
+## Dos & Don'ts
+
+| Erlaubt | Vermeiden |
+| --- | --- |
+| Wenige, große Folien | Textwüsten |
+| Aussagekräftige Bilder | Bunte Cliparts ohne Mehrwert |
+| Einheitliches Design | 5 verschiedene Schriftarten |
+| Kontrastreiche Farben | Gelb auf Weiß (unlesbar) |
+| Zurückhaltende Animationen | Jede Zeile fliegt einzeln ein |
+
+---
+
+## Format-Vielfalt: Pecha Kucha
+
+- **20 Folien à 20 Sekunden**, automatischer Folienwechsel
+- Zeit dafür: **Übergänge > Nach > 00:20**, bei allen Folien anwenden
+- Zwingt zu knappem, gut geübtem Vortrag — keine Zeit zum Ablesen
+
+---
+
+## Format-Vielfalt: Nur Bilder
+
+- Variante ganz ohne Fließtext — jede Folie ist **ausschließlich** ein Bild/Diagramm
+- Der ganze Inhalt kommt aus dem gesprochenen Wort
+- Extremform von „Less is More" — zeigt, wie viel Text eigentlich unnötig ist
+
+---
+
+## Anti-Beispiel reparieren
+
+**Auftrag:** Ihr bekommt eine bewusst schlecht gestaltete Folie.
+
+1. Benennt **jeden einzelnen** Kritikpunkt konkret
+2. Baut dieselbe Kernaussage als **gute** Folie neu
+
+---
+
+<!-- _class: invert -->
+
+## Zusammenfassung
+
+- 10/20/30-Regel: max. 10 Folien, 20 Minuten, mind. 30 pt Schrift
+- Weniger Text, mehr aussagekräftige Bilder
+- Eine Kernaussage pro Folie
+- Einheitliches Design mit kontrastreichen Farben
+- Pecha Kucha und reine Bildfolien sind extreme, aber lehrreiche Formatvarianten

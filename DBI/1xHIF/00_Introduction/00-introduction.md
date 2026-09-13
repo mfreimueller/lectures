@@ -71,9 +71,9 @@ PLÜ = Praktische Leistungsüberprüfung
 | Phase | Wochen |
 |---|---|
 | Word | 00–08 |
-| Excel | 09–17 |
-| PowerPoint | 18–24 |
-| Datenformate (Markdown, AsciiDoc, CSV, JSON) | 25–31 |
+| Excel | 09–14 |
+| PowerPoint | 15–21 |
+| Datenformate (Markdown, AsciiDoc, CSV, JSON) | 22–28 |
 
 **2 PLÜs:** Word, Excel
 
