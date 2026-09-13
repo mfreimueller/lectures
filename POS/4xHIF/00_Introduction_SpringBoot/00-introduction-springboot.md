@@ -45,7 +45,7 @@ lang: de
 ## Wiederholung: Stack der 3. Klasse
 
 - Java 21+ (Records, Streams, Optional, Pattern Matching)
-- JUnit 5, Mockito, AssertJ
+- JUnit Jupiter, Mockito, AssertJ
 - SOLID Prinzipien, TDD, Layered Architecture
 - JDBC, JPA, Hibernate, PostgreSQL
 - HTTP, REST, Jakarta Servlet API (manuelles Request-Handling, Routing, JSON Serialisierung)
