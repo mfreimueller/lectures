@@ -73,7 +73,7 @@ lang: en
 
 ## Topic Block 2: Testing & Design
 
-- JUnit 5, AssertJ, parameterized tests
+- JUnit Jupiter, AssertJ, parameterized tests
 - TDD: Red-Green-Refactor
 - SOLID principles with practical exercises
 - FIRST principles for good tests

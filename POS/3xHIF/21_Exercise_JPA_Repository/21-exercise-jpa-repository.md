@@ -141,4 +141,4 @@ Implement a Repository layer with generic JpaRepository and custom JPQL query me
 
 ## Now Kata 3: Integration Tests
 
-Write JUnit 5 integration tests for the Repository layer using H2 in-memory database.
+Write JUnit Jupiter integration tests for the Repository layer using H2 in-memory database.

@@ -18,7 +18,7 @@ lang: en
 1. Review: Previous Week
 2. Review: Why Testing Matters
 3. What is Unit Testing?
-4. JUnit 5 Overview
+4. JUnit Jupiter Overview
 5. Test Lifecycle
 6. Lifecycle Example
 
@@ -36,7 +36,7 @@ lang: en
 
 ## Learning Objectives
 
-- I can write JUnit 5 tests with proper lifecycle annotations
+- I can write JUnit Jupiter tests with proper lifecycle annotations
 - I can use AssertJ fluent assertions for readable test code
 - I can write parameterized tests with different data sources
 - I can test exceptions using assertThrows and assertAll
@@ -82,9 +82,9 @@ Last week: Refactoring Exercise
 
 ---
 
-## JUnit 5 Overview
+## JUnit Jupiter Overview
 
-- JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage
+- JUnit Jupiter = JUnit Platform + JUnit Jupiter + JUnit Vintage
 - JUnit Jupiter provides the programming model
 - Annotations: @Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll
 
@@ -99,7 +99,7 @@ void testAddition() {
 
 ## Now Kata 1: Calculator Tests
 
-Write JUnit 5 tests for a Calculator class covering addition, subtraction, multiplication, and division.
+Write JUnit Jupiter tests for a Calculator class covering addition, subtraction, multiplication, and division.
 
 ---
 
@@ -241,7 +241,7 @@ Write parameterized tests for a StringUtils class using @CsvSource to test multi
 
 ## Summary
 
-- JUnit 5 is the standard testing framework for Java
+- JUnit Jupiter is the standard testing framework for Java
 - Lifecycle annotations control setup and teardown
 - AssertJ provides fluent, readable assertions
 - Parameterized tests reduce duplication

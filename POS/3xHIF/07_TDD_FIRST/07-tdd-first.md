@@ -15,7 +15,7 @@ lang: de
 
 ## Agenda (1/2)
 
-1. Review: JUnit 5
+1. Review: JUnit Jupiter
 2. Review: Why Write Tests?
 3. What is TDD?
 4. Why TDD?
@@ -46,7 +46,7 @@ lang: de
 
 ---
 
-## Review: JUnit 5
+## Review: JUnit Jupiter
 
 - @Test, @BeforeEach, @AfterEach
 - AssertJ for fluent assertions

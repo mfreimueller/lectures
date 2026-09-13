@@ -448,7 +448,7 @@ private int counter = 0; // not thread-safe!
 
 ## Now Kata 3: Test the Service Layer
 
-Write JUnit 5 tests for TodoService using AssertJ and optionally Mockito.
+Write JUnit Jupiter tests for TodoService using AssertJ and optionally Mockito.
 
 ---
 

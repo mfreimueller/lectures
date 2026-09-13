@@ -27,12 +27,7 @@ lang: en
 ## Agenda (2/2)
 
 7. IDE Setup
-8. Local Variable Type Inference
-9. var Restrictions
-10. var with Collections
-11. Records (Java 16+)
-12. Record Features
-13. Using Records
+8. Homework
 
 ---
 
@@ -41,8 +36,6 @@ lang: en
 - I know the structure of this class
 - I know the grading criteria of this class
 - I can set up a Java development environment with JDK, Maven, and an IDE
-- I can use var to declare local variables when the type is obvious
-- I can define and use Records as immutable data carriers
 - I can create a Maven project and manage dependencies
 
 ---
@@ -60,10 +53,12 @@ Our (programming / SE) goals:
 ## Course Topics
 
 - Java Language Features (Records, Sealed Classes, Pattern Matching)
-- Streams and Functional Programming
+- Streams
 - Testing with JUnit Jupiter and TDD
 - SOLID Principles
-- Project Work (WMC)
+- Threading
+- JDBC
+- Basic Web Server
 
 ---
 
@@ -85,7 +80,7 @@ Our (programming / SE) goals:
   - Practical exercises
   - Revisions
   - Active participation
-  - WMC project
+  - WMC project (replaces the 4th PLÜ)
 
 ---
 
@@ -172,124 +167,12 @@ Your tasks in your group:
 
 ---
 
-## Local Variable Type Inference
-
-Introduced in Java 10: `var` keyword
-
-```java
-// Before (Java 9 and earlier)
-String message = "Hello, World!";
-List<String> names = new ArrayList<>();
-// After (Java 10+)
-var message = "Hello, World!";
-var names = new ArrayList<String>();
-```
-
-<div class="highlight-box">
-<p>
-        Rule: Use var when the type is obvious from the right-hand side.
-    </p>
-</div>
-
----
-
-## var Restrictions
-
-- Only for local variables (not fields, method params, return types)
-- Must be initialized at declaration
-- Cannot be used with `null` initializer
-
-```java
-// Valid
-var count = 42;
-var name = "Alice";
-
-// Invalid
-var x;              // must initialize
-var y = null;       // type cannot be inferred
-```
-
----
-
-## var with Collections
-
-```java
-var names = List.of("Alice", "Bob", "Charlie");
-var map = new HashMap<String, List<Integer>>();
-
-// Iterating
-for (var entry : map.entrySet()) {
-    var key = entry.getKey();
-    var value = entry.getValue();
-}
-```
-
----
-
-## Records (Java 16+)
-
-A Record is a transparent carrier for immutable data.
-
-```java
-// After: Record
-public record Person(String name, int age) {}
-```
-
-<div class="highlight-box"><p>Records automatically generate constructor, accessors, equals, hashCode, and toString.</p></div>
-
----
-
-## Record Features
-
-```java
-public record Point(int x, int y) {
-    // Compact constructor
-    public Point {
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException("Negative coordinates");
-        }
-    }
-
-    // Additional methods
-    public double distanceFromOrigin() {
-        return Math.sqrt(x * x + y * y);
-    }
-}
-```
-
----
-
-## Reflection: When to Use Records?
-
-<div class="highlight-box">
-<p>Records are great for immutable data carriers, but when should you still use a full class? Consider: validation logic, mutable state, inheritance, and complex behavior. Can you think of a real-world example where a Record would be the wrong choice?</p>
-</div>
-
----
-
-## Using Records
-
-```java
-var p = new Point(3, 4);
-System.out.println(p.x());    // 3 (accessor, not getX!)
-System.out.println(p.y());    // 4
-System.out.println(p);         // Point[x=3, y=4]
-System.out.println(p.distanceFromOrigin()); // 5.0
-
-// Pattern matching with records (Java 21)
-if (p instanceof Point(int x, int y)) {
-    System.out.println(x + ", " + y);
-}
-```
-
----
-
 ## Summary
 
 <div class="highlight-box">
 <ul>
-<li>Set up JDK, IDE, and Maven</li>
-<li><code>var</code> simplifies local variable declarations</li>
-<li>Records provide concise immutable data carriers</li>
+<li>You know the structure and grading criteria of this class</li>
+<li>You have JDK, IntelliJ, and Maven set up and ready to go</li>
+<li>Next lesson: modern Java language features (var, Records, Optional, Switch)</li>
 </ul>
 </div>

@@ -15,7 +15,7 @@ lang: en
 
 ## Agenda (1/2)
 
-1. Review: JUnit 5 Basics
+1. Review: JUnit Jupiter Basics
 2. Review: TDD Principles
 3. Unit Testing with Mockito
 4. Repository Testing
@@ -41,7 +41,7 @@ lang: en
 
 ---
 
-## Review: JUnit 5 Basics
+## Review: JUnit Jupiter Basics
 
 ```java
 @Test
@@ -87,7 +87,7 @@ class BookServiceTest {
 
 ## Now Kata 1: Mockito Test
 
-Write JUnit 5 tests for BookService using Mockito mocks for BookRepository.
+Write JUnit Jupiter tests for BookService using Mockito mocks for BookRepository.
 
 ---
 
@@ -186,7 +186,7 @@ void shouldValidateTitle(String title, boolean expected) {
 
 ## Now Kata 3: Validation Test
 
-Write parameterized JUnit 5 tests for a BookValidator utility using @CsvSource.
+Write parameterized JUnit Jupiter tests for a BookValidator utility using @CsvSource.
 
 ---
 

@@ -84,14 +84,6 @@ Source: https://vishalchovatiya.com/posts/liskovs-substitution-principle-in-cpp-
 
 ---
 
-## Reflection: Streams vs. Loops
-
-<div class="highlight-box">
-<p>Do streams make code more readable or more cryptic? When would you prefer a traditional for-loop over a stream pipeline? Discuss with your neighbor: what makes a stream pipeline "good" vs. "over-engineered"?</p>
-</div>
-
----
-
 ## Stream Pipeline
 
 ```java
@@ -209,6 +201,14 @@ List<String> words = sentences.stream()
 
 // Result: ["Hello", "world", "Java", "streams"]
 ```
+
+---
+
+## Reflection: Streams vs. Loops
+
+<div class="highlight-box">
+<p>Do streams make code more readable or more cryptic? When would you prefer a traditional for-loop over a stream pipeline? Discuss with your neighbor: what makes a stream pipeline "good" vs. "over-engineered"?</p>
+</div>
 
 ---
 
