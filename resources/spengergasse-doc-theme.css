@@ -1,0 +1,195 @@
+/*
+ * HTL Spengergasse — Asciidoctor article theme
+ *
+ * Ports the brand colors and logo from the Marp slide theme
+ * (../../../lectures/resources/marp-theme.css) to a printable
+ * Asciidoctor "article" document. Primary red #ED1944, secondary
+ * blue #004A8D, sourced from https://www.spengergasse.at.
+ * Logo embedded as a base64 data URI so the handout stays fully
+ * self-contained (no network dependency when printing).
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500,700');
+
+:root {
+  --spg-red: #ED1944;
+  --spg-blue: #004A8D;
+  --spg-black: #1A1A1A;
+  --spg-gray: #5A5A5A;
+  --spg-light-gray: #EDEDED;
+  --spg-white: #FFFFFF;
+
+  --spg-logo: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABWAgMAAAAyBGnqAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAJUExURe0ZRO0ZRP///0hI4MEAAAABdFJOUwBA5thmAAAAAWJLR0QCZgt8ZAAAAAd0SU1FB+oHDggTMGDRGeEAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDctMTRUMDg6MTk6NDgrMDA6MDC3+VcHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA3LTE0VDA4OjE5OjQ4KzAwOjAwxqTvuwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wNy0xNFQwODoxOTo0OCswMDowMJGxzmQAAAETSURBVEjH7ZS7cQYhDISPQCWoH0ogkPpvxf8Beu1xM3bkwCYBvhHSAgvX5a3JdWys/YSbqrxwPXH6IecP7//8z3BW5HT3bjPni9y2GYXrNNLN59x8xYvPToPPuE/g4mJpmxZ+l5hcbboHut4FPXif74idx8g0lvyvXPZWjdORx7BwiZSFjxhnLvu4kaebyjr91mLCHmHLnedPgmzW4M1zx8EvtzY3wI8fjrdJUKZ5b2CafXdy4vzg5J7BsuaxjmU3H9/hLbhgWfMeljXekae3lssaH1BWogc5vq7IGVEH5FwoyJdD4erngXJQUIp68u4KnFOooyz0jbdY3DC/iXvjxSpp85z3y0VDnA+VnPke05mv8C/tcNQXqYIUvAAAAABJRU5ErkJggg==');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--spg-black);
+  background-color: var(--spg-white);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 60px 70px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4, #toctitle, .sidebarblock > .content > .title {
+  font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+  color: var(--spg-black);
+  font-weight: 700;
+}
+
+/* Document title / header block */
+#header {
+  position: relative;
+  padding-right: 60px;
+  margin-bottom: 0.6em;
+}
+
+#header::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 48px;
+  height: 44px;
+  background-image: var(--spg-logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#header h1 {
+  font-size: 2.1em;
+  color: var(--spg-red);
+  border-bottom: 4px solid var(--spg-red);
+  padding-bottom: 0.2em;
+  margin-bottom: 0.3em;
+}
+
+.doc-meta {
+  color: var(--spg-gray);
+  font-size: 1.05em;
+  margin-top: 0;
+}
+
+/* Section headings */
+h2 {
+  font-size: 1.5em;
+  border-left: 6px solid var(--spg-red);
+  padding-left: 0.4em;
+  margin-top: 1.4em;
+}
+
+h3 {
+  font-size: 1.15em;
+  color: var(--spg-blue);
+  margin-top: 1.2em;
+}
+
+/* Links */
+a {
+  color: var(--spg-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--spg-red);
+  text-decoration: underline;
+}
+
+/* Emphasis */
+strong {
+  color: var(--spg-black);
+  font-weight: 700;
+}
+
+/* Lists */
+.content ul,
+.content ol {
+  padding-left: 1.4em;
+}
+
+ul li,
+ol li {
+  margin-bottom: 0.35em;
+}
+
+/* Checklist — "Was ich bis morgen benötige" */
+ul.checklist {
+  list-style: none;
+  padding-left: 0;
+  border-left: 6px solid var(--spg-blue);
+  background-color: var(--spg-light-gray);
+  border-radius: 4px;
+  padding: 0.8em 1.2em 0.8em 1em;
+}
+
+ul.checklist li {
+  margin: 0.55em 0;
+  font-size: 1.05em;
+}
+
+ul.checklist li p {
+  margin: 0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0 1.4em;
+}
+
+table thead th,
+table th {
+  background-color: var(--spg-red);
+  color: var(--spg-white);
+  padding: 0.5em 0.7em;
+  text-align: left;
+}
+
+table td {
+  padding: 0.5em 0.7em;
+  border-bottom: 1px solid var(--spg-light-gray);
+}
+
+table tbody tr:nth-child(even) {
+  background-color: var(--spg-light-gray);
+}
+
+/* Blockquotes */
+blockquote,
+.quoteblock {
+  border-left: 6px solid var(--spg-red);
+  padding: 0.2em 0 0.2em 0.9em;
+  margin: 0.8em 0;
+  color: var(--spg-gray);
+  font-style: italic;
+}
+
+.quoteblock blockquote {
+  border-left: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Print: keep the handout legible and ink-friendly on paper */
+@media print {
+  body {
+    padding: 0;
+    max-width: none;
+  }
+
+  ul.checklist {
+    background-color: var(--spg-white);
+    border-left-color: var(--spg-black);
+  }
+
+  a {
+    color: var(--spg-black);
+    text-decoration: underline;
+  }
+}
