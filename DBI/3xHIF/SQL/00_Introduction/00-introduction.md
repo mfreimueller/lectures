@@ -63,10 +63,6 @@ Our (database / SQL) goals:
    - Active Participation
    - Exercise Completion
 
-<div class="highlight-box">
-<p>You <strong>must</strong> hand in <strong>at least 50%</strong> of the exercises for a positive grade.</p>
-</div>
-
 ---
 
 ## Course Contents (1/2)
@@ -208,8 +204,7 @@ LEFT JOIN departments d ON e.department_id = d.department_id;
 - `LEFT JOIN` keeps every row from the left table (`employees`), filling in `NULL` where
   there's no match — `INNER JOIN` would have silently dropped the unassigned employee
 - `RIGHT JOIN` is the mirror image: keeps every row from the right table instead
-- Rule of thumb: `INNER JOIN` when you only want matches, `OUTER JOIN` when you want to
-  keep unmatched rows too
+- Rule of thumb: `INNER JOIN` when you only want matches, `OUTER JOIN` when you want to keep unmatched rows too
 
 ---
 
