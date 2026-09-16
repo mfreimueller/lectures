@@ -154,16 +154,3 @@ public class BookController {
     public AuthorDTO getAuthor(BookDTO book) { ... }
 }
 ```
-
----
-
-## Katas + Projektarbeit
-
-<div class="highlight-box">
-<p>Die zweite Hälfte der Stunde gehört der Projektarbeit:</p>
-<ol>
-<li>Schließe fehlende REST-Endpoints ab</li>
-<li>Integriere Paging + HATEOAS</li>
-<li>Optional: Probiere GraphQL für deine Domäne</li>
-</ol>
-</div>

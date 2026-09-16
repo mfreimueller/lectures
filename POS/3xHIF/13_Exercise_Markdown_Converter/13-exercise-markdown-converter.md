@@ -60,12 +60,6 @@ record CodeToken(String content) implements Token {}
 
 ---
 
-## Now K1: Markdown Tokenizer
-
-Create a tokenizer that reads Markdown text and produces tokens using a sealed interface hierarchy.
-
----
-
 ## Parser and AST
 
 ```java
@@ -76,12 +70,6 @@ record CodeBlock(String code) implements Block {}
 ```
 
 The parser converts a list of tokens into a list of block-level AST nodes.
-
----
-
-## Now K2: Markdown Parser with AST
-
-Build a parser that converts tokens into an AST of Block records using sealed interfaces.
 
 ---
 
@@ -110,12 +98,6 @@ private String renderBlock(Block block) {
     };
 }
 ```
-
----
-
-## Now K3: HTML Renderer
-
-Build an HTML renderer that walks the AST and produces valid HTML output using switch expressions.
 
 ---
 

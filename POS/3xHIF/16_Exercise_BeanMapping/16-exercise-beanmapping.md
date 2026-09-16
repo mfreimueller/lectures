@@ -76,12 +76,6 @@ public class BeanMapper {
 
 ---
 
-## Now Kata 1: Basic BeanMapper
-
-Implement a basic BeanMapper that copies fields from source to target object using reflection
-
----
-
 ## Type Conversion
 
 ```java
@@ -104,12 +98,6 @@ private Object convert(Object value, Class<?> targetType) {
 
 ---
 
-## Now Kata 2: Type-converting BeanMapper
-
-Extend BeanMapper with automatic type conversion between common Java types
-
----
-
 ## Annotation-driven Mapping
 
 ```java
@@ -129,12 +117,6 @@ public class UserDto {
     private String birthDate;  // LocalDate → String
 }
 ```
-
----
-
-## Now Kata 3: Annotation-driven BeanMapper with @Mapping
-
-Extend BeanMapper with @Mapping annotation for source/target field name mapping and custom converters
 
 ---
 

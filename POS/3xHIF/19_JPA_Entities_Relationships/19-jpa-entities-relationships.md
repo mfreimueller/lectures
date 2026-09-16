@@ -159,12 +159,6 @@ tx.commit();
 
 ---
 
-## Now Kata 1: JPA Entity CRUD
-
-Create a JPA project with H2 database and implement CRUD for a Student entity
-
----
-
 ## JPQL - JPA Query Language
 
 JPQL queries entities (not tables) using Java class and field names:
@@ -197,12 +191,6 @@ List<Student> result = em.createQuery(jpql, Student.class)
 "SELECT s.* FROM student s JOIN enrollment e ON s.id = e.student_id
  JOIN course c ON e.course_id = c.id WHERE c.name = ?"
 ```
-
----
-
-## Now Kata 2: JPQL Queries
-
-Write and execute JPQL queries: find students by course, average grade, count per elective, etc.
 
 ---
 
@@ -298,12 +286,6 @@ public class Elective {
 }
 }
 ```
-
----
-
-## Now Kata 3: School Domain Relationships
-
-Model a school domain using JPA relationships (Course-Enrollment-Student, Student-Elective)
 
 ---
 

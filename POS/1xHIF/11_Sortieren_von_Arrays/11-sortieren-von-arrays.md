@@ -181,19 +181,6 @@ arr[j + 1] = temp;     // Setze gemerkten Wert an Position j+1
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Bubblesort implementieren</strong> – Implementiert den Bubblesort-Algorithmus.</li>
-<li><strong>Absteigend sortieren</strong> – Sortiert ein Array absteigend.</li>
-<li><strong>Tausch zählen</strong> – Zählt die Anzahl der Tauschvorgänge bei Bubblesort.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

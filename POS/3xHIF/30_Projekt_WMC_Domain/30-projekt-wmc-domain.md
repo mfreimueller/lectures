@@ -114,12 +114,6 @@ public class Book {
 
 ---
 
-## Now Kata 1: Entity Mapping
-
-Define 3 JPA entities (Member, MembershipCard, Loan) with 1:1 and 1:n relationships.
-
----
-
 ## n:m Relationship
 
 ```java
@@ -167,12 +161,6 @@ public class EBook extends Book {
     private double fileSizeMb;
 }
 ```
-
----
-
-## Now Kata 2: Inheritance Mapping
-
-Implement JPA inheritance with JOINED strategy for Media, Book, and DVD entities.
 
 ---
 
@@ -239,12 +227,6 @@ em.createQuery("SELECT b FROM Book b JOIN FETCH b.authors WHERE b.id = :id", Boo
 em.createQuery("SELECT COUNT(b) FROM Book b", Long.class)
     .getSingleResult();
 ```
-
----
-
-## Now Kata 3: JPQL Queries
-
-Write JPQL queries for finding books by author, active loans, category counts, and overdue loans.
 
 ---
 

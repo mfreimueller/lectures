@@ -228,19 +228,6 @@ public class Person {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Einfache Klasse</strong> – Erstellt eine einfache Klasse.</li>
-<li><strong>Attribut-Zugriff</strong> – Greift auf Attribute von Objekten zu.</li>
-<li><strong>public/private</strong> – Wendet Sichtbarkeitsmodifier an.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

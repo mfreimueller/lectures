@@ -210,20 +210,6 @@ Die Schleife läuft, bis der Benutzer "quit" eingibt
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Zahlenreihe</strong> – Gibt Zahlen von 1 bis n mit einer while-Schleife aus.</li>
-<li><strong>Summe berechnen</strong> – Berechnet die Summe von 1 bis n.</li>
-<li><strong>Gerade Zahlen</strong> – Gibt alle geraden Zahlen bis n aus.</li>
-<li><strong>Countdown</strong> – Zählt von n bis 0 rückwärts.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

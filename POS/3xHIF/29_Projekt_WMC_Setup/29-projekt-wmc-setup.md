@@ -96,12 +96,6 @@ BCrypt.Result result = BCrypt.verifyer()
 
 ---
 
-## Now Kata 1: Password Hashing
-
-Read a password, hash it with BCrypt, and verify it against the hash.
-
----
-
 ## JWT Token Authentication
 
 - JWT (JSON Web Token) for stateless auth
@@ -147,12 +141,6 @@ public class JwtUtil {
 
 ---
 
-## Now Kata 2: JWT Token Utility
-
-Create a JwtUtil class with generate and validate methods using HMAC-SHA256.
-
----
-
 ## Registration Endpoint
 
 ```java
@@ -179,12 +167,6 @@ app.post("/api/login", ctx -> {
     ctx.json(new AuthResponse(token, user));
 });
 ```
-
----
-
-## Now Kata 3: Login Endpoint
-
-Implement a POST /api/login servlet that accepts JSON, verifies credentials with BCrypt, and returns a JWT.
 
 ---
 

@@ -187,12 +187,6 @@ ctx.addServletMappingDecoded("/api/*", "api");
 
 ---
 
-## Now Kata 1: Hello Servlet
-
-Start embedded Tomcat, register servlets at /hello and /status that return plain text and JSON.
-
----
-
 ## First Servlet: doGet
 
 ```java
@@ -246,12 +240,6 @@ Test: `curl -d 'hello' http://localhost:8080/hello`
 
 ---
 
-## Now Kata 2: Query Params and POST Body
-
-Write a servlet at /echo that echoes query params on GET and request body on POST.
-
----
-
 ## Writing JSON Responses
 
 ```java
@@ -265,12 +253,6 @@ resp.getWriter().println(
 <div class="highlight-box">
 <p>Set Content-Type before writing the body.</p>
 </div>
-
----
-
-## Now Kata 3: JSON Todo API
-
-Build a servlet at /api/todos/* with GET, POST, DELETE for in-memory todo CRUD using JSON.
 
 ---
 

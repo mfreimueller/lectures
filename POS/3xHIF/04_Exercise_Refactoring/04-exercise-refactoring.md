@@ -65,24 +65,12 @@ public class Person {
 
 ---
 
-## Now Kata 1: Full Refactoring
-
-Refactor a legacy order processing system by applying multiple modern Java features at once.
-
----
-
 ## Demo: Person to Record
 
 ```java
 // After: 3 lines instead of 30+
 public record Person(String name, int age) {}
 ```
-
----
-
-## Now Kata 2: Basic Refactoring
-
-Refactor a Java 7 Employee class to use Records, lambdas, and streams.
 
 ---
 
@@ -102,27 +90,9 @@ button.addActionListener(e -> System.out.println("Clicked!"));
 
 ---
 
-## Now Kata 3: Pattern Matching and Switch Refactoring
-
-Refactor an instanceof/cast chain to use a sealed interface with a switch expression.
-
----
-
-## Now Kata 4: Streams Refactoring
-
-Convert an imperative loop-based algorithm to use streams with lambdas and method references.
-
----
-
 ## Exercise Workflow
 
 1. Review the legacy code
 2. Apply one refactoring at a time
 3. Run tests after each step
 4. Compare before and after
-
----
-
-## Now Kata 5: Full Modern Java Migration
-
-Migrate a legacy Order class to a Record with a sealed status hierarchy and modern processing patterns.

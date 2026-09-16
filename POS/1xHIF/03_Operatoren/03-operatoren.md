@@ -200,19 +200,6 @@ public class Rechteck {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Einfache Berechnungen</strong> – Führt grundlegende Rechenoperationen mit Variablen aus.</li>
-<li><strong>Ganzzahl- vs. Gleitkommadivision</strong> – Testet und vergleicht die unterschiedlichen Divisionsergebnisse.</li>
-<li><strong>Taschenrechner für eine Formel</strong> – Berechnet die Fläche eines Rechtecks.</li>
-</ul>
-</div>
-
----
-
 ## Summary
 
 <div class="highlight-box">

@@ -216,20 +216,6 @@ Kompakt und lesbar — die for-Schleife ist ideal für Zählaufgaben
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Umbau while → for</strong> – Baut eine while-Schleife in eine for-Schleife um.</li>
-<li><strong>For-Schleife rückwärts</strong> – Zählt mit einer for-Schleife rückwärts.</li>
-<li><strong>Schrittweite</strong> – Nutzt verschiedene Schrittweiten in for-Schleifen.</li>
-<li><strong>Potenzen</strong> – Berechnet Potenzen mit einer for-Schleife.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

@@ -442,12 +442,6 @@ public class PositiveInt extends Number {
 
 ---
 
-## Now Kata 9: Flexible Builder Pattern
-
-Create a Person record with validation logic in the compact constructor that checks constraints before delegating.
-
----
-
 ## Common Use Cases
 
 ```java

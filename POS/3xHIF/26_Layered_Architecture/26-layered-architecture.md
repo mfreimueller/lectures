@@ -374,12 +374,6 @@ protected void doGet(HttpServletRequest req,
 
 ---
 
-## Now Kata 1: Add a Service Layer
-
-Add a TodoService interface between Commands and Repository with validation logic.
-
----
-
 ## Registering Multiple Servlets
 
 ```java
@@ -392,12 +386,6 @@ ctx.addServletMappingDecoded("/api/users/*", "users");
 <div class="highlight-box">
 <p>Each servlet is responsible for a path range.</p>
 </div>
-
----
-
-## Now Kata 2: Split a Fat Command
-
-Extract a TodoRepository interface from a monolithic ListTodosCmd and implement InMemoryTodoRepository.
 
 ---
 
@@ -443,12 +431,6 @@ public void doGet(...) {
 // Dangerous: shared state
 private int counter = 0; // not thread-safe!
 ```
-
----
-
-## Now Kata 3: Test the Service Layer
-
-Write JUnit Jupiter tests for TodoService using AssertJ and optionally Mockito.
 
 ---
 

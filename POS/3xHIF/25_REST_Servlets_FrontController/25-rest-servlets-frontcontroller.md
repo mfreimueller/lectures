@@ -138,12 +138,6 @@ protected void service(HttpServletRequest req,
 
 ---
 
-## Now Kata 1: Front Controller Setup
-
-Build a Front Controller servlet with Command interface and route dispatching.
-
----
-
 ## Path Variable Matching
 
 - Routes like `/api/todos/{id}` need pattern matching
@@ -226,12 +220,6 @@ public class CreateTodoCmd implements Command {
 
 ---
 
-## Now Kata 2: CRUD Commands with Jackson
-
-Extend Front Controller with Todo CRUD commands using ObjectMapper.
-
----
-
 ## Structured Error Responses
 
 ```java
@@ -246,12 +234,6 @@ try {
         new ErrorResponse(500, e.getMessage()));
 }
 ```
-
----
-
-## Now Kata 3: Error Handling and Filtering
-
-Add centralized error handling, exception types, and query parameter filtering.
 
 ---
 

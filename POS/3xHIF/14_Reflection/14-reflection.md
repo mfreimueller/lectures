@@ -137,12 +137,6 @@ Class<?>[] paramTypes = ctor.getParameterTypes();
 
 ---
 
-## Now Kata 1: Class Inspector
-
-Write a utility class that uses reflection to print the structure of any given class (fields, constructors, methods)
-
----
-
 ## Dynamic Method Invocation
 
 ```java
@@ -176,12 +170,6 @@ nameField.set(p, "Bob");
 
 ---
 
-## Now Kata 2: Dynamic Getter/Setter Invoker
-
-Implement a generic utility that uses reflection to invoke all getters and setters on any Java object
-
----
-
 ## Working with Constructors
 
 ```java
@@ -203,12 +191,6 @@ Object person = ctor.newInstance("Alice", 30);
 - Introduced in Java 9: module system restricts reflective access by default
 - `--add-opens` JVM flag to open packages for reflection
 - Use with caution — breaks encapsulation and can impact security
-
----
-
-## Now Kata 3: Private Field Accessor with Validation
-
-Build a validation framework that uses reflection to read private fields and check for @NotNull constraints
 
 ---
 

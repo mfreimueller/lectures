@@ -106,12 +106,6 @@ Possible domains:
 
 ---
 
-## Now Kata 1: Project Domain Brainstorming
-
-Brainstorm 3 different project domains with tables, relationships, and inheritance.
-
----
-
 ## Database Model: 6 Tables Minimum
 
 Example: Library
@@ -121,12 +115,6 @@ Example: Library
 - Loan (1:n between User and Book)
 - Review (1:n between User and Book)
 - Inheritance: PhysicalBook vs EBook
-
----
-
-## Now Kata 2: ER Diagram
-
-Draw an ER diagram for your chosen project domain with at least 6 entities and all relationship types.
 
 ---
 
@@ -188,12 +176,6 @@ public class EBook extends Book { }
     </dependency>
 </dependencies>
 ```
-
----
-
-## Now Kata 3: Maven Project Setup
-
-Create a Maven project skeleton with proper package structure and dependencies.
 
 ---
 

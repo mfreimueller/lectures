@@ -212,19 +212,6 @@ System.out.println(zahl + 1);  // 43 (nicht "421")
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Scanner-Grundlagen</strong> – Liest verschiedene Eingabetypen mit Scanner ein.</li>
-<li><strong>Zufallszahl erraten</strong> – Implementiert ein einfaches Zahlenratespiel.</li>
-<li><strong>Einmaleins-Abfrager</strong> – Ein Programm, das Kopfrechnen mit zufälligen Aufgaben trainiert.</li>
-</ul>
-</div>
-
----
-
 ## Summary
 
 <div class="highlight-box">

@@ -99,12 +99,6 @@ public record UserResponse(Long id, String username, String email) {}
 
 ---
 
-## Now Kata 1: DTO Mapping
-
-Define User, CreateUserRequest, and UserResponse records and implement mapping between them.
-
----
-
 ## Manual Validation
 
 ```java
@@ -176,12 +170,6 @@ class Validator {
     }
 }
 ```
-
----
-
-## Now Kata 2: Custom Validation Annotations
-
-Define @NotBlank and @MinLength annotations and implement a Validator using reflection.
 
 ---
 
@@ -272,12 +260,6 @@ catch (UserNotFoundException e) {
             List.of("User ID: " + e.getUserId())));
 }
 ```
-
----
-
-## Now Kata 3: Error Handling Framework
-
-Build an error handling framework with ErrorResponse, custom exceptions, and JSON error responses.
 
 ---
 

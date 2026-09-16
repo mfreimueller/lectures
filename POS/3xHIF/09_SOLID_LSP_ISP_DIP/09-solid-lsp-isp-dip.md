@@ -115,12 +115,6 @@ interface Shape {
 
 ---
 
-## Now Kata 1: LSP -- Rectangle/Square
-
-Refactor a Square/Rectangle inheritance hierarchy to use a common Shape interface with no mutators.
-
----
-
 ## ISP: Interface Segregation Principle
 
 <div class="highlight-box">
@@ -158,12 +152,6 @@ interface Sleepable { void sleep(); }
 class HumanWorker implements Workable, Eatable, Sleepable { /* all */ }
 class RobotWorker implements Workable { /* only work */ }
 ```
-
----
-
-## Now Kata 2: ISP -- Printer Interface
-
-Split a bloated MultiFunctionPrinter interface into smaller interfaces: Printer, Scanner, FaxMachine, and Stapler.
 
 ---
 
@@ -213,24 +201,12 @@ class NotificationService {
 
 ---
 
-## Now Kata 3: DIP -- Notification System
-
-Refactor NotificationService to use a MessageSender abstraction with constructor-based dependency injection.
-
----
-
 ## DIP: Benefits
 
 - Loosely coupled code
 - Easier to test (mock abstractions)
 - Easier to swap implementations
 - Follows naturally from OCP
-
----
-
-## Now Kata 4: DIP with Factory Pattern
-
-Refactor ReportGenerator to depend on a Report abstraction via a Factory pattern for creating report types.
 
 ---
 
@@ -241,9 +217,3 @@ Refactor ReportGenerator to depend on a Report abstraction via a Factory pattern
 - **LSP:** Subtypes must be substitutable
 - **ISP:** Small, focused interfaces
 - **DIP:** Depend on abstractions
-
----
-
-## Now Kata 5: Full SOLID Refactoring
-
-Refactor a monolithic Printer class that violates LSP, ISP, and DIP into a clean, SOLID-compliant design.

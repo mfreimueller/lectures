@@ -116,12 +116,6 @@ lang: en
 
 ---
 
-## Now Kata 1: Topic Mind Map
-
-Create a mind map of all topics covered in POS organized into groups with connections.
-
----
-
 ## Key Skills Acquired
 
 - Modern Java programming (Java 17-21)
@@ -129,12 +123,6 @@ Create a mind map of all topics covered in POS organized into groups with connec
 - Object-oriented design principles
 - Database access with JDBC and JPA
 - REST API development
-
----
-
-## Now Kata 2: Year in Review
-
-Write a personal reflection on the POS year answering questions about interesting/challenging topics and favorite exercises.
 
 ---
 

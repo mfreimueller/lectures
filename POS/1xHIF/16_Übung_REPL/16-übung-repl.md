@@ -117,19 +117,6 @@ public class EchoRepl {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Echo-REPL</strong> – Baut einen einfachen Echo-REPL.</li>
-<li><strong>Zahl-REPL</strong> – Baut einen REPL für Zahlenberechnungen.</li>
-<li><strong>Taschenrechner-REPL</strong> – Baut einen REPL-Taschenrechner.</li>
-</ul>
-</div>
-
----
-
 ## REPL im Dungeon Crawler
 
 - Der Dungeon Crawler wird auf REPL umgestellt

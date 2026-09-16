@@ -91,12 +91,6 @@ A good README should contain:
 
 ---
 
-## Now Kata 1: README Documentation
-
-Write a README.md with project description, domain, tech stack, setup instructions, and API endpoints.
-
----
-
 ## API Documentation
 
 ```
@@ -112,12 +106,6 @@ Write a README.md with project description, domain, tech stack, setup instructio
 | PUT    | /api/books/{id} | Update book | Admin |
 | DELETE | /api/books/{id} | Delete book | Admin |
 ```
-
----
-
-## Now Kata 2: API Documentation
-
-Create an API documentation table listing all endpoints grouped by entity with methods, auth, and responses.
 
 ---
 
@@ -165,12 +153,6 @@ git archive -o project.zip HEAD
 - Authentication working (register + login)
 - All CRUD endpoints functional
 - Tests pass (unit + integration)
-
----
-
-## Now Kata 3: Final Review
-
-Go through the final checklist verifying all project requirements are met.
 
 ---
 

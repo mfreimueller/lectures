@@ -228,20 +228,6 @@ System.out.println("Ist eine Frage: " + istFrage);
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>String-Länge</strong> – Bestimmt die Länge von Strings.</li>
-<li><strong>Zeichen durchlaufen</strong> – Durchläuft Zeichen mit charAt.</li>
-<li><strong>equals vs. ==</strong> – Vergleicht Strings mit equals und ==.</li>
-<li><strong>startsWith / endsWith</strong> – Prüft String-Anfänge und -Enden.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

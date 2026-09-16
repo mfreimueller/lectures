@@ -70,12 +70,6 @@ public record Task(
 
 ---
 
-## Now K1: Task Record with Stream Filtering
-
-Create a Task record and TaskFilter class with stream-based filtering methods for priority, completion status, and tags.
-
----
-
 ## Repository Interface
 
 ```java
@@ -94,12 +88,6 @@ Implement all query methods using streams.
 
 ---
 
-## Now K2: InMemoryTaskRepository
-
-Define a TaskRepository interface and implement it using streams with sorted, groupingBy, and partitioningBy operations.
-
----
-
 ## CLI Command Structure
 
 ```java
@@ -112,12 +100,6 @@ switch (command) {
     default -> System.out.println("Unknown command");
 }
 ```
-
----
-
-## Now K3: CLI Shell with Switch Expressions
-
-Build an interactive CLI shell for the todo app using switch expressions for command parsing and routing.
 
 ---
 

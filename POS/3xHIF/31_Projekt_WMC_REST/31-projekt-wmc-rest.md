@@ -164,12 +164,6 @@ public class DeleteBookCmd implements Command {
 
 ---
 
-## Now Kata 1: CRUD Controller
-
-Implement Commands with full CRUD for a Book entity using the Front Controller pattern.
-
----
-
 ## DTOs: Data Transfer Objects
 
 ```java
@@ -195,12 +189,6 @@ public record CreateBookDto(
 
 ---
 
-## Now Kata 2: DTO Mapping
-
-Create DTO records (BookDto, CreateBookDto, CategoryDto) with static from(Entity) mapping methods.
-
----
-
 ## Input Validation
 
 ```java
@@ -215,12 +203,6 @@ private void validate(CreateBookDto dto) {
             String.join("; ", errors));
 }
 ```
-
----
-
-## Now Kata 3: Validation
-
-Add Jakarta Validation annotations to CreateBookDto and implement a validation utility returning 400 errors.
 
 ---
 

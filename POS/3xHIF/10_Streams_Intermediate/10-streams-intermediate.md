@@ -128,12 +128,6 @@ List<Person> named = people.stream()
 
 ---
 
-## Now Kata 1: Filter and Map
-
-Write methods that use stream filter and map operations to transform and select data from collections.
-
----
-
 ## map
 
 Transforms each element using a function.
@@ -161,12 +155,6 @@ List<Integer> lengths = names.stream()
 
 // Result: [5, 3, 7]
 ```
-
----
-
-## Now Kata 2: Advanced flatMap
-
-Use flatMap on a nested School/Department/Teacher structure with Optional fields to extract and flatten data.
 
 ---
 
@@ -212,12 +200,6 @@ List<String> words = sentences.stream()
 
 ---
 
-## Now Kata 3: flatMap Nested Collections
-
-Flatten lists of lists, extract words from sentences, and get unique characters using flatMap.
-
----
-
 ## forEach
 
 Performs an action on each element (terminal operation).
@@ -232,12 +214,6 @@ names.stream()
 <div class="highlight-box">
 <p>Prefer toList() over forEach for collecting results!</p>
 </div>
-
----
-
-## Now Kata 4: Stream Pipeline with Peek
-
-Debug stream pipelines using peek() and a custom DebugCollector to inspect intermediate results.
 
 ---
 
@@ -269,12 +245,6 @@ Optional<Integer> max = numbers.stream()
 
 max.ifPresent(System.out::println); // 9
 ```
-
----
-
-## Now Kata 5: reduce Pipeline
-
-Use reduce for sum of lengths, longest string, factorial, and concatenation with a custom delimiter.
 
 ---
 

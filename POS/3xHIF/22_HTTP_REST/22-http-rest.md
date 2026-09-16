@@ -184,12 +184,6 @@ System.out.println("Body: " + response.body());
 
 ---
 
-## Now Kata 1: Fetch Posts
-
-Create an HttpClient, send a GET request to jsonplaceholder, and print status and body.
-
----
-
 ## HttpClient: POST Request
 
 ```java
@@ -224,12 +218,6 @@ var title = response.body()
 
 ---
 
-## Now Kata 2: Parse and Filter Posts
-
-Define a Post record, fetch posts, parse JSON, filter by userId, and print titles.
-
----
-
 ## Summary
 
 - HTTP is a stateless request-response protocol
@@ -246,9 +234,3 @@ Define a Post record, fetch posts, parse JSON, filter by userId, and print title
 - Handle errors gracefully (try-catch around HTTP calls)
 - Use timeouts to avoid blocking indefinitely
 - Set proper headers (Content-Type, Accept)
-
----
-
-## Now Kata 3: REST Client Library
-
-Build a reusable REST client with GET, POST, PUT, DELETE, error handling, and custom headers.

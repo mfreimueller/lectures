@@ -231,19 +231,6 @@ System.out.println("Name: " + name);
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Variablen deklarieren</strong> – Deklariert und initialisiert Variablen aller fünf Datentypen.</li>
-<li><strong>Richtigen Typ wählen</strong> – Wählt für verschiedene Werte den passenden Datentyp.</li>
-<li><strong>Personen-Steckbrief</strong> – Erstellt einen Steckbrief mit verschiedenen Variablen.</li>
-</ul>
-</div>
-
----
-
 ## Summary
 
 <div class="highlight-box">

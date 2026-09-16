@@ -225,20 +225,6 @@ public static void main(String[] args) {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Erste Methode</strong> – Schreibt die erste eigene Methode.</li>
-<li><strong>Methode mit Parameter</strong> – Übergibt Parameter an Methoden.</li>
-<li><strong>Methode mit Rückgabewert</strong> – Gibt Werte aus Methoden zurück.</li>
-<li><strong>Boolesche Methode</strong> – Schreibt Methoden mit boolean-Rückgabe.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

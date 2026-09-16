@@ -101,12 +101,6 @@ ResultSet rs = pstmt.executeQuery();
 
 ---
 
-## Now Kata 1: SQL Injection Fix
-
-Write a vulnerable findStudentByName using Statement, then fix it with PreparedStatement
-
----
-
 ## PreparedStatement Benefits
 
 - **Security:** Prevents SQL injection via parameter separation
@@ -232,12 +226,6 @@ public class StudentDaoImpl implements StudentDao {
 
 ---
 
-## Now Kata 2: Student DAO Implementation
-
-Implement the DAO pattern for a Student entity with PreparedStatement
-
----
-
 ## DAO in Practice
 
 ```java
@@ -288,12 +276,6 @@ public class StudentDaoImpl implements StudentDao {
 }
 }
 ```
-
----
-
-## Now Kata 3: Generic Base DAO
-
-Build a generic base DAO that works with any entity type using reflection
 
 ---
 

@@ -76,12 +76,6 @@ The collect method is a terminal operation that accumulates stream elements into
 
 ---
 
-## Now Kata 1: Custom Collector
-
-Implement a StatisticsCollector that collects count, sum, min, max, and average from a stream of numbers.
-
----
-
 ## Collectors.toList()
 
 ```java
@@ -144,12 +138,6 @@ Supports prefix and suffix: `joining(", ", "[", "]")` -> "[Alice, Bob, Charlie]"
 
 ---
 
-## Now Kata 2: Collect to List, Set, Map, String
-
-Write methods using toList, toSet, toMap, and joining collectors to transform streams into various collection types.
-
----
-
 ## Collectors.groupingBy()
 
 Groups elements by a classifier function into a Map.
@@ -183,12 +171,6 @@ Map<String, Double> avgAgeByCity = people.stream()
 
 ---
 
-## Now Kata 3: Multi-level Grouping
-
-Use multi-level grouping with downstream collectors on Employee records to build complex data classifications.
-
----
-
 ## groupingBy: Mapping Downstream
 
 ```java
@@ -199,12 +181,6 @@ Map<String, List<String>> namesByCity = people.stream()
         Collectors.mapping(Person::name, Collectors.toList())
     ));
 ```
-
----
-
-## Now Kata 4: GroupingBy for Data Classification
-
-Group people by city, count per city, and extract names by city using groupingBy with downstream collectors.
 
 ---
 
@@ -234,12 +210,6 @@ Map<Boolean, Long> countEvenOdd = numbers.stream()
     ));
 // {false=3, true=3}
 ```
-
----
-
-## Now Kata 5: PartitioningBy with Downstream
-
-Partition products by price threshold using various downstream collectors like counting, summing, and averaging.
 
 ---
 

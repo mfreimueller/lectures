@@ -174,12 +174,6 @@ Common in dependency injection and ORM frameworks.
 
 ---
 
-## Now Kata 1: @ToString Annotation Processor
-
-Implement a @ToString annotation and processor that generates string representation of annotated objects
-
----
-
 ## Processing Field-level Annotations
 
 ```java
@@ -209,12 +203,6 @@ for (Method method : clazz.getDeclaredMethods()) {
     }
 }
 ```
-
----
-
-## Now Kata 2: @LogExecutionTime Annotation
-
-Define a @LogExecutionTime annotation and write a processor that measures and logs method execution time
 
 ---
 
@@ -269,12 +257,6 @@ public class Person {
 ```
 
 - Jackson uses @JsonProperty, @JsonIgnore for serialization
-
----
-
-## Now Kata 3: Annotation-driven JSON Serializer
-
-Implement a mini JSON serializer using @JsonProperty and @JsonIgnore annotations
 
 ---
 

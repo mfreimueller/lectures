@@ -98,12 +98,6 @@ Repository<T, ID> (interface)
 
 ---
 
-## Now Kata 1: Entity Layer
-
-Define all entity classes for a school management system with inheritance, value objects, and relationships.
-
----
-
 ## Testing with H2
 
 ```java
@@ -123,12 +117,6 @@ Define all entity classes for a school management system with inheritance, value
 
 ---
 
-## Now Kata 2: Repository Layer
-
-Implement a Repository layer with generic JpaRepository and custom JPQL query methods.
-
----
-
 ## Deliverables
 
 - Entity classes with proper annotations and relationships
@@ -136,9 +124,3 @@ Implement a Repository layer with generic JpaRepository and custom JPQL query me
 - Repository interface and generic implementation
 - Concrete repositories for Student, Teacher, Course
 - Integration tests verifying CRUD, relationships, queries
-
----
-
-## Now Kata 3: Integration Tests
-
-Write JUnit Jupiter integration tests for the Repository layer using H2 in-memory database.

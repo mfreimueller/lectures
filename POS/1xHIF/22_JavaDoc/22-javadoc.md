@@ -299,19 +299,6 @@ Das Ergebnis ist eine HTML-Seite wie die offizielle Java-Dokumentation!
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Methode dokumentieren</strong> – Dokumentiert Methoden mit JavaDoc.</li>
-<li><strong>Klasse dokumentieren</strong> – Dokumentiert Klassen mit JavaDoc.</li>
-<li><strong>JavaDoc generieren</strong> – Generiert HTML-Dokumentation aus JavaDoc.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 - JavaDoc = `/** ... */` für Dokumentation

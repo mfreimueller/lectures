@@ -136,12 +136,6 @@ public class UserController {
 
 ---
 
-## Now Kata 1: Endpoint Annotations
-
-Define @Endpoint and @Get annotations and use reflection to discover and print annotated classes and methods.
-
----
-
 ## Classpath Scanning
 
 ```java
@@ -202,12 +196,6 @@ void registerCommands(
                 new ObjectMapper().writeValue(
                     resp.getWriter(), result); }); } } }
 ```
-
----
-
-## Now Kata 2: Auto-Register Routes
-
-Create a RouteRegistrar that processes annotations to auto-register GET routes in an embedded Tomcat server.
 
 ---
 
@@ -284,12 +272,6 @@ public class App {
 ```
 
 This is how Spring Boot discovers @RestController classes!
-
----
-
-## Now Kata 3: Full Mini-Framework
-
-Build a complete mini-framework with @Controller, @Get, @Post, @PathVariable, @Body, and argument resolution.
 
 ---
 

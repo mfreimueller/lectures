@@ -99,12 +99,6 @@ try (Connection conn = DriverManager.getConnection(url, "postgres", "secret")) {
 
 ---
 
-## Now Kata 1: JDBC Connection
-
-Write a program that loads the PostgreSQL JDBC driver, establishes a connection, and validates it
-
----
-
 ## Connection Parameters
 
 ```java
@@ -208,12 +202,6 @@ if (deleted > 0) {
 
 ---
 
-## Now Kata 2: CRUD Operations
-
-Write a program that performs CRUD operations on a student table using Statement
-
----
-
 ## Handling SQLException
 
 ```java
@@ -258,12 +246,6 @@ try (Connection conn = DriverManager.getConnection(url, user, pass);
      // ...
 }
 ```
-
----
-
-## Now Kata 3: Transactional Batch Insert
-
-Insert multiple students within a transaction, with rollback on failure
 
 ---
 

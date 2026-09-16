@@ -203,17 +203,6 @@ for (int i = 0; i < zahlen.length; i++) {
 
 ---
 
-## Katas
-
-Löst die folgenden Katas in eurer Entwicklungsumgebung:
-
-- **Array erstellen und ausgeben** – Erstellt ein Array und gibt alle Elemente aus.
-- **Summe und Durchschnitt** – Berechnet Summe und Durchschnitt eines Arrays.
-- **Maximum suchen** – Findet das grösste Element in einem Array.
-- **Array umkehren** – Kehrt die Reihenfolge eines Arrays um.
-
----
-
 ## Zusammenfassung
 
 - Ein Array speichert mehrere Werte desselben Typs

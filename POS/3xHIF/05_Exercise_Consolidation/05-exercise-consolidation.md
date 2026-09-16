@@ -60,12 +60,6 @@ Today you will solve integrated problems that combine:
 
 ---
 
-## Now Kata 1: Contact Manager
-
-Build a contact management system using Records, Optional for safe lookups, and streams for filtering.
-
----
-
 ## Tips
 
 - Start with the data model (Records)
@@ -73,27 +67,3 @@ Build a contact management system using Records, Optional for safe lookups, and 
 - Prefer streams over loops for collections
 - Use Optional rather than null for optional values
 - Let the compiler help you with exhaustive switches
-
----
-
-## Now Kata 2: Expression Evaluator
-
-Build an arithmetic expression evaluator using a sealed class hierarchy for different operation types.
-
----
-
-## Now Kata 3: CSV Processor
-
-Read a CSV file using the Files API, parse records into Records, and process the data with streams.
-
----
-
-## Now Kata 4: Modern Java Mini-Project
-
-Build a StudentManager application with filtering, Optional lookups, and text block output.
-
----
-
-## Now Kata 5: Code Analysis and Anti-Pattern Fix
-
-Review legacy code for anti-patterns and refactor it using modern Java best practices.

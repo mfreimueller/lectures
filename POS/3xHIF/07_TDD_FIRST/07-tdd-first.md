@@ -123,12 +123,6 @@ Do not add extra functionality yet!
 
 ---
 
-## Now Kata 1: String Calculator (TDD)
-
-Implement StringCalculator incrementally following the Red-Green-Refactor cycle, starting with an empty string and adding support for delimiters.
-
----
-
 ## The TDD Cycle: Refactor
 
 <div class="highlight-box">
@@ -142,12 +136,6 @@ Implement StringCalculator incrementally following the Red-Green-Refactor cycle,
 
 ---
 
-## Now Kata 2: Roman Numerals
-
-Use strict TDD to convert integers to Roman numerals, building up from the simplest cases.
-
----
-
 ## FIRST Principles
 
 | Letter | Meaning |
@@ -157,12 +145,6 @@ Use strict TDD to convert integers to Roman numerals, building up from the simpl
 | R | **Repeatable** -- same result every time |
 | S | **Self-validating** -- pass/fail clearly |
 | T | **Timely** -- written before production code |
-
----
-
-## Now Kata 3: Prime Factors
-
-Use TDD to implement prime factorization, leveraging parameterized tests for multiple inputs.
 
 ---
 
@@ -180,12 +162,6 @@ Use TDD to implement prime factorization, leveraging parameterized tests for mul
 - No shared state between tests
 - Use @BeforeEach to create fresh objects
 - Tests should run in any order
-
----
-
-## Now Kata 4: TDD with Mockito
-
-Build UserRegistrationService using TDD with Mockito mocks to isolate the service from its dependencies.
 
 ---
 
@@ -217,12 +193,6 @@ void testFizzBuzz(int input, String expected) {
     assertThat(FizzBuzz.of(input)).isEqualTo(expected);
 }
 ```
-
----
-
-## Now Kata 5: FizzBuzz
-
-Implement FizzBuzz using strict TDD Red-Green-Refactor cycle, starting from a failing test.
 
 ---
 

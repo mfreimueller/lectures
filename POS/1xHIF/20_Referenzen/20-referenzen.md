@@ -193,19 +193,6 @@ team[0].setAlter(26); // Änderung direkt im Array
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Referenzen verstehen</strong> – Untersucht das Verhalten von Objektreferenzen.</li>
-<li><strong>null und NullPointerException</strong> – Arbeitet mit null und fängt NullPointerExceptions.</li>
-<li><strong>Objekt als Parameter</strong> – Übergibt Objekte als Methodenparameter.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 - Referenzen sind Adressen auf Objekte

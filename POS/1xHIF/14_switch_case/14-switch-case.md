@@ -238,20 +238,6 @@ switch (wahl) {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Wochentag</strong> – Gibt den Wochentag per switch-case aus.</li>
-<li><strong>Monatsname</strong> – Gibt den Monatsnamen per switch-case aus.</li>
-<li><strong>Note in Text</strong> – Übersetzt Noten in Text mit switch.</li>
-<li><strong>switch mit String</strong> – Nutzt switch mit String-Vergleichen.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

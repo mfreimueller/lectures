@@ -97,12 +97,6 @@ void testAddition() {
 
 ---
 
-## Now Kata 1: Calculator Tests
-
-Write JUnit Jupiter tests for a Calculator class covering addition, subtraction, multiplication, and division.
-
----
-
 ## Test Lifecycle
 
 - @BeforeAll: runs once before all tests (static)
@@ -137,12 +131,6 @@ class LifecycleTest {
     static void tearDownAll() { /* once */ }
 }
 ```
-
----
-
-## Now Kata 2: Test Lifecycle & AssertJ
-
-Test a ShoppingCart class using @BeforeEach/@AfterEach lifecycle methods and AssertJ fluent assertions.
 
 ---
 
@@ -189,12 +177,6 @@ assertThat(names)
 
 ---
 
-## Now Kata 3: Exception Testing
-
-Test a BankAccount class using assertThrows for expected exceptions and assertAll for grouped assertions.
-
----
-
 ## Parameterized Tests
 
 - Run the same test with different inputs
@@ -207,12 +189,6 @@ void testAddition(int a, int b, int expected) {
     assertEquals(expected, a + b);
 }
 ```
-
----
-
-## Now Kata 4: Test Coverage & Boundary Analysis
-
-Write parameterized tests for a TemperatureConverter class covering boundary cases and edge conditions.
 
 ---
 
@@ -230,12 +206,6 @@ void testPalindrome(String word) {
     assertThat(isPalindrome(word)).isTrue();
 }
 ```
-
----
-
-## Now Kata 5: String Utility Parameterized Tests
-
-Write parameterized tests for a StringUtils class using @CsvSource to test multiple input/output pairs.
 
 ---
 

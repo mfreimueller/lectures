@@ -227,12 +227,6 @@ public class Teacher extends Person {
 
 ---
 
-## Now Kata 1: Inheritance Mapping
-
-Map a Person hierarchy using both SINGLE_TABLE and JOINED strategies
-
----
-
 ## Reflection: Choosing an Inheritance Strategy
 
 <div class="highlight-box">
@@ -328,12 +322,6 @@ public class Email {
 
 ---
 
-## Now Kata 2: Value Objects
-
-Create @Embeddable Address, Email, Money and embed them in Student and Teacher entities
-
----
-
 ## Repository Pattern
 
 A Repository mediates between the domain and data mapping layers.
@@ -395,12 +383,6 @@ public class JpaRepository<T, ID> implements Repository<T, ID> {
     // ...
 }
 ```
-
----
-
-## Now Kata 3: Generic Repository
-
-Build a generic JPA Repository with transaction support
 
 ---
 

@@ -264,19 +264,6 @@ Relative Pfade beziehen sich auf das Arbeitsverzeichnis (Projektordner in der ID
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Textdatei lesen</strong> – Liest Text aus einer Datei.</li>
-<li><strong>Text in Datei schreiben</strong> – Schreibt Text in eine Datei.</li>
-<li><strong>Datei kopieren</strong> – Kopiert eine Datei.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 - `FileReader` + `BufferedReader` = Dateien lesen

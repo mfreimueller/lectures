@@ -85,12 +85,6 @@ class BookServiceTest {
 
 ---
 
-## Now Kata 1: Mockito Test
-
-Write JUnit Jupiter tests for BookService using Mockito mocks for BookRepository.
-
----
-
 ## Repository Testing
 
 ```java
@@ -131,12 +125,6 @@ void shouldCreateBookViaApi() throws Exception {
     tomcat.stop();
 }
 ```
-
----
-
-## Now Kata 2: REST Endpoint Test
-
-Write an integration test that starts embedded Tomcat, sends HTTP requests, and asserts responses.
 
 ---
 
@@ -181,12 +169,6 @@ void shouldValidateTitle(String title, boolean expected) {
     assertThat(validator.isValidTitle(title)).isEqualTo(expected);
 }
 ```
-
----
-
-## Now Kata 3: Validation Test
-
-Write parameterized JUnit Jupiter tests for a BookValidator utility using @CsvSource.
 
 ---
 

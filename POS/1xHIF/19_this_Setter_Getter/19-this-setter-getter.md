@@ -294,19 +294,6 @@ public boolean isAktiv() {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>this-Schlüsselwort</strong> – Verwendet this zur Unterscheidung von Attributen und Parametern.</li>
-<li><strong>Setter und Getter</strong> – Implementiert Setter/Getter für private Attribute.</li>
-<li><strong>Validierung im Setter</strong> – Validiert Werte im Setter vor der Zuweisung.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 - `this` = Verweis auf aktuelles Objekt

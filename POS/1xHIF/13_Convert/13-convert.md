@@ -145,19 +145,6 @@ if (zustimmen) {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>String to Int</strong> – Wandelt Strings mit Integer.parseInt in int um.</li>
-<li><strong>String to Double</strong> – Wandelt Strings mit Double.parseDouble in double um.</li>
-<li><strong>Boolean.parseBoolean</strong> – Nutzt Boolean.parseBoolean für boolean-Werte.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

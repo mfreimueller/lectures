@@ -253,20 +253,6 @@ Endlosschleife + break = "Wiederhole, bis richtig"
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>do-while Grundlagen</strong> – Nutzt do-while für eine Schleife, die mindestens einmal läuft.</li>
-<li><strong>break</strong> – Bricht eine Schleife vorzeitig ab.</li>
-<li><strong>continue</strong> – Überspringt Durchläufe mit continue.</li>
-<li><strong>Menü</strong> – Baut ein interaktives Menü mit do-while.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

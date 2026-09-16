@@ -203,19 +203,6 @@ Schritte:
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>UML lesen</strong> – Liest und interpretiert UML-Klassendiagramme.</li>
-<li><strong>UML aus Code</strong> – Erstellt UML-Diagramme aus vorhandenem Code.</li>
-<li><strong>Multiplizitäten</strong> – Modelliert Multiplizitäten in UML.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 - UML = Visuelle Darstellung von Code

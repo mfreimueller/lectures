@@ -192,19 +192,6 @@ public class Konto {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Zuweisung erkennen</strong> – Erkennt Zuweisungen in verschiedenen Code-Beispielen.</li>
-<li><strong>Werte überschreiben</strong> – Verfolgt, wie sich Variablenwerte durch Überschreiben ändern.</li>
-<li><strong>Zusammengesetzte Zuweisungen</strong> – Wendet zusammengesetzte Zuweisungen an.</li>
-</ul>
-</div>
-
----
-
 ## Summary
 
 <div class="highlight-box">

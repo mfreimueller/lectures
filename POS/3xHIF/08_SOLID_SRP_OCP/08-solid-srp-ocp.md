@@ -123,24 +123,12 @@ Each class has exactly one reason to change.
 
 ---
 
-## Now Kata 1: SRP -- Extract Responsibilities
-
-Refactor a UserService that handles validation, persistence, email, and logging into separate, focused classes.
-
----
-
 ## SRP: Benefits
 
 - Easier to understand
 - Easier to test (fewer dependencies)
 - Easier to maintain (changes are localized)
 - Better reuse (small classes compose well)
-
----
-
-## Now Kata 2: SRP - Extract Validation
-
-Extract validation, persistence, and logging from a UserController into separate, testable classes.
 
 ---
 
@@ -190,23 +178,11 @@ class Rectangle implements Shape {
 
 ---
 
-## Now Kata 3: OCP -- Reporting System
-
-Introduce a ReportFormatter interface so new output formats can be added without modifying existing code.
-
----
-
 ## OCP: Benefits
 
 - Reduces risk of introducing bugs in working code
 - Encourages reuse through interfaces
 - Supports plugin-like architectures
-
----
-
-## Now Kata 4: OCP with Specification Pattern
-
-Build a flexible product filtering system using the Specification pattern for composable, open-closed queries.
 
 ---
 
@@ -216,9 +192,3 @@ Build a flexible product filtering system using the Specification pattern for co
 - OCP: Extend behavior without modifying existing code
 - Both rely on clean abstractions
 - Both make code more maintainable
-
----
-
-## Now Kata 5: Payroll System Refactoring
-
-Refactor a Payroll class that violates both SRP and OCP, applying the Strategy pattern to separate concerns.

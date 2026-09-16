@@ -212,19 +212,6 @@ Ohne `this` würde `title = title` den Parameter mit sich selbst überschreiben!
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Default-Konstruktor</strong> – Nutzt den Standardkonstruktor.</li>
-<li><strong>Parametrisierter Konstruktor</strong> – Erstellt Konstruktoren mit Parametern.</li>
-<li><strong>Konstruktor-Überladung</strong> – Überlädt Konstruktoren.</li>
-</ul>
-</div>
-
----
-
 ## Zusammenfassung
 
 <div class="highlight-box">

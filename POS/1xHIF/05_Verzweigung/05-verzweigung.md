@@ -192,20 +192,6 @@ public class Punktestand {
 
 ---
 
-## Katas
-
-<div class="highlight-box">
-<p>Löst die folgenden Katas in eurer Entwicklungsumgebung:</p>
-<ul>
-<li><strong>Positiv, negativ oder null</strong> – Prüft mit if-else, ob eine Zahl positiv, negativ oder null ist.</li>
-<li><strong>Notenstufen</strong> – Übersetzt Punktzahlen in Notenstufen.</li>
-<li><strong>Schaltjahr</strong> – Prüft, ob ein Jahr ein Schaltjahr ist.</li>
-<li><strong>Drei Zahlen vergleichen</strong> – Findet die grösste von drei Zahlen.</li>
-</ul>
-</div>
-
----
-
 ## Summary
 
 <div class="highlight-box">
