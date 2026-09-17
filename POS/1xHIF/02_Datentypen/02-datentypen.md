@@ -24,7 +24,7 @@ lang: de
 
 ## Agenda (2/3)
 
-5. Datentyp double
+5. Datentyp float
 6. Datentyp String
 7. Datentyp char
 8. Speicherbedarf der Datentypen
@@ -102,15 +102,16 @@ int punkte = 2500;
 
 ---
 
-## Datentyp double
+## Datentyp float
 
 - Gleitkommazahlen (mit Nachkommastellen)
 - Beispiele: 3.14, -0.5, 99.99
 - Wird für Größen, Gewichte, Preise verwendet
+- Wichtig: Endet mit **f**
 
 ```java
-double koerpergroesse = 1.78;
-double preis = 19.99;
+float koerpergroesse = 1.78f;
+float preis = 19.99f;
 ```
 
 ---
@@ -151,7 +152,7 @@ char buchstabe = 'A';
 | --- | --- | --- |
 | `boolean` | 1 Bit | `true`, `false` |
 | `int` | 4 Byte (32 Bit) | -2.147.483.648 … 2.147.483.647 |
-| `double` | 8 Byte (64 Bit) | ca. ±4,9·10⁻³²⁴ … ±1,8·10³⁰⁸ |
+| `float` | 4 Byte (32 Bit) | ca. ±1,4·10⁻⁴⁵ … ±3,4·10³⁸ |
 | `char` | 2 Byte (16 Bit) | 0 … 65.535 |
 | `String` | variabel | abhängig von der Zeichenanzahl |
 
@@ -198,7 +199,7 @@ System.out.println("Alter: " + alter);
 ```java
 String name = "Max";
 int alter = 17;
-double groesse = 1.85;
+float groesse = 1.85f;
 char initial = 'M';
 boolean istVolljaehrig = false;
 System.out.println("Name: " + name);
@@ -212,7 +213,7 @@ System.out.println("Name: " + name);
 | --- | --- | --- |
 | `boolean` | Wahrheitswert | `true`, `false` |
 | `int` | Ganze Zahl | `42`, `-7` |
-| `double` | Kommazahl | `3.14`, `2.5` |
+| `float` | Kommazahl | `3.14f`, `2.5f` |
 | `String` | Text | `"Hallo"` |
 | `char` | Einzelnes Zeichen | `'A'`, `'?'` |
 
@@ -236,7 +237,7 @@ System.out.println("Name: " + name);
 <div class="highlight-box">
 <ul>
 <li>Variablen speichern Daten in festgelegten Datentypen</li>
-<li>Fünf grundlegende Typen: boolean, int, double, String, char</li>
+<li>Fünf grundlegende Typen: boolean, int, float, String, char</li>
 <li>Deklaration: Typ + Name; Initialisierung: erste Wertzuweisung</li>
 <li>Ausgabe mit System.out.println</li>
 <li>Compiler prüft Typ-Korrektheit</li>
