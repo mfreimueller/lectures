@@ -15,7 +15,6 @@ lang: en
 
 ## Agenda (1/2)
 
-1. Review: Refactoring Exam
 2. Review: From Loops to Pipelines
 3. filter
 4. filter with Objects
@@ -41,14 +40,6 @@ lang: en
 - I can use flatMap to flatten nested data structures
 - I can use reduce to combine stream elements into a single value
 - I can choose between loops and streams based on readability
-
----
-
-## Review: Refactoring Exam
-
-- You refactored a Java 7 application to modern Java
-- Records, var, Optional, switch expressions, pattern matching
-- JUnit Jupiter to verify the refactored code still works
 
 ---
 
