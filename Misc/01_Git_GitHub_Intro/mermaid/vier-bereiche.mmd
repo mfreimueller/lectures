@@ -1,0 +1,24 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    WD["Working Directory<br/><i>Datei bearbeitet</i>"]
+    STAGE["Changes<br/><i>ausgewählt (staged)</i>"]
+    LOCAL["Lokales Repository<br/><i>committed</i>"]
+    REMOTE["GitHub<br/><i>veröffentlicht</i>"]
+
+    WD -->|Checkbox aktivieren| STAGE
+    STAGE -->|"Commit to main"| LOCAL
+    LOCAL -->|"Push origin"| REMOTE
+    REMOTE -->|"Fetch / Pull origin"| LOCAL
+
+    classDef remoteStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class REMOTE remoteStyle
