@@ -25,7 +25,7 @@
 <g id="edge3" class="edge">
 <title>Tourist&#45;&#45;visits</title>
 <path fill="none" stroke="black" d="M272.03,-36.75C304.53,-32.85 354.61,-26.82 389.21,-22.66"/>
-<text xml:space="preserve" text-anchor="middle" x="316.75" y="-30.86" font-family="Helvetica,sans-Serif" font-size="13.00">(0,n)</text>
+<text xml:space="preserve" text-anchor="middle" x="326.87" y="-30.86" font-family="Helvetica,sans-Serif" font-size="13.00">n</text>
 </g>
 <!-- Tourist_Nr -->
 <g id="node4" class="node">
@@ -59,7 +59,7 @@
 <g id="edge4" class="edge">
 <title>visits&#45;&#45;City</title>
 <path fill="none" stroke="black" d="M473.39,-20.3C509.74,-22.14 559.55,-24.66 590.08,-26.2"/>
-<text xml:space="preserve" text-anchor="middle" x="517.86" y="-24.4" font-family="Helvetica,sans-Serif" font-size="13.00">(0,n)</text>
+<text xml:space="preserve" text-anchor="middle" x="527.98" y="-24.4" font-family="Helvetica,sans-Serif" font-size="13.00">n</text>
 </g>
 </g>
 </svg>

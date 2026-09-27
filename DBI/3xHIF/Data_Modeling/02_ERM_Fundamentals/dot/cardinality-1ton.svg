@@ -25,7 +25,7 @@
 <g id="edge3" class="edge">
 <title>Customer&#45;&#45;places</title>
 <path fill="none" stroke="black" d="M312.15,-37.27C346.2,-33.18 393.54,-27.48 427.93,-23.35"/>
-<text xml:space="preserve" text-anchor="middle" x="356.16" y="-31.46" font-family="Helvetica,sans-Serif" font-size="13.00">(0,n)</text>
+<text xml:space="preserve" text-anchor="middle" x="366.29" y="-31.46" font-family="Helvetica,sans-Serif" font-size="13.00">n</text>
 </g>
 <!-- Customer_Nr -->
 <g id="node4" class="node">
@@ -59,7 +59,7 @@
 <g id="edge4" class="edge">
 <title>places&#45;&#45;Order</title>
 <path fill="none" stroke="black" d="M525.91,-20.71C565,-22.68 616.5,-25.29 648.17,-26.89"/>
-<text xml:space="preserve" text-anchor="middle" x="573.17" y="-24.95" font-family="Helvetica,sans-Serif" font-size="13.00">(1,1)</text>
+<text xml:space="preserve" text-anchor="middle" x="583.29" y="-24.95" font-family="Helvetica,sans-Serif" font-size="13.00">1</text>
 </g>
 </g>
 </svg>

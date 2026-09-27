@@ -14,6 +14,6 @@ graph CardinalityNtoN {
 
     Tourist -- Tourist_Nr;
     City -- City_Name;
-    Tourist -- visits [label="(0,n)"];
-    visits -- City [label="(0,n)"];
+    Tourist -- visits [label="n"];
+    visits -- City [label="n"];
 }

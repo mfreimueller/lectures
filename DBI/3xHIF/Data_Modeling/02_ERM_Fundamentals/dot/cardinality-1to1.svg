@@ -25,7 +25,7 @@
 <g id="edge3" class="edge">
 <title>Driver&#45;&#45;has</title>
 <path fill="none" stroke="black" d="M262.99,-36.71C296.56,-32.67 350.97,-26.13 385.74,-21.95"/>
-<text xml:space="preserve" text-anchor="middle" x="310.49" y="-30.48" font-family="Helvetica,sans-Serif" font-size="13.00">(1,1)</text>
+<text xml:space="preserve" text-anchor="middle" x="320.61" y="-30.48" font-family="Helvetica,sans-Serif" font-size="13.00">1</text>
 </g>
 <!-- Driver_Nr -->
 <g id="node4" class="node">
@@ -59,7 +59,7 @@
 <g id="edge4" class="edge">
 <title>has&#45;&#45;License</title>
 <path fill="none" stroke="black" d="M455.87,-19.89C488.62,-21.54 535.97,-23.94 568.5,-25.59"/>
-<text xml:space="preserve" text-anchor="middle" x="498.31" y="-23.89" font-family="Helvetica,sans-Serif" font-size="13.00">(1,1)</text>
+<text xml:space="preserve" text-anchor="middle" x="508.44" y="-23.89" font-family="Helvetica,sans-Serif" font-size="13.00">1</text>
 </g>
 </g>
 </svg>
