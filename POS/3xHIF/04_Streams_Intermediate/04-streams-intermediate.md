@@ -8,7 +8,7 @@ lang: en
 
 <!-- _class: lead -->
 
-# 04 - Streams, Intermediate
+# 04 - Intermediate Stream Concepts
 ## POS - 3xHIF
 
 ---

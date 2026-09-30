@@ -8,7 +8,7 @@ lang: en
 
 <!-- _class: lead -->
 
-# 05 - Streams, Collectors
+# 05 - Stream Collectors
 ## POS - 3xHIF
 
 ---
