@@ -15,22 +15,21 @@ lang: en
 
 ## Agenda (1/2)
 
-1. Review: Previous Week
-2. Review: Why Testing Matters
-3. What is Unit Testing?
-4. JUnit Jupiter Overview
-5. Test Lifecycle
-6. Lifecycle Example
+1. Review: Why Testing Matters
+2. What is Unit Testing?
+3. JUnit Jupiter Overview
+4. Test Lifecycle
+5. Lifecycle Example
 
 ---
 
 ## Agenda (2/2)
 
-7. AssertJ: Fluent Assertions
-8. Common AssertJ Methods
-9. AssertJ for Collections
-10. Parameterized Tests
-11. More Parameterized Sources
+6. AssertJ: Fluent Assertions
+7. Common AssertJ Methods
+8. AssertJ for Collections
+9. Parameterized Tests
+10. More Parameterized Sources
 
 ---
 
@@ -40,16 +39,6 @@ lang: en
 - I can use AssertJ fluent assertions for readable test code
 - I can write parameterized tests with different data sources
 - I can test exceptions using assertThrows and assertAll
-
----
-
-## Review: Previous Week
-
-Last week: Streams Intro
-
-- Rewriting Java 7 loops as Stream pipelines
-- forEach, filter, map as declarative alternatives to loops
-- Less boilerplate, more expressive code
 
 ---
 
@@ -79,6 +68,77 @@ Last week: Streams Intro
 <div class="highlight-box">
 <p>Writing tests takes time away from writing features. What is the real cost of a bug that reaches production versus the time spent writing tests? Are there situations where testing might not be worth the effort? When does testing become essential?</p>
 </div>
+
+---
+
+## Structure of a Unit Test
+
+- Arrange (also: Given)
+- Act (also: When)
+- Assert (also: Then)
+
+Note, that sometimes those can be fluent.
+
+---
+
+## Arrange
+
+- Prepare your test objects
+- Example: Get a student, a desk and a bottle
+
+```java
+@Test
+void ensureThatDivideProperlyDividesTwoNumbers() {
+    // arrange
+    var calculator = new Calculator();
+    int x = 100, y = 10;
+}
+```
+
+---
+
+## Act
+
+- Perform your test
+- Example: Force the student to flip the bottle
+
+```java
+@Test
+void ensureThatDivideProperlyDividesTwoNumbers() {
+    // ...
+    // act
+    var result = calculator.divide(x, y);
+}
+```
+
+---
+
+## Assert
+
+- Compare result with your expectations
+- Example: The bottle stands without falling.
+
+```java
+@Test
+void ensureThatDivideProperlyDividesTwoNumbers() {
+    // ...
+    // assert
+    assertThat(result).isEqualTo(10);
+}
+```
+
+---
+
+## Two Paths
+
+**Happy Path**
+
+- The `happy path` tests that your function does what you expect it to do.
+
+**Edge Case**
+
+- The `edge case` tests that your function fails *expectedly*
+- Example: Hand the student a pen to flip and *expect* them to refuse.
 
 ---
 
