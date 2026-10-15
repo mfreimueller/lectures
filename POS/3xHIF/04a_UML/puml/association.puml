@@ -1,0 +1,15 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Person {
+    - name: String
+}
+class Address {
+    - street: String
+    - city: String
+}
+
+Person "1" -- "1" Address : lives at
+@enduml

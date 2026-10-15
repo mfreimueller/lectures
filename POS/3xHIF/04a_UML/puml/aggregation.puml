@@ -1,0 +1,12 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Department {
+}
+class Employee {
+}
+
+Department o-- Employee : has
+@enduml

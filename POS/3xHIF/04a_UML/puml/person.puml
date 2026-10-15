@@ -1,0 +1,13 @@
+@startuml
+
+hide empty methods
+
+class Person {
+    - name: String
+    - age: int
+
+    + Person(name: String, age: int)
+    + getName(): String
+    + setName(name: String)
+}
+@enduml

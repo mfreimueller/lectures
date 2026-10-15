@@ -1,0 +1,13 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+interface Borrowable {
+}
+
+class Book {
+}
+
+Borrowable <|.. Book
+@enduml

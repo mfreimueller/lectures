@@ -1,0 +1,16 @@
+@startuml
+
+hide empty methods
+
+class Library {
+    - name: String
+    - address: String
+    + addBook(Book)
+}
+class Book {
+    - title: String
+    - isbn: String
+    + getTitle(): String
+}
+Library "1" *-- "*" Book : contains
+@enduml

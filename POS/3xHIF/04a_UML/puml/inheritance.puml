@@ -1,0 +1,15 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Animal {
+}
+class Dog {
+}
+class Cat {
+}
+
+Animal <|-- Dog
+Animal <|-- Cat
+@enduml

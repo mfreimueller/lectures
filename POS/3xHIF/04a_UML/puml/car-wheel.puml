@@ -1,0 +1,9 @@
+@startuml
+
+hide empty attributes
+hide empty methods
+
+class Car
+class Wheel
+Car "1" -- "*" Wheel : has
+@enduml
