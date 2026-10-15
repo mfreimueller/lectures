@@ -1,0 +1,39 @@
+graph NaturalSurrogate {
+    layout=dot;
+    rankdir=TB;
+    ranksep=0.6;
+    nodesep=0.3;
+    compound=true;
+    node [fontname="Helvetica", fontsize=15];
+    edge [fontname="Helvetica", fontsize=12];
+
+    subgraph cluster_natural {
+        label=<<b>Natural key</b> — already exists in the real world>;
+        fontname="Helvetica"; fontsize=15;
+        style="rounded,dashed"; color="#888888";
+        margin=16;
+
+        City [shape=box, style=filled, fillcolor="#EDEDED"];
+        ZipCode [shape=ellipse, label=<<u>Zip Code</u>>];
+        CityName [shape=ellipse, label="Name"];
+        Population [shape=ellipse, label="Population"];
+        City -- ZipCode;
+        City -- CityName;
+        City -- Population;
+    }
+
+    subgraph cluster_surrogate {
+        label=<<b>Surrogate key</b> — introduced for identification>;
+        fontname="Helvetica"; fontsize=15;
+        style="rounded,dashed"; color="#888888";
+        margin=16;
+
+        Student [shape=box, style=filled, fillcolor="#EDEDED"];
+        StudentNumber [shape=ellipse, label=<<u>Student Number</u>>];
+        FirstName [shape=ellipse, label="First Name"];
+        LastName [shape=ellipse, label="Last Name"];
+        Student -- StudentNumber;
+        Student -- FirstName;
+        Student -- LastName;
+    }
+}
