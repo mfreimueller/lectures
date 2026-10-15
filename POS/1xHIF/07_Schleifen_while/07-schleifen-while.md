@@ -57,6 +57,10 @@ lang: de
 
 ---
 
+![bg contain Meme: Programmieren in einer Endlosschleife](programming-loop.gif)
+
+---
+
 ## Partnerdiskussion: Endlosschleifen
 
 <div class="highlight-box">
