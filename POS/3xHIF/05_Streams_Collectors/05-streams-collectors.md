@@ -63,6 +63,10 @@ lang: en
 
 ---
 
+![bg contain meme: meme](meme.jpg)
+
+---
+
 ## What is collect?
 
 The collect method is a terminal operation that accumulates stream elements into a mutable result container.
