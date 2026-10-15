@@ -65,6 +65,6 @@ footer:
       content: "{page-number}"
   verso:
     left:
-      content: $footer_recto_left_content
+      content: ~
     right:
-      content: $footer_recto_right_content
+      content: "{page-number}"
