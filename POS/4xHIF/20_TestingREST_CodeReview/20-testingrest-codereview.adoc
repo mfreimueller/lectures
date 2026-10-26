@@ -1,0 +1,122 @@
+= 20 - Testing REST AP Is & Code Review | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Testing-Strategien
+
+* *Unit-Tests* — Service-Layer (mit Mockito)
+* *Slice-Tests* — Nur ein Teil (z.B. Controller mit @WebMvcTest)
+* *Integrationstests* — Ganze Applikation (@SpringBootTest)
+
+Für REST APIs: @WebMvcTest {plus} @SpringBootTest kombinieren
+
+== @WebMvcTest — Controller Slice
+
+[source,java]
+----
+@WebMvcTest(BookController.class)
+class BookControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private BookService bookService;
+
+    @Test
+    void getAllBooks_shouldReturn200() throws Exception {
+        when(bookService.getAll(any(Pageable.class)))
+            .thenReturn(new PageImpl<>(List.of()));
+
+        mockMvc.perform(get("/api/books"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray());
+    }
+}
+----
+
+Nur der Controller wird geladen — Services werden gemockt.
+
+== JSON-Path Assertions
+
+[source,java]
+----
+mockMvc.perform(get("/api/books/1"))
+    .andExpect(status().isOk())
+    .andExpect(jsonPath("$.id").value(1))
+    .andExpect(jsonPath("$.title").value("Clean Code"))
+    .andExpect(jsonPath("$.author").isString())
+    .andExpect(jsonPath("$.author").value("Robert C. Martin"))
+    .andExpect(jsonPath("$.publicationYear").value(2008));
+
+mockMvc.perform(get("/api/books"))
+    .andExpect(jsonPath("$.content").isArray())
+    .andExpect(jsonPath("$.content.length()").value(3))
+    .andExpect(jsonPath("$.content[0].title").value("Clean Code"))
+    .andExpect(jsonPath("$.totalElements").value(42));
+----
+
+== @SpringBootTest — Integrationstest
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+class BookControllerIntegrationTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    void createAndRetrieveBook() {
+        var newBook = new BookDTO(null, "9783161484100",
+            "Clean Code", "Robert C. Martin", 2008);
+
+        var created = restTemplate.postForEntity(
+            "/api/books", newBook, BookDTO.class);
+
+        assertThat(created.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(created.getBody().id()).isNotNull();
+
+        var retrieved = restTemplate.getForEntity(
+            "/api/books/" + created.getBody().id(), BookDTO.class);
+        assertThat(retrieved.getBody().title()).isEqualTo("Clean Code");
+    }
+}
+----
+
+== Code Review — REST-APIs
+
+[.highlight-box]
+--
+* Sind alle Statuscodes korrekt? (201, 404, 409)
+* Sind Fehlerantworten konsistent?
+* Gibt es HATEOAS-Links?
+* Ist Pagination implementiert?
+* Sind DTOs von Entities getrennt?
+--
+
+== Code Review — Tests
+
+[.highlight-box]
+--
+* Gibt es Controller-Tests mit MockMvc?
+* Werden Edge Cases getestet? (404, 400, 409)
+* Gibt es Integrationstests?
+--
+
+== Peer Review Ablauf
+
+[arabic]
+. Teams tauschen Repository-Links
+. Jedes Team reviewed das Projekt eines anderen Teams (30 min)
+. Issues als GitHub-Issues dokumentieren oder in einer Tabelle festhalten
+. Besprechung: Jedes Team gibt kurzes Feedback (5 min/Team)
+. Fixes aus dem Code Review in der nächsten Projektarbeit einspielen

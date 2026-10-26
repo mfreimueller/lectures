@@ -1,0 +1,180 @@
+= 04 - Zuweisung, Anweisung | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Ausdruck (Expression)
+. Anweisung (Statement)
+. Zuweisung als Ausdruck
+
+== Agenda (2/2)
+
+[arabic, start=4]
+. Werte überschreiben
+. Zusammengesetzte Zuweisungen
+. Beispiel: Zusammengesetzte Zuweisungen
+. Zuweisung vs. Vergleich
+. Praktisches Beispiel: Kontostand
+
+== Lernziele
+
+* Ich kann Ausdrücke (Expressions) und Anweisungen (Statements) unterscheiden
+* Ich kann Zuweisungen als Ausdruck verstehen
+* Ich kann zusammengesetzte Zuweisungen verwenden
+* Ich kann Zuweisung und Vergleich auseinanderhalten
+
+== Ausdruck (Expression)
+
+* Ein Ausdruck ist ein Code-Stück, das einen Wert ergibt
+* Beispiele: `5`, `3 {plus} 4`, `x ++*++ 2`
+* Jeder Ausdruck hat einen Wert und einen Typ
+
+[source,java]
+----
+3 + 4           // Ausdruck, Wert: 7, Typ: int
+"Hallo" + "!"   // Ausdruck, Wert: "Hallo!", Typ: String
+x > 5           // Ausdruck, Wert: true/false, Typ: boolean
+----
+
+== Anweisung (Statement)
+
+* Eine Anweisung ist eine vollständige Handlung im Programm
+* Endet immer mit Semikolon `;`
+* Beispiele: Deklaration, Zuweisung, Ausgabe
+
+[source,java]
+----
+int x;                      // Deklarations-Anweisung
+x = 5;                      // Zuweisungs-Anweisung
+System.out.println(x);      // Ausgabe-Anweisung
+int y = 3 + 4;              // Deklaration + Zuweisung (Anweisung)
+----
+
+== Zuweisung als Ausdruck
+
+* Eine Zuweisung `x = wert` ist selbst ein Ausdruck!
+* Der Wert einer Zuweisung ist der zugewiesene Wert
+* Erst mit dem Semikolon wird daraus eine Anweisung
+
+[source,java]
+----
+int x;
+int y;
+y = (x = 5);    // x = 5 ist ein Ausdruck mit Wert 5
+System.out.println(x);  // 5
+System.out.println(y);  // 5
+----
+
+== Werte überschreiben
+
+* Eine Variable kann mehrfach einen neuen Wert bekommen
+* Der alte Wert wird überschrieben und ist verloren
+
+[source,java]
+----
+int x = 10;
+System.out.println(x);  // 10
+x = 20;
+System.out.println(x);  // 20
+x = x + 5;
+System.out.println(x);  // 25
+----
+
+== Zusammengesetzte Zuweisungen
+
+* Kurzschreibweisen für "Variable = Variable Operator Wert"
+
+[cols=",,,",options="header",]
+|===
+|Operator |Bedeutung |Beispiel |Ergebnis (x startet bei 10)
+|`{plus}=` |Addition |`x {plus}= 5` |15
+|`-=` |Subtraktion |`x -= 3` |7
+|`++*++=` |Multiplikation |`x ++*++= 2` |20
+|`/=` |Division |`x /= 4` |2
+|===
+
+== Beispiel: Zusammengesetzte Zuweisungen
+
+[source,java]
+----
+int punkte = 100;
+System.out.println("Start: " + punkte);     // 100
+
+punkte += 50;   // punkte = punkte + 50
+System.out.println("Nach +50: " + punkte);  // 150
+
+punkte -= 30;   // punkte = punkte - 30
+System.out.println("Nach -30: " + punkte);  // 120
+
+punkte *= 2;    // punkte = punkte * 2
+System.out.println("Nach *2: " + punkte);   // 240
+
+punkte /= 3;    // punkte = punkte / 3
+System.out.println("Nach /3: " + punkte);   // 80
+----
+
+== Zuweisung vs. Vergleich
+
+[.highlight-box]
+--
+*Achtung Verwechslungsgefahr!*
+
+* `=` ist die *Zuweisung* (weist einen Wert zu)
+* `==` ist der *Vergleich* (prüft auf Gleichheit)
+* Beides zu verwechseln ist einer der häufigsten Anfängerfehler!
+--
+
+[source,java]
+----
+int x = 5;      // Zuweisung: x bekommt den Wert 5
+boolean istGleich = (x == 5);  // Vergleich: ist x gleich 5? → true
+----
+
+== Praktisches Beispiel: Kontostand
+
+[source,java]
+----
+public class Konto {
+    public static void main(String[] args) {
+        double kontostand = 1000.0;
+        System.out.println("Start: " + kontostand + " EUR");
+
+        kontostand += 250.0;    // Einzahlung
+        System.out.println("Nach Einzahlung: " + kontostand + " EUR");
+
+        kontostand -= 80.0;     // Auszahlung
+        System.out.println("Nach Auszahlung: " + kontostand + " EUR");
+
+        kontostand *= 1.02;     // 2% Zinsen
+        System.out.println("Nach Zinsen: " + kontostand + " EUR");
+    }
+}
+----
+
+== Summary
+
+[.highlight-box]
+--
+* Ausdruck (Expression): Code, der einen Wert ergibt
+* Anweisung (Statement): vollständige Handlung, endet mit ;
+* Zuweisung = Ausdruck {plus} Semikolon = Anweisung
+* Zusammengesetzte Zuweisungen: {plus}=, -=, ++*++=, /=
+* = vs. ==: Zuweisung vs. Vergleich
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Spieler hat jetzt Lebenspunkte, die sich im Kampf ändern. Simuliert eine Kampfrunde mit zusammengesetzten Zuweisungen.
+--

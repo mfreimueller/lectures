@@ -1,0 +1,177 @@
+= 10 - Arrays | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Problem: Mehrere Werte verwalten
+. Array-Konzept
+. Array-Deklaration und Initialisierung
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Array mit Werten initialisieren
+. Zugriff über Index
+. Arrays mit for-Schleifen durchlaufen
+
+== Agenda (3/3)
+
+[arabic, start=7]
+. Die length-Eigenschaft
+. ArrayIndexOutOfBoundsException
+. Beispiel: Array befüllen und ausgeben
+
+== Lernziele
+
+* Ich kann Arrays deklarieren, initialisieren und auf Elemente zugreifen
+* Ich kann Arrays mit for-Schleifen durchlaufen
+* Ich kann die Grenzen von Arrays beachten (Index, Länge)
+
+== Problem: Mehrere Werte verwalten
+
+* Bisher: Eine Variable = ein Wert
+* Was, wenn wir 100 Noten speichern wollen?
+* Lösung: 100 einzelne Variablen? — Viel zu umständlich!
+* Wir brauchen eine *Sammlung* von Werten
+
+== Array-Konzept
+
+[.highlight-box]
+--
+Ein *Array* ist eine Sammlung von Werten *desselben Datentyps*.
+--
+
+* Alle Werte liegen *hintereinander* im Speicher
+* Jeder Wert hat eine *Nummer* (Index)
+* Der Index beginnt bei *0*
+* Die Größe eines Arrays ist *fest* (nach der Erstellung)
+
+== Array-Deklaration und Initialisierung
+
+[source,java]
+----
+// Deklaration und Initialisierung in einer Zeile:
+int[] zahlen = new int[5];
+// Äquivalent separat:
+int[] zahlen;
+zahlen = new int[5];
+----
+
+* Die `++[]++` zeigen an: "Das ist ein Array"
+* `new int++[++5++]++` erstellt ein Array mit 5 Plätzen
+* Standardwerte: 0 für Zahlen, null für Objekte
+
+== Array mit Werten initialisieren
+
+[source,java]
+----
+// Kurzform mit geschweiften Klammern:
+int[] noten = {2, 3, 1, 4, 2};
+// Äquivalent mit new int[]:
+int[] noten = new int[]{2, 3, 1, 4, 2};
+----
+
+* Geschwungene Klammern `++{++ }` mit Komma-getrennten Werten
+* Die Größe ergibt sich aus der Anzahl der Werte
+
+== Zugriff über Index
+
+[source,java]
+----
+int[] noten = {2, 3, 1, 4, 2};
+System.out.println(noten[0]);  // 2 (erstes Element)
+System.out.println(noten[2]);  // 1 (drittes Element)
+System.out.println(noten[4]);  // 2 (letztes Element)
+noten[1] = 5;  // Wert ändern: {2, 5, 1, 4, 2}
+----
+
+* Index in eckigen Klammern `++[++ ++]++`
+* Erster Index: `0`, letzter Index: `length - 1`
+
+== Arrays mit for-Schleifen durchlaufen
+
+[source,java]
+----
+int[] zahlen = {4, 8, 15, 16, 23, 42};
+
+// Alle Elemente ausgeben
+for (int i = 0; i < zahlen.length; i++) {
+    System.out.println("Index " + i + ": " + zahlen[i]);
+}
+----
+
+* Arrays und for-Schleifen sind ein *natürliches Paar*
+* Die Laufvariable `i` dient als Index
+
+== Die length-Eigenschaft
+
+[source,java]
+----
+int[] zahlen = {4, 8, 15, 16, 23, 42};
+
+System.out.println(zahlen.length);  // 6
+
+// length ist eine Eigenschaft (keine Methode!)
+// Keine Klammern bei length!
+----
+
+* Mit `length` bekommt man die Größe des Arrays
+* Wichtig: `length` ist eine *Eigenschaft*, nicht `length()`
+* Der letzte gültige Index ist immer `length - 1`
+
+== ArrayIndexOutOfBoundsException
+
+[source,java]
+----
+int[] zahlen = {4, 8, 15, 16, 23, 42};
+System.out.println(zahlen[6]);  // Fehler!
+// Array hat Größe 6, gültige Indizes: 0-5
+----
+
+[.highlight-box]
+--
+Das Programm stürzt ab mit: +
+`Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException`
+--
+
+* Zugriff auf einen Index außerhalb des gültigen Bereichs
+* Tipp: Immer `++<++ array.length` statt `++<++= array.length` verwenden
+
+== Beispiel: Array befüllen und ausgeben
+
+[source,java]
+----
+int[] zahlen = new int[10];
+
+// Befüllen mit Werten 1..10
+for (int i = 0; i < zahlen.length; i++) {
+    zahlen[i] = i + 1;
+}
+
+// Ausgeben
+for (int i = 0; i < zahlen.length; i++) {
+    System.out.println(zahlen[i]);
+}
+----
+
+== Zusammenfassung
+
+* Ein Array speichert mehrere Werte desselben Typs
+* Deklaration: `int++[]++ name = new int++[++größe++]++;`
+* Zugriff über Index: `name++[++index++]++` (beginnt bei 0)
+* `length` gibt die Größe des Arrays an
+* Arrays {plus} for-Schleifen = ideale Kombination
+
+== Jahresprojekt: Dungeon Crawler
+
+Der Spieler bekommt ein Inventar als String-Array. Gebt mit einer for-Schleife alle Items aus. Der Spieler kann ein Item über den Index auswählen.

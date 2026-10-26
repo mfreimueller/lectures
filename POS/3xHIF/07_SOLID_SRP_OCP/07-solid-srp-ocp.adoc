@@ -1,0 +1,151 @@
+= 07 - SOLID, SRP, OCP | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What are SOLID Principles?
+. SRP: Single Responsibility Principle
+. SRP: Violation Example
+. SRP: Solution
+
+== Agenda (2/2)
+
+[arabic, start=5]
+. SRP: Benefits
+. OCP: Open-Closed Principle
+. OCP: Violation Example
+. OCP: Solution
+. OCP: Benefits
+. Summary: SRP {plus} OCP
+
+== Learning Objectives
+
+* I can explain the Single Responsibility Principle and identify violations
+* I can refactor a class with multiple responsibilities into focused classes
+* I can explain the Open-Closed Principle and its benefits
+* I can use interfaces to extend behavior without modifying existing code
+* I can apply SRP and OCP together to improve code design
+
+[background-image="meme.jpg",background-size="contain"]
+== !
+
+== What are SOLID Principles?
+
+Five design principles for object-oriented programming:
+
+* **S**ingle Responsibility Principle (SRP)
+* **O**pen-Closed Principle (OCP)
+* **L**iskov Substitution Principle (LSP)
+* **I**nterface Segregation Principle (ISP)
+* **D**ependency Inversion Principle (DIP)
+
+Today: SRP and OCP
+
+== SRP: Single Responsibility Principle
+
+[.highlight-box]
+--
+"A class should have only one reason to change."
+--
+
+* Each class should do one thing well
+* If a class has multiple responsibilities, changing one may break another
+
+== SRP: Violation Example
+
+[source,java]
+----
+class Invoice {
+    void calculateTotal() { /* ... */ }
+    void printInvoice() { /* ... */ }
+    void saveToDatabase() { /* ... */ }
+    void sendEmail() { /* ... */ }
+}
+----
+
+Four responsibilities: calculation, printing, persistence, notification
+
+== SRP: Solution
+
+[source,java]
+----
+class InvoiceCalculator { /* calculate total */ }
+class InvoicePrinter { /* print */ }
+class InvoiceRepository { /* save/load */ }
+class EmailService { /* send email */ }
+----
+
+Each class has exactly one reason to change.
+
+== SRP: Benefits
+
+* Easier to understand
+* Easier to test (fewer dependencies)
+* Easier to maintain (changes are localized)
+* Better reuse (small classes compose well)
+
+== OCP: Open-Closed Principle
+
+[.highlight-box]
+--
+"Software entities should be open for extension, closed for modification."
+--
+
+* Add new functionality without changing existing code
+* Use abstraction (interfaces, abstract classes)
+
+== OCP: Violation Example
+
+[source,java]
+----
+class AreaCalculator {
+    double area(Object shape) {
+        if (shape instanceof Circle) { /* ... */ }
+        else if (shape instanceof Rectangle) { /* ... */ }
+        // Adding Square requires modifying this class
+    }
+}
+----
+
+Every new shape type requires changing AreaCalculator!
+
+== OCP: Solution
+
+[source,java]
+----
+interface Shape {
+    double area();
+}
+
+class Circle implements Shape {
+    public double area() { return Math.PI * r * r; }
+}
+
+class Rectangle implements Shape {
+    public double area() { return width * height; }
+}
+// Adding Square? Just implement Shape -- no changes needed!
+----
+
+== OCP: Benefits
+
+* Reduces risk of introducing bugs in working code
+* Encourages reuse through interfaces
+* Supports plugin-like architectures
+
+== Summary: SRP + OCP
+
+* SRP: One reason to change per class
+* OCP: Extend behavior without modifying existing code
+* Both rely on clean abstractions
+* Both make code more maintainable

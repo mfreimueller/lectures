@@ -1,0 +1,24 @@
+= 30 - Final Presentations | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Präsentationsformat
+
+* *Dauer:* 15 min {plus} 5 min Fragen
+* *Format:* Live-Demo der voll funktionsfähigen Anwendung
+* *Inhalt:* Architektur, Herausforderungen, Lessons Learned
+
+== Bewertung
+
+* Funktionsumfang der Anwendung
+* Code-Qualität & Architektur
+* Testing & Dokumentation
+* Präsentation & Demo

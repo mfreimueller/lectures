@@ -1,0 +1,250 @@
+= 01a - Constants & Enums | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/3)
+
+[arabic]
+. Constants in Java: Motivation
+. Defining Constants: static final
+. Constants: Naming & Best Practices
+. Constants: Where to Put Them
+
+== Agenda (2/3)
+
+[arabic, start=5]
+. Why Enums?
+. Enum Basics: Syntax
+. Using Enums: values(), valueOf(), ordinal()
+. Enums in switch
+
+== Agenda (3/3)
+
+[arabic, start=9]
+. Enums with Fields and Constructor
+. Enums with Methods
+. Enums with Per-Constant Behavior
+. Summary
+
+== Learning Objectives
+
+* I can define constants using static final and follow naming conventions
+* I can explain where constants should live, and avoid the "constant interface" anti-pattern
+* I can explain why enums are safer than plain int constants
+* I can define enums with fields, constructors, and methods
+* I can use enums in switch statements and expressions
+* I can give individual enum constants their own behavior
+
+== Constants in Java: Motivation
+
+* Some values are just... fixed: a tax rate, a max size, a config key
+* Naming these values avoids "magic numbers/strings" scattered through the code
+
+[source,java]
+----
+if (retries > 3) { ... }        // what does 3 mean?
+if (retries > MAX_RETRIES) { ... } // clear intent
+----
+
+== Defining Constants: static final
+
+[source,java]
+----
+public class Config {
+    public static final int MAX_RETRIES = 3;
+    public static final String DEFAULT_LOCALE = "en-US";
+    public static final double TAX_RATE = 0.20;
+}
+
+Config.MAX_RETRIES
+----
+
+[.highlight-box]
+--
+static: one shared value per class, not per instance. final: the value can only be assigned once.
+--
+
+== Constants: Naming & Best Practices
+
+* `UPPER++_++SNAKE++_++CASE` by convention
+* Prefer a small, related set of alternatives? Use an *enum*, not several constants
+* Avoid the "constant interface" anti-pattern (implementing an interface just to import its constants)
+
+[source,java]
+----
+// Anti-pattern
+interface Constants {
+    int MAX_RETRIES = 3;
+}
+class Client implements Constants { ... } // leaks into public API
+----
+
+== Constants: Where to Put Them
+
+* Close to where they're used (`private static final` inside the class)
+* In a dedicated class if shared across the codebase (`Config`, `AppConstants`)
+* Import statically when it improves readability: `import static Config.MAX++_++RETRIES;`
+
+[.highlight-box]
+--
+Enums and constants both give names to fixed values -- enums when the value is one of a closed set of alternatives, constants for standalone fixed values.
+--
+
+== Why Enums?
+
+[source,java]
+----
+public class Order {
+    public static final int PENDING = 0;
+    public static final int SHIPPED = 1;
+    public static final int DELIVERED = 2;
+
+    private int status;
+}
+
+order.status = 42; // compiles, but meaningless
+----
+
+[.highlight-box]
+--
+int constants dont restrict which values are valid, and printing them just shows a number.
+--
+
+== Enum Basics: Syntax
+
+[source,java]
+----
+public enum OrderStatus {
+    PENDING, SHIPPED, DELIVERED
+}
+----
+
+[source,java]
+----
+OrderStatus status = OrderStatus.PENDING;
+System.out.println(status); // PENDING
+----
+
+[.highlight-box]
+--
+An enum is a type with a fixed, known set of instances. The compiler rejects any value that isnt one of them.
+--
+
+== Using Enums: values(), valueOf(), ordinal()
+
+[source,java]
+----
+for (OrderStatus s : OrderStatus.values()) {
+    System.out.println(s.ordinal() + ": " + s.name());
+}
+// 0: PENDING
+// 1: SHIPPED
+// 2: DELIVERED
+
+OrderStatus s = OrderStatus.valueOf("SHIPPED");
+----
+
+[.highlight-box]
+--
+values() returns all constants in declaration order; valueOf() parses a String back into the constant (throws if unknown).
+--
+
+== Enums in switch
+
+[source,java]
+----
+String label = switch (status) {
+    case PENDING -> "Waiting for confirmation";
+    case SHIPPED -> "On its way";
+    case DELIVERED -> "Completed";
+};
+----
+
+[.highlight-box]
+--
+Since all constants are known, the compiler can check exhaustiveness -- no default needed if every constant is covered.
+--
+
+== Enums with Fields and Constructor
+
+[source,java]
+----
+public enum Planet {
+    MERCURY(3.303e+23, 2.4397e6),
+    VENUS(4.869e+24, 6.0518e6),
+    EARTH(5.976e+24, 6.37814e6);
+
+    private final double mass;
+    private final double radius;
+
+    Planet(double mass, double radius) {
+        this.mass = mass;
+        this.radius = radius;
+    }
+}
+----
+
+[.highlight-box]
+--
+Enum constructors are always private (implicitly) -- constants are the only instances that will ever exist.
+--
+
+== Enums with Methods
+
+[source,java]
+----
+public enum Planet {
+    MERCURY(3.303e+23, 2.4397e6),
+    EARTH(5.976e+24, 6.37814e6);
+
+    private static final double G = 6.67300E-11;
+    private final double mass;
+    private final double radius;
+
+    Planet(double mass, double radius) { /* ... */ }
+
+    double surfaceGravity() {
+        return G * mass / (radius * radius);
+    }
+}
+
+System.out.println(Planet.EARTH.surfaceGravity()); // 9.802...
+----
+
+== Enums with Per-Constant Behavior
+
+[source,java]
+----
+public enum Operation {
+    PLUS  { public int apply(int a, int b) { return a + b; } },
+    MINUS { public int apply(int a, int b) { return a - b; } };
+
+    public abstract int apply(int a, int b);
+}
+
+int result = Operation.PLUS.apply(3, 4); // 7
+----
+
+[.highlight-box]
+--
+Each constant can override an abstract method with its own body -- an alternative to a switch inside apply().
+--
+
+== Summary
+
+[.highlight-box]
+--
+* Constants (static final) name standalone fixed values -- static: one shared value, final: assigned once
+* Follow naming conventions (UPPER++_++SNAKE++_++CASE) and avoid the "constant interface" anti-pattern
+* Enums model a closed set of alternatives -- type-safe, with optional fields, constructors, and methods
+* Enums support switch (with exhaustiveness checking) and per-constant behavior overrides
+* Prefer enums over constants when the values are really a closed set of alternatives
+--

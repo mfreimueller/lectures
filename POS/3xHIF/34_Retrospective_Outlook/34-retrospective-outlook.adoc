@@ -1,0 +1,104 @@
+= 34 - Retrospective, Outlook | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. The POS Year in Review
+. Topic Block 1: Modern Java
+. Topic Block 2: Testing & Design
+. Topic Block 3: Streams & Functional
+. Topic Block 4: Reflection & Databases
+. Topic Block 5: REST & Architecture
+. Topic Block 6: POS-WMC Project
+
+== Agenda (2/2)
+
+[arabic, start=8]
+. Key Skills Acquired
+. Outlook: 4th Grade - Spring Boot
+. Outlook: Microservices
+. Outlook: Security
+. Outlook: Advanced Topics
+. Recommendations for Summer
+
+== Learning Objectives
+
+* I can reflect on the key topics and skills acquired throughout the POS year
+* I can identify connections between different topic blocks and how they build on each other
+* I can articulate what I want to learn next in 4th grade (Spring Boot, microservices, security)
+* I can create a personal learning plan for the summer break
+
+== The POS Year in Review
+
+* Java: from modern language features to enterprise patterns
+* 33 weeks of programming, exercises, and projects
+* From Records to REST APIs
+* From unit testing to full-stack project work
+
+== Topic Block 1: Modern Java
+
+* Records, sealed classes, pattern matching
+* Optional, switch expressions, text blocks
+* Unnamed variables, utility APIs
+* var: local variable type inference
+
+== Topic Block 2: Testing & Design
+
+* JUnit Jupiter, AssertJ, parameterized tests
+* TDD: Red-Green-Refactor
+* SOLID principles with practical exercises
+* FIRST principles for good tests
+
+== Topic Block 3: Streams & Functional
+
+* filter, map, flatMap, reduce
+* Collectors: groupingBy, partitioningBy
+* Exercise: CLI Todo App
+* Exercise: Markdown to HTML Converter
+
+== Topic Block 4: Reflection & Databases
+
+* Reflection API: Class, Methods, Fields
+* Annotations: definition, retention, processing
+* JDBC: Connection, Statement, ResultSet
+* JPA: Entities, JPQL, relationships, inheritance
+
+== Topic Block 5: REST & Architecture
+
+* HTTP, REST principles, Java HttpClient
+* Servlets & Front Controller pattern
+* DTOs, validation, error handling
+* Layered architecture: Controller, Service, Repository
+
+== Topic Block 6: POS-WMC Project
+
+* 6 weeks of project work
+* Custom domain and database model
+* Authentication, JPA entities, REST API
+* Testing, documentation, submission
+
+== Key Skills Acquired
+
+* Modern Java programming (Java 17-21)
+* Test-driven development
+* Object-oriented design principles
+* Database access with JDBC and JPA
+* REST API development
+
+== Outlook: 4th Grade - Spring Boot
+
+* Spring Boot: the industry standard for Java web apps
+* Dependency injection, auto-configuration
+* Spring Data JPA, Spring Security
+* REST with Spring MVC
+* Testing with Spring Boot Test

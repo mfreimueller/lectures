@@ -1,0 +1,111 @@
+= SQL – OUTER JOIN | DBI 2xHIF — Keeping Rows Without a Match
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. Introduction
+. Syntax
+. Example
+. INNER vs. OUTER JOIN
+. Frequent Use Case
+
+== Learning Goals
+
+* I can explain why `INNER JOIN` sometimes loses rows I want to keep
+* I can write a `LEFT`/`RIGHT OUTER JOIN`
+* I can decide when to use `INNER JOIN` vs. `OUTER JOIN`
+* I can find rows in one table that have no match in another
+
+== Introduction
+
+Remember: a join combines data from multiple tables.
+
+*Problem:* `INNER JOIN` only returns the _intersection_ between tables — rows without a +
+match on the other side disappear entirely.
+
+*Example task:* return *all* teachers, and — if they are a KV — the name of their class too.
+
+== Introduction
+
+*Solution: `OUTER JOIN`*
+
+An outer join returns the intersection between A and B, *plus* all remaining rows from +
+either table A (`LEFT JOIN`) or table B (`RIGHT JOIN`).
+
+== Syntax
+
+[source,sql]
+----
+SELECT ...
+FROM ...
+    (LEFT | RIGHT) (OUTER)? JOIN <table name>
+        ON <condition>
+WHERE ...
+----
+
+* `ON` specifies the join condition
+* You can combine `OUTER` and `INNER JOIN` clauses in the same query
+
+== Example
+
+Select the names of all teachers and, if they are a KV, the name of their class too:
+
+[source,sql]
+----
+SELECT l.L_Name, k.K_Nr
+FROM Lehrer l
+LEFT OUTER JOIN Klasse k
+    ON k.K_Vorstand = l.L_Nr;
+----
+
+== Example — Result
+
+[cols=",",options="header",]
+|===
+|L++_++Name |K++_++Nr
+|Müller |2AHIF
+|Kramer |2BHIF
+|Novak |_(NULL)_
+|===
+
+Every teacher survives — `Novak` (not a KV) simply gets `NULL` for `K++_++Nr`, instead of +
+being dropped like it would be with `INNER JOIN`.
+
+== INNER vs. OUTER JOIN
+
+* Use `INNER JOIN` when you only want rows that match a foreign key (e.g. all teachers that _are_ a KV)
+* Use `OUTER JOIN` when you want all rows, plus extra information _if_ it's available (e.g. all teachers, and their class _if_ they're a KV)
+* `LEFT` vs. `RIGHT` is just a matter of which table you list first — pick whichever reads more naturally
+
+== Frequent Use Case for OUTER JOIN
+
+Show all rows of one table where the primary key has *no* matching foreign key entry in +
+another table.
+
+*Example:* show all teachers that are _not_ a KV:
+
+[source,sql]
+----
+SELECT l.L_Name
+FROM Lehrer l
+LEFT OUTER JOIN Klasse k
+    ON k.K_Vorstand = l.L_Nr
+WHERE k.K_Vorstand IS NULL;
+----
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* `OUTER JOIN` keeps unmatched rows from one (or both) sides, filling the gap with `NULL`
+* `LEFT JOIN` keeps everything from the left table; `RIGHT JOIN` keeps everything from the right
+* Filtering for `IS NULL` on the joined column is a common way to find "rows with no match"

@@ -1,0 +1,201 @@
+= 06 - User Input – Scanner, Random | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Interaktive Programme
+. Die Scanner-Klasse
+. Scanner: nextLine() für Text
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Scanner: nextInt() für Zahlen
+. Zufallszahlen mit Random
+. Random: nextInt(bound)
+
+== Agenda (3/3)
+
+[arabic, start=7]
+. Vollständiges Beispiel: Zahlenraten
+. Hinweis: Integer.parseInt
+. Häufige Fehler
+
+== Lernziele
+
+* Ich kann mit der Scanner-Klasse Benutzereingaben einlesen
+* Ich kann mit Random Zufallszahlen erzeugen
+* Ich kann Strings mit Integer.parseInt in Zahlen umwandeln
+* Ich kann interaktive Programme entwickeln
+
+== Partneraktivität: Ein Zahlenratespiel entwerfen
+
+[.highlight-box]
+--
+Entwerft zu zweit ein einfaches Zahlenratespiel auf Papier. Eine Person denkt sich die Regeln aus, die andere fragt: «Was passiert, wenn der Benutzer … eingibt?» Spielt 2–3 Runden und besprecht Grenzfälle.
+--
+
+== Interaktive Programme
+
+* Bisher: Werte direkt in den Quellcode geschrieben
+* Interaktive Programme lesen Eingaben vom Benutzer
+* Ablauf: *Eingabe → Verarbeitung → Ausgabe*
+
+[.highlight-box]
+--
+Eingabe mit `Scanner`, Ausgabe mit `System.out.println`
+--
+
+== Die Scanner-Klasse
+
+* `Scanner` liest Benutzereingaben von der Tastatur
+* Muss importiert werden: `import java.util.Scanner;`
+* Erzeugung: `Scanner scanner = new Scanner(System.in);`
+
+[source,java]
+----
+import java.util.Scanner;
+public class Eingabe {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+    }
+}
+----
+
+== Scanner: nextLine() für Text
+
+* `nextLine()` liest eine ganze Textzeile ein
+* Gibt einen String zurück
+
+[source,java]
+----
+Scanner scanner = new Scanner(System.in);
+System.out.print("Wie heisst du? ");
+String name = scanner.nextLine();
+System.out.println("Hallo, " + name + "!");
+----
+
+== Scanner: nextInt() für Zahlen
+
+* `nextInt()` liest eine ganze Zahl ein
+* Gibt einen int zurück
+
+[source,java]
+----
+Scanner scanner = new Scanner(System.in);
+System.out.print("Wie alt bist du? ");
+int alter = scanner.nextInt();
+if (alter >= 18) {
+    System.out.println("Du bist volljaehrig.");
+}
+----
+
+== Zufallszahlen mit Random
+
+* Die Klasse `Random` erzeugt Zufallszahlen
+* Muss importiert werden: `import java.util.Random;`
+* Erzeugung: `Random random = new Random();`
+
+[source,java]
+----
+import java.util.Random;
+Random random = new Random();
+int zahl = random.nextInt(10);       // 0 bis 9
+int zahl2 = random.nextInt(10) + 1;  // 1 bis 10
+double komma = random.nextDouble();  // 0.0 bis 1.0
+----
+
+== Random: nextInt(bound)
+
+* `random.nextInt(bound)` → 0 bis bound-1
+* Für 1 bis 10: `random.nextInt(10) {plus} 1`
+* Für Würfel (1–6): `random.nextInt(6) {plus} 1`
+
+[source,java]
+----
+Random random = new Random();
+int wuerfel = random.nextInt(6) + 1;
+System.out.println("Du hast eine " + wuerfel + " gewuerfelt.");
+int muenze = random.nextInt(2);  // 0 oder 1
+System.out.println(muenze == 0 ? "Kopf" : "Zahl");
+----
+
+== Zahlenraten — Setup
+
+[source,java]
+----
+import java.util.Scanner;
+import java.util.Random;
+
+public class Zahlenraten {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int geheimzahl = random.nextInt(10) + 1;
+        System.out.print("Rate eine Zahl (1-10): ");
+----
+
+== Zahlenraten — Tipp prüfen
+
+[source,java]
+----
+        int tipp = scanner.nextInt();
+        if (tipp == geheimzahl) {
+            System.out.println("Richtig! Du hast gewonnen!");
+        } else {
+            System.out.println("Falsch. Die Zahl war " + geheimzahl);
+        }
+    }
+}
+----
+
+== Hinweis: Integer.parseInt
+
+* Manchmal möchte man einen String in eine Zahl umwandeln
+* `Integer.parseInt(text)` wandelt "123" in 123 um
+* Das Konzept wird später ausführlich behandelt (Thema Convert)
+
+[source,java]
+----
+String eingabe = "42";
+int zahl = Integer.parseInt(eingabe);
+System.out.println(zahl + 1);  // 43 (nicht "421")
+----
+
+== Häufige Fehler
+
+[.highlight-box]
+--
+* *Import vergessen:* `Scanner` und `Random` müssen importiert werden
+* *nextInt() nach nextLine():* nextInt() lässt oft einen Zeilenumbruch im Puffer — Vorsicht!
+* *Falscher bound:* `random.nextInt(10)` = 0–9, nicht 1–10
+* *Eingabe-Fehler:* Bei Text auf nextInt() → Programm stürzt ab
+--
+
+== Summary
+
+[.highlight-box]
+--
+* Scanner liest Benutzereingaben (nextLine, nextInt)
+* Random erzeugt Zufallszahlen (nextInt, nextDouble)
+* Importieren nicht vergessen: java.util.Scanner, java.util.Random
+* Interaktive Programme: Eingabe → Verarbeitung → Ausgabe
+* Integer.parseInt zum Umwandeln von String in int
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Dungeon Crawler wird interaktiv. Lest den Namen des Spielers ein und generiert einen zufälligen Gegner.
+--

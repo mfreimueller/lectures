@@ -1,0 +1,149 @@
+= 00 - Introduction | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Welcome to POS
+. Course Topics
+. Grading
+. Tooling Setup
+. Installing JDK
+. Maven Setup
+
+== Agenda (2/2)
+
+[arabic, start=7]
+. IDE Setup
+. Homework
+
+== Learning Objectives
+
+* I know the structure of this class
+* I know the grading criteria of this class
+* I can set up a Java development environment with JDK, Maven, and an IDE
+* I can create a Maven project and manage dependencies
+
+== Welcome to POS in 3rd grade HIF
+
+Our (programming / SE) goals:
+
+* Moving towards modern Java
+* Creating our first complex(ish) software
+* Thinking about software design
+
+== Course Topics
+
+* Java Language Features (Records, Sealed Classes, Pattern Matching)
+* Streams
+* Testing with JUnit Jupiter and TDD
+* SOLID Principles
+* Threading
+* JDBC
+* Basic Web Server
+
+== Grading
+
+[.highlight-box]
+--
+Programming / SE: 75%
+
+Logic: 25%
+--
+
+*You must be positive in both parts of POS.*
+
+== Grading
+
+* PLÜs: 50%
+* Mitarbeit: 50%
+** Practical exercises
+** Revisions
+** Active participation
+** WMC project (replaces the 4th PLÜ)
+
+== Tooling Setup
+
+Required tools for this course:
+
+* JDK 25
+* IntelliJ IDEA
+* Maven
+* Git for version control
+* GitHub Account
+
+== Installing JDK
+
+Download from https://adoptium.net[Adoptium] or use SDKMAN:
+
+[source,bash]
+----
+# Using SDKMAN
+sdk install java 25.0.3-tem
+java --version
+javac --version
+----
+
+== Maven Setup
+
+Install via IntelliJ or use SDKMAN:
+
+[source,bash]
+----
+# Using SDKMAN
+sdk install maven
+mvn --version
+----
+
+== IDE Setup
+
+* IntelliJ IDEA: Open the pom.xml file
+* Enable auto-import for Maven projects
+
+== Homework
+
+Complete the dev setup until the next POS lesson.
+
+== 2nd grade - Brainstorming
+
+What concepts and language constructs did you learn last year?
+
+== Collaborative Review
+
+* You will be put into groups.
+* Each group will receive one of the concepts discussed before.
+* You will work with this concept.
+* You present your results.
+
+== Collaborative Review
+
+Your tasks in your group:
+
+* What is it?
+* What problem does it solve?
+* Come up with a short code example.
+
+[.highlight-box]
+--
+Remember: You don't have to get everything right. This is about finding out what we still remember.
+--
+
+== POS 3rd Grade 🥳
+
+== Summary
+
+[.highlight-box]
+--
+* You know the structure and grading criteria of this class
+* You have JDK, IntelliJ, and Maven set up and ready to go
+* Next lesson: modern Java language features (var, Records, Optional, Switch)
+--

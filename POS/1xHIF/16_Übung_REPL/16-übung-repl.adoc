@@ -1,0 +1,112 @@
+= 16 - Übung: REPL | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. Was ist eine REPL?
+. Read-Eval-Print-Loop
+. REPL-Struktur in Code
+. Beispiel: Echo-REPL
+. REPL im Dungeon Crawler
+
+== Lernziele
+
+* Ich kann erklären, was eine REPL ist und wofür sie verwendet wird
+* Ich kann die vier Schritte Read-Eval-Print-Loop beschreiben
+* Ich kann eine REPL in Java umsetzen
+
+== REPL — Die Schritte (1/2)
+
+* **R**ead — Eingabe lesen
+* **E**val — Eingabe verarbeiten
+* **P**rint — Ergebnis ausgeben
+
+== REPL — Loop und Beispiele (2/2)
+
+* **L**oop — Wiederholen
+* Eine REPL ist ein interaktiver Befehlsinterpreter
+* Bekannte Beispiele: Python-REPL, Node.js-REPL, die Konsole in Minecraft
+
+== Read-Eval-Print-Loop
+
+[.highlight-box]
+--
+while (running) ++{++ eingabe = lesen(); // Read ergebnis = eval(eingabe); // Eval ausgeben(ergebnis); // Print } // Loop
+--
+
+== REPL-Struktur in Code
+
+[source,java]
+----
+boolean running = true;
+while (running) {
+    System.out.print("> ");
+    String eingabe = scanner.nextLine();
+    String[] teile = eingabe.split(" ", 2);
+    String befehl = teile[0].toLowerCase();
+    switch (befehl) {
+        case "echo":
+            System.out.println(teile[1]);
+            break;
+        case "exit":
+            running = false;
+            break;
+        default:
+            System.out.println("Unbekannt");
+            break;
+    }
+}
+----
+
+== Beispiel: Echo-REPL
+
+[source,java]
+----
+import java.util.Scanner;
+public class EchoRepl {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            System.out.print("> ");
+            String eingabe = scanner.nextLine();
+            if (eingabe.equals("exit")) {
+                running = false;
+            } else {
+                System.out.println(eingabe);
+            }
+        }
+        System.out.println("Programm beendet.");
+        scanner.close();
+    }
+}
+----
+
+== REPL im Dungeon Crawler
+
+* Der Dungeon Crawler wird auf REPL umgestellt
+* Befehle: hilfe, status, gehe, kämpfe, inventar, quit
+* Die Befehlsauswertung erfolgt mit switch auf dem ersten Wort
+* So wird das Spiel viel flexibler und erweiterbarer
+
+[.highlight-box]
+--
+Heute: Katas {plus} Exercise — baut eure eigene REPL!
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Stelle den Dungeon Crawler auf eine REPL-Architektur um.
+--

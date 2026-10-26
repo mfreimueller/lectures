@@ -1,0 +1,193 @@
+= 07 - Schleifen – while | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Wiederholung im Alltag
+. Konzept der Wiederholung
+. Die while-Schleife: Syntax
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Beispiel: Zahlen 1 bis 10
+. Zählvariablen-Pattern
+. While mit Zählvariable: Ablauf
+. Endlosschleifen
+
+== Agenda (3/3)
+
+[arabic, start=8]
+. Endlosschleifen vermeiden
+. Beispiel: Summe 1 bis n
+. Beispiel: While mit User Input
+
+== Lernziele
+
+* Ich kann das Konzept von Wiederholungen erklären
+* Ich kann die while-Schleife anwenden
+* Ich kann Endlosschleifen erkennen und vermeiden
+* Ich kann while-Schleifen mit Benutzereingaben kombinieren
+
+[background-image="programming-loop.gif",background-size="contain"]
+== !
+
+== Wiederholung im Alltag
+
+* Jeden Morgen: Wecker klingelt → aufstehen → Zähne putzen → ...
+* Sport: 10 Wiederholungen einer Übung
+* Musik: Ein Lied läuft in einer Schleife
+* Immer das gleiche Muster: *etwas wiederholen*
+
+== Konzept der Wiederholung
+
+* Ein Programm soll manche Anweisungen mehrfach ausführen
+* Beispiel: "Gib die Zahlen von 1 bis 10 aus"
+* Ohne Schleife: 10 mal `System.out.println()`
+* Mit Schleife: eine Anweisung, die 10 mal läuft
+* Eine *Schleife* wiederholt Code, solange eine Bedingung gilt
+
+== Die while-Schleife: Syntax
+
+[source,java]
+----
+while (Bedingung) {
+    // Schleifenkörper - wird wiederholt
+}
+----
+
+* *Bedingung:* Ein boolean-Ausdruck (true/false)
+* *Schleifenkörper:* Wird ausgeführt, solange die Bedingung true ist
+* Vor jedem Durchlauf wird die Bedingung geprüft
+* Ist die Bedingung false, wird die Schleife beendet
+
+== Beispiel: Zahlen 1 bis 10
+
+[source,java]
+----
+int i = 1;
+while (i <= 10) {
+    System.out.println(i);
+    i++;
+}
+----
+
+* `i` ist die *Zählvariable*
+* Startwert: 1
+* Bedingung: i ++<++= 10
+* `i{plus}{plus}` erhöht i nach jedem Durchlauf
+
+== Zählvariablen-Pattern
+
+[source,java]
+----
+int i = 0;          // 1. Initialisierung
+while (i < 10) {    // 2. Bedingung
+    // ... mache etwas ...
+    i++;            // 3. Inkrement
+}
+----
+
+* Drei Teile: *Initialisierung, Bedingung, Inkrement*
+* Oft startet man bei 0 (Programmierkonvention)
+* Oder bei 1 (mathematisch)
+* Das `++<++` vs. `++<++=` bestimmt die Anzahl der Durchläufe
+
+== While mit Zählvariable: Ablauf
+
+[source,java]
+----
+// Start: i=0 → 0<10 → true → ausführen → i=1
+// ... i=1,2,...,8 → Bedingung true → ausführen
+// i=9 → 9<10 → true → ausführen → i=10
+// i=10 → 10<10 → false → ENDE
+----
+
+10 Durchläufe: i = 0, 1, 2, ..., 9
+
+== Endlosschleifen
+
+[source,java]
+----
+int i = 1;
+while (i <= 10) {
+    System.out.println("Hallo");
+    // i++ fehlt!
+}
+----
+
+* Was passiert? `i` bleibt immer 1
+* Die Bedingung `i ++<++= 10` ist immer true
+* Die Schleife läuft *ewig* → Endlosschleife
+* Abbruch mit `Strg {plus} C` (oder Stop-Knopf in IDE)
+
+== Endlosschleifen vermeiden
+
+[.highlight-box]
+--
+*Merke:* Jede Schleife muss die Bedingung irgendwann false machen!
+--
+
+* Die Zählvariable muss sich *ändern*
+* Das Inkrement darf nicht fehlen
+* Die Bedingung muss *irgendwann* false werden
+* Tipp: Schreibe zuerst die Zählvariable und das Inkrement
+
+== Beispiel: Summe 1 bis n
+
+[source,java]
+----
+int n = 100;
+int summe = 0;
+int i = 1;
+
+while (i <= n) {
+    summe = summe + i;
+    i++;
+}
+
+System.out.println("Summe 1.." + n + " = " + summe);
+----
+
+== Beispiel: While mit User Input
+
+[source,java]
+----
+Scanner scanner = new Scanner(System.in);
+String eingabe = "";
+
+while (!eingabe.equals("quit")) {
+    System.out.print("Befehl: ");
+    eingabe = scanner.nextLine();
+    System.out.println("Eingegeben: " + eingabe);
+} 
+----
+
+Die Schleife läuft, bis der Benutzer "quit" eingibt
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* Die `while`-Schleife wiederholt Code, solange eine Bedingung true ist
+* Zählvariablen-Pattern: Initialisierung, Bedingung, Inkrement
+* Endlosschleifen entstehen, wenn die Bedingung nie false wird
+* Mit while können wir benutzerdefinierte Wiederholungen steuern
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Dungeon Crawler bekommt eine Spielschleife: Der Spieler wird solange nach einer Aktion gefragt, bis er "quit" eingibt. Verwendet eine while-Schleife.
+--

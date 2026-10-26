@@ -1,0 +1,181 @@
+= 04 - Intermediate Stream Concepts | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic, start=2]
+. filter
+. filter with Objects
+. map
+. map with Method References
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. flatMap
+. flatMap Example: Words
+. forEach
+. reduce
+. reduce: Finding Max
+. Summary
+
+== Learning Objectives
+
+* I can use filter and map to transform collections declaratively
+* I can use flatMap to flatten nested data structures
+* I can use reduce to combine stream elements into a single value
+* I can choose between loops and streams based on readability
+
+[background-image="meme.webp",background-size="contain"]
+== !
+
+== filter
+
+Selects elements that match a predicate.
+
+[source,java]
+----
+List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+
+List<Integer> even = numbers.stream()
+    .filter(n -> n % 2 == 0)
+    .toList();
+
+// Result: [2, 4, 6]
+----
+
+== filter with Objects
+
+[source,java]
+----
+List<Person> adults = people.stream()
+    .filter(p -> p.age() >= 18)
+    .toList();
+
+List<Person> named = people.stream()
+    .filter(p -> p.name() != null)
+    .filter(p -> !p.name().isEmpty())
+    .toList();
+----
+
+== map
+
+Transforms each element using a function.
+
+[source,java]
+----
+List<String> names = List.of("alice", "bob", "charlie");
+
+List<String> upper = names.stream()
+    .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+    .toList();
+
+// Result: ["Alice", "Bob", "Charlie"]
+----
+
+== map with Method References
+
+[source,java]
+----
+List<String> names = List.of("Alice", "Bob", "Charlie");
+
+List<Integer> lengths = names.stream()
+    .map(String::length)
+    .toList();
+
+// Result: [5, 3, 7]
+----
+
+== flatMap
+
+Flattens nested structures into a single stream.
+
+[source,java]
+----
+List<List<Integer>> nested = List.of(
+    List.of(1, 2), List.of(3, 4), List.of(5, 6)
+);
+
+List<Integer> flat = nested.stream()
+    .flatMap(List::stream)
+    .toList();
+
+// Result: [1, 2, 3, 4, 5, 6]
+----
+
+== flatMap Example: Words
+
+[source,java]
+----
+List<String> sentences = List.of(
+    "Hello world", "Java streams"
+);
+
+List<String> words = sentences.stream()
+    .flatMap(s -> Arrays.stream(s.split(" ")))
+    .toList();
+
+// Result: ["Hello", "world", "Java", "streams"]
+----
+
+== forEach
+
+Performs an action on each element (terminal operation).
+
+[source,java]
+----
+List<String> names = List.of("Alice", "Bob", "Charlie");
+names.stream()
+    .filter(n -> n.length() > 3)
+    .forEach(System.out::println);
+----
+
+[.highlight-box]
+--
+Prefer toList() over forEach for collecting results!
+--
+
+== reduce
+
+Combines all elements into a single value.
+
+[source,java]
+----
+List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+
+int sum = numbers.stream()
+    .reduce(0, (a, b) -> a + b);
+
+int product = numbers.stream()
+    .reduce(1, (a, b) -> a * b);
+
+// sum = 15, product = 120
+----
+
+== reduce: Finding Max
+
+[source,java]
+----
+List<Integer> numbers = List.of(3, 7, 2, 9, 5);
+
+Optional<Integer> max = numbers.stream()
+    .reduce(Integer::max);
+
+max.ifPresent(System.out::println); // 9
+----
+
+== Summary
+
+* Streams enable declarative data processing
+* Intermediate ops: filter, map, flatMap
+* Terminal ops: forEach, reduce, collect
+* Lazy evaluation makes pipelines efficient

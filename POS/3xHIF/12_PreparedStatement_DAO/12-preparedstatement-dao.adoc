@@ -1,0 +1,274 @@
+= 12 - Prepared Statement, DAO | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. SQL Injection - The Problem
+. SQL Injection Demo
+. PreparedStatement to the Rescue
+. PreparedStatement Benefits
+. Using PreparedStatement - INSERT
+. Using PreparedStatement - SELECT
+
+== Agenda (2/2)
+
+[arabic, start=7]
+. Batch Processing
+. DAO Pattern - Motivation
+. DAO Interface
+. DAO Implementation
+. DAO in Practice
+. DAO with Connection Pooling
+
+== Learning Objectives
+
+* I can explain how SQL injection works and why string concatenation in SQL is dangerous
+* I can replace vulnerable Statement code with parameterized PreparedStatement queries
+* I can use batch processing to improve bulk operation performance
+* I can implement the DAO pattern to separate data access from business logic
+* I can integrate a DAO with connection pooling for production-ready data access
+
+== SQL Injection - The Problem
+
+SQL injection occurs when untrusted user input is concatenated directly into SQL queries.
+
+[source,java]
+----
+// Vulnerable code
+String username = request.getParameter("username"); // user input: ' OR '1'='1
+String sql = "SELECT * FROM users WHERE name = '" + username + "'";
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery(sql); // Returns ALL users!
+----
+
+[.highlight-box.danger]
+--
+The input ' OR '1'='1 transforms the WHERE clause into: WHERE name = '' OR '1'='1' - which is always TRUE!
+--
+
+== SQL Injection Demo
+
+Input: `'; DROP TABLE students; --`
+
+[source,sql]
+----
+-- Original query
+SELECT * FROM students WHERE name = '';
+
+-- After concatenation
+SELECT * FROM students WHERE name = ''; DROP TABLE students; --'
+----
+
+[.highlight-box.danger]
+--
+This deletes the entire students table! This is known as a "SQL injection attack."
+--
+
+== PreparedStatement to the Rescue
+
+PreparedStatement uses parameterized queries - SQL and data are sent separately.
+
+[source,java]
+----
+// Safe: parameterized query
+String sql = "SELECT * FROM users WHERE name = ?";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, username); // User input is treated as data, not SQL
+ResultSet rs = pstmt.executeQuery();
+----
+
+[.highlight-box]
+--
+The database driver escapes the input automatically, preventing injection.
+--
+
+== PreparedStatement Benefits
+
+* *Security:* Prevents SQL injection via parameter separation
+* *Performance:* Precompiled queries are cached by the database
+* *Type safety:* setString(), setInt(), setDate() enforce types
+* *Readability:* SQL stays clean without string concatenation
+
+== Using PreparedStatement - INSERT
+
+[source,java]
+----
+String sql = "INSERT INTO student (name, email, grade) VALUES (?, ?, ?)";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    pstmt.setString(1, "Bob");
+    pstmt.setString(2, "bob@school.com");
+    pstmt.setInt(3, 2);
+
+    int rows = pstmt.executeUpdate();
+    System.out.println(rows + " row(s) inserted.");
+}
+----
+
+== Using PreparedStatement - SELECT
+
+[source,java]
+----
+String sql = "SELECT id, name, email FROM student WHERE grade = ?";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    pstmt.setInt(1, 1); // Find all grade 1 students
+
+    try (ResultSet rs = pstmt.executeQuery()) {
+        while (rs.next()) {
+            System.out.println(rs.getInt("id") + ": " +
+                               rs.getString("name"));
+        }
+    }
+}
+----
+
+== Batch Processing
+
+Execute multiple statements as a batch for better performance:
+
+[source,java]
+----
+String sql = "INSERT INTO student (name, email) VALUES (?, ?)";
+
+try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    for (var student : students) {
+        pstmt.setString(1, student.name());
+        pstmt.setString(2, student.email());
+        pstmt.addBatch(); // Add to batch
+    }
+
+    int[] results = pstmt.executeBatch();
+    System.out.println("Inserted: " + results.length + " students");
+}
+----
+
+== DAO Pattern - Motivation
+
+DAO (Data Access Object) separates data access logic from business logic:
+
+* Interface defines the contract
+* Implementation hides SQL details
+* Business code depends on abstraction, not database
+* Easier testing with mock implementations
+
+== DAO Interface
+
+[source,java]
+----
+public interface StudentDao {
+    Optional<Student> findById(int id);
+    List<Student> findAll();
+    Student save(Student student);
+    void update(Student student);
+    void delete(int id);
+}
+----
+
+[.highlight-box]
+--
+Interfaces keep the data access contract database-independent.
+--
+
+== DAO Implementation
+
+[source,java]
+----
+public class StudentDaoImpl implements StudentDao {
+    private static final String URL = "jdbc:postgresql://...";
+
+    @Override
+    public Optional<Student> findById(int id) {
+        var sql = "SELECT * FROM student WHERE id = ?";
+        try (var conn = DriverManager.getConnection(URL, user, pass);
+             var pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            try (var rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapStudent(rs));
+                }
+            }
+        } catch (SQLException e) { throw new RuntimeException(e); }
+        return Optional.empty();
+    }
+
+    private Student mapStudent(ResultSet rs) throws SQLException {
+        return new Student(rs.getInt("id"), rs.getString("name"),
+                          rs.getString("email"), rs.getInt("grade"));
+    }
+}
+}
+----
+
+== DAO in Practice
+
+[source,java]
+----
+// Business layer uses DAO interface
+public class StudentService {
+    private final StudentDao studentDao;
+
+    public StudentService(StudentDao studentDao) {
+        this.studentDao = studentDao; // Dependency injection
+    }
+
+    public void promoteStudent(int id) {
+        var student = studentDao.findById(id)
+            .orElseThrow(() -> new NotFoundException("Student not found"));
+
+        var promoted = new Student(id, student.name(),
+                                   student.email(), student.grade() - 1);
+        studentDao.update(promoted);
+    }
+}
+----
+
+== DAO with Connection Pooling
+
+[source,java]
+----
+// Real applications use connection pools (HikariCP)
+public class StudentDaoImpl implements StudentDao {
+    private final DataSource dataSource;
+
+    public StudentDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public List<Student> findAll() {
+        var sql = "SELECT * FROM student";
+        try (var conn = dataSource.getConnection();
+             var pstmt = conn.prepareStatement(sql);
+             var rs = pstmt.executeQuery()) {
+
+            var result = new ArrayList<Student>();
+            while (rs.next()) result.add(mapStudent(rs));
+            return result;
+        } catch (SQLException e) { throw new RuntimeException(e); }
+    }
+}
+}
+----
+
+== Summary
+
+[.highlight-box]
+--
+* SQL injection is a serious security vulnerability
+* PreparedStatement prevents injection via parameterized queries
+* Batch processing improves bulk operation performance
+* DAO pattern provides clean abstraction over data access
+* Always depend on DAO interfaces, not implementations
+--

@@ -1,0 +1,414 @@
+= 14 - JPA, Inheritance, Value Objects | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. JPA Inheritance Overview
+. SINGLE++_++TABLE Strategy
+. SINGLE++_++TABLE - Table Structure
+. JOINED Strategy
+. JOINED - SQL Query
+. JOINED - Table Structure
+. TABLE++_++PER++_++CLASS Strategy
+. TABLE++_++PER++_++CLASS - Table Structure
+
+== Agenda (2/2)
+
+[arabic, start=9]
+. Inheritance Strategy Comparison
+. Value Objects with @Embeddable
+. Using @Embedded
+. Value Object Examples
+. Repository Pattern
+. Generic Repository Implementation
+. Transaction Management
+
+== Learning Objectives
+
+* I can explain the three JPA inheritance strategies and their trade-offs
+* I can map a class hierarchy using SINGLE++_++TABLE, JOINED, or TABLE++_++PER++_++CLASS
+* I can create value objects with @Embeddable and embed them with @Embedded
+* I can implement a generic JPA Repository for type-safe data access
+* I can manage transactions with explicit begin/commit/rollback boundaries
+
+== JPA Inheritance Overview
+
+JPA supports three strategies for mapping class inheritance to database tables:
+
+* *SINGLE++_++TABLE:* One table for the entire hierarchy
+* *JOINED:* One table per class, joined via foreign keys
+* *TABLE++_++PER++_++CLASS:* One table per concrete class
+
+[source,java]
+----
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+}
+----
+
+== SINGLE_TABLE Strategy
+
+All classes in the hierarchy map to one database table.
+
+[source,java]
+----
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+@DiscriminatorValue("STU")
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+
+@Entity
+@DiscriminatorValue("TCH")
+public class Teacher extends Person {
+    private String employeeId;
+    private String subject;
+}
+----
+
+== SINGLE_TABLE - Table Structure
+
+[cols=",,,,,,",options="header",]
+|===
+|id |person++_++type |name |studentId |grade |employeeId |subject
+|1 |STU |Alice |S123 |1 |NULL |NULL
+|2 |TCH |Mr. Smith |NULL |NULL |T456 |Math
+|===
+
+[.highlight-box]
+--
+*Pros:* No JOINs, fast queries +
+*Cons:* Many nullable columns, violates normalization
+--
+
+== JOINED Strategy
+
+Each class gets its own table; subclasses reference the parent via foreign key.
+
+[source,java]
+----
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+----
+
+== JOINED - SQL Query
+
+[source,sql]
+----
+-- Queries require JOIN between person and student tables
+SELECT p.id, p.name, s.studentId, s.grade
+FROM Person p JOIN Student s ON p.id = s.id
+----
+
+== JOINED - Table Structure
+
+++++
+<table>
+<tr><th colspan="2">person</th></tr>
+<tr><td>id (PK)</td><td>name</td></tr>
+<tr><td>1</td><td>Alice</td></tr>
+</table>
+++++
+
+++++
+<table>
+<tr><th colspan="3">student</th></tr>
+<tr><td>id (PK, FK)</td><td>studentId</td><td>grade</td></tr>
+<tr><td>1</td><td>S123</td><td>1</td></tr>
+</table>
+++++
+
+[.highlight-box]
+--
+*Pros:* Normalized, no nulls +
+*Cons:* JOINs required for queries
+--
+
+== TABLE_PER_CLASS Strategy
+
+Each concrete class has its own complete table.
+
+[source,java]
+----
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Person {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+public class Student extends Person {
+    private String studentId;
+    private int grade;
+}
+
+@Entity
+public class Teacher extends Person {
+    private String employeeId;
+    private String subject;
+}
+----
+
+== TABLE_PER_CLASS - Table Structure
+
+++++
+<table>
+<tr><th colspan="4">student</th></tr>
+<tr><td>id</td><td>name</td><td>studentId</td><td>grade</td></tr>
+<tr><td>1</td><td>Alice</td><td>S123</td><td>1</td></tr>
+</table>
+++++
+
+++++
+<table>
+<tr><th colspan="4">teacher</th></tr>
+<tr><td>id</td><td>name</td><td>employeeId</td><td>subject</td></tr>
+<tr><td>2</td><td>Mr. Smith</td><td>T456</td><td>Math</td></tr>
+</table>
+++++
+
+[.highlight-box]
+--
+*Pros:* No JOINs, no nullable columns +
+*Cons:* Duplicate columns, UNION for polymorphic queries
+--
+
+== Inheritance Strategy Comparison
+
+[cols=",,,",options="header",]
+|===
+|Feature |SINGLE++_++TABLE |JOINED |TABLE++_++PER++_++CLASS
+|Tables |1 |N (per class) |N (per concrete)
+|NULL columns |Many |None |None
+|Query speed |Fastest |JOIN required |UNION for poly
+|Normalized |No |Yes |Partial
+|Polymorphic |Native |JOIN |UNION
+|===
+
+== Value Objects with @Embeddable
+
+Value objects have no identity - they are defined solely by their attributes.
+
+[source,java]
+----
+@Embeddable
+public class Address {
+    private String street;
+    private String city;
+    private String zipCode;
+    private String country;
+
+    // Required: no-arg constructor
+    public Address() {}
+
+    public Address(String street, String city, String zip, String country) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zip;
+        this.country = country;
+    }
+    // getters...
+}
+----
+
+== Using @Embedded
+
+[source,java]
+----
+@Entity
+public class Student {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+
+    @Embedded
+    private Address address;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "street", column = @Column(name = "parent_street")),
+        @AttributeOverride(name = "city",   column = @Column(name = "parent_city")),
+        @AttributeOverride(name = "zipCode", column = @Column(name = "parent_zip")),
+        @AttributeOverride(name = "country", column = @Column(name = "parent_country"))
+    })
+    private Address parentAddress;
+    // ...
+}
+----
+
+== Value Object Examples
+
+[source,java]
+----
+@Embeddable
+public class Money {
+    private BigDecimal amount;
+    private String currency; // ISO 4217 (EUR, USD)
+
+    public Money() {}
+    public Money(BigDecimal amount, String currency) { ... }
+
+    public Money add(Money other) {
+        if (!this.currency.equals(other.currency))
+            throw new IllegalArgumentException("Currency mismatch");
+        return new Money(this.amount.add(other.amount), this.currency);
+    }
+}
+
+@Embeddable
+public class Email {
+    @Column(name = "email_address")
+    private String value;
+
+    public Email() {}
+    public Email(String value) {
+        if (!value.contains("@"))
+            throw new IllegalArgumentException("Invalid email");
+        this.value = value;
+    }
+}
+----
+
+== Repository Pattern
+
+A Repository mediates between the domain and data mapping layers.
+
+[source,java]
+----
+public interface Repository<T, ID> {
+    T findById(ID id);
+    List<T> findAll();
+    T save(T entity);
+    void delete(T entity);
+    long count();
+}
+----
+
+[.highlight-box]
+--
+The Repository pattern provides a collection-like interface for domain objects.
+--
+
+== Generic Repository Implementation
+
+[source,java]
+----
+public class JpaRepository<T, ID> implements Repository<T, ID> {
+
+    private final EntityManager em;
+    private final Class<T> entityClass;
+
+    public JpaRepository(EntityManager em, Class<T> entityClass) {
+        this.em = em;
+        this.entityClass = entityClass;
+    }
+
+    @Override
+    public T findById(ID id) {
+        return em.find(entityClass, id);
+    }
+
+    @Override
+    public List<T> findAll() {
+        var cb = em.getCriteriaBuilder();
+        var query = cb.createQuery(entityClass);
+        query.select(query.from(entityClass));
+        return em.createQuery(query).getResultList();
+    }
+
+    @Override
+    public T save(T entity) {
+        if (em.contains(entity)) {
+            return em.merge(entity);
+        } else {
+            em.persist(entity);
+            return entity;
+        }
+    }
+
+    @Override
+    public void delete(T entity) {
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
+    }
+    // ...
+}
+----
+
+== Transaction Management
+
+[source,java]
+----
+public class StudentService {
+    private final Repository<Student, Long> studentRepo;
+    private final EntityManager em;
+
+    public StudentService(EntityManager em,
+                          Repository<Student, Long> studentRepo) {
+        this.em = em;
+        this.studentRepo = studentRepo;
+    }
+
+    public void transferStudent(Long studentId, Course from, Course to) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Student student = studentRepo.findById(studentId);
+            student.removeCourse(from);
+            student.addCourse(to);
+            studentRepo.save(student);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw new RuntimeException("Transfer failed", e);
+        }
+    }
+}
+----
+
+== Summary
+
+[.highlight-box]
+--
+* Three inheritance strategies: SINGLE++_++TABLE, JOINED, TABLE++_++PER++_++CLASS
+* Each strategy has different trade-offs for schema and performance
+* @Embeddable/@Embedded model value objects without identity
+* Repository pattern provides clean, type-safe data access
+* Use EntityTransaction for explicit transaction boundaries
+--

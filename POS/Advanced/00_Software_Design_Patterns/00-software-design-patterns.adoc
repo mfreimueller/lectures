@@ -1,0 +1,148 @@
+= 00 - Software Design Patterns | POS - Advanced
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Was sind Design Patterns?
+. Geschichte: Gang of Four (GoF)
+. Die drei GoF-Kategorien
+. Creational Patterns
+. Structural Patterns
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. Behavioral Patterns
+. Pattern Language
+. Warum Patterns verwenden?
+. Code-Beispiel: Pattern erkennen
+
+== Lernziele
+
+* Ich kenne die drei GoF-Kategorien (Creational, Structural, Behavioral)
+* Ich kann Beispiele für jede Kategorie nennen
+* Ich verstehe, warum Design Patterns eine gemeinsame Sprache im Team schaffen
+* Ich kann ein Pattern im Code anhand seiner Struktur erkennen
+
+== Was sind Design Patterns?
+
+* Wiederkehrende Lösungen für wiederkehrende Probleme in der Softwareentwicklung
+* Kein fertiger Code, sondern eine Vorlage / Schablone
+* Ermoglichen eine gemeinsame Sprache zwischen Entwicklern
+
+[.highlight-box]
+--
+Ein Pattern hat vier wesentliche Elemente: Name, Problem, Lösung, Konsequenzen
+--
+
+== Geschichte: Gang of Four (GoF)
+
+* 1994: "Design Patterns: Elements of Reusable Object-Oriented Software"
+* Autoren: Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides
+* Enthalt 23 Patterns, kategorisiert in 3 Gruppen
+
+[source,java]
+----
+// Ein Pattern ist keine Bibliothek, sondern eine Idee
+// "Program to an interface, not an implementation"
+----
+
+== Die drei GoF-Kategorien
+
+[cols=",",options="header",]
+|===
+|Kategorie |Fokus
+|Creational |Objekterzeugung
+|Structural |Zusammensetzung von Klassen/Objekten
+|Behavioral |Interaktion und Zustandigkeitsverteilung
+|===
+
+== Creational Patterns
+
+* Abstraktion des Instanziierungsprozesses
+* Beispiele: Singleton, Factory Method, Abstract Factory, Builder, Prototype
+
+[source,java]
+----
+// Factory Method
+Pizza pizza = PizzaFactory.create("margherita");
+----
+
+== Structural Patterns
+
+* Definieren, wie Klassen und Objekte zusammengesetzt werden
+* Beispiele: Adapter, Decorator, Facade, Proxy, Composite
+
+[source,java]
+----
+// Adapter
+LegacyLogger logger = new LoggerAdapter(new ModernLogger());
+----
+
+== Behavioral Patterns
+
+* Beschreiben Kommunikation zwischen Objekten
+* Beispiele: Observer, Strategy, Iterator, Command, Template Method
+
+[source,java]
+----
+// Strategy
+PaymentStrategy strategy = new CreditCardStrategy();
+checkout.pay(strategy, 99.99);
+----
+
+== Pattern Language
+
+* Patterns stehen in Beziehung zueinander
+* Ein Pattern kann auf hoherer Ebene andere Patterns kombinieren
+* Beispiel: Ein Abstract Factory kann Singleton für Factory-Instanzen nutzen
+
+[.highlight-box]
+--
+Patterns bilden ein Vokabular: Sie ermoglichen praziose Kommunikation
+--
+
+== Warum Patterns verwenden?
+
+* Wiederverwendbarkeit erprobter Lösungen
+* Verbesserte Kommunikation im Team ("Wir brauchen einen Observer hier")
+* Erhohte Wartbarkeit durch klarere Strukturen
+* Vermeidung von Anti-Patterns
+
+== Code-Beispiel: Pattern erkennen
+
+[source,java]
+----
+public class ShoppingCart {
+    private List<Item> items = new ArrayList<>();
+    private PaymentStrategy paymentStrategy;
+
+    public void setPaymentStrategy(PaymentStrategy s) {
+        this.paymentStrategy = s;
+    }
+
+    public void checkout() {
+        paymentStrategy.pay(calculateTotal());
+    }
+}
+----
+
+Welche Kategorie? -++>++ Behavioral (Strategy Pattern)
+
+== Zusammenfassung
+
+* GoF definiert 23 Patterns in 3 Kategorien
+* Creational: Objekterzeugung (Singleton, Factory, Builder)
+* Structural: Zusammensetzung (Adapter, Facade, Decorator)
+* Behavioral: Interaktion (Strategy, Observer, Iterator)
+* Patterns sind ein Kommunikationswerkzeug und keine fertigen Bibliotheken

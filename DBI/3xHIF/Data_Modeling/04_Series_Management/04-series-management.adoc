@@ -1,0 +1,72 @@
+= 1:n, n:m & Composite Keys | DBI 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. Recap
+. n:m Relationships with Their Own Attributes
+. Recursive (Self-Referencing) Relationships
+. Worked Example: Cookbook Collection
+. Summary
+
+== Learning Goals
+
+* I can model an n:m relationship that itself carries an attribute
+* I can model a relationship from an entity type back to itself
+* I can combine 1:n chains, n:m relationships, composite and multivalued attributes in one diagram
+
+== Recap
+
+We've chained 1:n relationships together (`Veterinarian → Pet → Treatment → ...`). +
+Today we add two more building blocks: *n:m relationships with attributes*, and +
+*relationships that loop back to the same entity*.
+
+== n:m Relationships with Their Own Attributes
+
+An n:m relationship can carry its *own attribute* — one that only makes sense for +
+the _combination_ of both entities, not for either one alone.
+
+Example: `Student` *attends* `Course` — the attribute `Grade` belongs to that +
+specific student-course combination, not to the student or the course alone.
+
+== Recursive (Self-Referencing) Relationships
+
+Sometimes an entity type relates to *itself*.
+
+image::dot/recipe-recursive.svg[Recipe adapted from Recipe,width=500]
+
+A recipe can be an adaptation of another recipe — both roles are the same entity type +
+(`Recipe`), so the relationship loops back onto it.
+
+== Worked Example: Cookbook Collection
+
+A cookbook app tracks:
+
+* *Cookbooks* (ISBN, title, author name, tags) containing several *chapters*
+* Each *chapter* contains several *recipes*
+* Each *recipe* uses one or more *ingredients*, each with a required *quantity*
+* A *recipe* may be adapted from another recipe
+
+== Full Diagram
+
+image::dot/cookbook-chain.svg[Cookbook collection ERM,width=1150]
+
+`Author Name` is composite (first/last), `Tags` is multivalued, `Quantity` belongs to +
+the `uses` relationship itself.
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* n:m relationships can carry *their own attributes*
+* A *recursive relationship* connects an entity type back to itself
+* A real model usually combines several of these building blocks at once

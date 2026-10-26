@@ -1,0 +1,181 @@
+= 05 - Stream Collectors | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What is collect?
+. Collectors.toList()
+. Collectors.toSet()
+. Collectors.toMap()
+. Collectors.joining()
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. Collectors.groupingBy()
+. groupingBy: Downstream Collector
+. groupingBy: Mapping Downstream
+. Collectors.partitioningBy()
+. partitioningBy with Downstream
+. Summary
+
+== Learning Objectives
+
+* I can use toList, toSet, toMap, and joining collectors to gather stream results
+* I can use groupingBy to classify data into categories
+* I can use partitioningBy to split data into two groups based on a predicate
+* I can chain downstream collectors for powerful aggregations
+* I can implement a custom Collector for specialized accumulation
+
+[background-image="meme.jpg",background-size="contain"]
+== !
+
+== What is collect?
+
+The collect method is a terminal operation that accumulates stream elements into a mutable result container.
+
+[source,java]
+----
+<R, A> R collect(Collector<? super T, A, R> collector);
+----
+
+* Works with Collector implementations in java.util.stream.Collectors
+* More flexible than reduce for mutable accumulation
+
+== Collectors.toList()
+
+[source,java]
+----
+List<String> filtered = stream
+    .filter(s -> s.length() > 3)
+    .collect(Collectors.toList());
+----
+
+Since Java 16: `.toList()` is shorter and returns an unmodifiable list.
+
+== Collectors.toSet()
+
+[source,java]
+----
+Set<String> unique = stream
+    .map(String::toLowerCase)
+    .collect(Collectors.toSet());
+// Removes duplicates
+----
+
+== Collectors.toMap()
+
+[source,java]
+----
+List<Person> people = /* ... */;
+
+Map<Integer, String> idToName = people.stream()
+    .collect(Collectors.toMap(
+        Person::id,      // key mapper
+        Person::name     // value mapper
+    ));
+----
+
+Be careful with duplicate keys -- will throw IllegalStateException!
+
+== Collectors.joining()
+
+[source,java]
+----
+List<String> names = List.of("Alice", "Bob", "Charlie");
+
+String result = names.stream()
+    .collect(Collectors.joining(", "));
+
+// "Alice, Bob, Charlie"
+----
+
+Supports prefix and suffix: `joining(", ", "++[++", "++]++")` -++>++ "++[++Alice, Bob, Charlie++]++"
+
+== Collectors.groupingBy()
+
+Groups elements by a classifier function into a Map.
+
+[source,java]
+----
+List<Person> people = /* ... */;
+
+Map<String, List<Person>> byCity = people.stream()
+    .collect(Collectors.groupingBy(Person::city));
+----
+
+== groupingBy: Downstream Collector
+
+[source,java]
+----
+// Count people per city
+Map<String, Long> countByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.counting()
+    ));
+
+// Average age per city
+Map<String, Double> avgAgeByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.averagingInt(Person::age)
+    ));
+----
+
+== groupingBy: Mapping Downstream
+
+[source,java]
+----
+// Names per city (collect to List)
+Map<String, List<String>> namesByCity = people.stream()
+    .collect(Collectors.groupingBy(
+        Person::city,
+        Collectors.mapping(Person::name, Collectors.toList())
+    ));
+----
+
+== Collectors.partitioningBy()
+
+Splits elements into two groups based on a Predicate.
+
+[source,java]
+----
+List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+
+Map<Boolean, List<Integer>> evenOdd = numbers.stream()
+    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+
+// {false=[1, 3, 5], true=[2, 4, 6]}
+----
+
+== partitioningBy with Downstream
+
+[source,java]
+----
+// Count even vs odd
+Map<Boolean, Long> countEvenOdd = numbers.stream()
+    .collect(Collectors.partitioningBy(
+        n -> n % 2 == 0,
+        Collectors.counting()
+    ));
+// {false=3, true=3}
+----
+
+== Summary
+
+* collect is the most flexible terminal operation
+* toList, toSet, toMap, joining for simple collections
+* groupingBy for multi-level classification
+* partitioningBy for binary splits
+* Downstream collectors enable powerful aggregations

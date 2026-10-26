@@ -1,0 +1,170 @@
+= 06 - TDD, FIRST | POS - 3xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What is TDD?
+. Why TDD?
+. The TDD Cycle: Red
+. The TDD Cycle: Green
+. The TDD Cycle: Refactor
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. FIRST Principles
+. Fast Tests
+. Isolated Tests
+. Live Coding: FizzBuzz
+. Live Coding: Full FizzBuzz
+. Common Pitfalls
+
+== Learning Objectives
+
+* I can explain the TDD Red-Green-Refactor cycle
+* I can apply FIRST principles to write better tests
+* I can write fast, isolated unit tests without external dependencies
+* I can implement FizzBuzz using strict TDD
+* I can use Mockito to isolate services for testing
+
+[background-image="meme.jpg",background-size="contain"]
+== !
+
+== What is TDD?
+
+Test-Driven Development is a software development process where you write tests before production code.
+
+* Write a failing test (Red)
+* Write the simplest code to pass (Green)
+* Refactor to improve quality (Refactor)
+
+== Why TDD?
+
+* Forces you to think about design before coding
+* Every line of code is tested
+* Safe refactoring with instant feedback
+* Reduces debugging time
+
+== The TDD Cycle: Red
+
+[.highlight-box]
+--
+Write a test that fails.
+--
+
+[source,java]
+----
+@Test
+void testFizzBuzz() {
+    assertEquals("Fizz", fizzBuzz(3));
+    // This won't compile yet -- no FizzBuzz class!
+}
+----
+
+The test failure proves the test can detect the missing feature.
+
+== The TDD Cycle: Green
+
+[.highlight-box]
+--
+Write the simplest code to make the test pass.
+--
+
+[source,java]
+----
+String fizzBuzz(int n) {
+    return "Fizz";  // simplest thing that works
+}
+----
+
+Do not add extra functionality yet!
+
+== The TDD Cycle: Refactor
+
+[.highlight-box]
+--
+Improve code without changing behavior.
+--
+
+* Remove duplication
+* Improve readability
+* Extract methods
+* All tests must stay green
+
+== FIRST Principles
+
+[cols=",",options="header",]
+|===
+|Letter |Meaning
+|F |*Fast* -- tests run quickly
+|I |*Isolated* -- no test depends on another
+|R |*Repeatable* -- same result every time
+|S |*Self-validating* -- pass/fail clearly
+|T |*Timely* -- written before production code
+|===
+
+== Fast Tests
+
+* Unit tests must run in milliseconds
+* Avoid database, network, file I/O in unit tests
+* If a test suite takes 10 minutes, developers stop running it
+
+== Isolated Tests
+
+* Each test should be independent
+* No shared state between tests
+* Use @BeforeEach to create fresh objects
+* Tests should run in any order
+
+== Live Coding: FizzBuzz
+
+[source,java]
+----
+// Step 1: Write test for "Fizz"
+@Test
+void testFizz() {
+    assertEquals("Fizz", FizzBuzz.of(3));
+}
+
+// Step 2: Simplest code
+class FizzBuzz {
+    static String of(int n) { return "Fizz"; }
+}
+
+// Step 3: Add more tests, generalize...
+----
+
+== Live Coding: Full FizzBuzz
+
+[source,java]
+----
+@ParameterizedTest
+@CsvSource({"1,1","2,2","3,Fizz","5,Buzz","15,FizzBuzz"})
+void testFizzBuzz(int input, String expected) {
+    assertThat(FizzBuzz.of(input)).isEqualTo(expected);
+}
+----
+
+== Summary
+
+* TDD = Red, Green, Refactor
+* FIRST principles guide good test design
+* Tests drive the design, not the other way around
+* Start simple, then generalize
+
+== Common Pitfalls
+
+* Writing too much code in the Green phase
+* Skipping the Refactor phase
+* Writing tests that are too large
+* Not running tests frequently enough

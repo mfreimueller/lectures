@@ -1,0 +1,17 @@
+= 28 - Advanced Topics (Katas) 2 | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Projektarbeit
+
+* Advanced Topics abschließen
+* Bugfixing & Refactoring
+* Vorbereitung für Abschlusspräsentation

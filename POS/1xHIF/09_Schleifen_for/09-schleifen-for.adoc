@@ -1,0 +1,204 @@
+= 09 - Schleifen – for | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Die for-Schleife: Syntax
+. for-Schleife: Ablauf
+. Beispiel: Zahlen 1 - 10
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Umbau while → for: Schritt 1
+. Umbau while → for: Schritt 2
+. Beispiel: Rückwärts zählen
+. Beispiel: Schrittweite
+
+== Agenda (3/3)
+
+[arabic, start=8]
+. Beispiel: Summe mit for
+. Vergleich: Wann welcher Schleifentyp?
+. Gemeinsamkeiten der Schleifen
+
+== Lernziele
+
+* Ich kann die for-Schleife anwenden
+* Ich kann verschiedene Schleifentypen vergleichen und auswählen
+* Ich kann for-Schleifen mit verschiedenen Schrittweiten einsetzen
+
+== Partneraktivität: For-Schleifen im Vergleich
+
+[.highlight-box]
+--
+Schreibt einen for-Schleifen-Kopf, der die geraden Zahlen von 0 bis 10 ausgibt. Schreibt dann einen, der von 10 bis 0 rückwärts zählt. Vergleicht mit eurem Partner: Wie viele verschiedene Lösungen habt ihr gefunden?
+--
+
+== Die for-Schleife: Syntax
+
+[source,java]
+----
+for (Initialisierung; Bedingung; Inkrement) {
+    // Schleifenkörper
+}
+----
+
+* *Initialisierung:* Wird einmal am Anfang ausgeführt (z. B. `int i = 0`)
+* *Bedingung:* Wird vor jedem Durchlauf geprüft (z. B. `i ++<++ 10`)
+* *Inkrement:* Wird nach jedem Durchlauf ausgeführt (z. B. `i{plus}{plus}`)
+
+== for-Schleife: Ablauf
+
+[source,java]
+----
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}
+----
+
+[arabic]
+. `int i = 0` (Initialisierung — einmal)
+. `i ++<++ 5` prüfen → true → Schleifenkörper ausführen
+. `i{plus}{plus}` (Inkrement)
+. Zurück zu Schritt 2: `i ++<++ 5` prüfen → ...
+. Wenn `i ++<++ 5` false ist → Ende
+
+== Beispiel: Zahlen 1 - 10
+
+[source,java]
+----
+// while-Version
+int i = 1;
+while (i <= 10) {
+    System.out.println(i);
+    i++;
+}
+
+// for-Version
+for (int i = 1; i <= 10; i++) {
+    System.out.println(i);
+}
+----
+
+Die for-Schleife ist kompakter — alles Wichtige in einer Zeile
+
+== Umbau while → for: Schritt 1
+
+Gegeben: Eine while-Zählschleife
+
+[source,java]
+----
+int i = 0;          // Initialisierung
+while (i < 10) {    // Bedingung
+    System.out.println(i);
+    i++;            // Inkrement
+}
+----
+
+== Umbau while → for: Schritt 2
+
+Erkenne die drei Teile und setze sie in die for-Syntax:
+
+[source,java]
+----
+// Initialisierung: int i = 0
+// Bedingung:       i < 10
+// Inkrement:       i++
+
+for (int i = 0; i < 10; i++) {
+    System.out.println(i);
+}
+----
+
+[.highlight-box]
+--
+Initialisierung → Bedingung → Inkrement
+--
+
+== Beispiel: Rückwärts zählen
+
+[source,java]
+----
+// Von 10 bis 1 absteigend
+for (int i = 10; i >= 1; i--) {
+    System.out.println(i);
+}
+----
+
+* Start: 10
+* Bedingung: `i ++>++= 1`
+* Inkrement: `i--` (dekrementieren)
+
+== Beispiel: Schrittweite
+
+[source,java]
+----
+// Alle geraden Zahlen von 0 bis 100
+for (int i = 0; i <= 100; i += 2) {
+    System.out.println(i);
+}
+
+// Alle Dreier-Schritte von 0 bis 30
+for (int i = 0; i <= 30; i += 3) {
+    System.out.println(i);
+}
+----
+
+Das Inkrement muss nicht `i{plus}{plus}` sein — jede Änderung ist möglich
+
+== Beispiel: Summe mit for
+
+[source,java]
+----
+int summe = 0;
+for (int i = 1; i <= 100; i++) {
+    summe += i;
+}
+System.out.println("Summe 1..100 = " + summe);
+----
+
+Kompakt und lesbar — die for-Schleife ist ideal für Zählaufgaben
+
+== Vergleich: Wann welcher Schleifentyp?
+
+[.highlight-box]
+--
+* *for:* Wenn die Anzahl der Durchläufe bekannt ist (Zählschleife)
+* *while:* Wenn die Bedingung vom Programmverlauf abhängt
+* *do-while:* Wenn der Körper mindestens einmal ausgeführt werden muss
+--
+
+== Gemeinsamkeiten der Schleifen
+
+* Alle drei können `break` und `continue` verwenden
+* Alle drei brauchen eine Bedingung, die irgendwann false wird
+* Alle drei können ineinander verschachtelt werden
+* Die Wahl des Typs hängt vom *Einsatzzweck* ab
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* Die `for`-Schleife ist eine spezialisierte Zählschleife
+* Syntax: `for (init; bedingung; inkrement)`
+* Jede while-Zählschleife kann in eine for-Schleife umgebaut werden
+* for: bekannte Anzahl; while: unbekannte Dauer; do-while: mindestens einmal
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Dungeon Crawler bekommt mehrere Gegner. Der Spieler kämpft gegen eine Gruppe von 3 Goblins. Verwendet eine for-Schleife, um nacheinander gegen jeden Goblin anzutreten.
+--

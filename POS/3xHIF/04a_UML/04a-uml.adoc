@@ -1,0 +1,273 @@
+= 04a - UML Class Diagrams | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What is UML?
+. The Class Box
+. Visibilities
+. Associations
+. Multiplicities
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. Directed Associations (Navigability)
+. Aggregation
+. Composition
+. Generalization & Realization
+. Full Example: Library
+. From UML to Code
+
+== Learning Objectives
+
+* I can read the notation of UML class diagrams
+* I can create simple UML class diagrams for a small system
+* I can model relationships between classes: association, aggregation, composition, inheritance
+* I can translate a class diagram into Java code and explain the difference between the diamonds
+
+== What is UML?
+
+UML = **U**nified **M**odeling **L**anguage
+
+* Standardized notation for software design
+* Visual representation of code structures
+* Helps with planning, communicating, and documenting
+
+[.highlight-box]
+--
+UML is the shared language between developers -- and later in this course it is also the language we use to talk about JPA entity relationships.
+--
+
+== Class Diagram: The Basic Form
+
+A class is drawn as a box with three compartments: name, attributes, methods.
+
+image::puml/person.png[% Person class diagram,width=70]
+
+== Visibilities
+
+Every attribute and method has a visibility:
+
+[cols=",,",options="header",]
+|===
+|Symbol |Meaning |Java
+|`-` |private |only inside the class
+|`++#++` |protected |only in subclasses
+|`{plus}` |public |visible to everyone
+|===
+
+[source,java]
+----
+public class Person {
+    private String name;          // - name : String
+    public String getName() { ... }  // + getName() : String
+}
+----
+
+== Association
+
+An association shows a relationship between two classes -- a "has-a" or "knows-a" link.
+
+image::puml/association.png[% Person Address association,width=55]
+
+A simple line means: Person has an Address.
+
+[source,java]
+----
+public class Person {
+    private Address address;  // association
+}
+----
+
+== Multiplicities
+
+Multiplicities state how many objects participate in the relationship.
+
+image::puml/car-wheel.png[% Car Wheel multiplicities,width=55]
+
+[cols=",",options="header",]
+|===
+|Notation |Meaning
+|`1` |exactly one
+|`0..1` |optional (0 or 1)
+|`++*++` |any number (0..++*++)
+|`1..++*++` |at least one
+|===
+
+== Associations in Java
+
+[source,java]
+----
+public class Person {
+    private Address address;      // 1
+}
+
+public class Car {
+    private Wheel[] wheels = new Wheel[4];  // *
+}
+
+public class Order {
+    private Customer customer;    // 0..1 -- can be null
+}
+----
+
+[.highlight-box]
+--
+The multiplicity decides the Java type: a single field, an array/collection, or a nullable reference.
+--
+
+== Directed Association (Navigability)
+
+An arrow shows the direction of the relationship -- who knows whom.
+
+image::puml/student-course.png[% Student Course directed association,width=55]
+
+A Student knows any number of Courses -- but a Course does not know its students.
+
+[source,java]
+----
+public class Student {
+    private List<Course> courses;
+}
+
+public class Course {
+    // no reference back to Student
+}
+----
+
+== Aggregation
+
+* A special form of association -- "has-a" with _shared_ ownership
+* The child can exist independently of the parent
+* Drawn with an *empty diamond* on the parent side
+
+image::puml/aggregation.png[% Department Employee aggregation,width=45]
+
+[source,java]
+----
+public class Department {
+    private List<Employee> employees;  // aggregation
+}
+// Employee survives even if the Department is deleted
+----
+
+== Composition
+
+* The stronger form -- "has-a" with _exclusive_ ownership
+* The child *cannot* exist without the parent
+* The parent is responsible for the child's lifecycle
+* Drawn with a *filled diamond* on the parent side
+
+image::puml/composition.png[% Order OrderItem composition,width=45]
+
+[source,java]
+----
+public class Order {
+    private List<OrderItem> items;  // composition
+}
+// items are created with the Order and destroyed with it
+----
+
+== Aggregation vs. Composition
+
+[cols=",,",options="header",]
+|===
+|Aspect |Aggregation |Composition
+|Ownership |Shared |Exclusive
+|Lifecycle |Child independent |Child depends on parent
+|Diamond |Empty (◊) |Filled (◆)
+|Example |Department {plus} Employee |Order {plus} OrderItem
+|===
+
+[.highlight-box]
+--
+Rule of thumb: if deleting the parent should delete the children, draw a filled diamond.
+--
+
+== Generalization (Inheritance)
+
+* "is-a" relationship -- line with an *empty triangle*
+* The subclass inherits all non-private members
+* Java: `extends`
+
+image::puml/inheritance.png[% Animal Dog Cat inheritance,width=45]
+
+[source,java]
+----
+public class Animal { }
+public class Dog extends Animal { }
+----
+
+== Realization (Interfaces)
+
+* Dashed line with an *empty triangle*
+* The class implements the interface
+* Java: `implements`
+
+image::puml/realization.png[% Borrowable Book realization,width=45]
+
+[source,java]
+----
+public interface Borrowable { }
+public class Book implements Borrowable { }
+----
+
+== All Symbols at a Glance
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Symbol |Name |Meaning
+|`—` line |Association |knows / has, no ownership
+|`→` arrow |Directed association |navigable one way only
+|`◊—` empty diamond |Aggregation |shared ownership, independent lifecycle
+|`◆—` filled diamond |Composition |exclusive ownership, shared lifecycle
+|`△` empty triangle |Generalization |inheritance (`extends`)
+|`△` on dashed line |Realization |interface (`implements`)
+|===
+
+== Full Example: Library
+
+image::puml/library-book.png[% Library Book class diagram,width=70]
+
+[source,java]
+----
+public class Library {
+    private String name;
+    private String address;
+    private List<Book> books;  // composition: books belong to this library
+
+    public void addBook(Book b) { ... }
+}
+----
+
+== From UML to Code
+
+Steps:
+
+[arabic]
+. Each box becomes a class
+. Attributes become fields (with type and visibility)
+. Methods become methods (with return type)
+. Associations become references (fields or collections)
+. The multiplicity decides: single field, collection, or nullable reference
+. The diamond decides: does the owner create and destroy the other object?
+
+== Summary
+
+* UML = visual representation of code structures
+* Class box: name, attributes, methods; visibility `-` `++#++` `{plus}`
+* Association = reference in code; multiplicities: `1`, `0..1`, `++*++`, `1..++*++`
+* Empty diamond = aggregation (shared ownership), filled diamond = composition (exclusive ownership)
+* Empty triangle = inheritance; dashed triangle = interface realization
+* Next: Streams, going deeper with collectors

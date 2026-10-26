@@ -1,0 +1,168 @@
+<!-- HTL Spengergasse reveal.js theme (port of resources/marp-theme.css).
+     Inlined into each deck by asciidoctor-revealjs via docinfo, so built decks stay
+     self-contained apart from the reveal.js CDN. Layered on top of revealjs_theme=white. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500,700">
+<style>
+:root {
+  --spg-red: #ED1944;
+  --spg-blue: #004A8D;
+  --spg-black: #1A1A1A;
+  --spg-gray: #5A5A5A;
+  --spg-light-gray: #EDEDED;
+  --spg-white: #FFFFFF;
+  --spg-logo: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABWAgMAAAAyBGnqAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAJUExURe0ZRO0ZRP///0hI4MEAAAABdFJOUwBA5thmAAAAAWJLR0QCZgt8ZAAAAAd0SU1FB+oHDggTMGDRGeEAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDctMTRUMDg6MTk6NDgrMDA6MDC3+VcHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA3LTE0VDA4OjE5OjQ4KzAwOjAwxqTvuwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wNy0xNFQwODoxOTo0OCswMDowMJGxzmQAAAETSURBVEjH7ZS7cQYhDISPQCWoH0ogkPpvxf8Beu1xM3bkwCYBvhHSAgvX5a3JdWys/YSbqrxwPXH6IecP7//8z3BW5HT3bjPni9y2GYXrNNLN59x8xYvPToPPuE/g4mJpmxZ+l5hcbboHut4FPXif74idx8g0lvyvXPZWjdORx7BwiZSFjxhnLvu4kaebyjr91mLCHmHLnedPgmzW4M1zx8EvtzY3wI8fjrdJUKZ5b2CafXdy4vzg5J7BsuaxjmU3H9/hLbhgWfMeljXekae3lssaH1BWogc5vq7IGVEH5FwoyJdD4erngXJQUIp68u4KnFOooyz0jbdY3DC/iXvjxSpp85z3y0VDnA+VnPke05mv8C/tcNQXqYIUvAAAAABJRU5ErkJggg==');
+  --spg-logo-white: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABWCAQAAADlY0nyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAd0SU1FB+oHDggUB5ctKikAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDctMTRUMDg6MjA6MDcrMDA6MDCgDGTfAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA3LTE0VDA4OjIwOjA3KzAwOjAw0VHcYwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wNy0xNFQwODoyMDowNyswMDowMIZE/bwAAAIKSURBVGje7ZrdloMwCISlx/d/5ezN9lhdDTMw+NMNV22MwxeKaSSxNpXYW9YqxK0AeispB1dDH8lJwV/qKJCDuQF00QNSC32SKaFb4upl0KfZgB7QA/oGNqAH9IC+gQ3oAT2gb2ADekB/G/T88Xn96llS0CLtgGjevby0XIXeDtpsgW7OzWeie4UIW6eHJ+ShW9ehP3C4MjITneuizhRy2mRYpFF0o6umobqTtUzBag+lgT0TZTJr2RqbjyMF1kD3443/FhS0op7JPJwCb4/8G9dA49GTVKlf0z1WGbjZO9LPwbZpWtLjGdi/lPOm4aT9qSjuFvqu6Ds50NuxxdFr5ulDVX+b2XfCPg9pRX+Vd27CQAHgNvT/do7OOimlyCkE1VmOsE7FeY9y+8cLpgH9pdD82/jaPp9jbxZg+nYtM3vs3cqUCsLg8fRoRa2F0F71L6tSAq0ZYNBi0LojVqEBRaA5R17vADYPrV+s0IqP/HNhoWsWhaQqB42JW+ebBJuBrl16E+r6nDagJWk4dP0rDuwBhUYFjWgNe9GmhwWuBLAxaEVqCDMbgc6lBmuANx9ahyxLEVVOY0CiFPGgr6nlOF41kcYjKIm1ApoDEWD3oZHk4CGQO7qev3A9rZvGpLq5SMfzM5XZ16VHAtuDtuC10gH5kTayPY/mKiPpYWCbBhtQZqqm1afFYOUfkHdroUfGaUoAAAAASUVORK5CYII=');
+
+  /* reveal.js theme variables (Marp default: 29px base on a 1280x720 slide) */
+  --r-main-font: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --r-main-font-size: 29px;
+  --r-main-color: var(--spg-black);
+  --r-heading-font: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+  --r-heading-color: var(--spg-black);
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 700;
+  --r-heading-letter-spacing: normal;
+  --r-heading1-size: 1.9em;
+  --r-heading2-size: 1.5em;
+  --r-heading3-size: 1.2em;
+  --r-heading4-size: 1em;
+  --r-link-color: var(--spg-blue);
+  --r-link-color-hover: var(--spg-red);
+  --r-code-font: 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* Slide layout: left-aligned with Marp's padding */
+.reveal .slides { text-align: left; }
+.reveal .slides > section,
+.reveal .slides > section > section { padding: 0 70px; box-sizing: border-box; }
+
+/* Discreet logo, top right of every slide (white on red slides) */
+.reveal .slides::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  width: 34px;
+  height: 34px;
+  background: var(--spg-logo) center / contain no-repeat;
+  opacity: 0.9;
+  z-index: 10;
+}
+.reveal.on-red .slides::before {
+  width: 64px;
+  height: 64px;
+  top: 40px;
+  right: 48px;
+  opacity: 1;
+  background-image: var(--spg-logo-white);
+}
+
+/* Headings */
+.reveal h1 { color: var(--spg-red); border-bottom: 4px solid var(--spg-red); padding-bottom: 0.2em; }
+.reveal h2 { border-left: 6px solid var(--spg-red); padding-left: 0.35em; margin-bottom: 0.6em; }
+.reveal h3 { color: var(--spg-blue); }
+.reveal strong { color: inherit; font-weight: 700; }
+
+/* Lists/paragraphs: tighter than reveal's defaults, like Marp */
+.reveal ul, .reveal ol { display: block; margin-left: 1.2em; }
+.reveal p { margin: 0.6em 0; }
+.reveal .paragraph, .reveal .ulist, .reveal .olist, .reveal .listingblock, .reveal .imageblock { margin: 0.6em 0; }
+.reveal .imageblock { text-align: center; }
+
+/* Code: inline pill, block with light background */
+.reveal :not(pre) > code {
+  background-color: var(--spg-light-gray);
+  color: var(--spg-black);
+  border-radius: 4px;
+  padding: 0 0.2em;
+  font-size: 0.9em;
+}
+.reveal pre {
+  width: 100%;
+  margin: 0;
+  box-shadow: none;
+  font-size: 0.7em;
+  line-height: 1.4;
+}
+.reveal pre code, .reveal pre code.hljs { max-height: 560px; padding: 0.8em 1em; border-radius: 4px; background: #F6F8FA; }
+
+/* Tables */
+.reveal table { margin: 0.6em 0; font-size: 0.85em; border-collapse: collapse; }
+.reveal table thead th { background-color: var(--spg-red); color: var(--spg-white); }
+.reveal table th, .reveal table td { padding: 0.25em 0.6em; border-bottom: 1px solid #ccc; }
+.reveal table tbody tr:nth-child(even) { background-color: var(--spg-light-gray); }
+/* Asciidoctor stretches tables to 100% and wraps each cell in a <p>; Marp tables
+   are content-width with single-line rows */
+.reveal table.tableblock { width: auto !important; }
+.reveal table p.tableblock { margin: 0; }
+
+/* Blockquotes */
+.reveal blockquote {
+  width: auto;
+  margin: 0.6em 0;
+  box-shadow: none;
+  background: none;
+  border-left: 6px solid var(--spg-red);
+  padding-left: 0.8em;
+  color: var(--spg-gray);
+}
+
+/* Highlight box */
+.reveal .highlight-box {
+  border-left: 6px solid var(--spg-blue);
+  background-color: var(--spg-light-gray);
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  margin: 0.8em 0;
+}
+.reveal .highlight-box p, .reveal .highlight-box li { margin: 0.3em 0; }
+.reveal .highlight-box.warning { border-left-color: #F57C00; background-color: #FFF3E0; }
+.reveal .highlight-box.danger { border-left-color: var(--spg-red); background-color: #FDE8ED; }
+.reveal .centered { text-align: center; }
+
+/* Slide number */
+.reveal .slide-number {
+  background: none;
+  color: var(--spg-gray);
+  font-family: 'Roboto', sans-serif;
+  font-size: 17px;
+  right: 24px;
+  bottom: 16px;
+}
+
+/* Title slide (doc title) and [.lead] slides: centered white on red */
+.reveal section.title, .reveal section.lead { text-align: center; color: var(--spg-white); }
+.reveal section.title h1, .reveal section.lead h1, .reveal section.lead h2 {
+  color: var(--spg-white);
+  border: none;
+}
+.reveal section.title h1 { font-size: 2.4em; }
+.reveal section.title h2 { color: var(--spg-white); font-weight: 400; opacity: 0.9; border: none; padding-left: 0; }
+.reveal.on-red .slide-number { color: var(--spg-white); }
+
+/* [.invert] slides: white on black */
+.reveal section.invert { color: var(--spg-white); }
+.reveal section.invert h1 { color: var(--spg-red); }
+.reveal section.invert h2, .reveal section.invert h3, .reveal section.invert h4, .reveal section.invert strong { color: var(--spg-white); }
+.reveal section.invert a { color: #6FA8DC; }
+.reveal section.invert :not(pre) > code { background-color: #2A2A2A; color: var(--spg-white); }
+.reveal section.invert .highlight-box { background-color: #2A2A2A; border-left-color: var(--spg-blue); }
+</style>
+<!-- Marks the viewport while a red (title/lead) or dark (invert) slide is shown,
+     so the fixed logo and slide number can switch to their light variants.
+     Lives in the head (not a footer docinfo): asciidoctor-revealjs puts footer
+     docinfo inside .slides, where it breaks Reveal.isLastSlide() and runs before
+     reveal.js is loaded. -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function mark(event) {
+    var slide = event.currentSlide, reveal = document.querySelector('.reveal');
+    if (!slide || !reveal) return;
+    reveal.classList.toggle('on-red', slide.classList.contains('title') || slide.classList.contains('lead'));
+    reveal.classList.toggle('on-dark', slide.classList.contains('invert'));
+  }
+  Reveal.on('ready', mark);
+  Reveal.on('slidechanged', mark);
+  if (Reveal.isReady()) mark({ currentSlide: Reveal.getCurrentSlide() });
+});
+</script>

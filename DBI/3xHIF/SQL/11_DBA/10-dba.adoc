@@ -1,0 +1,229 @@
+= Database Administration | Users & Privileges · DBI 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Why Database Administration Matters
+. Creating a User
+. The `%` Host Wildcard
+. Applying Privilege Changes
+. Dropping a User
+. Inspecting Users & Privileges
+. The GRANT Command
+. Privilege Types
+
+== Agenda (2/2)
+
+[arabic, start=9]
+. Granting to Multiple Users / Multiple Privileges
+. Granting Database-Creation Rights
+. PUBLIC
+. WITH GRANT OPTION
+. Column-Level Privileges
+. Cross-Database Access
+. Revoking Privileges
+. Combining Views {plus} GRANT for Column-Level Security
+
+== Learning Goals
+
+* I can create and drop MySQL users, including host-scoped and wildcard accounts
+* I can grant and revoke privileges at the database, table, and column level
+* I know the effect of `WITH GRANT OPTION` and `PUBLIC`
+* I can combine views and `GRANT` for fine-grained, column-level security
+
+== Recap: Views for Security
+
+Last lecture: grant access to a *view* instead of a table, to expose only safe columns.
+
+Today: the full picture — users, privileges, `GRANT`, and `REVOKE`.
+
+== Why Database Administration Matters
+
+* Real databases have *many* users: applications, developers, reporting tools
+* Not everyone should be able to do everything
+* Principle of *least privilege*: grant only what's actually needed
+
+== Creating a User
+
+[source,sql]
+----
+CREATE USER 'maier'@'localhost' IDENTIFIED BY 'maier';
+----
+
+* `'user'@'host'` — a user is identified by *name {plus} host*, not name alone
+* The same username can exist multiple times with different hosts and different privileges
+
+== The `%` Host Wildcard
+
+[source,sql]
+----
+CREATE USER 'app_user'@'%' IDENTIFIED BY 'secret';
+----
+
+* `%` means "any host" — the user can connect from anywhere
+* Convenient, but a real security trade-off: prefer specific hosts/IP ranges where possible
+
+== Applying Privilege Changes
+
+[source,sql]
+----
+FLUSH PRIVILEGES;
+----
+
+Reloads the grant tables so privilege changes take effect immediately.
+
+== Dropping a User
+
+[source,sql]
+----
+DROP USER 'maier'@'localhost';
+DROP USER 'app_user'@'%';
+----
+
+== Inspecting Users & Privileges
+
+[source,sql]
+----
+SELECT host, user FROM mysql.user;
+
+SELECT * FROM mysql.db;
+----
+
+MySQL stores its own users and grants in the `mysql` system database.
+
+== The GRANT Command
+
+[source,sql]
+----
+GRANT privilege_list
+ON object
+TO 'user'@'host';
+----
+
+[source,sql]
+----
+GRANT SELECT ON company_db.employees TO 'hanser'@'localhost';
+----
+
+== Privilege Types
+
+[cols=",",options="header",]
+|===
+|Privilege |Applies to
+|`SELECT` |Read data from a table/view
+|`INSERT` |Add rows
+|`UPDATE` |Modify rows
+|`DELETE` |Remove rows
+|`ALTER` |Change a table's column definitions
+|`INDEX` |Create/drop indexes
+|`CREATE` |Create tables/databases
+|`ALL PRIVILEGES` |Everything above
+|===
+
+== Granting to Multiple Users / Multiple Privileges
+
+[source,sql]
+----
+GRANT INSERT, UPDATE
+ON company_db.employees
+TO 'hanser'@'localhost', 'maier'@'localhost';
+----
+
+Separate multiple privileges — and multiple users — with commas.
+
+== Granting Database-Creation Rights
+
+[source,sql]
+----
+GRANT CREATE ON *.* TO 'hanser'@'localhost';
+----
+
+`++*++.++*++` means "every database, every table" — used sparingly.
+
+[source,sql]
+----
+GRANT ALL PRIVILEGES ON *.* TO 'hanser'@'localhost';
+----
+
+== PUBLIC
+
+[source,sql]
+----
+GRANT SELECT ON company_db.departments TO PUBLIC;
+----
+
+`PUBLIC` grants the privilege to *every* user on the server.
+
+== WITH GRANT OPTION
+
+[source,sql]
+----
+GRANT SELECT ON company_db.employees
+TO 'adams'@'localhost'
+WITH GRANT OPTION;
+----
+
+* Normally a user *cannot* pass a privilege they hold on to someone else
+* `WITH GRANT OPTION` allows exactly that
+
+== Column-Level Privileges
+
+[source,sql]
+----
+GRANT SELECT (name, department_id)
+ON company_db.employees
+TO 'ga_dept'@'localhost';
+----
+
+* Restricts `SELECT` (or `UPDATE`/`INSERT`) to specific *columns*
+* An alternative to building a view purely for column security
+
+== Cross-Database Access
+
+[source,sql]
+----
+SELECT * FROM company_db.departments;
+----
+
+Qualifying a table with `database++_++name.table++_++name` lets different users work across databases without switching context.
+
+== Revoking Privileges
+
+[source,sql]
+----
+REVOKE ALL ON company_db.employees FROM 'hanser'@'localhost';
+----
+
+* Removes the privilege from that user — and from anyone they granted it on to
+* A user might still retain access via a separate `PUBLIC` grant
+
+== Combining Views + GRANT for Column-Level Security
+
+[source,sql]
+----
+CREATE VIEW employee_public AS
+SELECT employee_id, name, department_id
+FROM employees;
+
+GRANT SELECT ON employee_public TO PUBLIC;
+----
+
+The pattern from Lecture 09, now with the full privilege model behind it: grant on the *view*, never on the raw table.
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* Users are `'name'@'host'` — hosts control *where* a login can connect from
+* `GRANT` / `REVOKE` manage privileges at the database, table, or column level
+* `WITH GRANT OPTION` lets a user pass privileges on; `PUBLIC` grants to everyone
+* Views {plus} `GRANT` together give fine-grained, column-level security

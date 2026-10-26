@@ -1,0 +1,208 @@
+= 09 - Iterator Pattern | POS - Advanced
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Motivation
+. Java Iterable Interface
+. Java Iterator Interface
+. For-Each Schleife
+. Custom Iterable — Range
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. Baum-Iterator — Inorder
+. InorderIterator — Implementierung
+. Externer vs. Interner Iterator
+. Vorteile und Nachteile
+
+== Lernziele
+
+* Ich kenne die Iterable- und Iterator-Interfaces in Java
+* Ich verstehe, wie die For-Each-Schleife auf Iterable basiert
+* Ich kann einen eigenen Iterator implementieren (z.B. für einen Baum)
+* Ich kann externen und internen Iterator unterscheiden
+
+== Motivation
+
+* Verschiedene Datenstrukturen (Liste, Set, Baum, Graph) sollen einheitlich durchlaufen werden
+* Der Client soll nicht die interne Struktur kennen müssen
+* Verschiedene Traversal-Arten (vorwärts, rückwärts, inorder, ...)
+
+[.highlight-box]
+--
+"Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation." — GoF
+--
+
+== Java Iterable Interface
+
+[source,java]
+----
+public interface Iterable<T> {
+    Iterator<T> iterator();
+
+    // Default-Methoden (Java 8+)
+    default void forEach(Consumer<? super T> action) { ... }
+    default Spliterator<T> spliterator() { ... }
+}
+----
+
+* iterator() ist die Factory-Methode für Iteratoren
+* Ermöglicht die for-each-Schleife: `for (T item : iterable)`
+
+== Java Iterator Interface
+
+[source,java]
+----
+public interface Iterator<E> {
+    boolean hasNext();
+    E next();
+
+    default void remove() { throw new UnsupportedOperationException(); }
+    default void forEachRemaining(Consumer<? super E> action) { ... }
+}
+----
+
+Wichtig: next() darf nur aufgerufen werden, wenn hasNext() true ist!
+
+== For-Each Schleife
+
+[source,java]
+----
+List<String> names = List.of("Alice", "Bob", "Charlie");
+
+// For-Each (syntactic sugar)
+for (String name : names) {
+    System.out.println(name);
+}
+
+// Eigene Klasse for-each-fahig
+Range range = new Range(1, 5);
+for (int n : range) {
+    System.out.println(n);  // 1, 2, 3, 4
+}
+----
+
+== Custom Iterable — Range
+
+[source,java]
+----
+public class Range implements Iterable<Integer> {
+    private final int start;
+    private final int end;
+
+    public Range(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<Integer>() {
+            private int current = start;
+
+            @Override
+            public boolean hasNext() {
+                return current < end;
+            }
+
+            @Override
+            public Integer next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                return current++;
+            }
+        };
+    }
+}
+----
+
+== Baum-Iterator — Inorder
+
+[source,java]
+----
+class BinaryTree<T> implements Iterable<T> {
+    private Node root;
+
+    private static class Node {
+        T value;
+        Node left, right;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new InorderIterator(root);
+    }
+}
+----
+
+== InorderIterator — Implementierung
+
+[source,java]
+----
+class InorderIterator<T> implements Iterator<T> {
+    private final Stack<Node> stack = new Stack<>();
+
+    public InorderIterator(Node root) {
+        pushLeft(root);
+    }
+
+    private void pushLeft(Node node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
+    @Override
+    public T next() {
+        Node node = stack.pop();
+        pushLeft(node.right);
+        return node.value;
+    }
+}
+----
+
+== Externer vs. Interner Iterator
+
+[cols=",",options="header",]
+|===
+|Extern (aktiv) |Intern (passiv)
+|Client steuert die Iteration |Framework steuert die Iteration
+|hasNext() / next() |forEach(Lambda)
+|Mehr Kontrolle (break, return) |Weniger Boilerplate
+|Entspricht GoF Iterator |Functional Programming Stil
+|===
+
+== Vorteile und Nachteile
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Vorteile |Nachteile
+|Einheitliche API für alle Datenstrukturen |Overhead durch Iterator-Objekt
+|Trennung von Struktur und Traversal |Nicht immer der effizienteste Weg
+|Mehrere Iteratoren gleichzeitig möglich |zustandsbehaftet (nicht thread-safe)
+|For-Each-Schleife als syntaktischer Zucker |remove() wird selten unterstutzt
+|===
+
+== Zusammenfassung
+
+* Iterable {plus} Iterator = standardisierte Iteration in Java
+* For-Each funktioniert mit allem, was Iterable implementiert
+* Custom Iterators für spezielle Traversal-Arten (Inorder, ...)
+* Iterator ist eines der meistgenutzten GoF Patterns

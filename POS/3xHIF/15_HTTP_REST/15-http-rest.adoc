@@ -1,0 +1,187 @@
+= 15 - HTTP, REST | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What is HTTP?
+. HTTP Structure
+. HTTP Methods
+. HTTP Status Codes
+
+== Agenda (2/2)
+
+[arabic, start=5]
+. REST Principles
+. REST Resource Design
+. Java HttpClient
+. HttpClient: GET Request
+. HttpClient: POST Request
+. Parsing JSON with Records
+
+== Learning Objectives
+
+* I can explain the HTTP request-response model and its components
+* I can choose the correct HTTP method and status code for a given operation
+* I can design RESTful resource URIs following best practices
+* I can use Java HttpClient to send GET and POST requests
+* I can parse JSON responses into Java records
+
+== What is HTTP?
+
+* Hypertext Transfer Protocol
+* Client-server protocol for distributed systems
+* Request-response model
+* Stateless: each request is independent
+
+[source,http]
+----
+GET /api/users HTTP/1.1
+Host: jsonplaceholder.typicode.com
+Accept: application/json
+----
+
+== HTTP Structure
+
+* Request: Method {plus} URL {plus} Headers {plus} Body (optional)
+* Response: Status Code {plus} Headers {plus} Body
+* Headers carry metadata (content type, auth, caching)
+* Body carries payload (JSON, XML, form data)
+
+== HTTP Methods
+
+[cols=",,",options="header",]
+|===
+|Method |Purpose |CRUD
+|GET |Retrieve a resource |Read
+|POST |Create a new resource |Create
+|PUT |Update/replace a resource |Update
+|DELETE |Delete a resource |Delete
+|PATCH |Partial update |Update
+|===
+
+== HTTP Status Codes
+
+[cols=",",options="header",]
+|===
+|Code |Meaning
+|200 |OK (successful GET/PUT)
+|201 |Created (successful POST)
+|204 |No Content (successful DELETE)
+|400 |Bad Request (client error)
+|404 |Not Found
+|500 |Internal Server Error
+|===
+
+== REST Principles
+
+* Resource-oriented: everything is a resource (users, posts, products)
+* Each resource has a unique URI
+* Standard HTTP methods for CRUD operations
+* Stateless: server does not store client state
+* Representations: JSON, XML, etc.
+
+== REST Resource Design
+
+[source,http]
+----
+GET    /api/users        # List all users
+GET    /api/users/1      # Get user with id 1
+POST   /api/users        # Create a new user
+PUT    /api/users/1      # Update user with id 1
+DELETE /api/users/1      # Delete user with id 1
+----
+
+[.highlight-box]
+--
+Resources are nouns, not verbs. Use /users not /getUsers.
+--
+
+== Java HttpClient
+
+Introduced in Java 11. Modern, non-blocking HTTP client.
+
+[source,java]
+----
+var client = HttpClient.newHttpClient();
+
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://api.example.com/users"))
+    .GET()
+    .build();
+
+HttpResponse<String> response =
+    client.send(request, HttpResponse.BodyHandlers.ofString());
+----
+
+== HttpClient: GET Request
+
+[source,java]
+----
+var client = HttpClient.newHttpClient();
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))
+    .header("Accept", "application/json")
+    .GET()
+    .build();
+
+var response = client.send(request, BodyHandlers.ofString());
+System.out.println("Status: " + response.statusCode());
+System.out.println("Body: " + response.body());
+----
+
+== HttpClient: POST Request
+
+[source,java]
+----
+var json = "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}";
+
+var request = HttpRequest.newBuilder()
+    .uri(URI.create("https://jsonplaceholder.typicode.com/posts"))
+    .header("Content-Type", "application/json")
+    .POST(BodyPublishers.ofString(json))
+    .build();
+
+var response = client.send(request, BodyHandlers.ofString());
+System.out.println(response.statusCode()); // 201
+----
+
+== Parsing JSON with Records
+
+[source,java]
+----
+public record Post(int userId, int id, String title, String body) {}
+
+// Using Jackson ObjectMapper
+var mapper = new ObjectMapper();
+var post = mapper.readValue(response.body(), Post.class);
+System.out.println(post.title());
+
+// Manual parsing with string operations (simple case)
+var title = response.body()
+    .replaceAll(".*\"title\":\"([^\"]+)\".*", "$1");
+----
+
+== Summary
+
+* HTTP is a stateless request-response protocol
+* REST uses HTTP methods for CRUD on resources
+* Java HttpClient provides a modern API for HTTP requests
+* JSON responses can be parsed into Java records
+
+== Best Practices
+
+* Use meaningful resource URIs (plural nouns)
+* Return appropriate status codes
+* Handle errors gracefully (try-catch around HTTP calls)
+* Use timeouts to avoid blocking indefinitely
+* Set proper headers (Content-Type, Accept)

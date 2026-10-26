@@ -1,0 +1,549 @@
+= 01d - Modern Java - Additional Features (Bonus) | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/4)
+
+[arabic]
+. Default Methods
+. Default Methods: Usage
+. Default Method Inheritance
+. Static Methods in Interfaces
+. Pattern Matching for instanceof
+. Pattern Variables Scope
+
+== Agenda (2/4)
+
+[arabic, start=7]
+. Pattern Matching with Records
+. Complex Pattern Matching
+. Text Blocks
+. Text Block Features
+. Sealed Classes: Motivation
+. Sealed Class Syntax
+
+== Agenda (3/4)
+
+[arabic, start=13]
+. Sealed {plus} Pattern Matching
+. Unnamed Variables: Motivation
+. Unnamed Variables in Loops
+. Unnamed Variables in Pattern Matching
+. Unnamed Pattern Variables
+. Flexible Constructor Bodies
+
+== Agenda (4/4)
+
+[arabic, start=19]
+. Common Use Cases
+. Modern String APIs
+. Files and Collection APIs
+. Compact Source Files
+
+== Learning Objectives
+
+* I can define interfaces with default and static methods
+* I can resolve default method inheritance conflicts
+* I can use pattern matching with instanceof and record patterns
+* I can write multiline strings using Text Blocks
+* I can define sealed class hierarchies with exhaustive pattern matching
+* I can use unnamed variables (++_++) to signal intentionally unused values
+* I can write validation logic before super() calls in constructors
+* I can use modern String, Files, and Collection APIs to reduce boilerplate
+* I can write compact Java programs using implicit classes and instance main methods
+
+== Recap: Core Features
+
+[source,java]
+----
+var p = new Point(3, 4);
+
+Optional<String> email = findUserEmail(42);
+var greeting = email.orElse("unknown@example.com");
+
+var result = switch (day) {
+    case MONDAY, FRIDAY -> "Work day";
+    default -> "Midweek";
+};
+----
+
+[.highlight-box]
+--
+Last lesson: var, Records, Optional, and switch expressions. This lesson adds more modern Java features on top.
+--
+
+== Default Methods
+
+Interfaces can now provide method implementations.
+
+[source,java]
+----
+public interface Greeter {
+    String name();
+
+    default String greet() {
+        return "Hello, " + name() + "!";
+    }
+}
+----
+
+[.highlight-box]
+--
+Default methods allow adding functionality to interfaces without breaking existing implementations.
+--
+
+== Default Methods: Usage
+
+[source,java]
+----
+public record Person(String name) implements Greeter {}
+
+public static void main(String[] args) {
+    var p = new Person("Alice");
+    System.out.println(p.greet()); // Hello, Alice!
+}
+----
+
+== Default Method Inheritance
+
+* A class wins over an interface (class wins rule)
+* Subtype wins over supertype
+* Otherwise, the class must override the conflicting method
+
+[source,java]
+----
+public interface A {
+    default void sayHi() { System.out.println("Hi from A"); }
+}
+public interface B {
+    default void sayHi() { System.out.println("Hi from B"); }
+}
+public class C implements A, B {
+    public void sayHi() { A.super.sayHi(); }
+}
+----
+
+== Static Methods in Interfaces
+
+[source,java]
+----
+public interface MathUtils {
+    static double circleArea(double radius) {
+        return Math.PI * radius * radius;
+    }
+
+    static double celsiusToFahrenheit(double celsius) {
+        return celsius * 9.0 / 5.0 + 32;
+    }
+}
+----
+
+[.highlight-box]
+--
+Static interface methods are utility methods that belong to the interface, not to instances.
+--
+
+== Pattern Matching for instanceof
+
+With pattern matching (Java 16{plus}):
+
+[source,java]
+----
+if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+----
+
+[.highlight-box]
+--
+No explicit cast needed; the pattern variable is already in scope.
+--
+
+== Pattern Variables Scope
+
+[source,java]
+----
+// Pattern variable is in scope in the true block
+if (obj instanceof String s && s.length() > 5) {
+    System.out.println(s); // s is available
+}
+
+// Not available after the condition
+if (!(obj instanceof String s)) {
+    return; // s is NOT available here
+}
+// s is available here (definite assignment)
+System.out.println(s.length());
+----
+
+== Pattern Matching with Records
+
+[source,java]
+----
+public record Point(int x, int y) {}
+
+public static void printPoint(Object obj) {
+    if (obj instanceof Point(int x, int y)) {
+        System.out.println("Point at (" + x + ", " + y + ")");
+    }
+}
+----
+
+[.highlight-box]
+--
+Record patterns destructure the record into its components.
+--
+
+== Complex Pattern Matching
+
+[source,java]
+----
+// Nested pattern matching
+record Address(String street, String city) {}
+record Person(String name, Address address) {}
+
+if (obj instanceof Person(var name, Address(var street, var city))) {
+    System.out.println(name + " lives on " + street + " in " + city);
+}
+----
+
+== Text Blocks
+
+Multiline strings introduced in Java 13 (preview) and finalized in Java 15.
+
+[source,java]
+----
+// Before
+String html = "<html>\n" +
+              "    <body>\n" +
+              "        <p>Hello</p>\n" +
+              "    </body>\n" +
+              "</html>";
+
+// After
+String html = """
+    <html>
+        <body>
+            <p>Hello</p>
+        </body>
+    </html>
+    """;
+----
+
+== Text Block Features
+
+* Leading whitespace is stripped (based on indentation of closing delimiter)
+* Escape sequences work inside text blocks
+* New escape: `++\++s` (space) and `++\++` (line continuation)
+
+[source,java]
+----
+var json = """
+    {
+        "name": "Alice",
+        "age": 30
+    }
+    """;
+----
+
+== Sealed Classes: Motivation
+
+Sealed classes restrict which classes can extend them.
+
+[source,java]
+----
+public sealed interface Shape
+    permits Circle, Rectangle, Triangle {}
+
+public record Circle(double radius) implements Shape {}
+public record Rectangle(double w, double h) implements Shape {}
+public record Triangle(double a, double b, double c) implements Shape {}
+----
+
+[.highlight-box]
+--
+With sealed classes, the compiler knows all subtypes, enabling exhaustive pattern matching without a default clause.
+--
+
+== Sealed Class Syntax
+
+[source,java]
+----
+// Sealed class
+public abstract sealed class Vehicle
+    permits Car, Truck, Motorcycle {}
+
+// Sealed interface
+public sealed interface JsonValue
+    permits JsonObject, JsonArray, JsonString, JsonNumber {}
+
+// Subclasses must be: final, sealed, or non-sealed
+public final class Car extends Vehicle {}
+public sealed class Truck extends Vehicle permits DumpTruck {}
+public non-sealed class Motorcycle extends Vehicle {}
+----
+
+== Sealed + Pattern Matching
+
+[source,java]
+----
+public static double calculateArea(Shape shape) {
+    return switch (shape) {
+        case Circle c   -> Math.PI * c.radius() * c.radius();
+        case Rectangle r -> r.width() * r.height();
+    };
+}
+----
+
+[.highlight-box]
+--
+When all sealed subtypes are covered in a switch, the compiler verifies exhaustiveness.
+--
+
+== Unnamed Variables: Motivation
+
+Sometimes you need a variable only for structure, not for its value.
+
+[source,java]
+----
+// Before: unused variable
+try {
+    int count = processItems();
+} catch (Exception e) {
+    // e is never used
+    System.out.println("Error occurred");
+}
+
+// After: unnamed variable
+try {
+    int count = processItems();
+} catch (Exception _) {
+    System.out.println("Error occurred");
+}
+----
+
+== Unnamed Variables in Loops
+
+[source,java]
+----
+for (var item : items) {
+    counter++;
+}
+
+for (var _ : items) {
+    counter++;
+}
+----
+
+[.highlight-box]
+--
+Use ++_++ when you need to iterate but dont need the element value.
+--
+
+== Unnamed Variables in Pattern Matching
+
+[source,java]
+----
+// Record pattern with unused components
+if (obj instanceof Point(int x, int _)) {
+    System.out.println("x = " + x);
+}
+
+// Switch with unnamed patterns
+String result = switch (obj) {
+    case Integer _ -> "It's a number";
+    case String _ -> "It's a string";
+    default -> "Unknown";
+};
+----
+
+== Unnamed Pattern Variables
+
+[source,java]
+----
+// Multiple unused components
+record Person(String name, int age, String email) {}
+
+if (obj instanceof Person(var name, int _, String _)) {
+    System.out.println("Name: " + name);
+}
+
+// Try-with-resources
+try (var _ = new Scanner(System.in)) {
+    // resource is opened but not directly used
+}
+----
+
+== Flexible Constructor Bodies
+
+Before Java 22, statements in a constructor had to come after super().
+
+[source,java]
+----
+// Before: error - cannot use this before super()
+public class PositiveInt extends Number {
+    private final int value;
+
+    public PositiveInt(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException("Must be positive");
+        }
+        super(); // super MUST be first
+        this.value = value;
+    }
+}
+----
+
+== Flexible Constructor Bodies (Java 22+)
+
+[source,java]
+----
+public class PositiveInt extends Number {
+    private final int value;
+
+    public PositiveInt(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException("Must be positive");
+        }
+        super();
+        this.value = value;
+    }
+}
+----
+
+[.highlight-box]
+--
+Statements that dont reference the instance being constructed can appear before super().
+--
+
+== Common Use Cases
+
+[source,java]
+----
+// Validation before super
+public class ValidatedHashMap<K, V> extends HashMap<K, V> {
+    public ValidatedHashMap(Map<K, V> source) {
+        if (source == null) {
+            throw new IllegalArgumentException("source must not be null");
+        }
+        super(source); // super is not first, but thats fine now
+    }
+}
+
+// Preparation before super
+public class Logger extends PrintWriter {
+    public Logger(String path) throws IOException {
+        var file = new File(path);
+        file.getParentFile().mkdirs(); // preparation
+        super(file); // Now OK
+    }
+}
+----
+
+== Modern String APIs
+
+[source,java]
+----
+var text = "  Hello, World!  ";
+
+// New methods
+System.out.println(text.isBlank());     // false
+System.out.println(text.strip());       // "Hello, World!"
+System.out.println(text.repeat(3));     // repeat string
+System.out.println("  ".isBlank());     // true
+
+// Lines
+"line1\nline2\nline3".lines()
+    .forEach(System.out::println);
+
+// Transform
+var upper = "hello".transform(s -> s.toUpperCase());
+----
+
+== Files and Collection APIs
+
+[source,java]
+----
+// Files
+var content = Files.readString(Path.of("data.txt"));
+Files.writeString(Path.of("out.txt"), content);
+
+// Collection factory methods
+var list = List.of("a", "b", "c");
+var set = Set.of(1, 2, 3);
+var map = Map.of("key1", "value1", "key2", "value2");
+
+// Copy of
+var copy = List.copyOf(list);
+----
+
+== Compact Source Files: Motivation
+
+Traditional "Hello World" requires a class and a static main method just to print one line.
+
+[source,java]
+----
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+----
+
+[.highlight-box]
+--
+JDK 25 (JEP 477) lets small programs skip this boilerplate with implicitly declared classes and instance main methods.
+--
+
+== Compact Source Files: Syntax
+
+[source,java]
+----
+// HelloWorld.java - no class declaration needed
+void main() {
+    System.out.println("Hello, World!");
+}
+----
+
+* The compiler wraps the file in an implicit, unnamed top-level class
+* `main` can be an instance method and needs no `String++[]++ args`
+* Fields and helper methods can live in the same file
+
+[source,java]
+----
+int counter = 0;
+
+void increment() {
+    counter++;
+}
+
+void main() {
+    increment();
+    increment();
+    System.out.println("Counter: " + counter);
+}
+----
+
+[.highlight-box]
+--
+Meant for small programs, scripts, and learning - not a replacement for regular classes in larger projects.
+--
+
+== Summary
+
+[.highlight-box]
+--
+* Default methods and static methods extend interfaces without breaking implementors
+* Pattern matching and Text Blocks reduce boilerplate for type checks and multiline strings
+* Sealed classes enable exhaustive, compiler-checked pattern matching
+* Unnamed variables, flexible constructor bodies, and modern String/Files/Collection APIs round out the toolbox
+* Compact source files make small programs quick to write and read
+--

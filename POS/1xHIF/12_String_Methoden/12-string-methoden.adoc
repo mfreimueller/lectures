@@ -1,0 +1,213 @@
+= 12 - String Methoden | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Strings sind Objekte
+. length() - Länge eines Strings
+. equals() - Strings vergleichen
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. equals() vs. ==
+. charAt() - Zeichenzugriff
+. charAt() mit Schleife
+. startsWith() / endsWith()
+
+== Agenda (3/3)
+
+[arabic, start=8]
+. startsWith/endsWith: Beispiele
+. Methoden kombinieren
+. Beispiel: Textanalyse
+
+== Lernziele
+
+* Ich kann Strings als Objekte verstehen
+* Ich kann wichtige String-Methoden (length, equals, charAt) anwenden
+* Ich kann equals und == unterscheiden
+* Ich kann String-Methoden kombinieren und eine Textanalyse durchführen
+
+== Partneraktivität: Wörter raten mit String-Methoden
+
+[.highlight-box]
+--
+Eine Person denkt an ein Wort, die andere stellt Ja/Nein-Fragen mit String-Methoden (z. B. «Beginnt es mit A?», «Ist es länger als 5 Zeichen?»). Erratet das Wort in maximal 5 Fragen. Wechselt dann die Rollen.
+--
+
+== Strings sind Objekte
+
+[.highlight-box]
+--
+In Java ist `String` eine *Klasse* (kein primitiver Datentyp).
+
+Jeder String ist ein *Objekt* mit eigenen *Methoden*.
+--
+
+* Eine Methode wird mit einem Punkt aufgerufen: `string.method()`
+* Beispiel: `"Hallo".length()` → 5
+
+== length() - Länge eines Strings
+
+[source,java]
+----
+String text = "Hallo Welt!";
+int laenge = text.length();
+System.out.println(laenge);  // 11
+
+// Leerer String:
+String leer = "";
+System.out.println(leer.length());  // 0
+
+// Achtung: length() mit Klammern (Methode)!
+// Bei Arrays: length ohne Klammern (Eigenschaft)
+----
+
+== equals() - Strings vergleichen
+
+[.highlight-box]
+--
+*Strings vergleicht man mit `equals()`, NICHT mit `==`*
+--
+
+[source,java]
+----
+String a = "Hallo";
+String b = "Hallo";
+System.out.println(a.equals(b));   // true
+String c = new String("Hallo");
+System.out.println(a == c);        // false!
+System.out.println(a.equals(c));   // true
+----
+
+== equals() vs. ==
+
+* `==` vergleicht *Speicheradressen* (Referenzen)
+* `equals()` vergleicht den *Inhalt* der Strings
+* Zwei gleiche Wörter können unterschiedliche Speicheradressen haben
+* *Faustregel:* Für Strings immer `equals()` verwenden!
+
+== charAt() - Zeichenzugriff
+
+[source,java]
+----
+String text = "Java";
+char c = text.charAt(0);  // 'J'
+System.out.println(text.charAt(1));  // 'a'
+System.out.println(text.charAt(2));  // 'v'
+System.out.println(text.charAt(3));  // 'a'
+// StringIndexOutOfBoundsException bei ungültigem Index!
+----
+
+* Wie bei Arrays: Der Index beginnt bei *0*
+
+== charAt() mit Schleife
+
+[source,java]
+----
+String text = "Hallo";
+
+// Jedes Zeichen einzeln ausgeben
+for (int i = 0; i < text.length(); i++) {
+    char c = text.charAt(i);
+    System.out.println("Zeichen " + i + ": " + c);
+}
+
+// Ausgabe:
+// Zeichen 0: H
+// Zeichen 1: a
+// Zeichen 2: l
+// Zeichen 3: l
+// Zeichen 4: o
+----
+
+== startsWith() / endsWith()
+
+[source,java]
+----
+String satz = "Hallo Welt!";
+System.out.println(satz.startsWith("Hallo"));   // true
+System.out.println(satz.startsWith("Welt"));    // false
+System.out.println(satz.endsWith("!"));         // true
+System.out.println(satz.endsWith("t"));         // false
+----
+
+* Beide Methoden geben `boolean` zurück (true/false)
+* Nützlich für Textanalyse und Eingabevalidierung
+
+== startsWith/endsWith: Beispiele
+
+[source,java]
+----
+// Prüfen, ob ein Befehl mit "gehe" beginnt
+String befehl = "gehe norden";
+if (befehl.startsWith("gehe")) {
+    System.out.println("Bewegungsbefehl erkannt");
+}
+// Prüfen, ob ein Satz mit einem Fragezeichen endet
+String frage = "Wie heißt du?";
+if (frage.endsWith("?")) {
+    System.out.println("Das ist eine Frage");
+}
+----
+
+== Methoden kombinieren
+
+[source,java]
+----
+String text = "  Java Programmierung  ";
+String bereinigt = text.trim().toUpperCase();
+System.out.println(bereinigt);  // "JAVA PROGRAMMIERUNG"
+// Schrittweise:
+String getrimmt = text.trim();
+String gross = getrimmt.toUpperCase();
+----
+
+* Viele String-Methoden geben einen neuen String zurück
+* Methoden können *verkettet* werden (`text.trim().toUpperCase()`)
+
+== Beispiel: Textanalyse
+
+[source,java]
+----
+String satz = "Wie heißt du?";
+
+int laenge = satz.length();
+char erstes = satz.charAt(0);
+char letztes = satz.charAt(satz.length() - 1);
+boolean istFrage = satz.endsWith("?");
+
+System.out.println("Länge: " + laenge);
+System.out.println("Erstes Zeichen: " + erstes);
+System.out.println("Letztes Zeichen: " + letztes);
+System.out.println("Ist eine Frage: " + istFrage);
+----
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* `length()` — Länge eines Strings
+* `equals()` — Inhalt vergleichen (nicht ==)
+* `charAt(index)` — Zeichen an Position index
+* `startsWith(präfix)` / `endsWith(suffix)` — boolean-Prüfung
+* Methoden können kombiniert werden
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Dungeon Crawler soll Spielerbefehle analysieren können. Der Spieler gibt Kommandos wie "gehe norden", "nimm Schlüssel", "kämpfe". Verwende String-Methoden.
+--

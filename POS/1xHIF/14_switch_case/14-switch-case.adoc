@@ -1,0 +1,236 @@
+= 14 - switch-case | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Problem: Lange if-else-Kaskaden
+. switch-case Syntax
+. Beispiel: Wochentag
+. Fall-through (ohne break)
+
+== Agenda (2/3)
+
+[arabic, start=5]
+. default-Zweig
+. switch mit int
+. switch mit char
+
+== Agenda (3/3)
+
+[arabic, start=8]
+. switch mit String
+. switch vs. if-else
+. Beispiel: Menüauswahl
+
+== Lernziele
+
+* Ich kann switch-case als Alternative zu if-else-Kaskaden einsetzen
+* Ich kann die switch-case-Syntax mit break und default anwenden
+* Ich kann switch mit verschiedenen Datentypen verwenden
+
+== Problem: Lange if-else-Kaskaden
+
+[source,java]
+----
+if (tag == 1) {
+    System.out.println("Montag");
+} else if (tag == 2) {
+    System.out.println("Dienstag");
+} else if (tag == 3) {
+    System.out.println("Mittwoch");
+} // ... und so weiter
+----
+
+Das ist umständlich und schwer lesbar!
+
+== switch-case Syntax
+
+[source,java]
+----
+switch (ausdruck) {
+    case wert1: /* Code */ break;
+    case wert2: /* Code */ break;
+    default: /* Code */ break;
+}
+----
+
+* `ausdruck` — ein int, char oder String
+* `case` — ein möglicher Wert
+* `break` — beendet den switch-Block
+* `default` — für alle nicht abgedeckten Fälle
+
+== Beispiel: Wochentag (1/2)
+
+[source,java]
+----
+switch (tag) {
+    case 1:
+        System.out.println("Montag");
+        break;
+    case 2:
+        System.out.println("Dienstag");
+        break;
+    case 3:
+        System.out.println("Mittwoch");
+        break;
+----
+
+== Beispiel: Wochentag (2/2)
+
+[source,java]
+----
+    case 4:
+        System.out.println("Donnerstag");
+        break;
+    case 5:
+        System.out.println("Freitag");
+        break;
+    case 6:
+        System.out.println("Samstag");
+        break;
+    case 7:
+        System.out.println("Sonntag");
+        break;
+}
+----
+
+== Fall-through (ohne break)
+
+* Fehlt ein `break`, fällt der Code in den nächsten `case` durch
+* Kann nützlich sein für gemeinsame Aktionen
+
+[source,java]
+----
+switch (note) {
+    case 1: case 2: System.out.println("Bestanden"); break;
+    case 3: case 4: System.out.println("Knapp bestanden"); break;
+    default: System.out.println("Durchgefallen");
+}
+----
+
+== Fall-through — Wirkung
+
+Hier haben Noten 1 und 2 die gleiche Ausgabe.
+
+== default-Zweig
+
+* `default` wird ausgeführt, wenn kein `case` passt
+* Vergleichbar mit dem letzten `else` bei if-else
+* Sollte immer am Ende stehen
+
+[source,java]
+----
+switch (tag) {
+    case 1: System.out.println("Montag"); break;
+    case 2: System.out.println("Dienstag"); break;
+    default: System.out.println("Ungültige Eingabe!"); break;
+}
+----
+
+== switch mit int
+
+* Der häufigste Fall: `switch` auf einer int-Variable
+* Perfekt für Menüauswahl (1, 2, 3, ...)
+
+[source,java]
+----
+switch (auswahl) {
+    case 1: System.out.println("Spiel starten"); break;
+    case 2: System.out.println("Optionen"); break;
+    case 3: System.out.println("Beenden"); break;
+    default: System.out.println("Unbekannt"); break;
+}
+----
+
+== switch mit char
+
+* `char` ist ein einzelnes Zeichen (in einfachen Anführungszeichen)
+
+[source,java]
+----
+char buchstabe = 'A';
+switch (buchstabe) {
+    case 'A': System.out.println("Anfangen"); break;
+    case 'B': System.out.println("Beenden"); break;
+    default: System.out.println("Unbekannt"); break;
+}
+----
+
+== switch mit String
+
+* Seit Java 7 kann `switch` auch Strings auswerten
+
+[source,java]
+----
+String tier = scanner.nextLine();
+switch (tier) {
+    case "Hund": System.out.println("Wuff"); break;
+    case "Katze": System.out.println("Miau"); break;
+    default: System.out.println("Unbekanntes Tier"); break;
+}
+----
+
+== switch vs. if-else
+
+[cols=",",options="header",]
+|===
+|switch-case |if-else
+|Nur ein Ausdruck |Beliebige Bedingungen
+|Nur Gleichheit prüfbar |Vergleiche (++<++, ++>++, etc.) möglich
+|Lesbarer bei vielen Fällen |Unübersichtlich bei vielen else-ifs
+|int, char, String |Beliebige boolean-Ausdrücke
+|===
+
+== Beispiel: Menüauswahl
+
+[source,java]
+----
+System.out.println("1: Angreifen");
+System.out.println("2: Inventar");
+System.out.println("3: Heilen");
+System.out.println("4: Fliehen");
+int wahl = scanner.nextInt();
+
+switch (wahl) {
+    case 1: System.out.println("Du greifst an!"); break;
+    case 2: System.out.println("Dein Inventar:"); break;
+    case 3: System.out.println("Du heilst dich."); break;
+    case 4: System.out.println("Du fliehst!"); break;
+    default: System.out.println("Ungültige Wahl!"); break;
+}
+----
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* `switch-case` ist eine Alternative zu langen if-else-Kaskaden
+* Syntax: `switch(ausdruck) ++{++ case wert: ... break; }`
+* Ohne `break` kommt es zum Fall-through
+* `default` fängt alle nicht abgedeckten Fälle
+* Funktioniert mit `int`, `char` und `String`
+--
+
+== Ausblick
+
+[.highlight-box]
+--
+Nächste Woche lernen wir Funktionen (Methoden) kennen — Code in wiederverwendbare Blöcke auslagern.
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Baue switch-case in deinen Dungeon Crawler ein.
+--

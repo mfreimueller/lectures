@@ -1,0 +1,182 @@
+= SQL – DDL | DBI 2xHIF — Data Definition Language
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. SQL Subsets
+. DDL
+. CREATE
+. ALTER
+. TRUNCATE
+. DROP
+
+== Learning Goals
+
+* I can name the four subsets of SQL
+* I can create a table with columns, a primary key, and a foreign key
+* I can add, change, and drop columns with `ALTER TABLE`
+* I know the difference between `TRUNCATE` and `DROP`
+
+== SQL Subsets
+
+[cols=",,",options="header",]
+|===
+|Category |Purpose |Examples
+|*DQL* |Query data |`SELECT`
+|*DDL* |Define/change the schema |`CREATE`, `DROP`, `ALTER`
+|*DML* |Manipulate data |`INSERT`, `UPDATE`, `DELETE`
+|*DCL* |Control access |`GRANT`, `REVOKE`
+|===
+
+Today: *DDL*
+
+== DDL
+
+A subset of SQL to define which data we want to store:
+
+* its *structure* (tables & columns)
+* its *relation* to other data (foreign keys)
+
+[source,sql]
+----
+CREATE TABLE Klassenbucheintrag (...);
+ALTER TABLE Klasse (...);
+DROP TABLE Pruefung;
+----
+
+== DDL — Four Common Operations
+
+* *Create* tables
+* *Alter* (modify) tables
+* *Drop* (delete) tables
+* *Truncate* (clear) tables
+
+== CREATE Statement
+
+[source,sql]
+----
+CREATE TABLE <database>.<schema>.<table>
+(
+    <column> <datatype> [[NOT] NULL]
+        [PRIMARY KEY]
+        [FOREIGN KEY REFERENCES
+            <database>.<schema>.<table> (<column with primary key>)],
+    ...
+);
+----
+
+== CREATE Statement
+
+[source,sql]
+----
+CREATE TABLE SchulDb.dbo.Klassenbucheintrag
+(
+    KB_Nr INT PRIMARY KEY,
+    KB_Text VARCHAR(2048) NOT NULL,
+    KB_Klasse VARCHAR(128) NOT NULL FOREIGN KEY
+        REFERENCES Klasse (K_Nr)
+);
+----
+
+What's wrong with this statement?
+
+== CREATE Statement
+
+[source,sql]
+----
+CREATE TABLE SchulDb.dbo.Klassenbucheintrag
+(
+    KB_Nr INT PRIMARY KEY,
+    KB_Text VARCHAR(2048) NOT NULL,
+    KB_Klasse NVARCHAR(8) NOT NULL FOREIGN KEY
+        REFERENCES Klasse (K_Nr)
+);
+----
+
+A foreign key *must have the same data type* as the primary key it references — +
+`Klasse.K++_++Nr` is `NVARCHAR(8)`, not `VARCHAR(128)`.
+
+== ALTER Statement
+
+[source,sql]
+----
+ALTER TABLE <database>.<schema>.<table>
+    ALTER COLUMN <column> <datatype> [[NOT] NULL],
+    ADD <column> <datatype> [[NOT] NULL],
+    DROP COLUMN <column>;
+----
+
+Column definitions work the same way as in `CREATE`.
+
+== ALTER Statement
+
+[source,sql]
+----
+ALTER TABLE SchulDb.dbo.Klassenbucheintrag
+    ALTER COLUMN KB_Text VARCHAR(MAX),
+    ADD KB_Datum DATETIME;
+
+ALTER TABLE SchulDb.dbo.Klassenbucheintrag
+    DROP COLUMN KB_Datum;
+----
+
+== ALTER Statement — Adding a Foreign Key Later
+
+[source,sql]
+----
+ALTER TABLE <database>.<schema>.<table>
+    ADD FOREIGN KEY (<foreign key column>)
+        REFERENCES <table>(<primary key column>);
+----
+
+[source,sql]
+----
+ALTER TABLE SchulDb.dbo.Klassenbucheintrag
+    ADD FOREIGN KEY (KB_Klasse)
+        REFERENCES Klasse(K_Nr);
+----
+
+== TRUNCATE Statement
+
+Deletes the *data* inside a table, but keeps the table itself.
+
+[source,sql]
+----
+TRUNCATE TABLE <database>.<schema>.<table>;
+----
+
+[source,sql]
+----
+TRUNCATE TABLE SchulDb.dbo.Klassenbucheintrag;
+----
+
+== DROP Statement
+
+Removes the table entirely — structure and data both gone.
+
+[source,sql]
+----
+DROP TABLE <database>.<schema>.<table>;
+----
+
+[source,sql]
+----
+DROP TABLE SchulDb.dbo.Klassenbucheintrag;
+----
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* *DDL* defines structure: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`
+* A foreign key's data type must exactly match the primary key it references
+* `TRUNCATE` empties a table; `DROP` removes the table entirely

@@ -1,0 +1,137 @@
+= 13 - Convert | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Warum Convert?
+. Integer.parseInt
+. Integer.parseInt - Beispiel
+
+== Agenda (2/2)
+
+[arabic, start=4]
+. Double.parseDouble
+. Double.parseDouble - Beispiel
+. Boolean.parseBoolean
+. Fehlerhafte Eingaben (Exceptions)
+
+== Lernziele
+
+* Ich kann Strings mit parseInt und parseDouble in andere Datentypen konvertieren
+* Ich kann fehlerhafte Eingaben erkennen und behandeln
+
+== Warum Convert?
+
+* `Scanner.nextLine()` liefert immer einen `String`
+* Für Berechnungen brauchen wir aber Zahlen (`int`, `double`)
+* Lösung: Convert-Methoden wandeln Strings in Zahlen um
+
+[.highlight-box]
+--
+*Merke:* Eingabe ist Text — Verarbeitung braucht Zahlen.
+--
+
+== Integer.parseInt
+
+* Wandelt einen `String` in einen `int`-Wert um
+* Syntax: `int zahl = Integer.parseInt(text);`
+* Der String muss eine gültige Ganzzahl enthalten (z. B. "42")
+* Leerzeichen werden nicht automatisch entfernt
+
+== Integer.parseInt - Beispiel
+
+[source,java]
+----
+System.out.print("Gib dein Alter ein: ");
+String eingabe = scanner.nextLine();
+int alter = Integer.parseInt(eingabe);
+
+if (alter >= 18) {
+    System.out.println("Volljährig");
+} else {
+    System.out.println("Nicht volljährig");
+}
+----
+
+== Double.parseDouble
+
+* Wandelt einen `String` in einen `double`-Wert um
+* Syntax: `double zahl = Double.parseDouble(text);`
+* Dezimaltrennzeichen ist der Punkt (wie im Englischen)
+* Bei deutscher Eingabe (Komma) vorher ersetzen: `text.replace(',', '.')`
+
+== Double.parseDouble - Beispiel
+
+[source,java]
+----
+System.out.print("Gib deine Größe in Metern ein: ");
+String eingabe = scanner.nextLine();
+eingabe = eingabe.replace(',', '.');
+double groesse = Double.parseDouble(eingabe);
+
+int zentimeter = (int) (groesse * 100);
+System.out.println("Das sind " + zentimeter + " cm");
+----
+
+== Boolean.parseBoolean
+
+* Wandelt einen `String` in einen `boolean`-Wert um
+* Syntax: `boolean wert = Boolean.parseBoolean(text);`
+* Gibt `true` nur bei `"true"` (Groß-/Kleinschreibung egal) zurück
+* Bei allen anderen Eingaben: `false`
+
+[source,java]
+----
+String eingabe = scanner.nextLine();
+boolean zustimmen = Boolean.parseBoolean(eingabe);
+if (zustimmen) {
+    System.out.println("Du stimmst zu.");
+}
+----
+
+== Fehlerhafte Eingaben (Exceptions)
+
+* Was passiert bei `Integer.parseInt("Hallo")`?
+* Das Programm stürzt mit einer Exception ab!
+* Exception = Fehler zur Laufzeit
+* Später lernen wir `try-catch`, um Fehler abzufangen
+
+[.highlight-box]
+--
+*Merke:* Ungültige Eingaben führen zu Programmabstürzen — fange sie ab!
+--
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* `Integer.parseInt()` — String → int
+* `Double.parseDouble()` — String → double
+* `Boolean.parseBoolean()` — String → boolean
+* Bei ungültigen Eingaben: Exception (Programmabsturz)
+* Komma durch Punkt ersetzen bei deutscher Eingabe
+--
+
+== Ausblick
+
+[.highlight-box]
+--
+Nächste Woche lernen wir `switch-case` kennen — eine übersichtliche Alternative zu langen `if`-`else`-Kaskaden.
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Baue die Convert-Methoden in deinen Dungeon Crawler ein.
+--

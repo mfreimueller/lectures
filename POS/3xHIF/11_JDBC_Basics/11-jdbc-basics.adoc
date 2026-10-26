@@ -1,0 +1,269 @@
+= 11 - JDBC, Basics | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What is JDBC?
+. JDBC Architecture
+. JDBC Drivers
+. Establishing a Connection
+. Connection Parameters
+. Statement Interface
+. Processing ResultSet
+
+== Agenda (2/2)
+
+[arabic, start=8]
+. ResultSet Data Types
+. INSERT with Statement
+. UPDATE and DELETE
+. Handling SQLException
+. Resource Management
+. Complete CRUD Example
+
+== Learning Objectives
+
+* I can explain the JDBC architecture and its core interfaces
+* I can establish a database connection using DriverManager
+* I can execute SQL queries and process ResultSet data
+* I can perform CRUD operations using Statement
+* I can manage JDBC resources safely with try-with-resources
+
+== What is JDBC?
+
+JDBC (Java Database Connectivity) is the standard Java API for database-independent connectivity between Java applications and relational databases.
+
+* Part of java.sql package (since JDK 1.1)
+* Provides a vendor-neutral interface
+* Database vendors provide JDBC driver implementations
+
+== JDBC Architecture
+
+* *DriverManager* - manages JDBC drivers
+* *Connection* - represents a database session
+* *Statement* - executes SQL statements
+* *ResultSet* - represents query results
+* *SQLException* - handles database errors
+
+image::mermaid/jdbc-architecture.svg[% JDBC Architecture: DriverManager, Connection, Statement, ResultSet,width=70]
+
+== JDBC Drivers
+
+Type 4 drivers (pure Java) are most common:
+
+[source,java]
+----
+// PostgreSQL driver
+// Maven dependency
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.1</version>
+</dependency>
+----
+
+[.highlight-box]
+--
+PostgreSQL JDBC driver class: org.postgresql.Driver
+--
+
+== Establishing a Connection
+
+[source,java]
+----
+String url = "jdbc:postgresql://localhost:5432/school";
+try (Connection conn = DriverManager.getConnection(url, "postgres", "secret")) {
+    System.out.println("Connected: " + conn.isValid(5));
+}
+----
+
+[.highlight-box]
+--
+JDBC URL format: jdbc:postgresql://host:port/database
+--
+
+== Connection Parameters
+
+[source,java]
+----
+// Connection properties
+Properties props = new Properties();
+props.setProperty("user", "postgres");
+props.setProperty("password", "secret");
+props.setProperty("ssl", "false");
+props.setProperty("connectTimeout", "10");
+
+Connection conn = DriverManager
+    .getConnection("jdbc:postgresql://localhost:5432/school", props);
+----
+
+== Statement Interface
+
+Statement is used to execute static SQL queries:
+
+[source,java]
+----
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+int rows = stmt.executeUpdate("UPDATE student SET grade = 1 WHERE id = 101");
+----
+
+[.highlight-box]
+--
+executeQuery() returns ResultSet; executeUpdate() returns affected row count.
+--
+
+== Processing ResultSet
+
+[source,java]
+----
+String sql = "SELECT id, name, email FROM student";
+try (Statement stmt = conn.createStatement();
+     ResultSet rs = stmt.executeQuery(sql)) {
+
+    while (rs.next()) {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String email = rs.getString("email");
+        System.out.println(id + ": " + name + " (" + email + ")");
+    }
+}
+----
+
+== ResultSet Data Types
+
+[cols=",",options="header",]
+|===
+|SQL Type |Java Method
+|INTEGER |getInt()
+|VARCHAR / TEXT |getString()
+|BOOLEAN |getBoolean()
+|DATE |getDate()
+|TIMESTAMP |getTimestamp()
+|DECIMAL / NUMERIC |getBigDecimal()
+|DOUBLE / FLOAT |getDouble()
+|===
+
+== INSERT with Statement
+
+[source,java]
+----
+String sql = "INSERT INTO student (name, email, grade) VALUES ("
+           + "'Alice', 'alice@school.com', 1)";
+
+int rows = stmt.executeUpdate(sql);
+System.out.println(rows + " row(s) inserted.");
+----
+
+[.highlight-box.warning]
+--
+String concatenation in SQL is vulnerable to injection attacks!
+--
+
+== UPDATE and DELETE
+
+[source,java]
+----
+// UPDATE
+String sql = "UPDATE student SET grade = 2 WHERE id = 101";
+int updated = stmt.executeUpdate(sql);
+
+// DELETE
+String sqlDel = "DELETE FROM student WHERE id = 101";
+int deleted = stmt.executeUpdate(sqlDel);
+
+// Check affected rows
+if (deleted > 0) {
+    System.out.println("Student deleted successfully.");
+}
+----
+
+== Handling SQLException
+
+[source,java]
+----
+try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+    // database operations
+} catch (SQLException e) {
+    System.err.println("Error Code: " + e.getErrorCode());
+    System.err.println("SQL State: " + e.getSQLState());
+    System.err.println("Message: " + e.getMessage());
+
+    // Chained exceptions
+    Throwable t = e.getNextException();
+    while (t != null) {
+        System.err.println("Caused by: " + t.getMessage());
+        t = t.getNextException();
+    }
+}
+----
+
+== Resource Management
+
+Always close JDBC resources to prevent memory/resource leaks:
+
+[source,java]
+----
+// Bad: manual close with null checks
+Connection conn = null;
+Statement stmt = null;
+try {
+    conn = DriverManager.getConnection(url, user, pass);
+    stmt = conn.createStatement();
+    // ...
+} finally {
+    if (stmt != null) stmt.close();
+    if (conn != null) conn.close();
+}
+
+// Good: try-with-resources (Java 7+)
+try (Connection conn = DriverManager.getConnection(url, user, pass);
+     Statement stmt = conn.createStatement()) {
+     // ...
+}
+----
+
+== Complete CRUD Example
+
+[source,java]
+----
+public class StudentDao {
+    private static final String URL = "jdbc:postgresql://localhost:5432/school";
+
+    public List<String> getAllStudents() throws SQLException {
+        var students = new ArrayList<String>();
+        var sql = "SELECT id, name FROM student ORDER BY id";
+
+        try (var conn = DriverManager.getConnection(URL, "postgres", "secret");
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                students.add(rs.getInt("id") + ": " + rs.getString("name"));
+            }
+        }
+        return students;
+    }
+}
+----
+
+== Summary
+
+[.highlight-box]
+--
+* JDBC provides database-independent Java database access
+* Connection, Statement, ResultSet are core interfaces
+* Always use try-with-resources for automatic cleanup
+* CRUD operations use executeQuery() and executeUpdate()
+* Handle SQLException with detailed error information
+--

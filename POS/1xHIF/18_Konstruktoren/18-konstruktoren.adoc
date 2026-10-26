@@ -1,0 +1,213 @@
+= 18 - Konstruktoren | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Problem: Objekte nachträglich setzen
+. Was ist ein Konstruktor?
+. Default-Konstruktor
+. Parametrisierter Konstruktor
+
+== Agenda (2/2)
+
+[arabic, start=5]
+. Beispiel: Book-Klasse
+. Konstruktor-Überladung
+. this-Schlüsselwort
+
+== Lernziele
+
+* Ich kann den Zweck von Konstruktoren erklären
+* Ich kann Konstruktoren mit Parametern definieren
+* Ich kann mehrere Konstruktoren überladen
+
+== Problem: Objekte nachträglich setzen
+
+[source,java]
+----
+Person p = new Person();
+p.setName("Anna");
+p.setAlter(20);
+// Drei Schritte für ein Objekt — umständlich!
+----
+
+* Bisher: Objekt erzeugen, dann Werte einzeln setzen
+* Besser: Werte direkt bei der Erzeugung übergeben
+* Lösung: *Konstruktoren*
+
+== Was ist ein Konstruktor?
+
+* Ein Konstruktor ist eine spezielle Methode zur Initialisierung von Objekten
+* Er heißt genau wie die Klasse
+* Er hat *keinen* Rückgabetyp (auch nicht `void`)
+* Er wird automatisch beim Erzeugen eines Objekts aufgerufen (`new`)
+
+[source,java]
+----
+public class Person {
+    String name; int alter;
+    public Person(String name, int alter) {
+        this.name = name;
+        this.alter = alter;
+    }
+}
+----
+
+== Default-Konstruktor
+
+* Der *Default-Konstruktor* hat keine Parameter
+* Java erzeugt ihn automatisch, wenn kein anderer Konstruktor definiert ist
+* Er setzt die Attribute auf ihre Default-Werte (0, null, false)
+
+[source,java]
+----
+public Person() {
+}
+Person p = new Person();
+----
+
+*Achtung:* Sobald du einen eigenen Konstruktor definierst, gibt es keinen Default-Konstruktor mehr — außer du schreibst ihn selbst!
+
+== Parametrisierter Konstruktor
+
+* Ein Konstruktor mit Parametern setzt die Attribute direkt bei der Erzeugung
+* Das ist kürzer und sicherer als nachträgliches Setzen
+
+[source,java]
+----
+public class Person {
+    private String name; private int alter;
+    public Person(String name, int alter) {
+        this.name = name; this.alter = alter;
+    }
+}
+----
+
+== Beispiel: Book-Klasse
+
+[source,java]
+----
+public class Book {
+    private String title;
+    private int pages;
+
+    public Book(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    public void printInfo() {
+        System.out.println("Titel: " + title);
+        System.out.println("Seiten: " + pages);
+    }
+
+    public static void main(String[] args) {
+        Book b = new Book("Java lernen", 350);
+        b.printInfo();
+    }
+}
+----
+
+== Konstruktor-Überladung (1/2)
+
+[source,java]
+----
+public class Book {
+    private String title;
+    private int pages;
+
+    public Book(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    public Book(String title) {
+        this.title = title;
+        this.pages = 0;
+    }
+}
+----
+
+== Konstruktor-Überladung (2/2)
+
+* Eine Klasse kann mehrere Konstruktoren haben (Überladung)
+* Sie müssen sich in der Parameterliste unterscheiden
+
+[source,java]
+----
+public Book() {
+    this.title = "Unbekannt";
+    this.pages = 0;
+}
+----
+
+== this-Schlüsselwort
+
+* `this` bezieht sich auf das aktuelle Objekt
+* Es wird verwendet, um Attribut von Parameter zu unterscheiden
+
+[source,java]
+----
+public Book(String title, int pages) {
+    // this.title = Attribut
+    // title = Parameter
+    this.title = title;
+    this.pages = pages;
+}
+----
+
+Ohne `this` würde `title = title` den Parameter mit sich selbst überschreiben!
+
+== Konstruktor vs. Methode
+
+[cols=",",options="header",]
+|===
+|Konstruktor |Methode
+|Heißt wie die Klasse |Hat einen frei wählbaren Namen
+|Kein Rückgabetyp |Hat einen Rückgabetyp (oder void)
+|Wird nur bei `new` aufgerufen |Kann beliebig oft aufgerufen werden
+|Initialisiert das Objekt |Führt Aktionen aus / liefert Werte
+|===
+
+== Best Practices
+
+* Verwende Konstruktoren, um Objekte vollständig zu initialisieren
+* Vermeide zu viele Konstruktoren — ab 3-4 wird es unübersichtlich
+* Verwende sprechende Parameternamen
+* Nutze `this` für klare Unterscheidung
+* Ein Konstruktor sollte keine komplexe Logik enthalten
+
+== Zusammenfassung
+
+[.highlight-box]
+--
+* Konstruktor = spezielle Methode zur Objekt-Initialisierung
+* Heißt wie die Klasse, kein Rückgabetyp
+* Default- und parametrisierte Konstruktoren möglich
+* Überladung: mehrere Konstruktoren in einer Klasse
+* `this` unterscheidet Attribut von Parameter
+--
+
+== Ausblick
+
+[.highlight-box]
+--
+Nächste Woche vertiefen wir die Objektorientierung mit `this`, Settern und Gettern.
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Baue Konstruktoren in den Dungeon Crawler ein.
+--

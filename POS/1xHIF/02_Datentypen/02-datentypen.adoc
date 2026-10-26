@@ -1,0 +1,212 @@
+= 02 - Datentypen | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Variablen - Wofür brauchen wir sie?
+. Datentyp boolean
+. Datentyp int
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Datentyp float
+. Datentyp String
+. Datentyp char
+. Speicherbedarf der Datentypen
+. Deklaration und Initialisierung
+
+== Agenda (3/3)
+
+[arabic, start=9]
+. Ausgabe mit System.out.println
+. Erste Programme schreiben
+. Übersicht: Die fünf Datentypen
+. Häufige Fehler
+
+== Lernziele
+
+* Ich kann Variablen deklarieren und initialisieren
+* Ich kann die fünf grundlegenden Datentypen nennen und einsetzen
+* Ich kann einfache Programme mit Ausgabe schreiben
+* Ich kann typische Anfängerfehler bei Datentypen vermeiden
+
+== Variablen - Wofür brauchen wir sie?
+
+* Eine Variable ist ein "Behälter" für einen Wert
+* Jede Variable hat einen Namen und einen Datentyp
+* Der Datentyp bestimmt, welche Werte gespeichert werden können
+* Beispiel: `int alter = 17;`
+
+== Datentyp boolean
+
+* Nur zwei Werte: `true` oder `false`
+* Wird für Wahrheitswerte verwendet
+* Beispiel: Ist die Tür offen? Ist der Spieler am Leben?
+
+[source,java]
+----
+boolean istTuerOffen = true;
+boolean spielerLebt = false;
+----
+
+== Datentyp int
+
+* Ganze Zahlen (ohne Nachkommastellen)
+* Beispiele: 42, -3, 0, 1++_++000++_++000
+* Wird für Zählungen, Alter, Punktestände verwendet
+
+[source,java]
+----
+int alter = 17;
+int punkte = 2500;
+----
+
+== Datentyp float
+
+* Gleitkommazahlen (mit Nachkommastellen)
+* Beispiele: 3.14, -0.5, 99.99
+* Wird für Größen, Gewichte, Preise verwendet
+* Wichtig: Endet mit *f*
+
+[source,java]
+----
+float koerpergroesse = 1.78f;
+float preis = 19.99f;
+----
+
+== Datentyp String
+
+* Text — eine Zeichenkette
+* Wird in doppelten Anführungszeichen geschrieben
+* Beispiele: "Hallo", "Max Mustermann", "123"
+
+[source,java]
+----
+String name = "Max Mustermann";
+String begruessung = "Hallo Welt!";
+----
+
+== Datentyp char
+
+* Ein einzelnes Zeichen
+* Wird in einfachen Anführungszeichen geschrieben
+* Beispiele: 'A', '?', '3', '' (Zeilenumbruch)
+
+[source,java]
+----
+char anfangsbuchstabe = 'M';
+char buchstabe = 'A';
+----
+
+== Speicherbedarf der Datentypen
+
+* Jeder Datentyp belegt eine feste Anzahl an Bits/Bytes im Speicher
+* Je mehr Bits, desto mehr verschiedene Werte sind darstellbar
+* `String` hat keine feste Größe -- die Länge hängt vom Text ab
+
+[cols=",,",options="header",]
+|===
+|Typ |Größe |Wertebereich
+|`boolean` |1 Bit |`true`, `false`
+|`int` |4 Byte (32 Bit) |-2.147.483.648 … 2.147.483.647
+|`float` |4 Byte (32 Bit) |ca. ±1,4·10⁻⁴⁵ … ±3,4·10³⁸
+|`char` |2 Byte (16 Bit) |0 … 65.535
+|`String` |variabel |abhängig von der Zeichenanzahl
+|===
+
+== Deklaration und Initialisierung
+
+* *Deklaration:* Datentyp und Name festlegen
+* *Initialisierung:* Ersten Wert zuweisen
+* Beides kann in einer Zeile passieren
+
+[source,java]
+----
+// Deklaration ohne Initialisierung
+int x;
+// Initialisierung (später)
+x = 10;
+// Deklaration + Initialisierung in einer Zeile
+int y = 20;
+----
+
+== Ausgabe mit System.out.println
+
+* Mit `System.out.println()` geben wir Werte aus
+* Wir können Text und Variablen kombinieren
+* Der `{plus}`-Operator verbindet Texte
+
+[source,java]
+----
+String name = "Anna";
+int alter = 16;
+System.out.println("Name: " + name);
+System.out.println("Alter: " + alter);
+----
+
+== Erste Programme schreiben
+
+* Eine Java-Klasse mit `main`-Methode erstellen
+* Variablen deklarieren, initialisieren und ausgeben
+* Compilieren mit `javac`, ausführen mit `java`
+
+[source,java]
+----
+String name = "Max";
+int alter = 17;
+float groesse = 1.85f;
+char initial = 'M';
+boolean istVolljaehrig = false;
+System.out.println("Name: " + name);
+----
+
+== Übersicht: Die fünf Datentypen
+
+[cols=",,",options="header",]
+|===
+|Typ |Beschreibung |Beispiel
+|`boolean` |Wahrheitswert |`true`, `false`
+|`int` |Ganze Zahl |`42`, `-7`
+|`float` |Kommazahl |`3.14f`, `2.5f`
+|`String` |Text |`"Hallo"`
+|`char` |Einzelnes Zeichen |`'A'`, `'?'`
+|===
+
+== Häufige Fehler
+
+[.highlight-box]
+--
+* *Falscher Typ:* `int text = "Hallo";` → Compiler-Fehler
+* *Fehlende Initialisierung:* Variable wird vor der Wertzuweisung verwendet
+* *Falsche Anführungszeichen:* String braucht `"..."`, char braucht `'...'`
+* *Semikolon vergessen:* Jede Anweisung endet mit `;`
+--
+
+== Summary
+
+[.highlight-box]
+--
+* Variablen speichern Daten in festgelegten Datentypen
+* Fünf grundlegende Typen: boolean, int, float, String, char
+* Deklaration: Typ {plus} Name; Initialisierung: erste Wertzuweisung
+* Ausgabe mit System.out.println
+* Compiler prüft Typ-Korrektheit
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Spieler-Charakter bekommt erste Eigenschaften. Legt Variablen für die grundlegenden Attribute des Helden an und gebt sie aus.
+--

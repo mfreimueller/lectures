@@ -1,0 +1,176 @@
+= SQL – DML | Data Manipulation Language · DBI 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. DML – Data Manipulation Language
+. List of DML Commands
+. SQL INSERT INTO Statement
+. INSERT INTO ... Without Column Names
+. Inserting Multiple Rows
+
+== Agenda (2/2)
+
+[arabic, start=6]
+. SQL UPDATE Statement
+. Common Mistake: UPDATE Without WHERE
+. SQL DELETE Statement
+. Common Mistake: DELETE Without WHERE
+. DELETE vs. TRUNCATE
+
+== Learning Goals
+
+* I can insert single and multiple rows with `INSERT INTO`
+* I can update existing rows safely with `UPDATE ... WHERE`
+* I can delete rows safely with `DELETE ... WHERE`
+* I know the difference between `DELETE` and `TRUNCATE`
+
+== Recap: DDL vs. DML vs. DQL
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Category |Purpose |Examples
+|*DDL* |Define / change the schema |`CREATE`, `DROP`, `ALTER`, `TRUNCATE`
+|*DML* |Manipulate data |`INSERT`, `UPDATE`, `DELETE`
+|*DQL* |Query data |`SELECT`
+|===
+
+Today: *DML*
+
+== DML – Data Manipulation Language
+
+* SQL commands used to work with the *data* inside tables
+* Unlike DDL, DML does not change the table structure
+* The three core commands: `INSERT`, `UPDATE`, `DELETE`
+
+[background-image="meme.jpg",background-size="contain"]
+== !
+
+== List of DML Commands
+
+* *INSERT* – add new rows to a table
+* *UPDATE* – change existing rows
+* *DELETE* – remove rows from a table
+
+== SQL INSERT INTO Statement
+
+[source,sql]
+----
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+----
+
+[source,sql]
+----
+INSERT INTO employees (name, department_id, salary)
+VALUES ('Ada Lovelace', 3, 4200);
+----
+
+== INSERT INTO ... Without Column Names
+
+[source,sql]
+----
+INSERT INTO employees
+VALUES (101, 'Ada Lovelace', 3, 4200);
+----
+
+* Works, but values must match the table's column *order exactly*
+* Breaks silently if the table structure ever changes
+* Prefer always naming the columns explicitly
+
+== Inserting Multiple Rows
+
+[source,sql]
+----
+INSERT INTO employees (name, department_id, salary)
+VALUES
+    ('Ada Lovelace', 3, 4200),
+    ('Alan Turing', 3, 4600),
+    ('Grace Hopper', 1, 4900);
+----
+
+One statement, three new rows.
+
+== SQL UPDATE Statement
+
+[source,sql]
+----
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+----
+
+[source,sql]
+----
+UPDATE employees
+SET salary = 4400
+WHERE name = 'Ada Lovelace';
+----
+
+The `WHERE` clause decides *which* rows change.
+
+== Common Mistake: UPDATE Without WHERE
+
+[source,sql]
+----
+UPDATE employees
+SET salary = 4400;
+----
+
+* No `WHERE` clause → *every row* in the table is updated
+* Always check your `WHERE` clause before running an `UPDATE`
+* Good habit: run the equivalent `SELECT` first to preview affected rows
+
+== SQL DELETE Statement
+
+[source,sql]
+----
+DELETE FROM table_name
+WHERE condition;
+----
+
+[source,sql]
+----
+DELETE FROM employees
+WHERE name = 'Ada Lovelace';
+----
+
+The `WHERE` clause decides *which* rows are removed.
+
+== Common Mistake: DELETE Without WHERE
+
+[source,sql]
+----
+DELETE FROM employees;
+----
+
+* No `WHERE` clause → *every row* is deleted
+* The table itself still exists, just empty
+* Same safety habit as `UPDATE`: preview with `SELECT` first
+
+== DELETE vs. TRUNCATE
+
+[cols=",,",options="header",]
+|===
+| |`DELETE FROM table` |`TRUNCATE TABLE table`
+|Type |DML |DDL
+|Can use `WHERE`? |Yes |No — always removes everything
+|Resets `AUTO++_++INCREMENT`? |No |Yes
+|===
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* *DML* manipulates data: `INSERT`, `UPDATE`, `DELETE`
+* `UPDATE` and `DELETE` *without* `WHERE` affect the entire table
+* `DELETE` is DML (row-by-row); `TRUNCATE` is DDL (whole table, resets auto-increment)

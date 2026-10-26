@@ -1,0 +1,61 @@
+= Real-World Application | Equipment Rental — DBI 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. Recap: Your Notation Toolkit
+. Today's Task
+. How to Approach It
+. Deliverable
+. Summary
+
+== Learning Goals
+
+* I can apply everything learned so far to a real, unfamiliar system
+* I can derive an ERD from a website without being handed a specification
+
+== Recap: Your Notation Toolkit
+
+image::dot/notation-cheatsheet.svg[Notation cheat sheet,width=1050]
+
+Plus: composite, key, and multivalued attributes, cardinality as (min,max), and roles — +
+everything from the last several lessons.
+
+== Today's Task
+
+So far, every exercise gave you a *written specification* to translate into a model.
+
+Today there is no specification — only a *real website*. You'll have to figure out +
+the data model yourself, the way you would on a real project.
+
+== How to Approach It
+
+[arabic]
+. Browse the site like a customer would — note every *kind of thing* it manages
+. For each kind of thing, list its likely *attributes*
+. Look for *relationships* between them, and assign a *cardinality* to each
+. Watch for special cases: does anything look like a *weak entity*? An *ISA* +
+hierarchy? A *recursive* relationship?
+. Draw the full ERD in Chen notation
+
+== Deliverable
+
+* A complete ERD (Chen notation) for the site's core rental process
+* Be ready to justify your cardinality choices — there's often more than one +
+reasonable answer, as long as you can explain your reasoning
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* You now have every tool needed to model a real, unfamiliar system from scratch
+* Reverse-engineering starts the same way as any other modeling task: find the things, their properties, and how they relate

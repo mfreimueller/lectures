@@ -1,0 +1,56 @@
+= 26 - Caching & AOP | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Warum Caching?
+
+* Datenbank-Requests sind teuer (I/O, Netzwerk)
+* Häufig gelesene, selten geänderte Daten cachen
+* Reduziert Latenz und Datenbank-Last
+
+== @Cacheable
+
+[source,java]
+----
+@Cacheable(value = "books", key = "#id")
+public BookDTO getById(Long id) { ... }
+
+@Cacheable("books")
+public List<BookDTO> getAll() { ... }
+----
+
+== @CacheEvict
+
+[source,java]
+----
+@CacheEvict(value = "books", allEntries = true)
+public BookDTO create(BookDTO dto) { ... }
+
+@CacheEvict(value = "books", key = "#id")
+public BookDTO update(Long id, BookDTO dto) { ... }
+----
+
+== AOP — @Aspect
+
+[source,java]
+----
+@Aspect @Component
+public class ExecutionTimeAspect {
+    @Around("execution(* at.spengergasse..service.*.*(..))")
+    public Object logTime(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = pjp.proceed();
+        log.info("{} took {} ms", pjp.getSignature(),
+            System.currentTimeMillis() - start);
+        return result;
+    }
+}
+----

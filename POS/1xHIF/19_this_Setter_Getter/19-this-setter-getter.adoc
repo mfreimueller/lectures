@@ -1,0 +1,278 @@
+= 19 - this, Setter, Getter | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Das this-Schlüsselwort
+. this ist optional
+. Private Attribute
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Getter
+. Setter
+. Validierung im Setter
+. Validierungsbeispiele
+
+== Agenda (3/3)
+
+[arabic, start=8]
+. Kein Setter für schreibgeschützte Attribute
+. Kapselung (Encapsulation)
+. Übersicht: Setter/Getter-Muster
+
+== Lernziele
+
+* Ich kann das Schlüsselwort this verwenden
+* Ich kann Setter und Getter zur Kapselung einsetzen
+* Ich kann den Nutzen von Datenkapselung erklären
+
+== Das this-Schlüsselwort
+
+`this` verweist auf das aktuelle Objekt.
+
+[source,java]
+----
+public class Person {
+    String name;
+    int alter;
+
+    public Person(String name, int alter) {
+        this.name = name;   // this.name = Attribut
+        this.alter = alter; // name = Parameter
+    }
+}
+----
+
+Löst die Kollision zwischen Parameter und Attribut.
+
+== this ist optional
+
+Wenn keine Kollision besteht, kann `this` weggelassen werden.
+
+[source,java]
+----
+public class Person {
+    String name;
+
+    public Person(String n) {
+        name = n;  // kein this nötig
+    }
+
+    public void print() {
+        System.out.println(name); // this.name wäre auch ok
+    }
+}
+----
+
+Viele Teams verwenden `this` trotzdem konsequent zur Klarheit.
+
+== Private Attribute
+
+Attribute sollten `private` sein — nur innerhalb der Klasse sichtbar.
+
+[source,java]
+----
+public class Person {
+    private String name;
+    private int alter;
+}
+----
+
+[.highlight-box]
+--
+Warum private? Kapselung (Encapsulation)!
+--
+
+* Zugriff kontrollieren
+* Interne Implementierung ändern ohne externe Effekte
+* Ungültige Werte verhindern
+
+== Getter
+
+Getter geben den Wert eines privaten Attributs zurück.
+
+[source,java]
+----
+public class Person {
+    private String name;
+    private int alter;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAlter() {
+        return alter;
+    }
+}
+----
+
+Konvention: `get` {plus} Attributname mit Großbuchstaben.
+
+== Setter
+
+Setter setzen den Wert eines privaten Attributs.
+
+[source,java]
+----
+public class Person {
+    private String name;
+    private int alter;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAlter(int alter) {
+        this.alter = alter;
+    }
+}
+----
+
+Konvention: `set` {plus} Attributname mit Großbuchstaben.
+
+== Validierung im Setter
+
+Die Kontrolle: Setter können Werte prüfen und ablehnen.
+
+[source,java]
+----
+public void setAlter(int alter) {
+    if (alter > 0 && alter < 150)
+        this.alter = alter;
+    else
+        System.out.println("Ungültiges Alter: " + alter);
+}
+----
+
+[.highlight-box]
+--
+Der Setter schützt das Objekt vor ungültigen Zuständen.
+--
+
+== Validierungsbeispiele
+
+[source,java]
+----
+public void setName(String name) {
+    if (name != null && !name.isEmpty()) {
+        this.name = name;
+    } else {
+        System.out.println("Name darf nicht leer sein!");
+    }
+}
+
+public void setPreis(double preis) {
+    if (preis > 0) {
+        this.preis = preis;
+    } else {
+        System.out.println("Preis muss positiv sein!");
+    }
+}
+----
+
+== Read-only Attribute — Person mit ID (1/2)
+
+Nicht jedes Attribut braucht einen Setter.
+
+[source,java]
+----
+public class Person {
+    private final int id;
+    private String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+}
+----
+
+Die ID wird nur im Konstruktor gesetzt — kein Setter!
+
+== Read-only — getName und setName (2/2)
+
+[source,java]
+----
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+----
+
+Der Name ist änderbar, die ID bleibt konstant.
+
+== Kapselung (Encapsulation)
+
+Daten und Methoden gehören zusammen — Zugriff von außen nur über definierte Schnittstellen.
+
+[.highlight-box]
+--
+Prinzip: *private* Attribute, *public* Methoden
+--
+
+* Änderungen am Inneren der Klasse möglich
+* Zugriffe können protokolliert werden
+* Gültigkeitsprüfungen sind zentral möglich
+
+== Übersicht: Setter/Getter-Muster
+
+[source,java]
+----
+private int alter;
+
+public int getAlter() {
+    return alter;
+}
+
+public void setAlter(int alter) {
+    if (alter > 0) {
+        this.alter = alter;
+    }
+}
+
+private boolean aktiv;
+public boolean isAktiv() {
+    return aktiv;
+}
+----
+
+== Zusammenfassung
+
+* `this` = Verweis auf aktuelles Objekt
+* Setter/Getter = öffentliche Schnittstelle zu privaten Attributen
+* Validierung in Settern = Schutz vor ungültigen Werten
+* Kapselung = Kontrolle über den Zugriff auf Daten
+* Nicht für jedes Attribut braucht es einen Setter
+
+== Übungen
+
+* *Exercise:* Bankkonto mit Setter/Getter
+* *Große Übung:* Online-Shop (Artikel {plus} Warenkorb)
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Füge die Kapselung (private Attribute {plus} Setter/Getter) zu deinen Dungeon Crawler-Klassen hinzu.
+--

@@ -1,0 +1,225 @@
+= 17 - DT Os, Validation | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. What are DTOs?
+. DTO Example
+. Manual Validation
+. Custom Validation Annotations
+
+== Agenda (2/2)
+
+[arabic, start=5]
+. Validation with Reflection
+. Annotated DTO
+. Integration with Servlets
+. Structured Error Responses
+. Exception Handling in Front Controller
+
+== Learning Objectives
+
+* I can explain why DTOs separate API contracts from domain models
+* I can define request and response DTOs using Java records
+* I can create custom validation annotations with retention and target
+* I can implement a reflection-based validator that reads annotations
+* I can build structured error responses and centralized exception handling
+
+== What are DTOs?
+
+* Data Transfer Objects carry data between processes
+* Separate API contracts from internal domain models
+* DTOs can differ from entities (hide fields, combine data)
+* Request DTOs: what the client sends
+* Response DTOs: what the server returns
+
+== DTO Example
+
+[source,java]
+----
+// Request DTO (what client sends)
+public record CreateUserRequest(String username, String email, String password) {}
+
+// Response DTO (what server returns)
+public record UserResponse(Long id, String username, String email) {}
+----
+
+[.highlight-box]
+--
+Note: passwordHash is in the entity but NOT in any DTO!
+--
+
+== Manual Validation
+
+[source,java]
+----
+var mapper = new ObjectMapper();
+var request = mapper.readValue(
+    req.getReader(), CreateUserRequest.class);
+var errors = new ArrayList<String>();
+
+if (request.username() == null || request.username().isBlank())
+    errors.add("Username is required");
+if (request.email() == null || !request.email().contains("@"))
+    errors.add("Valid email is required");
+if (request.password() == null
+    || request.password().length() < 8)
+    errors.add("Password must be 8+ characters");
+
+if (!errors.isEmpty()) {
+    resp.setStatus(400);
+    resp.setContentType("application/json");
+    mapper.writeValue(resp.getWriter(),
+        Map.of("errors", errors));
+}
+----
+
+== Custom Validation Annotations
+
+[source,java]
+----
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface NotBlank {
+    String message() default "Field must not be blank";
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface MinLength {
+    int value();
+    String message() default "Field too short";
+}
+----
+
+== Validation with Reflection
+
+[source,java]
+----
+class Validator {
+    public static List<String> validate(Object obj) {
+        var errors = new ArrayList<String>();
+        for (var field : obj.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            var value = field.get(obj);
+
+            if (field.isAnnotationPresent(NotBlank.class)
+                    && (value == null || value.toString().isBlank())) {
+                errors.add(field.getName() + ": "
+                    + field.getAnnotation(NotBlank.class).message());
+            }
+            if (field.isAnnotationPresent(MinLength.class)
+                    && (value == null
+                    || value.toString().length()
+                    < field.getAnnotation(MinLength.class).value())) {
+                errors.add(field.getName() + ": too short");
+            }
+        }
+        return errors;
+    }
+}
+----
+
+== Annotated DTO
+
+[source,java]
+----
+public class CreateUserRequest {
+    @NotBlank(message = "Username is required")
+    public String username;
+
+    @NotBlank(message = "Email is required")
+    public String email;
+
+    @MinLength(value = 8, message = "Password must be at least 8 characters")
+    public String password;
+}
+----
+
+== Integration with Servlets
+
+[source,java]
+----
+var mapper = new ObjectMapper();
+var request = mapper.readValue(
+    req.getReader(), CreateUserRequest.class);
+var errors = Validator.validate(request);
+
+if (!errors.isEmpty()) {
+    resp.setStatus(400);
+    resp.setContentType("application/json");
+    mapper.writeValue(resp.getWriter(),
+        Map.of("errors", errors));
+    return;
+}
+var user = userService.create(request);
+resp.setStatus(201);
+mapper.writeValue(resp.getWriter(),
+    new UserResponse(user.id(), user.username()));
+----
+
+== Structured Error Responses
+
+[source,java]
+----
+public record ErrorResponse(
+    int status,
+    String message,
+    List<String> details
+) {}
+
+// Inside a Command:
+var user = userService.findById(id);
+if (user == null) {
+    resp.setStatus(404);
+    resp.setContentType("application/json");
+    mapper.writeValue(resp.getWriter(), new ErrorResponse(
+        404, "User not found",
+        List.of("No user exists with id " + id)));
+    return;
+}
+mapper.writeValue(resp.getWriter(),
+    new UserResponse(user.id(), user.username()));
+----
+
+== Exception Handling in Front Controller
+
+[source,java]
+----
+class UserNotFoundException extends RuntimeException {
+    private final long userId;
+    public UserNotFoundException(long userId) {
+        super("User not found: " + userId);
+        this.userId = userId;
+    }
+    public long getUserId() { return userId; }
+}
+
+// Front Controller's service():
+try { cmd.execute(req, resp); }
+catch (UserNotFoundException e) {
+    resp.setStatus(404);
+    resp.setContentType("application/json");
+    mapper.writeValue(resp.getWriter(),
+        new ErrorResponse(404, e.getMessage(),
+            List.of("User ID: " + e.getUserId())));
+}
+----
+
+== Summary
+
+* DTOs separate API contracts from domain models
+* Request DTOs define what clients send; Response DTOs define what servers return
+* Manual validation works but becomes repetitive
+* Custom annotations {plus} reflection enable reusable validation
+* Exception mappers centralize error handling

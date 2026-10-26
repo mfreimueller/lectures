@@ -1,0 +1,184 @@
+= 03 - Operatoren | POS - 1xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Der Plus-Operator ({plus})
+. Der Minus-Operator (-)
+. Der Mal-Operator (++*++)
+
+== Agenda (2/3)
+
+[arabic, start=4]
+. Der Geteilt-Operator (/)
+. Ganzzahl- vs. Gleitkommadivision
+. Punkt-vor-Strich-Regel
+
+== Agenda (3/3)
+
+[arabic, start=7]
+. Berechnungen mit Variablen
+. Beispiel: Fläche eines Rechtecks
+. Häufige Fehler
+
+== Lernziele
+
+* Ich kann arithmetische Operatoren korrekt anwenden
+* Ich kann Ganzzahl- und Gleitkommadivision unterscheiden
+* Ich kann Berechnungen mit Variablen durchführen
+* Ich kann die Punkt-vor-Strich-Regel beachten
+* Ich kann typische Fehler bei Operatoren vermeiden
+
+== Der Plus-Operator (+)
+
+* Addiert zwei Zahlen
+* Kann auch Texte verbinden (String-Konkatenation)
+
+[source,java]
+----
+int summe = 5 + 3;
+System.out.println(summe);  // 8
+
+String text = "Hallo " + "Welt";
+System.out.println(text);   // Hallo Welt
+----
+
+== Der Minus-Operator (-)
+
+* Subtrahiert zwei Zahlen
+* Kann auch als Vorzeichen verwendet werden
+
+[source,java]
+----
+int differenz = 10 - 3;
+System.out.println(differenz);  // 7
+
+int negativ = -5;
+System.out.println(negativ);    // -5
+----
+
+== Der Mal-Operator (*)
+
+* Multipliziert zwei Zahlen
+
+[source,java]
+----
+int produkt = 4 * 6;
+System.out.println(produkt);  // 24
+
+double flaeche = 2.5 * 3.0;
+System.out.println(flaeche);  // 7.5
+----
+
+== Der Geteilt-Operator (/)
+
+* Dividiert zwei Zahlen
+* Achtung: Das Ergebnis hängt vom Datentyp ab!
+
+[source,java]
+----
+int a = 5 / 2;
+System.out.println(a);  // 2 (nicht 2.5!)
+
+double b = 5.0 / 2.0;
+System.out.println(b);  // 2.5
+----
+
+== Ganzzahl- vs. Gleitkommadivision
+
+[.highlight-box]
+--
+*Wichtig:* Wenn beide Zahlen `int` sind, wird *ganzzahlig* dividiert!
+--
+
+[source,java]
+----
+int ergebnis1 = 7 / 3;     // 2 (Nachkommastellen fallen weg)
+double ergebnis2 = 7 / 3;   // 2.0 (immer noch int-Division!)
+double ergebnis3 = 7.0 / 3; // 2.333... (double-Division)
+----
+
+== Punkt-vor-Strich-Regel
+
+* Auch in Java gilt: Punktrechnung vor Strichrechnung
+* Klammern verändern die Reihenfolge
+
+[source,java]
+----
+int a = 3 + 4 * 2;     // 11 (weil 4*2=8, dann +3)
+int b = (3 + 4) * 2;   // 14 (weil 3+4=7, dann *2)
+int c = 10 - 2 * 3;    // 4  (weil 2*3=6, dann 10-6)
+----
+
+== Berechnungen mit Variablen
+
+* Variablen können in Berechnungen verwendet werden
+* Das Ergebnis kann in einer neuen Variable gespeichert werden
+
+[source,java]
+----
+int preis = 19, anzahl = 3;
+int gesamt = preis * anzahl;
+System.out.println("Gesamtpreis: " + gesamt);
+double laenge = 5.5, breite = 3.2;
+double flaeche = laenge * breite;
+System.out.println("Flaeche: " + flaeche);
+----
+
+== Beispiel: Fläche eines Rechtecks
+
+[source,java]
+----
+public class Rechteck {
+    public static void main(String[] args) {
+        double laenge = 8.5;
+        double breite = 4.2;
+
+        double flaeche = laenge * breite;
+        double umfang = 2 * (laenge + breite);
+
+        System.out.println("Laenge: " + laenge);
+        System.out.println("Breite: " + breite);
+        System.out.println("Flaeche: " + flaeche);
+        System.out.println("Umfang: " + umfang);
+    }
+}
+----
+
+== Häufige Fehler
+
+[.highlight-box]
+--
+* *Division vergessen:* `5 / 2` ergibt 2, nicht 2.5!
+* *Division durch 0:* Führt zu einem Laufzeitfehler (ArithmeticException)
+* *Falsche Klammerung:* `3 {plus} 4 ++*++ 2` ist nicht dasselbe wie `(3 {plus} 4) ++*++ 2`
+* *Typkonflikt:* Ein `int`-Ergebnis in einer `double`-Variable speichern (Nachkommastellen gehen verloren)
+--
+
+== Summary
+
+[.highlight-box]
+--
+* Arithmetische Operatoren: {plus}, -, ++*++, /
+* Ganzzahldivision: int / int = int (Nachkommastellen fallen weg)
+* Gleitkommadivision: double / double = double
+* Punkt-vor-Strich-Regel, Klammern für abweichende Reihenfolge
+* Variablen können in Berechnungen kombiniert werden
+--
+
+== Jahresprojekt: Dungeon Crawler
+
+[.highlight-box]
+--
+Der Spieler soll Schaden berechnen können. Legt Variablen für die Angriffskraft des Spielers und die Rüstung des Gegners an und berechnet den effektiven Schaden.
+--

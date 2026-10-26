@@ -1,0 +1,215 @@
+= 18 - REST, Servlets, Front Controller | POS - 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. The Problem: One Servlet Per Path
+. Front Controller Pattern
+. Front Controller Structure
+. Command Interface
+. Route Registration
+. Front Controller Servlet
+
+== Agenda (2/2)
+
+[arabic, start=7]
+. Path Variable Matching
+. JSON with Jackson
+. Serializing with ObjectMapper
+. Command: List Todos
+. Command: Create Todo
+. Structured Error Responses
+. Why Front Controller?
+
+== Learning Objectives
+
+* I can explain the Front Controller pattern and why it solves routing problems
+* I can implement a Command interface for route handlers
+* I can register routes and dispatch requests to the correct command
+* I can use Jackson ObjectMapper for JSON serialization and deserialization
+* I can implement path variable matching with regex patterns
+
+== The Problem: One Servlet Per Path
+
+* Last week: one servlet per path prefix
+* Path parsing with `getPathInfo()` is repetitive
+* Each servlet re-does JSON parsing, error handling
+* What if one servlet could route everything?
+
+== Front Controller Pattern
+
+[.highlight-box]
+--
+A single servlet receives all requests and dispatches them to handlers.
+--
+
+* One entry point for all HTTP requests
+* Cross-cutting concerns handled once (logging, auth)
+* Dispatches to Command objects based on path {plus} method
+
+== Front Controller Structure
+
+image::mermaid/front-controller.svg[Front Controller: Client dispatcht über FrontControllerServlet an eines von 5 Commands,width=700]
+
+== Command Interface
+
+[source,java]
+----
+public interface Command {
+    void execute(HttpServletRequest req,
+                 HttpServletResponse resp)
+            throws Exception;
+}
+----
+
+[.highlight-box]
+--
+Each command handles one specific route {plus} HTTP method.
+--
+
+== Route Registration
+
+[source,java]
+----
+var routes = new HashMap<String, Command>();
+routes.put("GET:/api/todos",     new ListTodosCmd(repo));
+routes.put("POST:/api/todos",    new CreateTodoCmd(repo));
+routes.put("GET:/api/todos/{id}", new GetTodoCmd(repo));
+routes.put("DELETE:/api/todos/{id}", new DeleteTodoCmd(repo));
+----
+
+== Front Controller Servlet
+
+[source,java]
+----
+@Override
+protected void service(HttpServletRequest req,
+                       HttpServletResponse resp)
+        throws ServletException, IOException {
+    var key = req.getMethod() + ":" + req.getPathInfo();
+    var cmd = routes.get(key);
+    if (cmd == null) {
+        resp.setStatus(404);
+        return;
+    }
+    cmd.execute(req, resp);
+}
+----
+
+== Path Variable Matching
+
+* Routes like `/api/todos/++{++id}` need pattern matching
+* Replace `++{++id}` with a regex group
+* Store compiled patterns instead of exact strings
+
+[source,java]
+----
+var pattern = Pattern.compile("/api/todos/(\\d+)");
+var matcher = pattern.matcher(req.getPathInfo());
+if (matcher.matches()) {
+    var id = Long.parseLong(matcher.group(1));
+}
+----
+
+== JSON with Jackson
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.17.0</version>
+</dependency>
+----
+
+== Serializing with ObjectMapper
+
+[source,java]
+----
+var mapper = new ObjectMapper();
+
+// Object → JSON
+resp.setContentType("application/json");
+mapper.writeValue(resp.getWriter(), todo);
+
+// JSON → Object
+var todo = mapper.readValue(req.getReader(), Todo.class);
+----
+
+== Command: List Todos
+
+[source,java]
+----
+public class ListTodosCmd implements Command {
+    private final TodoRepository repo;
+    public ListTodosCmd(TodoRepository repo) {
+        this.repo = repo;
+    }
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        resp.setContentType("application/json");
+        new ObjectMapper().writeValue(
+            resp.getWriter(), repo.findAll());
+    }
+}
+----
+
+== Command: Create Todo
+
+[source,java]
+----
+public class CreateTodoCmd implements Command {
+    public void execute(HttpServletRequest req,
+                         HttpServletResponse resp)
+            throws Exception {
+        var mapper = new ObjectMapper();
+        var todo = mapper.readValue(req.getReader(), Todo.class);
+        var saved = repo.save(todo);
+        resp.setStatus(201);
+        resp.setContentType("application/json");
+        mapper.writeValue(resp.getWriter(), saved);
+    }
+}
+----
+
+== Structured Error Responses
+
+[source,java]
+----
+public record ErrorResponse(int status, String message) {}
+
+try {
+    cmd.execute(req, resp);
+} catch (Exception e) {
+    resp.setStatus(500);
+    resp.setContentType("application/json");
+    new ObjectMapper().writeValue(resp.getWriter(),
+        new ErrorResponse(500, e.getMessage()));
+}
+----
+
+== Why Front Controller?
+
+* Single entry point → consistent error handling
+* Commands are small, testable, single-purpose
+* Adding a route = add a Command, no servlet config
+* This is exactly how Spring's DispatcherServlet works
+
+== Summary
+
+* Front Controller: one servlet dispatches to Commands
+* Command pattern: one class per route {plus} method
+* Jackson ObjectMapper for JSON ser/des
+* Path variables via regex pattern matching
+* Centralized error handling in the front controller

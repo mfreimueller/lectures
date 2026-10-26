@@ -1,0 +1,80 @@
+= Associative Entities, Recursive Relationships & the 3-Layer Architecture | DBI 3xHIF
+:title-separator: |
+:lang: en
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda
+
+[arabic]
+. Associative Entity Sets
+. Recursive Relationships
+. The ANSI/SPARC 3-Layer Architecture
+. Summary
+
+== Learning Goals
+
+* I can recognize when a relationship needs to become an associative entity
+* I can model a recursive (self-referencing) relationship with roles
+* I can explain the three ANSI/SPARC layers and why they're kept independent
+
+== The Problem: A Plain n:m Relationship
+
+image::dot/associative-before.svg[Theater plays Play, n:m,width=500]
+
+This tells us _that_ a theater plays a play — but not *when*, and it gives us no way +
+to sell tickets to one specific *performance*.
+
+== The Fix: An Associative Entity Set
+
+Sometimes a relationship needs its *own identity* — attributes, and other entities +
+relating to _it specifically_, not to either side alone.
+
+We merge the relationship and a new entity into one *associative entity set*: it +
+behaves as an entity (has its own attributes, other things relate to it) _and_ still +
+represents the original relationship.
+
+== Associative Entity: Result
+
+image::dot/associative-after.svg[Show as an associative entity,width=1000]
+
+`Show` now carries `Begin`/`Date`/`End`, and customers buy tickets to a *specific +
+show* — not to the theater or the play in the abstract.
+
+== Recursive Relationships
+
+An entity type can relate to *itself* — each side of the relationship plays a +
+different *role*.
+
+image::dot/employee-manages.svg[Employee manages Employee,width=450]
+
+One employee (the _manager_) manages zero or more employees; one employee (the +
+_subordinate_) has at most one manager.
+
+== The ANSI/SPARC 3-Layer Architecture
+
+A database is described at *three levels*, each hiding the details of the one below it:
+
+* *External* — one schema per user/application, showing only what they need
+* *Conceptual* — a single shared schema describing all the data and its structure
+* *Internal* — how the data is actually stored (files, indexes, ...)
+
+== Three Layers, One Entity
+
+image::mermaid/three-layer.svg[Three-layer architecture example,width=1000]
+
+* *Logical independence* — the conceptual schema can change without breaking external views
+* *Physical independence* — storage can change without touching the conceptual schema
+
+[.invert,background-color="#1A1A1A"]
+== Summary
+
+* An *associative entity set* merges a relationship and an entity when the relationship needs its own identity or attributes
+* A *recursive relationship* connects an entity type to itself, using roles on each side
+* The *3-layer architecture* separates external views, the conceptual schema, and physical storage — each independent of the others
