@@ -112,7 +112,7 @@ import java.util.Random;
 Random random = new Random();
 int zahl = random.nextInt(10);       // 0 bis 9
 int zahl2 = random.nextInt(10) + 1;  // 1 bis 10
-double komma = random.nextDouble();  // 0.0 bis 1.0
+float komma = random.nextFloat();    // 0.0 bis 1.0
 ----
 
 == Random: nextInt(bound)
@@ -187,15 +187,8 @@ System.out.println(zahl + 1);  // 43 (nicht "421")
 [.highlight-box]
 --
 * Scanner liest Benutzereingaben (nextLine, nextInt)
-* Random erzeugt Zufallszahlen (nextInt, nextDouble)
+* Random erzeugt Zufallszahlen (nextInt, nextFloat)
 * Importieren nicht vergessen: java.util.Scanner, java.util.Random
 * Interaktive Programme: Eingabe → Verarbeitung → Ausgabe
 * Integer.parseInt zum Umwandeln von String in int
---
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler wird interaktiv. Lest den Namen des Spielers ein und generiert einen zufälligen Gegner.
 --

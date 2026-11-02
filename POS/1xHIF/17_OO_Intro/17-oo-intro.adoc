@@ -225,10 +225,3 @@ public class Person {
 --
 Nächste Woche lernen wir Konstruktoren kennen — damit können wir Objekte mit Anfangswerten erstellen.
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Baue den Dungeon Crawler objektorientiert um.
---

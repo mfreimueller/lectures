@@ -254,10 +254,3 @@ Relative Pfade beziehen sich auf das Arbeitsverzeichnis (Projektordner in der ID
 == Übungen
 
 * *Exercise:* Notizblock (Menü-gesteuert)
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler erhält eine Speicherfunktion für Spielstände.
---

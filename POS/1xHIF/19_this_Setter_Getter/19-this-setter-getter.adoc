@@ -174,7 +174,7 @@ public void setName(String name) {
     }
 }
 
-public void setPreis(double preis) {
+public void setPreis(float preis) {
     if (preis > 0) {
         this.preis = preis;
     } else {
@@ -269,10 +269,3 @@ public boolean isAktiv() {
 
 * *Exercise:* Bankkonto mit Setter/Getter
 * *Große Übung:* Online-Shop (Artikel {plus} Warenkorb)
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Füge die Kapselung (private Attribute {plus} Setter/Getter) zu deinen Dungeon Crawler-Klassen hinzu.
---

@@ -187,8 +187,8 @@ public boolean addStudent(Student student) {
  */
 public class Bankkonto {
     private String kontoinhaber;
-    private double kontostand;
-    private double ueberzugsLimit;
+    private float kontostand;
+    private float ueberzugsLimit;
     // ...
 }
 ----
@@ -284,10 +284,3 @@ Das Ergebnis ist eine HTML-Seite wie die offizielle Java-Dokumentation!
 == Übungen
 
 * *Exercise:* Bibliothek vollständig dokumentieren
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Dokumentiere den gesamten Dungeon Crawler vollständig mit JavaDoc.
---

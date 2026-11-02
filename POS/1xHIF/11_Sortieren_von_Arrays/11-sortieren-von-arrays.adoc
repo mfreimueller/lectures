@@ -149,10 +149,3 @@ image::dot/early-exit-flow.svg[Flussdiagramm: Wenn in einem Durchlauf nicht geta
 * Nach jedem Durchlauf ist das größte Element ganz rechts
 * Optimierung: Frühzeitiger Abbruch, wenn kein Tausch mehr nötig
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Das Inventar-Array des Spielers soll alphabetisch sortiert werden können. Der Spieler wählt im Menü "Inventar sortieren". Dann wird das Inventar mit Bubblesort sortiert.
---

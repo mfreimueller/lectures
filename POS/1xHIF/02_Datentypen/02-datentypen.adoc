@@ -203,10 +203,3 @@ System.out.println("Name: " + name);
 * Ausgabe mit System.out.println
 * Compiler prüft Typ-Korrektheit
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Spieler-Charakter bekommt erste Eigenschaften. Legt Variablen für die grundlegenden Attribute des Helden an und gebt sie aus.
---

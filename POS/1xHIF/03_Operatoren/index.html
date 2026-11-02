@@ -600,18 +600,18 @@ System.out.println(negativ);    // -5</code></pre></div></div></div></section>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">int produkt = 4 * 6;
 System.out.println(produkt);  // 24
 
-double flaeche = 2.5 * 3.0;
+float flaeche = 2.5f * 3.0f;
 System.out.println(flaeche);  // 7.5</code></pre></div></div></div></section>
 <section id="_der_geteilt_operator"><h2>Der Geteilt-Operator (/)</h2><div class="slide-content"><div class="ulist"><ul><li><p>Dividiert zwei Zahlen</p></li><li><p>Achtung: Das Ergebnis hängt vom Datentyp ab!</p></li></ul></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">int a = 5 / 2;
 System.out.println(a);  // 2 (nicht 2.5!)
 
-double b = 5.0 / 2.0;
+float b = 5.0f / 2.0f;
 System.out.println(b);  // 2.5</code></pre></div></div></div></section>
 <section id="_ganzzahl_vs_gleitkommadivision"><h2>Ganzzahl- vs. Gleitkommadivision</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="paragraph"><p><strong>Wichtig:</strong> Wenn beide Zahlen <code>int</code> sind, wird <strong>ganzzahlig</strong> dividiert!</p></div></div></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">int ergebnis1 = 7 / 3;     // 2 (Nachkommastellen fallen weg)
-double ergebnis2 = 7 / 3;   // 2.0 (immer noch int-Division!)
-double ergebnis3 = 7.0 / 3; // 2.333... (double-Division)</code></pre></div></div></div></section>
+float ergebnis2 = 7 / 3;    // 2.0 (immer noch int-Division!)
+float ergebnis3 = 7.0f / 3; // 2.333... (float-Division)</code></pre></div></div></div></section>
 <section id="_punkt_vor_strich_regel"><h2>Punkt-vor-Strich-Regel</h2><div class="slide-content"><div class="ulist"><ul><li><p>Auch in Java gilt: Punktrechnung vor Strichrechnung</p></li><li><p>Klammern verändern die Reihenfolge</p></li></ul></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">int a = 3 + 4 * 2;     // 11 (weil 4*2=8, dann +3)
 int b = (3 + 4) * 2;   // 14 (weil 3+4=7, dann *2)
@@ -620,16 +620,16 @@ int c = 10 - 2 * 3;    // 4  (weil 2*3=6, dann 10-6)</code></pre></div></div></d
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">int preis = 19, anzahl = 3;
 int gesamt = preis * anzahl;
 System.out.println("Gesamtpreis: " + gesamt);
-double laenge = 5.5, breite = 3.2;
-double flaeche = laenge * breite;
+float laenge = 5.5f, breite = 3.2f;
+float flaeche = laenge * breite;
 System.out.println("Flaeche: " + flaeche);</code></pre></div></div></div></section>
 <section id="_beispiel_fläche_eines_rechtecks"><h2>Beispiel: Fläche eines Rechtecks</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">public class Rechteck {
     public static void main(String[] args) {
-        double laenge = 8.5;
-        double breite = 4.2;
+        float laenge = 8.5f;
+        float breite = 4.2f;
 
-        double flaeche = laenge * breite;
-        double umfang = 2 * (laenge + breite);
+        float flaeche = laenge * breite;
+        float umfang = 2 * (laenge + breite);
 
         System.out.println("Laenge: " + laenge);
         System.out.println("Breite: " + breite);
@@ -637,9 +637,8 @@ System.out.println("Flaeche: " + flaeche);</code></pre></div></div></div></secti
         System.out.println("Umfang: " + umfang);
     }
 }</code></pre></div></div></div></section>
-<section id="_häufige_fehler"><h2>Häufige Fehler</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="ulist"><ul><li><p><strong>Division vergessen:</strong> <code>5 / 2</code> ergibt 2, nicht 2.5!</p></li><li><p><strong>Division durch 0:</strong> Führt zu einem Laufzeitfehler (ArithmeticException)</p></li><li><p><strong>Falsche Klammerung:</strong> <code>3 &#43; 4 * 2</code> ist nicht dasselbe wie <code>(3 &#43; 4) * 2</code></p></li><li><p><strong>Typkonflikt:</strong> Ein <code>int</code>-Ergebnis in einer <code>double</code>-Variable speichern (Nachkommastellen gehen verloren)</p></li></ul></div></div></div></div></section>
-<section id="_summary"><h2>Summary</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="ulist"><ul><li><p>Arithmetische Operatoren: &#43;, -, *, /</p></li><li><p>Ganzzahldivision: int / int = int (Nachkommastellen fallen weg)</p></li><li><p>Gleitkommadivision: double / double = double</p></li><li><p>Punkt-vor-Strich-Regel, Klammern für abweichende Reihenfolge</p></li><li><p>Variablen können in Berechnungen kombiniert werden</p></li></ul></div></div></div></div></section>
-<section id="_jahresprojekt_dungeon_crawler"><h2>Jahresprojekt: Dungeon Crawler</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Der Spieler soll Schaden berechnen können. Legt Variablen für die Angriffskraft des Spielers und die Rüstung des Gegners an und berechnet den effektiven Schaden.</p></div></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_häufige_fehler"><h2>Häufige Fehler</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="ulist"><ul><li><p><strong>Division vergessen:</strong> <code>5 / 2</code> ergibt 2, nicht 2.5!</p></li><li><p><strong>Division durch 0:</strong> Führt zu einem Laufzeitfehler (ArithmeticException)</p></li><li><p><strong>Falsche Klammerung:</strong> <code>3 &#43; 4 * 2</code> ist nicht dasselbe wie <code>(3 &#43; 4) * 2</code></p></li><li><p><strong>Typkonflikt:</strong> Ein <code>int</code>-Ergebnis in einer <code>float</code>-Variable speichern (Nachkommastellen gehen verloren)</p></li></ul></div></div></div></div></section>
+<section id="_summary"><h2>Summary</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="ulist"><ul><li><p>Arithmetische Operatoren: &#43;, -, *, /</p></li><li><p>Ganzzahldivision: int / int = int (Nachkommastellen fallen weg)</p></li><li><p>Gleitkommadivision: float / float = float</p></li><li><p>Punkt-vor-Strich-Regel, Klammern für abweichende Reihenfolge</p></li><li><p>Variablen können in Berechnungen kombiniert werden</p></li></ul></div></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;

@@ -199,10 +199,3 @@ Schritte:
 == Übungen
 
 * *Exercise:* UML to Code (Student/Course)
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Erstelle ein UML-Klassendiagramm des gesamten Dungeon Crawlers.
---

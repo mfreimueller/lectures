@@ -184,10 +184,3 @@ Die Schleife läuft, bis der Benutzer "quit" eingibt
 * Endlosschleifen entstehen, wenn die Bedingung nie false wird
 * Mit while können wir benutzerdefinierte Wiederholungen steuern
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler bekommt eine Spielschleife: Der Spieler wird solange nach einer Aktion gefragt, bis er "quit" eingibt. Verwendet eine while-Schleife.
---

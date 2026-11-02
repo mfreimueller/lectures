@@ -20,20 +20,20 @@
 == Agenda (2/2)
 
 [arabic, start=4]
-. Double.parseDouble
-. Double.parseDouble - Beispiel
+. Float.parseFloat
+. Float.parseFloat - Beispiel
 . Boolean.parseBoolean
 . Fehlerhafte Eingaben (Exceptions)
 
 == Lernziele
 
-* Ich kann Strings mit parseInt und parseDouble in andere Datentypen konvertieren
+* Ich kann Strings mit parseInt und parseFloat in andere Datentypen konvertieren
 * Ich kann fehlerhafte Eingaben erkennen und behandeln
 
 == Warum Convert?
 
 * `Scanner.nextLine()` liefert immer einen `String`
-* Für Berechnungen brauchen wir aber Zahlen (`int`, `double`)
+* Für Berechnungen brauchen wir aber Zahlen (`int`, `float`)
 * Lösung: Convert-Methoden wandeln Strings in Zahlen um
 
 [.highlight-box]
@@ -63,21 +63,21 @@ if (alter >= 18) {
 }
 ----
 
-== Double.parseDouble
+== Float.parseFloat
 
-* Wandelt einen `String` in einen `double`-Wert um
-* Syntax: `double zahl = Double.parseDouble(text);`
+* Wandelt einen `String` in einen `float`-Wert um
+* Syntax: `float zahl = Float.parseFloat(text);`
 * Dezimaltrennzeichen ist der Punkt (wie im Englischen)
 * Bei deutscher Eingabe (Komma) vorher ersetzen: `text.replace(',', '.')`
 
-== Double.parseDouble - Beispiel
+== Float.parseFloat - Beispiel
 
 [source,java]
 ----
 System.out.print("Gib deine Größe in Metern ein: ");
 String eingabe = scanner.nextLine();
 eingabe = eingabe.replace(',', '.');
-double groesse = Double.parseDouble(eingabe);
+float groesse = Float.parseFloat(eingabe);
 
 int zentimeter = (int) (groesse * 100);
 System.out.println("Das sind " + zentimeter + " cm");
@@ -116,7 +116,7 @@ if (zustimmen) {
 [.highlight-box]
 --
 * `Integer.parseInt()` — String → int
-* `Double.parseDouble()` — String → double
+* `Float.parseFloat()` — String → float
 * `Boolean.parseBoolean()` — String → boolean
 * Bei ungültigen Eingaben: Exception (Programmabsturz)
 * Komma durch Punkt ersetzen bei deutscher Eingabe
@@ -127,11 +127,4 @@ if (zustimmen) {
 [.highlight-box]
 --
 Nächste Woche lernen wir `switch-case` kennen — eine übersichtliche Alternative zu langen `if`-`else`-Kaskaden.
---
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Baue die Convert-Methoden in deinen Dungeon Crawler ein.
 --

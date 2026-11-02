@@ -195,10 +195,3 @@ Kompakt und lesbar — die for-Schleife ist ideal für Zählaufgaben
 * Jede while-Zählschleife kann in eine for-Schleife umgebaut werden
 * for: bekannte Anzahl; while: unbekannte Dauer; do-while: mindestens einmal
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler bekommt mehrere Gegner. Der Spieler kämpft gegen eine Gruppe von 3 Goblins. Verwendet eine for-Schleife, um nacheinander gegen jeden Goblin anzutreten.
---

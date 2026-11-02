@@ -204,10 +204,3 @@ Ohne `this` würde `title = title` den Parameter mit sich selbst überschreiben!
 --
 Nächste Woche vertiefen wir die Objektorientierung mit `this`, Settern und Gettern.
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Baue Konstruktoren in den Dungeon Crawler ein.
---

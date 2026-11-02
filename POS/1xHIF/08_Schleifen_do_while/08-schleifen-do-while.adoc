@@ -223,10 +223,3 @@ Endlosschleife {plus} break = "Wiederhole, bis richtig"
 * do-while ideal für Menüs und Eingabeprüfungen
 * while: Bedingung vorher prüfen; do-while: Bedingung nachher prüfen
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler bekommt ein Kampfmenü in einer do-while-Schleife. Der Spieler und der Gegner haben Lebenspunkte. Bei "Angreifen" verliert der Gegner Schaden, bei "Heilen" erhält der Spieler HP.
---

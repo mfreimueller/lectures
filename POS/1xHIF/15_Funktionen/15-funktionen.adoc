@@ -81,7 +81,7 @@ public static Rückgabetyp methodenName(Parameterliste) {
 ----
 
 * `public static` — Zugriffsmodifizierer (später mehr)
-* `Rückgabetyp` — z. B. `int`, `double`, `boolean`, `void`
+* `Rückgabetyp` — z. B. `int`, `float`, `boolean`, `void`
 * `methodenName` — frei wählbar (CamelCase)
 * `Parameterliste` — Eingabewerte, z. B. `int a, int b`
 
@@ -219,11 +219,4 @@ public static void main(String[] args) {
 [.highlight-box]
 --
 Nächste Woche ist eine reine Übungsstunde: Wir bauen eine REPL (Read-Eval-Print-Loop) — einen interaktiven Befehlsinterpreter.
---
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Strukturiere deinen Dungeon Crawler mit Funktionen um.
 --

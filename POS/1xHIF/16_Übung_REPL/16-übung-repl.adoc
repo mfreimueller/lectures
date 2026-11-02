@@ -17,7 +17,6 @@
 . Read-Eval-Print-Loop
 . REPL-Struktur in Code
 . Beispiel: Echo-REPL
-. REPL im Dungeon Crawler
 
 == Lernziele
 
@@ -92,21 +91,9 @@ public class EchoRepl {
 }
 ----
 
-== REPL im Dungeon Crawler
-
-* Der Dungeon Crawler wird auf REPL umgestellt
-* Befehle: hilfe, status, gehe, kämpfe, inventar, quit
-* Die Befehlsauswertung erfolgt mit switch auf dem ersten Wort
-* So wird das Spiel viel flexibler und erweiterbarer
+== Übung heute
 
 [.highlight-box]
 --
 Heute: Katas {plus} Exercise — baut eure eigene REPL!
---
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Stelle den Dungeon Crawler auf eine REPL-Architektur um.
 --

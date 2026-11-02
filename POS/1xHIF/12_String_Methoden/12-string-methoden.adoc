@@ -204,10 +204,3 @@ System.out.println("Ist eine Frage: " + istFrage);
 * `startsWith(präfix)` / `endsWith(suffix)` — boolean-Prüfung
 * Methoden können kombiniert werden
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler soll Spielerbefehle analysieren können. Der Spieler gibt Kommandos wie "gehe norden", "nimm Schlüssel", "kämpfe". Verwende String-Methoden.
---

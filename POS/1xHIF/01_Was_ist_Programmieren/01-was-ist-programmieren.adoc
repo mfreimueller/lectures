@@ -174,10 +174,3 @@ image::mermaid/kaffee-flowchart.svg[Flowchart: Kaffee kochen,height=550]
 * Computational Thinking hilft beim Problemloesen
 * Flowcharts visualisieren Algorithmen
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Herzlich Willkommen zum Jahresprojekt! In diesem Schuljahr entwickeln wir Woche für Woche einen textbasierten Dungeon Crawler. Diese Woche lest ihr die Spielbeschreibung und zeichnet einen Flowchart zum groben Ablauf.
---

@@ -177,10 +177,3 @@ team[0].setAlter(26); // Änderung direkt im Array
 == Übungen
 
 * *Exercise:* Team-Verwaltung
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Erstelle eine Klasse Room für den Dungeon Crawler mit Referenzen zwischen Räumen.
---

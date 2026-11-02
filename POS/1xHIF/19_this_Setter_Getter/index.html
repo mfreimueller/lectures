@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 
-public void setPreis(double preis) {
+public void setPreis(float preis) {
     if (preis &gt; 0) {
         this.preis = preis;
     } else {
@@ -710,8 +710,7 @@ public boolean isAktiv() {
     return aktiv;
 }</code></pre></div></div></div></section>
 <section id="_zusammenfassung"><h2>Zusammenfassung</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>this</code> = Verweis auf aktuelles Objekt</p></li><li><p>Setter/Getter = öffentliche Schnittstelle zu privaten Attributen</p></li><li><p>Validierung in Settern = Schutz vor ungültigen Werten</p></li><li><p>Kapselung = Kontrolle über den Zugriff auf Daten</p></li><li><p>Nicht für jedes Attribut braucht es einen Setter</p></li></ul></div></div></section>
-<section id="_übungen"><h2>Übungen</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Exercise:</strong> Bankkonto mit Setter/Getter</p></li><li><p><strong>Große Übung:</strong> Online-Shop (Artikel &#43; Warenkorb)</p></li></ul></div></div></section>
-<section id="_jahresprojekt_dungeon_crawler"><h2>Jahresprojekt: Dungeon Crawler</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Füge die Kapselung (private Attribute &#43; Setter/Getter) zu deinen Dungeon Crawler-Klassen hinzu.</p></div></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_übungen"><h2>Übungen</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Exercise:</strong> Bankkonto mit Setter/Getter</p></li><li><p><strong>Große Übung:</strong> Online-Shop (Artikel &#43; Warenkorb)</p></li></ul></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;

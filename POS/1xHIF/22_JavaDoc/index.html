@@ -584,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <section id="_agenda_23"><h2>Agenda (2/3)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic" start="5"><li><p>Der @return-Tag</p></li><li><p>Der @author-Tag</p></li><li><p>Der @see-Tag</p></li><li><p>JavaDoc für Klassen</p></li></ol></div></div></section>
 <section id="_agenda_33"><h2>Agenda (3/3)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic" start="9"><li><p>JavaDoc für Attribute</p></li><li><p>Vollständiges Beispiel</p></li><li><p>JavaDoc generieren</p></li><li><p>Best Practices</p></li></ol></div></div></section>
 <section id="_lernziele"><h2>Lernziele</h2><div class="slide-content"><div class="ulist"><ul><li><p>Ich kann JavaDoc-Kommentare für Klassen und Methoden schreiben</p></li><li><p>Ich kann die wichtigsten JavaDoc-Tags (@param, @return) anwenden</p></li><li><p>Ich kann JavaDoc-Dokumentation generieren</p></li></ul></div></div></section>
+<section data-background-image="meme.jpg" data-background-size="contain"></section>
 <section id="_warum_dokumentation"><h2>Warum Dokumentation?</h2><div class="slide-content"><div class="ulist"><ul><li><p>Code wird einmal geschrieben, aber oft gelesen</p></li><li><p>Andere Entwickler müssen deinen Code verstehen</p></li><li><p>Du selbst vergisst nach Wochen, was dein Code tut</p></li></ul></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Guter Code ist selbsterklärend — aber nicht immer!</p></div></div></div></div></section>
 <section id="_kommentar_arten_in_java"><h2>Kommentar-Arten in Java</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">// Einzeiliger Kommentar
@@ -672,8 +673,8 @@ public boolean addStudent(Student student) {
  */
 public class Bankkonto {
     private String kontoinhaber;
-    private double kontostand;
-    private double ueberzugsLimit;
+    private float kontostand;
+    private float ueberzugsLimit;
     // ...
 }</code></pre></div></div></div></section>
 <section id="_javadoc_für_attribute"><h2>JavaDoc für Attribute</h2><div class="slide-content"><div class="paragraph"><p>Auch Attribute können JavaDoc erhalten (optional).</p></div>
@@ -720,8 +721,7 @@ public class Student {
 <div class="paragraph"><p>Das Ergebnis ist eine HTML-Seite wie die offizielle Java-Dokumentation!</p></div></div></section>
 <section id="_best_practices"><h2>Best Practices</h2><div class="slide-content"><div class="ulist"><ul><li><p>Jede öffentliche Methode sollte JavaDoc haben</p></li><li><p>Beschreibe das <strong>Was</strong>, nicht das <strong>Wie</strong></p></li><li><p>@param und @return bei Methoden mit Parametern/Rückgabe</p></li><li><p>@author und @since bei jeder Klasse</p></li><li><p>Halte JavaDoc aktuell — alter Code ist schlimmer als kein Code</p></li></ul></div></div></section>
 <section id="_zusammenfassung"><h2>Zusammenfassung</h2><div class="slide-content"><div class="ulist"><ul><li><p>JavaDoc = <code>/** &#8230;&#8203; */</code> für Dokumentation</p></li><li><p>Wichtige Tags: @param, @return, @author, @since, @see</p></li><li><p>JavaDoc wird zu HTML-Dokumentation generiert</p></li><li><p>Gute Dokumentation hilft allen Entwicklern</p></li></ul></div></div></section>
-<section id="_übungen"><h2>Übungen</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Exercise:</strong> Bibliothek vollständig dokumentieren</p></li></ul></div></div></section>
-<section id="_jahresprojekt_dungeon_crawler"><h2>Jahresprojekt: Dungeon Crawler</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Dokumentiere den gesamten Dungeon Crawler vollständig mit JavaDoc.</p></div></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_übungen"><h2>Übungen</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Exercise:</strong> Bibliothek vollständig dokumentieren</p></li></ul></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;

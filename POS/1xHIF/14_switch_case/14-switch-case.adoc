@@ -227,10 +227,3 @@ switch (wahl) {
 --
 Nächste Woche lernen wir Funktionen (Methoden) kennen — Code in wiederverwendbare Blöcke auslagern.
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Baue switch-case in deinen Dungeon Crawler ein.
---

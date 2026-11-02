@@ -171,7 +171,3 @@ for (int i = 0; i < zahlen.length; i++) {
 * Zugriff über Index: `name++[++index++]++` (beginnt bei 0)
 * `length` gibt die Größe des Arrays an
 * Arrays {plus} for-Schleifen = ideale Kombination
-
-== Jahresprojekt: Dungeon Crawler
-
-Der Spieler bekommt ein Inventar als String-Array. Gebt mit einer for-Schleife alle Items aus. Der Spieler kann ein Item über den Index auswählen.

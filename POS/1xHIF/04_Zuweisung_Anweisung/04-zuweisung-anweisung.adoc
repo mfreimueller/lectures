@@ -146,7 +146,7 @@ boolean istGleich = (x == 5);  // Vergleich: ist x gleich 5? → true
 ----
 public class Konto {
     public static void main(String[] args) {
-        double kontostand = 1000.0;
+        float kontostand = 1000.0f;
         System.out.println("Start: " + kontostand + " EUR");
 
         kontostand += 250.0;    // Einzahlung
@@ -170,11 +170,4 @@ public class Konto {
 * Zuweisung = Ausdruck {plus} Semikolon = Anweisung
 * Zusammengesetzte Zuweisungen: {plus}=, -=, ++*++=, /=
 * = vs. ==: Zuweisung vs. Vergleich
---
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Spieler hat jetzt Lebenspunkte, die sich im Kampf ändern. Simuliert eine Kampfrunde mit zusammengesetzten Zuweisungen.
 --

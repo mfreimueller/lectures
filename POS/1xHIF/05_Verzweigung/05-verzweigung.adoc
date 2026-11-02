@@ -177,10 +177,3 @@ public class Punktestand {
 * if-else if-else: mehrere Bedingungen nacheinander prüfen
 * = ist Zuweisung, == ist Vergleich — nicht verwechseln!
 --
-
-== Jahresprojekt: Dungeon Crawler
-
-[.highlight-box]
---
-Der Dungeon Crawler bekommt erste Spiellogik. Setzt drei Szenarien mit Verzweigungen um: Lebenspunkte-Prüfung, Gegner besiegt, Schlüssel gefunden.
---
