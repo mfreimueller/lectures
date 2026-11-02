@@ -177,7 +177,7 @@ System.out.println(zahl + 1);  // 43 (nicht "421")
 [.highlight-box]
 --
 * *Import vergessen:* `Scanner` und `Random` müssen importiert werden
-* *nextInt() nach nextLine():* nextInt() lässt oft einen Zeilenumbruch im Puffer — Vorsicht!
+* *nextLine() nach nextInt():* nextInt() lässt den Zeilenumbruch im Puffer, ein folgendes nextLine() liefert daher einen leeren String — Abhilfe: ein zusätzliches `nextLine()` nach `nextInt()`
 * *Falscher bound:* `random.nextInt(10)` = 0–9, nicht 1–10
 * *Eingabe-Fehler:* Bei Text auf nextInt() → Programm stürzt ab
 --

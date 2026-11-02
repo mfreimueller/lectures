@@ -101,7 +101,7 @@ String begruessung = "Hallo Welt!";
 
 * Ein einzelnes Zeichen
 * Wird in einfachen Anführungszeichen geschrieben
-* Beispiele: 'A', '?', '3', '' (Zeilenumbruch)
+* Beispiele: 'A', '?', '3', '\n' (Zeilenumbruch)
 
 [source,java]
 ----

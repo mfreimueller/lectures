@@ -49,7 +49,7 @@ Euer Partner beschreibt eine tägliche Entscheidung (z. B. Was frühstücken? Re
 |`++<++` |kleiner als |`3 ++<++ 5`
 |`++>++` |größer als |`5 ++>++ 3`
 |`++<++=` |kleiner oder gleich |`3 ++<++= 3`
-|`++>++=` |größer als |`5 ++>++= 3`
+|`++>++=` |größer oder gleich |`5 ++>++= 3`
 |`==` |gleich |`3 == 3`
 |`!=` |ungleich |`3 != 5`
 |===

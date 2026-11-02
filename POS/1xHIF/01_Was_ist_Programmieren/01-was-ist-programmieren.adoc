@@ -72,7 +72,7 @@ Denkt an eine alltägliche Aufgabe (Zähne putzen, Brot schmieren, …). Schreib
 
 == Kompiliert
 
-* *Kompiliert:* Quellcode wird in Maschinencode uebersetzt
+* *Kompiliert:* Quellcode wird in Maschinencode übersetzt
 * Beispiele: C, C{plus}{plus}, Rust -- am Ende steht eine ausführbare Datei
 
 == Interpretiert
@@ -135,7 +135,7 @@ public class Hallo {
 
 [arabic, start=5]
 . Warten, bis der Kaffee durchgelaufen ist
-. Kaffee in die Tasse giessen
+. Kaffee in die Tasse gießen
 . Entscheidung: Ist genug Kaffee da? --++>++ Ja: Trinken / Nein: Wiederholen
 
 == Flowchart - Ablauf visualisieren
@@ -170,7 +170,7 @@ image::mermaid/kaffee-flowchart.svg[Flowchart: Kaffee kochen,height=550]
 --
 * Programme sind Anweisungen an den Computer
 * Verschiedene Sprachen fuer verschiedene Zwecke
-* Java: Compiliert {plus} interpretiert, plattformunabhängig
+* Java: Kompiliert {plus} interpretiert, plattformunabhängig
 * Computational Thinking hilft beim Problemloesen
 * Flowcharts visualisieren Algorithmen
 --

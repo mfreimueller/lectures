@@ -162,7 +162,8 @@ public class Rechteck {
 * *Division vergessen:* `5 / 2` ergibt 2, nicht 2.5!
 * *Division durch 0:* Führt zu einem Laufzeitfehler (ArithmeticException)
 * *Falsche Klammerung:* `3 {plus} 4 ++*++ 2` ist nicht dasselbe wie `(3 {plus} 4) ++*++ 2`
-* *Typkonflikt:* Ein `int`-Ergebnis in einer `float`-Variable speichern (Nachkommastellen gehen verloren)
+* *Ganzzahldivision zuerst:* `float x = 5 / 2;` ergibt 2.0, nicht 2.5 — die Ganzzahldivision passiert schon vor der Zuweisung (richtig: `5 / 2.0f`)
+* *Typkonflikt:* Ein Dezimalwert passt nicht in eine `int`-Variable: `int x = 2.5f * 2;` ergibt einen Compilerfehler
 --
 
 == Summary
