@@ -1,0 +1,23 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#EDEDED',
+    'primaryBorderColor': '#5A5A5A',
+    'primaryTextColor': '#1A1A1A',
+    'lineColor': '#5A5A5A',
+    'fontFamily': '"Roboto", "Helvetica Neue", Arial, sans-serif',
+    'fontSize': '20px'
+  }
+}}%%
+flowchart LR
+    A["Computer von Anna<br/><i>lokales Repository</i>"]
+    B["Computer von Ben<br/><i>lokales Repository</i>"]
+    R(["GitHub<br/><i>Remote-Repository</i>"])
+
+    A -->|push| R
+    R -->|pull| A
+    B -->|push| R
+    R -->|pull| B
+
+    classDef remoteStyle fill:#FDE8ED,stroke:#ED1944,stroke-width:2px
+    class R remoteStyle

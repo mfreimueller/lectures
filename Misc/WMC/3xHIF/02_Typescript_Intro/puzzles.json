@@ -1,0 +1,69 @@
+{
+  "puzzles": [
+    {
+      "kind": "template",
+      "title": "Basistypen & Funktionen",
+      "description": "Ergänze die Typen, sodass der JavaScript-Code zu gültigem TypeScript wird.",
+      "template": "let count: {{number}} = 5;\nlet username: {{string}} = \"Anna\";\nlet isOnline: {{boolean}} = true;\nlet hobbies: {{string[]}} = [\"Coding\", \"Gaming\"];\nfunction add(a: {{number}}, b: {{number}}): {{number}} {\n  return a + b;\n}\nfunction logMessage(msg: {{string}}): {{void}} { console.log(msg); }",
+      "redHerrings": [
+        "int",
+        "bool",
+        "Void"
+      ],
+      "reusable": [
+        "number",
+        "string"
+      ]
+    },
+    {
+      "kind": "template",
+      "title": "Union, Optional, Type Alias & Enum",
+      "description": "Ersetze das Farb-Objekt durch ein Enum, definiere einen Typ für die User-ID und mache den Parameter von greet optional.",
+      "template": "{{type}} UserID = {{number | string}};\n{{enum}} Color { Red, Green, Blue }\nlet userId: {{UserID}} = 42;\nuserId = \"user-42\";\nlet favoriteColor: {{Color}} = Color.Green;\nfunction greet(name{{?}}: string) { console.log(name ?? \"Stranger\"); }\ngreet();",
+      "redHerrings": [
+        "number || string",
+        "interface",
+        "!"
+      ],
+      "reusable": []
+    },
+    {
+      "kind": "template",
+      "title": "Interfaces",
+      "description": "Beschreibe die Struktur der Objekte mit Interfaces. Die E-Mail-Adresse ist optional.",
+      "template": "{{interface}} Student {\n  name: {{string}};\n  grade: {{number}};\n  email{{?}}: string;\n}\ninterface School { name: string; students: {{Student[]}}; }\nconst student: {{Student}} = { name: \"Lena\", grade: 1 };\nconst school: {{School}} = { name: \"HTL Spengergasse\", students: [student] };",
+      "redHerrings": [
+        "type",
+        "List<Student>",
+        "int"
+      ],
+      "reusable": []
+    },
+    {
+      "kind": "template",
+      "title": "Klassen",
+      "description": "Nutze eine Parameter Property im Konstruktor, sodass die Zuweisung this.name = name entfällt.",
+      "template": "class Animal {\n  constructor({{public}} name: {{string}}) {}\n  speak(): {{void}} {\n    console.log(`${this.name} macht ein Geräusch.`);\n  }\n}\nclass Dog {{extends}} Animal {\n  speak(): {{void}} { console.log(`${this.name} bellt.`); }\n}",
+      "redHerrings": [
+        "final",
+        "implements",
+        "Void"
+      ],
+      "reusable": [
+        "void"
+      ]
+    },
+    {
+      "kind": "template",
+      "title": "Generics",
+      "description": "Mache getFirst typsicher für Arrays beliebiger Typen (ohne any).",
+      "template": "function getFirst{{<T>}}(arr: {{T[]}}): {{T}} {\n  return arr[0];\n}\nconst n: {{number}} = getFirst([1, 2, 3]);\nconst s: {{string}} = getFirst([\"Anna\", \"Bob\"]);",
+      "redHerrings": [
+        "T<>",
+        "Array",
+        "int"
+      ],
+      "reusable": []
+    }
+  ]
+}

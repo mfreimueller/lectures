@@ -1,0 +1,714 @@
+= 02 - Einführung in TypeScript | WMC - 3xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Agenda (1/2)
+
+[arabic]
+. Was ist TypeScript?
+. Warum TypeScript?
+. TypeScript für Java-Programmierer:innen
+. Projekt einrichten
+. Kompilieren & Ausführen
+. Basistypen & Type Inference
+. Funktionen mit Typen
+
+// Parsons-Puzzles: Embed laden, deutsche Texte setzen, Lösung per Fragment zeigen.
+// Steht hier statt in einem Footer-Docinfo, weil das in .slides landen würde.
+++++
+<script type="module" src="https://mfreimueller.github.io/component_lib/embed/parsons.js"></script>
+<style>
+  /* Puzzle-Folien: JS links (38 %), Puzzle rechts. Das Puzzle hat feste px-Größen. */
+  .reveal .columns .slide-content > .column.puzzle-js { flex: 0 0 38%; }
+  .reveal .puzzle-js pre { font-size: 0.45em; }
+  .reveal .puzzle-js .title { font-size: 0.6em; color: var(--spg-gray); margin: 0; }
+  .reveal .puzzle-task { font-size: 0.65em; }
+  .reveal section.has-puzzle h2 { margin-bottom: 0.3em; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var labels = {
+    buttons: { check: 'Prüfen', showSolution: 'Lösung zeigen', tryAgain: 'Nochmal', reset: 'Zurücksetzen',
+               loading: 'Puzzle wird geladen…', invalid: 'Die Puzzle-Datei ist ungültig:' },
+    template: { code: 'Code mit Lücken', pool: 'Bausteine', reusableHint: '∞ mehrfach verwendbar',
+                gap: function (n) { return 'Lücke ' + n; }, takeBack: 'antippen zum Zurücknehmen',
+                reusable: 'mehrfach verwendbar',
+                help: 'Lücke antippen, dann Baustein antippen – oder Bausteine in die Lücken ziehen.' },
+    templateReview: { code: 'Deine Antwort mit Lösung', expected: 'erwartet', anyOrder: '(beliebige Reihenfolge)',
+                      nothing: 'nichts', leaveEmpty: 'leer lassen',
+                      herrings: 'Falsche Bausteine (nicht Teil der Lösung):', right: 'richtig', wrong: 'falsch' }
+  };
+  customElements.whenDefined('parsons-puzzle').then(function () {
+    document.querySelectorAll('parsons-puzzle').forEach(function (p) { p.labels = labels; });
+  });
+  // Puzzles laden nach dem Layout und ändern beim Prüfen ihre Größe: neu zentrieren.
+  var ro = new ResizeObserver(function () { Reveal.layout(); });
+  document.querySelectorAll('parsons-puzzle').forEach(function (p) { ro.observe(p); });
+  // <span class="fragment" data-parsons-solution="ID"> zeigt die Lösung des Puzzles ID.
+  Reveal.on('fragmentshown', function (e) {
+    var id = e.fragment.dataset.parsonsSolution;
+    if (id) document.getElementById(id).showSolution();
+  });
+});
+</script>
+++++
+
+== Agenda (2/2)
+
+[arabic, start=8]
+. Union, Optional, Type Aliases & Enums
+. Interfaces
+. Klassen
+. Funktionstypen
+. Generics
+. Interface vs. Type Alias
+. Einsatzgebiete, Reflexion & Zusammenfassung
+
+== Lernziele
+
+* Ich kann erklären, was TypeScript ist und wie es zu JavaScript wird
+* Ich kann ein TypeScript-Projekt mit `tsc` und ESLint einrichten
+* Ich kann Variablen, Funktionen, Interfaces und Klassen mit Typen versehen
+* Ich kann Union Types, optionale Werte, Type Aliases und Enums einsetzen
+* Ich kann eine einfache generische Funktion schreiben
+* Ich kann vorhandenen JavaScript-Code in TypeScript umschreiben
+
+== Was ist TypeScript?
+
+* Von Microsoft entwickelte Programmiersprache, die auf JavaScript aufbaut
+* Erweitert JavaScript um *statische Typisierung* und zusätzliche Features
+* Jedes gültige JavaScript ist (fast immer) auch gültiges TypeScript
+
+[.highlight-box]
+--
+*TypeScript = JavaScript + Typen*
+--
+
+* TypeScript wird *nicht direkt ausgeführt*, sondern in JavaScript *transpiliert* (übersetzt)
+* Ergebnis: ganz normales JavaScript, das überall läuft – Browser, Node.js, Deno, …
+
+== Von TypeScript zu JavaScript
+
+[source,text]
+----
+  app.ts  ──── tsc ────►  app.js  ──── node / Browser ────►  Ausführung
+ (mit Typen)            (ohne Typen)
+----
+
+[source,typescript]
+----
+// app.ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+----
+
+[source,javascript]
+----
+// app.js (erzeugt von tsc)
+function add(a, b) {
+  return a + b;
+}
+----
+
+[.highlight-box]
+--
+Die Typen existieren nur beim Entwickeln. Zur Laufzeit sind sie verschwunden.
+--
+
+== Warum TypeScript?
+
+JavaScript ist flexibel – manchmal zu flexibel. Variablen können zur Laufzeit ihren Typ ändern:
+
+[source,javascript]
+----
+let price = 19.99;
+price = "neunzehn";   // erlaubt in JS – führt aber später zu Fehlern!
+----
+
+Mit TypeScript:
+
+[source,typescript]
+----
+let price: number = 19.99;
+price = "neunzehn";   // Fehler beim Kompilieren
+----
+
+[.highlight-box]
+--
+Fehler werden bereits *beim Entwickeln* erkannt – nicht erst im Browser. Dazu kommen Autovervollständigung und Fehlerprüfung in VS Code.
+--
+
+== TypeScript für Java-Programmierer:innen
+
+[cols="1,1,1",options="header"]
+|===
+| | Java | TypeScript
+| Typangabe | `int count = 5;` | `let count: number = 5;`
+| Zahlen | `int`, `long`, `double`, … | nur `number`
+| Text | `String` | `string` (klein!)
+| Wahrheitswert | `boolean` | `boolean`
+| Rückgabetyp | `int add(int a, int b)` | `add(a: number, b: number): number`
+| Typen zur Laufzeit | vorhanden | gelöscht
+|===
+
+[.highlight-box.warning]
+--
+In TypeScript steht der Typ *nach* dem Namen, getrennt durch einen Doppelpunkt.
+--
+
+== Projekt anlegen
+
+Neues Verzeichnis anlegen und mit npm initialisieren:
+
+[source,bash]
+----
+mkdir typescript-project
+cd typescript-project
+npm init -y
+----
+
+TypeScript-Compiler und Linter (ESLint) als Entwicklungsabhängigkeiten installieren:
+
+[source,bash]
+----
+npm install --save-dev typescript @types/node
+npm install --save-dev eslint typescript-eslint globals
+----
+
+* `--save-dev`: wird nur beim Entwickeln gebraucht, nicht zur Laufzeit
+* `@types/node`: Typdefinitionen für Node.js (z. B. für `console`, `process`)
+
+== tsconfig.json
+
+Konfiguration des TypeScript-Compilers im Stammverzeichnis des Projekts:
+
+[source,json]
+----
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true
+  }
+}
+----
+
+* `target`: welche JavaScript-Version erzeugt wird
+* `strict`: alle strengen Typprüfungen aktivieren – *immer einschalten*
+* `sourceMap`: Debugger zeigt den TypeScript-Code statt des erzeugten JavaScripts
+
+== ESLint & .gitignore
+
+`eslint.config.mjs` im Stammverzeichnis:
+
+[source,javascript]
+----
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
+export default [
+  { files: ["**/*.{js,mjs,cjs,ts}"] },
+  { languageOptions: { globals: globals.node } },
+  ...tseslint.configs.recommended,
+  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
+];
+----
+
+`.gitignore` – `node_modules` *niemals* einchecken, jeder Client lädt die Pakete selbst:
+
+[source,text]
+----
+**/node_modules
+----
+
+== Kompilieren & Ausführen
+
+`src/app.ts`:
+
+[source,typescript]
+----
+function add(x: number, y: number): number {
+  return x + y;
+}
+
+const result = add(1, 2);
+const result2 = add(1, "x");
+// error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+console.log(result);
+----
+
+[source,bash]
+----
+npx tsc && node src/app.js
+----
+
+* `npx tsc` übersetzt alle `.ts`-Dateien → `src/app.js`
+* `&&`: `node` startet nur, wenn `tsc` *ohne Fehler* durchläuft
+
+== Startskript in package.json
+
+Damit wir den Befehl nicht jedes Mal tippen müssen, legen wir ein Startskript an:
+
+[source,json]
+----
+{
+  // ...
+  "scripts": {
+    "start": "tsc && node src/app.js"
+  }
+}
+----
+
+[source,bash]
+----
+npm run start
+----
+
+[.highlight-box.warning]
+--
+Die `package.json` muss gültiges JSON bleiben – auf die Beistriche achten!
+--
+
+== Basistypen
+
+[source,typescript]
+----
+let count: number = 5;
+let username: string = "Anna";
+let isOnline: boolean = true;
+let hobbies: string[] = ["Coding", "Gaming"];
+let person: { name: string; age: number } = { name: "Tom", age: 21 };
+----
+
+* `number` – alle Zahlen (ganz und Kommazahlen)
+* `string`, `boolean` – Text und Wahrheitswerte
+* `string[]` – Array von Strings
+* `{ name: string; age: number }` – Objekt mit genau diesen Eigenschaften
+
+[.highlight-box]
+--
+Weitere Typen: `null`, `undefined`, `any`, `void`, `never`, … – `any` schaltet die Typprüfung ab und sollte vermieden werden.
+--
+
+== Type Inference
+
+TypeScript erkennt Typen oft *automatisch* aus dem zugewiesenen Wert:
+
+[source,typescript]
+----
+let x = 10;          // Typ: number
+let name = "Anna";   // Typ: string
+
+x = "zehn";          // Fehler: 'string' is not assignable to type 'number'
+----
+
+* Bei Variablen mit Startwert ist die Typangabe meist überflüssig
+* Bei *Funktionsparametern* gibt es keinen Startwert – dort braucht es die Typangabe
+
+== Funktionen mit Typen
+
+[source,typescript]
+----
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+function logMessage(msg: string): void {
+  console.log(msg);
+}
+----
+
+* Parametertypen: `a: number`
+* Rückgabetyp nach der Parameterliste: `): number`
+* `void`: die Funktion gibt nichts zurück
+* Der Rückgabetyp ist optional (Type Inference), aber empfohlen
+
+[.columns.has-puzzle]
+== Puzzle 1: Basistypen & Funktionen
+
+[.column.puzzle-js]
+--
+.JavaScript
+[source,javascript]
+----
+let count = 5;
+let username = "Anna";
+let isOnline = true;
+let hobbies = ["Coding", "Gaming"];
+
+function add(a, b) {
+  return a + b;
+}
+function logMessage(msg) { console.log(msg); }
+----
+
+[.highlight-box.puzzle-task]
+Ergänze die Typen, sodass gültiges TypeScript entsteht.
+--
+
+[.column]
+--
+++++
+<parsons-puzzle id="pz-basics" src="puzzles.json" index="0" check reset theme="light"></parsons-puzzle>
+<span class="fragment" data-parsons-solution="pz-basics"></span>
+++++
+--
+
+== Union & Optional Types
+
+*Union Type* – ein Wert darf einen von mehreren Typen haben:
+
+[source,typescript]
+----
+let id: number | string;
+id = 42;
+id = "user-42";
+----
+
+*Optionaler Parameter* – mit `?` darf das Argument fehlen (dann ist es `undefined`):
+
+[source,typescript]
+----
+function greet(name?: string) {
+  console.log("Hello " + (name ?? "Stranger"));
+}
+
+greet();         // Hello Stranger
+greet("Anna");   // Hello Anna
+----
+
+* `??` (Nullish Coalescing): rechter Wert, wenn der linke `null` oder `undefined` ist
+
+== Type Aliases & Enums
+
+*Type Alias* – einem Typ einen eigenen Namen geben:
+
+[source,typescript]
+----
+type UserID = number | string;
+let userId: UserID = 123;
+----
+
+*Enum* – eine feste Menge benannter Konstanten:
+
+[source,typescript]
+----
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+let favoriteColor: Color = Color.Green;
+console.log(favoriteColor);   // 1
+----
+
+* Ohne Wertangabe werden die Konstanten ab `0` durchnummeriert
+
+[.columns.has-puzzle]
+== Puzzle 2: Union, Optional, Type Alias & Enum
+
+[.column.puzzle-js]
+--
+.JavaScript
+[source,javascript]
+----
+const Color = { Red: 0, Green: 1, Blue: 2 };
+
+let userId = 42;
+userId = "user-42";
+let favoriteColor = Color.Green;
+
+function greet(name) {
+  console.log(name ?? "Stranger");
+}
+greet();
+----
+
+[.highlight-box.puzzle-task]
+Enum statt Objekt, eigener Typ für die User-ID, optionaler Parameter.
+--
+
+[.column]
+--
+++++
+<parsons-puzzle id="pz-union" src="puzzles.json" index="1" check reset theme="light"></parsons-puzzle>
+<span class="fragment" data-parsons-solution="pz-union"></span>
+++++
+--
+
+== Interfaces
+
+Ein *Interface* beschreibt die Struktur eines Objekts:
+
+[source,typescript]
+----
+interface Student {
+  name: string;
+  subject: string;
+  grade: number;
+  email?: string;   // optionales Feld
+}
+
+const student: Student = { name: "Lena", subject: "WMC", grade: 1 };
+
+function printStudent(s: Student) {
+  console.log(`${s.name} hat die Note ${s.grade} in ${s.subject}.`);
+  if (s.email) console.log(`Email: ${s.email}`);
+}
+----
+
+[.highlight-box]
+--
+Anders als in Java braucht ein Objekt kein `implements Student` – die passende Struktur reicht.
+--
+
+== Verschachtelte Interfaces & Spread
+
+[source,typescript]
+----
+interface School {
+  name: string;
+  students: Student[];   // Array von Student
+}
+
+const mySchool: School = {
+  name: "HTL Spengergasse",
+  students: [
+    { name: "Max", subject: "WMC", grade: 2 },
+    { name: "Sophie", subject: "WMC", grade: 1, email: "sophie@example.com" },
+  ],
+};
+----
+
+Spread-Operator: Objekt kopieren und dabei Eigenschaften ergänzen – der Typ wird geprüft:
+
+[source,typescript]
+----
+const updated: Student = { ...student, email: "lena@example.com" };
+----
+
+[.columns.has-puzzle]
+== Puzzle 3: Interfaces
+
+[.column.puzzle-js]
+--
+.JavaScript
+[source,javascript]
+----
+const student = { name: "Lena", grade: 1 };
+
+const school = {
+  name: "HTL Spengergasse",
+  students: [student],
+};
+----
+
+[.highlight-box.puzzle-task]
+Beschreibe die Objekte mit Interfaces. Die E-Mail ist optional.
+--
+
+[.column]
+--
+++++
+<parsons-puzzle id="pz-interfaces" src="puzzles.json" index="2" check reset theme="light"></parsons-puzzle>
+<span class="fragment" data-parsons-solution="pz-interfaces"></span>
+++++
+--
+
+== Klassen
+
+[source,typescript]
+----
+class Animal {
+  constructor(public name: string) {}
+
+  speak(): void {
+    console.log(`${this.name} macht ein Geräusch.`);
+  }
+}
+
+class Dog extends Animal {
+  speak(): void {
+    console.log(`${this.name} bellt.`);
+  }
+}
+
+const dog = new Dog("Bello");
+dog.speak();   // Bello bellt.
+----
+
+* *Parameter Property*: `public name: string` im Konstruktor legt das Feld an *und* weist es zu
+* Vererbung mit `extends` – wie in Java
+
+[.columns.has-puzzle]
+== Puzzle 4: Klassen
+
+[.column.puzzle-js]
+--
+.JavaScript
+[source,javascript]
+----
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  speak() {
+    console.log(`${this.name} macht ein Geräusch.`);
+  }
+}
+class Dog extends Animal {
+  speak() { console.log(`${this.name} bellt.`); }
+}
+----
+
+[.highlight-box.puzzle-task]
+Nutze eine Parameter Property, damit `this.name = name` entfällt.
+--
+
+[.column]
+--
+++++
+<parsons-puzzle id="pz-classes" src="puzzles.json" index="3" check reset theme="light"></parsons-puzzle>
+<span class="fragment" data-parsons-solution="pz-classes"></span>
+++++
+--
+
+== Funktionstypen
+
+Mit einem Type Alias lässt sich auch die *Signatur einer Funktion* benennen:
+
+[source,typescript]
+----
+type Greeter = (name: string) => void;
+type Calculator = (a: number, b: number) => number;
+
+const greet: Greeter = (name) => console.log(`Hello, ${name}!`);
+const add: Calculator = (a, b) => a + b;
+const multiply: Calculator = (a, b) => a * b;
+----
+
+* Die Parameter von `greet`, `add`, `multiply` brauchen keine Typangabe mehr
+* Klare Verträge für Callbacks, Signaturen werden wiederverwendbar
+
+[.highlight-box.warning]
+--
+Im *Funktionstyp* steht vor dem Rückgabetyp `=>`, in der *Funktionsdeklaration* ein `:`.
+--
+
+== Generics
+
+Typsichere Wiederverwendung: Der Typ wird zum *Parameter* `T`:
+
+[source,typescript]
+----
+function getFirst<T>(arr: T[]): T {
+  return arr[0];
+}
+
+const first = getFirst([1, 2, 3]);         // T = number → 1
+const name = getFirst(["Anna", "Bob"]);    // T = string → "Anna"
+----
+
+* `<T>` nach dem Funktionsnamen führt den Typparameter ein
+* TypeScript leitet `T` aus dem Argument ab
+* Wie Generics in Java (`List<T>`) – nur ohne `List`: Arrays schreibt man `T[]`
+
+[.highlight-box]
+--
+Mit `any` statt `T` würde es auch kompilieren – aber `first` wäre dann `any` und jede Typprüfung weg.
+--
+
+[.columns.has-puzzle]
+== Puzzle 5: Generics
+
+[.column.puzzle-js]
+--
+.JavaScript
+[source,javascript]
+----
+function getFirst(arr) {
+  return arr[0];
+}
+
+const n = getFirst([1, 2, 3]);
+const s = getFirst(["Anna", "Bob"]);
+----
+
+[.highlight-box.puzzle-task]
+Mache `getFirst` typsicher für Arrays beliebiger Typen.
+--
+
+[.column]
+--
+++++
+<parsons-puzzle id="pz-generics" src="puzzles.json" index="4" check reset theme="light"></parsons-puzzle>
+<span class="fragment" data-parsons-solution="pz-generics"></span>
+++++
+--
+
+== Interface vs. Type Alias
+
+[source,typescript]
+----
+interface Point {
+  x: number;
+  y: number;
+}
+
+type Coordinate = {
+  x: number;
+  y: number;
+};
+----
+
+* Beide beschreiben die Struktur eines Objekts
+* Interfaces können erweitert werden (`interface Point3D extends Point`)
+* Type Aliases sind flexibler: Union Types, Funktionstypen, …
+
+[.highlight-box]
+--
+*Faustregel:* Interfaces für Objektstrukturen, Type Aliases für alles andere.
+--
+
+== Einsatzgebiete
+
+[cols="1,2",options="header"]
+|===
+| Bereich | Warum TypeScript?
+| Große Webprojekte | bessere Wartbarkeit und Struktur
+| Frameworks: Angular, React, Vue | Angular ist komplett in TypeScript geschrieben
+| API- und Backend-Projekte (Node.js) | starke Typisierung bei Datenmodellen
+|===
+
+== Reflexion
+
+[.highlight-box]
+--
+* Welcher Fehler aus deinen bisherigen JavaScript-Programmen wäre mit TypeScript schon beim Kompilieren aufgefallen?
+* Wann reicht Type Inference, wann schreibst du den Typ selbst hin?
+* Was ist der Unterschied zwischen `name?: string` und `name: string | undefined`?
+--
+
+== Zusammenfassung
+
+* TypeScript = JavaScript + Typen, wird mit `tsc` zu JavaScript übersetzt
+* Setup: `npm init`, `typescript` + ESLint installieren, `tsconfig.json` mit `strict`
+* Typ nach dem Namen: `let x: number`, `function f(a: string): void`
+* `|` für Union Types, `?` für optionale Werte, `type` für eigene Typnamen
+* `interface` beschreibt Objekte, Klassen kennen Parameter Properties
+* Generics `<T>` machen Funktionen typsicher wiederverwendbar
