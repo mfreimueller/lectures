@@ -58,7 +58,7 @@ def build_html(adoc_path: Path) -> Path:
 
 
 def build_pdf(html_path: Path) -> Path:
-    out_path = html_path.parent / f"{html_path.parent.name}.pdf"
+    out_path = html_path.parent / f"{html_path.resolve().parent.name}.pdf"
     subprocess.run([
         "npx", "--yes", "decktape@3.12.0", "reveal", "--size", "1280x720",
         html_path.resolve().as_uri(), str(out_path),
