@@ -1,0 +1,20 @@
+digraph ts_pipeline {
+    rankdir=LR;
+    bgcolor="transparent";
+    nodesep=0.5; ranksep=1.1;
+    node [shape=box, style="rounded,filled", penwidth=2,
+          fontname="Helvetica", fontsize=16, fontcolor="#1A1A1A",
+          margin="0.3,0.18"];
+    edge [penwidth=2, arrowsize=1.1, color="#5A5A5A",
+          fontname="Helvetica-Bold", fontsize=14, fontcolor="#1A1A1A"];
+
+    ts  [label=<<B>app.ts</B><BR/><FONT POINT-SIZE="12" COLOR="#5A5A5A">mit Typen</FONT>>,
+         fillcolor="#E5EEF6", color="#004A8D"];
+    js  [label=<<B>app.js</B><BR/><FONT POINT-SIZE="12" COLOR="#5A5A5A">ohne Typen</FONT>>,
+         fillcolor="#EDEDED", color="#5A5A5A"];
+    run [label=<<B>Ausführung</B><BR/><FONT POINT-SIZE="12" COLOR="#5A5A5A">Node.js / Browser</FONT>>,
+         fillcolor="#FDE8ED", color="#ED1944"];
+
+    ts -> js  [label=<  tsc  <BR/><FONT POINT-SIZE="11" FACE="Helvetica" COLOR="#5A5A5A">transpilieren</FONT><BR/> >, color="#004A8D"];
+    js -> run [label=<  node  <BR/><FONT POINT-SIZE="11" FACE="Helvetica" COLOR="#5A5A5A">ausführen</FONT><BR/> >, color="#ED1944"];
+}

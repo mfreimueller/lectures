@@ -580,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function () {
   Reveal.on('slidechanged', mark);
   if (Reveal.isReady()) mark({ currentSlide: Reveal.getCurrentSlide() });
 });
-</script></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-color="#ED1944"><h1>02 - Einführung in TypeScript </h1><h2>WMC - 3xHIF</h2></section><section id="_agenda_12"><h2>Agenda (1/2)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Was ist TypeScript?</p></li><li><p>Warum TypeScript?</p></li><li><p>TypeScript für Java-Programmierer:innen</p></li><li><p>Projekt einrichten</p></li><li><p>Kompilieren &amp; Ausführen</p></li><li><p>Basistypen &amp; Type Inference</p></li><li><p>Funktionen mit Typen</p></li></ol></div>
+</script></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-color="#ED1944"><h1>02 - Einführung in TypeScript </h1><h2>WMC - 3xHIF</h2></section><section id="_agenda_12"><h2>Agenda (1/2)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Was ist TypeScript?</p></li><li><p>Warum TypeScript?</p></li><li><p>TypeScript für C#-Programmierer:innen</p></li><li><p>Basistypen &amp; Type Inference</p></li><li><p>Funktionen mit Typen</p></li><li><p>Union, Optional, Type Aliases &amp; Enums</p></li><li><p>Interfaces</p></li></ol></div>
 <script type="module" src="https://mfreimueller.github.io/component_lib/embed/parsons.js"></script>
 <style>
   /* Puzzle-Folien: JS links (38 %), Puzzle rechts. Das Puzzle hat feste px-Größen. */
@@ -616,13 +616,12 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script></div></section>
-<section id="_agenda_22"><h2>Agenda (2/2)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic" start="8"><li><p>Union, Optional, Type Aliases &amp; Enums</p></li><li><p>Interfaces</p></li><li><p>Klassen</p></li><li><p>Funktionstypen</p></li><li><p>Generics</p></li><li><p>Interface vs. Type Alias</p></li><li><p>Einsatzgebiete, Reflexion &amp; Zusammenfassung</p></li></ol></div></div></section>
+<section id="_agenda_22"><h2>Agenda (2/2)</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic" start="8"><li><p>Klassen</p></li><li><p>Funktionstypen</p></li><li><p>Generics</p></li><li><p>Interface vs. Type Alias</p></li><li><p>Projekt einrichten</p></li><li><p>Kompilieren &amp; Ausführen</p></li><li><p>Einsatzgebiete, Reflexion &amp; Zusammenfassung</p></li></ol></div></div></section>
 <section id="_lernziele"><h2>Lernziele</h2><div class="slide-content"><div class="ulist"><ul><li><p>Ich kann erklären, was TypeScript ist und wie es zu JavaScript wird</p></li><li><p>Ich kann ein TypeScript-Projekt mit <code>tsc</code> und ESLint einrichten</p></li><li><p>Ich kann Variablen, Funktionen, Interfaces und Klassen mit Typen versehen</p></li><li><p>Ich kann Union Types, optionale Werte, Type Aliases und Enums einsetzen</p></li><li><p>Ich kann eine einfache generische Funktion schreiben</p></li><li><p>Ich kann vorhandenen JavaScript-Code in TypeScript umschreiben</p></li></ul></div></div></section>
 <section id="_was_ist_typescript"><h2>Was ist TypeScript?</h2><div class="slide-content"><div class="ulist"><ul><li><p>Von Microsoft entwickelte Programmiersprache, die auf JavaScript aufbaut</p></li><li><p>Erweitert JavaScript um <strong>statische Typisierung</strong> und zusätzliche Features</p></li><li><p>Jedes gültige JavaScript ist (fast immer) auch gültiges TypeScript</p></li></ul></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p><strong>TypeScript = JavaScript + Typen</strong></p></div></div></div>
 <div class="ulist"><ul><li><p>TypeScript wird <strong>nicht direkt ausgeführt</strong>, sondern in JavaScript <strong>transpiliert</strong> (übersetzt)</p></li><li><p>Ergebnis: ganz normales JavaScript, das überall läuft – Browser, Node.js, Deno, …</p></li></ul></div></div></section>
-<section id="_von_typescript_zu_javascript"><h2>Von TypeScript zu JavaScript</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">  app.ts  ──── tsc ────►  app.js  ──── node / Browser ────►  Ausführung
- (mit Typen)            (ohne Typen)</code></pre></div></div>
+<section id="_von_typescript_zu_javascript"><h2>Von TypeScript zu JavaScript</h2><div class="slide-content"><div class="imageblock"><img src="dot/ts-pipeline.svg" alt="Pipeline: app.ts (mit Typen) wird von tsc zu app.js (ohne Typen) transpiliert und von Node.js oder dem Browser ausgeführt" width="900"></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">// app.ts
 function add(a: number, b: number): number {
   return a + b;
@@ -632,6 +631,8 @@ function add(a, b) {
   return a + b;
 }</code></pre></div></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Die Typen existieren nur beim Entwickeln. Zur Laufzeit sind sie verschwunden.</p></div></div></div></div></section>
+<section id="_kompilieren_vs_transpilieren"><h2>Kompilieren vs. Transpilieren</h2><div class="slide-content"><div class="imageblock"><img src="dot/compile-vs-transpile.svg" alt="Kompilieren: Program.cs wird mit dotnet build zu IL-Bytecode in Program.dll. Transpilieren: app.ts wird mit tsc zu app.js – beides Hochsprachen" width="820"></div>
+<div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Transpilieren ist eine <strong>Sonderform</strong> des Kompilierens: Das Ergebnis ist wieder lesbarer Quellcode. Deshalb heißt <code>tsc</code> trotzdem „TypeScript <strong>Compiler</strong>“.</p></div></div></div></div></section>
 <section id="_warum_typescript"><h2>Warum TypeScript?</h2><div class="slide-content"><div class="paragraph"><p>JavaScript ist flexibel – manchmal zu flexibel. Variablen können zur Laufzeit ihren Typ ändern:</p></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-javascript hljs" data-noescape="true" data-lang="javascript">let price = 19.99;
 price = "neunzehn";   // erlaubt in JS – führt aber später zu Fehlern!</code></pre></div></div>
@@ -639,62 +640,8 @@ price = "neunzehn";   // erlaubt in JS – führt aber später zu Fehlern!</code
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">let price: number = 19.99;
 price = "neunzehn";   // Fehler beim Kompilieren</code></pre></div></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Fehler werden bereits <strong>beim Entwickeln</strong> erkannt – nicht erst im Browser. Dazu kommen Autovervollständigung und Fehlerprüfung in VS Code.</p></div></div></div></div></section>
-<section id="_typescript_für_java_programmiererinnen"><h2>TypeScript für Java-Programmierer:innen</h2><div class="slide-content"><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><thead><tr><th class="tableblock halign-left valign-top"></th><th class="tableblock halign-left valign-top">Java</th><th class="tableblock halign-left valign-top">TypeScript</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Typangabe</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int count = 5;</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>let count: number = 5;</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Zahlen</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code>, <code>long</code>, <code>double</code>, …</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">nur <code>number</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Text</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code> (klein!)</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Wahrheitswert</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Rückgabetyp</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int add(int a, int b)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>add(a: number, b: number): number</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Typen zur Laufzeit</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">vorhanden</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">gelöscht</p></td></tr></table>
+<section id="_typescript_für_c_programmiererinnen"><h2>TypeScript für C#-Programmierer:innen</h2><div class="slide-content"><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><thead><tr><th class="tableblock halign-left valign-top"></th><th class="tableblock halign-left valign-top">C#</th><th class="tableblock halign-left valign-top">TypeScript</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Typangabe</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int count = 5;</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>let count: number = 5;</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Zahlen</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code>, <code>long</code>, <code>double</code>, <code>decimal</code>, …</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">nur <code>number</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Text</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Wahrheitswert</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Rückgabetyp</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int Add(int a, int b)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>add(a: number, b: number): number</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Typen zur Laufzeit</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">vorhanden</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">gelöscht</p></td></tr></table>
 <div class="openblock highlight-box warning"><div class="content"><div class="paragraph"><p>In TypeScript steht der Typ <strong>nach</strong> dem Namen, getrennt durch einen Doppelpunkt.</p></div></div></div></div></section>
-<section id="_projekt_anlegen"><h2>Projekt anlegen</h2><div class="slide-content"><div class="paragraph"><p>Neues Verzeichnis anlegen und mit npm initialisieren:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">mkdir typescript-project
-cd typescript-project
-npm init -y</code></pre></div></div>
-<div class="paragraph"><p>TypeScript-Compiler und Linter (ESLint) als Entwicklungsabhängigkeiten installieren:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npm install --save-dev typescript @types/node
-npm install --save-dev eslint typescript-eslint globals</code></pre></div></div>
-<div class="ulist"><ul><li><p><code>--save-dev</code>: wird nur beim Entwickeln gebraucht, nicht zur Laufzeit</p></li><li><p><code>@types/node</code>: Typdefinitionen für Node.js (z. B. für <code>console</code>, <code>process</code>)</p></li></ul></div></div></section>
-<section id="_tsconfig_json"><h2>tsconfig.json</h2><div class="slide-content"><div class="paragraph"><p>Konfiguration des TypeScript-Compilers im Stammverzeichnis des Projekts:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-lang="json">{
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "types": ["node"],
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "sourceMap": true
-  }
-}</code></pre></div></div>
-<div class="ulist"><ul><li><p><code>target</code>: welche JavaScript-Version erzeugt wird</p></li><li><p><code>strict</code>: alle strengen Typprüfungen aktivieren – <strong>immer einschalten</strong></p></li><li><p><code>sourceMap</code>: Debugger zeigt den TypeScript-Code statt des erzeugten JavaScripts</p></li></ul></div></div></section>
-<section id="_eslint_gitignore"><h2>ESLint &amp; .gitignore</h2><div class="slide-content"><div class="paragraph"><p><code>eslint.config.mjs</code> im Stammverzeichnis:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-javascript hljs" data-noescape="true" data-lang="javascript">import globals from "globals";
-import tseslint from "typescript-eslint";
-
-export default [
-  { files: ["**/*.{js,mjs,cjs,ts}"] },
-  { languageOptions: { globals: globals.node } },
-  ...tseslint.configs.recommended,
-  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
-];</code></pre></div></div>
-<div class="paragraph"><p><code>.gitignore</code> – <code>node_modules</code> <strong>niemals</strong> einchecken, jeder Client lädt die Pakete selbst:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-text hljs" data-noescape="true" data-lang="text">**/node_modules</code></pre></div></div></div></section>
-<section id="_kompilieren_ausführen"><h2>Kompilieren &amp; Ausführen</h2><div class="slide-content"><div class="paragraph"><p><code>src/app.ts</code>:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">function add(x: number, y: number): number {
-  return x + y;
-}
-
-const result = add(1, 2);
-const result2 = add(1, "x");
-// error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
-console.log(result);</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npx tsc &amp;&amp; node src/app.js</code></pre></div></div>
-<div class="ulist"><ul><li><p><code>npx tsc</code> übersetzt alle <code>.ts</code>-Dateien → <code>src/app.js</code></p></li><li><p><code>&amp;&amp;</code>: <code>node</code> startet nur, wenn <code>tsc</code> <strong>ohne Fehler</strong> durchläuft</p></li></ul></div></div></section>
-<section id="_startskript_in_package_json"><h2>Startskript in package.json</h2><div class="slide-content"><div class="paragraph"><p>Damit wir den Befehl nicht jedes Mal tippen müssen, legen wir ein Startskript an:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-lang="json">{
-  // ...
-  "scripts": {
-    "start": "tsc &amp;&amp; node src/app.js"
-  }
-}</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npm run start</code></pre></div></div>
-<div class="openblock highlight-box warning"><div class="content"><div class="paragraph"><p>Die <code>package.json</code> muss gültiges JSON bleiben – auf die Beistriche achten!</p></div></div></div></div></section>
 <section id="_basistypen"><h2>Basistypen</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">let count: number = 5;
 let username: string = "Anna";
 let isOnline: boolean = true;
@@ -780,7 +727,7 @@ function printStudent(s: Student) {
   console.log(`${s.name} hat die Note ${s.grade} in ${s.subject}.`);
   if (s.email) console.log(`Email: ${s.email}`);
 }</code></pre></div></div>
-<div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Anders als in Java braucht ein Objekt kein <code>implements Student</code> – die passende Struktur reicht.</p></div></div></div></div></section>
+<div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Anders als in C# muss nichts das Interface explizit implementieren (<code>class … : IStudent</code>) – die passende Struktur reicht.</p></div></div></div></div></section>
 <section id="_verschachtelte_interfaces_spread"><h2>Verschachtelte Interfaces &amp; Spread</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">interface School {
   name: string;
   students: Student[];   // Array von Student
@@ -820,7 +767,7 @@ class Dog extends Animal {
 
 const dog = new Dog("Bello");
 dog.speak();   // Bello bellt.</code></pre></div></div>
-<div class="ulist"><ul><li><p><strong>Parameter Property</strong>: <code>public name: string</code> im Konstruktor legt das Feld an <strong>und</strong> weist es zu</p></li><li><p>Vererbung mit <code>extends</code> – wie in Java</p></li></ul></div></div></section>
+<div class="ulist"><ul><li><p><strong>Parameter Property</strong>: <code>public name: string</code> im Konstruktor legt das Feld an <strong>und</strong> weist es zu</p></li><li><p>Vererbung mit <code>extends</code> statt <code>:</code> wie in C#</p></li></ul></div></div></section>
 <section id="_puzzle_4_klassen" class="columns has-puzzle"><h2>Puzzle 4: Klassen</h2><div class="slide-content"><div class="openblock column puzzle-js"><div class="content"><div class="listingblock"><div class="title">JavaScript</div><div class="content"><pre class="highlightjs highlight"><code class="language-javascript hljs" data-noescape="true" data-lang="javascript">class Animal {
   constructor(name) {
     this.name = name;
@@ -851,7 +798,7 @@ const multiply: Calculator = (a, b) =&gt; a * b;</code></pre></div></div>
 
 const first = getFirst([1, 2, 3]);         // T = number → 1
 const name = getFirst(["Anna", "Bob"]);    // T = string → "Anna"</code></pre></div></div>
-<div class="ulist"><ul><li><p><code>&lt;T&gt;</code> nach dem Funktionsnamen führt den Typparameter ein</p></li><li><p>TypeScript leitet <code>T</code> aus dem Argument ab</p></li><li><p>Wie Generics in Java (<code>List&lt;T&gt;</code>) – nur ohne <code>List</code>: Arrays schreibt man <code>T[]</code></p></li></ul></div>
+<div class="ulist"><ul><li><p><code>&lt;T&gt;</code> nach dem Funktionsnamen führt den Typparameter ein</p></li><li><p>TypeScript leitet <code>T</code> aus dem Argument ab</p></li><li><p>Wie Generics in C# (<code>List&lt;T&gt;</code>) – nur ohne <code>List</code>: Arrays schreibt man <code>T[]</code></p></li></ul></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Mit <code>any</code> statt <code>T</code> würde es auch kompilieren – aber <code>first</code> wäre dann <code>any</code> und jede Typprüfung weg.</p></div></div></div></div></section>
 <section id="_puzzle_5_generics" class="columns has-puzzle"><h2>Puzzle 5: Generics</h2><div class="slide-content"><div class="openblock column puzzle-js"><div class="content"><div class="listingblock"><div class="title">JavaScript</div><div class="content"><pre class="highlightjs highlight"><code class="language-javascript hljs" data-noescape="true" data-lang="javascript">function getFirst(arr) {
   return arr[0];
@@ -873,6 +820,59 @@ type Coordinate = {
 };</code></pre></div></div>
 <div class="ulist"><ul><li><p>Beide beschreiben die Struktur eines Objekts</p></li><li><p>Interfaces können erweitert werden (<code>interface Point3D extends Point</code>)</p></li><li><p>Type Aliases sind flexibler: Union Types, Funktionstypen, …</p></li></ul></div>
 <div class="openblock highlight-box"><div class="content"><div class="paragraph"><p><strong>Faustregel:</strong> Interfaces für Objektstrukturen, Type Aliases für alles andere.</p></div></div></div></div></section>
+<section id="_projekt_anlegen"><h2>Projekt anlegen</h2><div class="slide-content"><div class="paragraph"><p>Neues Verzeichnis anlegen und mit npm initialisieren:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">mkdir typescript-project
+cd typescript-project
+npm init -y</code></pre></div></div>
+<div class="paragraph"><p>TypeScript-Compiler und Linter (ESLint) als Entwicklungsabhängigkeiten installieren:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npm install --save-dev typescript @types/node
+npm install --save-dev eslint typescript-eslint globals</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>--save-dev</code>: wird nur beim Entwickeln gebraucht, nicht zur Laufzeit</p></li><li><p><code>@types/node</code>: Typdefinitionen für Node.js (z. B. für <code>console</code>, <code>process</code>)</p></li></ul></div></div></section>
+<section id="_tsconfig_json"><h2>tsconfig.json</h2><div class="slide-content"><div class="paragraph"><p>Konfiguration des TypeScript-Compilers im Stammverzeichnis des Projekts:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-lang="json">{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true
+  }
+}</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>target</code>: welche JavaScript-Version erzeugt wird</p></li><li><p><code>strict</code>: alle strengen Typprüfungen aktivieren – <strong>immer einschalten</strong></p></li><li><p><code>sourceMap</code>: Debugger zeigt den TypeScript-Code statt des erzeugten JavaScripts</p></li></ul></div></div></section>
+<section id="_eslint"><h2>ESLint</h2><div class="slide-content"><div class="paragraph"><p><code>eslint.config.mjs</code> im Stammverzeichnis:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-javascript hljs" data-noescape="true" data-lang="javascript">import globals from "globals";
+import tseslint from "typescript-eslint";
+
+export default [
+  { files: ["**/*.{js,mjs,cjs,ts}"] },
+  { languageOptions: { globals: globals.node } },
+  ...tseslint.configs.recommended,
+  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
+];</code></pre></div></div></div></section>
+<section id="_kompilieren_ausführen"><h2>Kompilieren &amp; Ausführen</h2><div class="slide-content"><div class="paragraph"><p><code>src/app.ts</code>:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-typescript hljs" data-noescape="true" data-lang="typescript">function add(x: number, y: number): number {
+  return x + y;
+}
+
+const result = add(1, 2);
+const result2 = add(1, "x");
+// error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+console.log(result);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npx tsc &amp;&amp; node src/app.js</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>npx tsc</code> übersetzt alle <code>.ts</code>-Dateien → <code>src/app.js</code></p></li><li><p><code>&amp;&amp;</code>: <code>node</code> startet nur, wenn <code>tsc</code> <strong>ohne Fehler</strong> durchläuft</p></li></ul></div></div></section>
+<section id="_dev_skript_in_package_json"><h2>Dev-Skript in package.json</h2><div class="slide-content"><div class="paragraph"><p>Damit wir nicht nach jeder Änderung neu übersetzen müssen, legen wir ein Dev-Skript mit <code>--watch</code> an:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npm install --save-dev concurrently</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-lang="json">{
+  // ...
+  "scripts": {
+    "dev": "tsc &amp;&amp; concurrently \"tsc --watch --preserveWatchOutput\" \"node --watch src/app.js\""
+  }
+}</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-lang="bash">npm run dev</code></pre></div></div>
+<div class="ulist"><ul><li><p><code>tsc --watch</code> übersetzt bei jeder Änderung einer <code>.ts</code>-Datei neu</p></li><li><p><code>node --watch</code> startet das Programm neu, sobald sich <code>app.js</code> ändert</p></li><li><p><code>concurrently</code> lässt beide Befehle gleichzeitig laufen – auch unter Windows</p></li></ul></div></div></section>
 <section id="_einsatzgebiete"><h2>Einsatzgebiete</h2><div class="slide-content"><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:66.6667%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Bereich</th><th class="tableblock halign-left valign-top">Warum TypeScript?</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Große Webprojekte</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">bessere Wartbarkeit und Struktur</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Frameworks: Angular, React, Vue</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Angular ist komplett in TypeScript geschrieben</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">API- und Backend-Projekte (Node.js)</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">starke Typisierung bei Datenmodellen</p></td></tr></table></div></section>
 <section id="_reflexion"><h2>Reflexion</h2><div class="slide-content"><div class="openblock highlight-box"><div class="content"><div class="ulist"><ul><li><p>Welcher Fehler aus deinen bisherigen JavaScript-Programmen wäre mit TypeScript schon beim Kompilieren aufgefallen?</p></li><li><p>Wann reicht Type Inference, wann schreibst du den Typ selbst hin?</p></li><li><p>Was ist der Unterschied zwischen <code>name?: string</code> und <code>name: string | undefined</code>?</p></li></ul></div></div></div></div></section>
 <section id="_zusammenfassung"><h2>Zusammenfassung</h2><div class="slide-content"><div class="ulist"><ul><li><p>TypeScript = JavaScript + Typen, wird mit <code>tsc</code> zu JavaScript übersetzt</p></li><li><p>Setup: <code>npm init</code>, <code>typescript</code> + ESLint installieren, <code>tsconfig.json</code> mit <code>strict</code></p></li><li><p>Typ nach dem Namen: <code>let x: number</code>, <code>function f(a: string): void</code></p></li><li><p><code>|</code> für Union Types, <code>?</code> für optionale Werte, <code>type</code> für eigene Typnamen</p></li><li><p><code>interface</code> beschreibt Objekte, Klassen kennen Parameter Properties</p></li><li><p>Generics <code>&lt;T&gt;</code> machen Funktionen typsicher wiederverwendbar</p></li></ul></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {

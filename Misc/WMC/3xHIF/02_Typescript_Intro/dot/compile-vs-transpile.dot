@@ -1,0 +1,34 @@
+digraph compile_vs_transpile {
+    rankdir=LR;
+    bgcolor="transparent";
+    nodesep=0.3; ranksep=1.3;
+    node [shape=box, style="rounded,filled", penwidth=2, width=2.9,
+          fontname="Helvetica", fontsize=15, fontcolor="#1A1A1A",
+          margin="0.25,0.14"];
+    edge [penwidth=2, arrowsize=1.1,
+          fontname="Helvetica-Bold", fontsize=14, fontcolor="#1A1A1A"];
+
+    subgraph cluster_transpile {
+        label=<<B>Transpilieren</B>  <FONT POINT-SIZE="13" COLOR="#5A5A5A">Hochsprache → Hochsprache</FONT>>;
+        labeljust=l; fontname="Helvetica"; fontsize=17; fontcolor="#ED1944";
+        style="rounded,filled"; fillcolor="#FFF8FA"; color="#ED1944"; penwidth=1.5; margin=14;
+
+        ts [label=<<B>app.ts</B><BR/><FONT POINT-SIZE="11" COLOR="#5A5A5A">TypeScript</FONT><BR/><BR/><FONT FACE="Courier" POINT-SIZE="12">let n: number = 5;<BR ALIGN="LEFT"/>let s: string = "Hi";<BR ALIGN="LEFT"/></FONT>>,
+            fillcolor="#FDE8ED", color="#ED1944"];
+        js [label=<<B>app.js</B><BR/><FONT POINT-SIZE="11" COLOR="#5A5A5A">JavaScript</FONT><BR/><BR/><FONT FACE="Courier" POINT-SIZE="12">let n = 5;<BR ALIGN="LEFT"/>let s = "Hi";<BR ALIGN="LEFT"/></FONT>>,
+            fillcolor="#FDE8ED", color="#ED1944"];
+        ts -> js [label=<  tsc  <BR/><FONT POINT-SIZE="11" FACE="Helvetica" COLOR="#5A5A5A">gleiche Ebene</FONT><BR/> >, color="#ED1944"];
+    }
+
+    subgraph cluster_compile {
+        label=<<B>Kompilieren</B>  <FONT POINT-SIZE="13" COLOR="#5A5A5A">Hochsprache → maschinennaher Code</FONT>>;
+        labeljust=l; fontname="Helvetica"; fontsize=17; fontcolor="#004A8D";
+        style="rounded,filled"; fillcolor="#F7F9FC"; color="#004A8D"; penwidth=1.5; margin=14;
+
+        cs [label=<<B>Program.cs</B><BR/><FONT POINT-SIZE="11" COLOR="#5A5A5A">C#</FONT><BR/><BR/><FONT FACE="Courier" POINT-SIZE="12">int Add(int a, int b)<BR ALIGN="LEFT"/>    =&gt; a + b;<BR ALIGN="LEFT"/></FONT>>,
+            fillcolor="#E5EEF6", color="#004A8D"];
+        il [label=<<B>Program.dll</B><BR/><FONT POINT-SIZE="11" COLOR="#5A5A5A">IL-Bytecode</FONT><BR/><BR/><FONT FACE="Courier" POINT-SIZE="12">ldarg.0<BR ALIGN="LEFT"/>ldarg.1<BR ALIGN="LEFT"/>add<BR ALIGN="LEFT"/>ret<BR ALIGN="LEFT"/></FONT>>,
+            fillcolor="#EDEDED", color="#5A5A5A"];
+        cs -> il [label=<  dotnet build  <BR/><FONT POINT-SIZE="11" FACE="Helvetica" COLOR="#5A5A5A">tiefere Ebene</FONT><BR/> >, color="#004A8D"];
+    }
+}

@@ -15,11 +15,11 @@
 [arabic]
 . Was ist TypeScript?
 . Warum TypeScript?
-. TypeScript für Java-Programmierer:innen
-. Projekt einrichten
-. Kompilieren & Ausführen
+. TypeScript für C#-Programmierer:innen
 . Basistypen & Type Inference
 . Funktionen mit Typen
+. Union, Optional, Type Aliases & Enums
+. Interfaces
 
 // Parsons-Puzzles: Embed laden, deutsche Texte setzen, Lösung per Fragment zeigen.
 // Steht hier statt in einem Footer-Docinfo, weil das in .slides landen würde.
@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
 == Agenda (2/2)
 
 [arabic, start=8]
-. Union, Optional, Type Aliases & Enums
-. Interfaces
 . Klassen
 . Funktionstypen
 . Generics
 . Interface vs. Type Alias
+. Projekt einrichten
+. Kompilieren & Ausführen
 . Einsatzgebiete, Reflexion & Zusammenfassung
 
 == Lernziele
@@ -97,11 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 == Von TypeScript zu JavaScript
 
-[source,text]
-----
-  app.ts  ──── tsc ────►  app.js  ──── node / Browser ────►  Ausführung
- (mit Typen)            (ohne Typen)
-----
+image::dot/ts-pipeline.svg[Pipeline: app.ts (mit Typen) wird von tsc zu app.js (ohne Typen) transpiliert und von Node.js oder dem Browser ausgeführt,width=900]
 
 [source,typescript]
 ----
@@ -122,6 +118,15 @@ function add(a, b) {
 [.highlight-box]
 --
 Die Typen existieren nur beim Entwickeln. Zur Laufzeit sind sie verschwunden.
+--
+
+== Kompilieren vs. Transpilieren
+
+image::dot/compile-vs-transpile.svg[Kompilieren: Program.cs wird mit dotnet build zu IL-Bytecode in Program.dll. Transpilieren: app.ts wird mit tsc zu app.js – beides Hochsprachen,width=820]
+
+[.highlight-box]
+--
+Transpilieren ist eine *Sonderform* des Kompilierens: Das Ergebnis ist wieder lesbarer Quellcode. Deshalb heißt `tsc` trotzdem „TypeScript *Compiler*“.
 --
 
 == Warum TypeScript?
@@ -147,140 +152,22 @@ price = "neunzehn";   // Fehler beim Kompilieren
 Fehler werden bereits *beim Entwickeln* erkannt – nicht erst im Browser. Dazu kommen Autovervollständigung und Fehlerprüfung in VS Code.
 --
 
-== TypeScript für Java-Programmierer:innen
+== TypeScript für C#-Programmierer:innen
 
 [cols="1,1,1",options="header"]
 |===
-| | Java | TypeScript
+| | C# | TypeScript
 | Typangabe | `int count = 5;` | `let count: number = 5;`
-| Zahlen | `int`, `long`, `double`, … | nur `number`
-| Text | `String` | `string` (klein!)
-| Wahrheitswert | `boolean` | `boolean`
-| Rückgabetyp | `int add(int a, int b)` | `add(a: number, b: number): number`
+| Zahlen | `int`, `long`, `double`, `decimal`, … | nur `number`
+| Text | `string` | `string`
+| Wahrheitswert | `bool` | `boolean`
+| Rückgabetyp | `int Add(int a, int b)` | `add(a: number, b: number): number`
 | Typen zur Laufzeit | vorhanden | gelöscht
 |===
 
 [.highlight-box.warning]
 --
 In TypeScript steht der Typ *nach* dem Namen, getrennt durch einen Doppelpunkt.
---
-
-== Projekt anlegen
-
-Neues Verzeichnis anlegen und mit npm initialisieren:
-
-[source,bash]
-----
-mkdir typescript-project
-cd typescript-project
-npm init -y
-----
-
-TypeScript-Compiler und Linter (ESLint) als Entwicklungsabhängigkeiten installieren:
-
-[source,bash]
-----
-npm install --save-dev typescript @types/node
-npm install --save-dev eslint typescript-eslint globals
-----
-
-* `--save-dev`: wird nur beim Entwickeln gebraucht, nicht zur Laufzeit
-* `@types/node`: Typdefinitionen für Node.js (z. B. für `console`, `process`)
-
-== tsconfig.json
-
-Konfiguration des TypeScript-Compilers im Stammverzeichnis des Projekts:
-
-[source,json]
-----
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "types": ["node"],
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "sourceMap": true
-  }
-}
-----
-
-* `target`: welche JavaScript-Version erzeugt wird
-* `strict`: alle strengen Typprüfungen aktivieren – *immer einschalten*
-* `sourceMap`: Debugger zeigt den TypeScript-Code statt des erzeugten JavaScripts
-
-== ESLint & .gitignore
-
-`eslint.config.mjs` im Stammverzeichnis:
-
-[source,javascript]
-----
-import globals from "globals";
-import tseslint from "typescript-eslint";
-
-export default [
-  { files: ["**/*.{js,mjs,cjs,ts}"] },
-  { languageOptions: { globals: globals.node } },
-  ...tseslint.configs.recommended,
-  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
-];
-----
-
-`.gitignore` – `node_modules` *niemals* einchecken, jeder Client lädt die Pakete selbst:
-
-[source,text]
-----
-**/node_modules
-----
-
-== Kompilieren & Ausführen
-
-`src/app.ts`:
-
-[source,typescript]
-----
-function add(x: number, y: number): number {
-  return x + y;
-}
-
-const result = add(1, 2);
-const result2 = add(1, "x");
-// error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
-console.log(result);
-----
-
-[source,bash]
-----
-npx tsc && node src/app.js
-----
-
-* `npx tsc` übersetzt alle `.ts`-Dateien → `src/app.js`
-* `&&`: `node` startet nur, wenn `tsc` *ohne Fehler* durchläuft
-
-== Startskript in package.json
-
-Damit wir den Befehl nicht jedes Mal tippen müssen, legen wir ein Startskript an:
-
-[source,json]
-----
-{
-  // ...
-  "scripts": {
-    "start": "tsc && node src/app.js"
-  }
-}
-----
-
-[source,bash]
-----
-npm run start
-----
-
-[.highlight-box.warning]
---
-Die `package.json` muss gültiges JSON bleiben – auf die Beistriche achten!
 --
 
 == Basistypen
@@ -474,7 +361,7 @@ function printStudent(s: Student) {
 
 [.highlight-box]
 --
-Anders als in Java braucht ein Objekt kein `implements Student` – die passende Struktur reicht.
+Anders als in C# muss nichts das Interface explizit implementieren (`class … : IStudent`) – die passende Struktur reicht.
 --
 
 == Verschachtelte Interfaces & Spread
@@ -553,7 +440,7 @@ dog.speak();   // Bello bellt.
 ----
 
 * *Parameter Property*: `public name: string` im Konstruktor legt das Feld an *und* weist es zu
-* Vererbung mit `extends` – wie in Java
+* Vererbung mit `extends` statt `:` wie in C#
 
 [.columns.has-puzzle]
 == Puzzle 4: Klassen
@@ -626,7 +513,7 @@ const name = getFirst(["Anna", "Bob"]);    // T = string → "Anna"
 
 * `<T>` nach dem Funktionsnamen führt den Typparameter ein
 * TypeScript leitet `T` aus dem Argument ab
-* Wie Generics in Java (`List<T>`) – nur ohne `List`: Arrays schreibt man `T[]`
+* Wie Generics in C# (`List<T>`) – nur ohne `List`: Arrays schreibt man `T[]`
 
 [.highlight-box]
 --
@@ -684,6 +571,121 @@ type Coordinate = {
 --
 *Faustregel:* Interfaces für Objektstrukturen, Type Aliases für alles andere.
 --
+
+== Projekt anlegen
+
+Neues Verzeichnis anlegen und mit npm initialisieren:
+
+[source,bash]
+----
+mkdir typescript-project
+cd typescript-project
+npm init -y
+----
+
+TypeScript-Compiler und Linter (ESLint) als Entwicklungsabhängigkeiten installieren:
+
+[source,bash]
+----
+npm install --save-dev typescript @types/node
+npm install --save-dev eslint typescript-eslint globals
+----
+
+* `--save-dev`: wird nur beim Entwickeln gebraucht, nicht zur Laufzeit
+* `@types/node`: Typdefinitionen für Node.js (z. B. für `console`, `process`)
+
+== tsconfig.json
+
+Konfiguration des TypeScript-Compilers im Stammverzeichnis des Projekts:
+
+[source,json]
+----
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true
+  }
+}
+----
+
+* `target`: welche JavaScript-Version erzeugt wird
+* `strict`: alle strengen Typprüfungen aktivieren – *immer einschalten*
+* `sourceMap`: Debugger zeigt den TypeScript-Code statt des erzeugten JavaScripts
+
+== ESLint
+
+`eslint.config.mjs` im Stammverzeichnis:
+
+[source,javascript]
+----
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
+export default [
+  { files: ["**/*.{js,mjs,cjs,ts}"] },
+  { languageOptions: { globals: globals.node } },
+  ...tseslint.configs.recommended,
+  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
+];
+----
+
+== Kompilieren & Ausführen
+
+`src/app.ts`:
+
+[source,typescript]
+----
+function add(x: number, y: number): number {
+  return x + y;
+}
+
+const result = add(1, 2);
+const result2 = add(1, "x");
+// error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+console.log(result);
+----
+
+[source,bash]
+----
+npx tsc && node src/app.js
+----
+
+* `npx tsc` übersetzt alle `.ts`-Dateien → `src/app.js`
+* `&&`: `node` startet nur, wenn `tsc` *ohne Fehler* durchläuft
+
+== Dev-Skript in package.json
+
+Damit wir nicht nach jeder Änderung neu übersetzen müssen, legen wir ein Dev-Skript mit `--watch` an:
+
+[source,bash]
+----
+npm install --save-dev concurrently
+----
+
+[source,json]
+----
+{
+  // ...
+  "scripts": {
+    "dev": "tsc && concurrently \"tsc --watch --preserveWatchOutput\" \"node --watch src/app.js\""
+  }
+}
+----
+
+[source,bash]
+----
+npm run dev
+----
+
+* `tsc --watch` übersetzt bei jeder Änderung einer `.ts`-Datei neu
+* `node --watch` startet das Programm neu, sobald sich `app.js` ändert
+* `concurrently` lässt beide Befehle gleichzeitig laufen – auch unter Windows
 
 == Einsatzgebiete
 
