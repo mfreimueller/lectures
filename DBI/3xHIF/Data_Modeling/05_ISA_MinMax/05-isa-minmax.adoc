@@ -16,7 +16,7 @@
 . Recap
 . Min-Max Notation
 . IS-A / Generalization-Specialization
-. Total vs. Partial, Disjoint vs. Non-Disjoint
+. Total vs. Partial, Disjoint vs. Overlapping
 . Worked Example: Zoo Animals
 . Instance vs. Type Attributes
 . Summary
@@ -25,7 +25,7 @@
 
 * I can read and write (min,max) cardinality pairs
 * I can model a generalization/specialization hierarchy using ISA notation
-* I can classify a specialization as total/partial and disjoint/non-disjoint
+* I can classify a specialization as total/partial and disjoint/overlapping
 * I can distinguish attributes that describe an individual instance from attributes that describe its type
 
 == Recap
@@ -69,14 +69,42 @@ the superclass.
 * Notation: a triangle labeled *ISA*, superclass above, subclasses below
 * Every subclass entity *is also* a superclass entity — attributes are shared, not duplicated
 
-== Total vs. Partial, Disjoint vs. Non-Disjoint
+== Total vs. Partial, Disjoint vs. Overlapping
 
 Two independent questions for every ISA relationship:
 
 * *Total (t)* — every superclass instance belongs to _at least one_ subclass +
 *Partial (p)* — some superclass instances belong to _no_ subclass
 * *Disjoint (d)* — an instance belongs to _at most one_ subclass +
-*Non-disjoint (nd)* — an instance may belong to _several_ subclasses at once
+*Overlapping (o)* — an instance may belong to _several_ subclasses at once
+
+== Total + Disjoint (t,d)
+
+Every superclass entity belongs to *exactly one* subclass.
+
+* Example: a `Patient` must be *either* an `Outpatient` *or* an `Inpatient`
+* No patient without a subclass (total), no patient in both (disjoint)
+
+== Total + Overlapping (t,o)
+
+Every superclass entity belongs to *at least one* subclass, but *can belong to several*.
+
+* Example: a `UniversityMember` must be a `Student`, `Staff`, *or both*
+* No member without a subclass (total), but a working student is in both (overlapping)
+
+== Partial + Disjoint (p,d)
+
+An entity belongs to *at most one* subclass, but *could belong to none*.
+
+* Example: a `Vehicle` may be a `Car` *or* a `Truck` — or neither (e.g. a bicycle)
+* Some vehicles have no subclass (partial), none is in both (disjoint)
+
+== Partial + Overlapping (p,o)
+
+An entity can belong to *zero, one, or several* subclasses.
+
+* Example: a `Person` may be an `Employee`, a `Customer`, both, or neither
+* No restriction at all — the most permissive combination
 
 == Worked Example: Zoo Animals
 
@@ -100,5 +128,5 @@ individual animal has its own tag number, birth date, and weight.
 
 * *(min,max)* notation is more precise than 1:1/1:n/n:m
 * *ISA* models generalization/specialization: triangle, superclass above, subclasses below
-* Every ISA is *total or partial*, and *disjoint or non-disjoint*
+* Every ISA is *total or partial*, and *disjoint or overlapping*
 * Not every split is ISA — sometimes it's a *type vs. instance* relationship instead
