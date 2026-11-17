@@ -1,0 +1,324 @@
+= 03c - JPA Queries, Projektionen, Locking & Auditing | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Drei Wege zur Abfrage
+
+. *Abgeleitete Queries* — Spring Data liest den Methodennamen
+. *`@Query` mit JPQL* — selbst geschrieben, auf Entities und Feldern
+. *Native Queries* — echtes SQL, nur im Notfall
+
+Alle drei werden im Repository-Interface deklariert — die Implementierung erzeugt Spring Data.
+
+== Abgeleitete Queries
+
+[source,java]
+----
+public interface StudentRepository extends JpaRepository<Student, Long> {
+
+    List<Student> findByLastNameIgnoreCase(String lastName);
+
+    Optional<Student> findByEmail(Email email);
+
+    List<Student> findBySchoolNameAndLastNameStartingWithOrderByLastNameAsc(
+            String schoolName, String prefix);
+
+    boolean existsByEmail(Email email);
+}
+----
+
+* Jeder Feldname muss im Entity existieren (`lastName` → `private String lastName`)
+* Pfade über Beziehungen/Value Objects: `findBySchoolName` → `student.school.name`
+* Tippfehler → Fehler *beim Start* des Kontexts
+
+== Schlüsselwörter
+
+[cols="1,2",options="header"]
+|===
+|Schlüsselwort |Beispiel
+|`And`, `Or` |`findByFirstNameAndLastName`
+|`Between`, `LessThan`, `GreaterThanEqual` |`findByPriceLessThan(BigDecimal max)`
+|`Before`, `After` |`findByHeldOnAfter(LocalDate date)`
+|`Like`, `StartingWith`, `EndingWith`, `Containing` |`findByTitleContaining(String part)`
+|`IgnoreCase` |`findByLastNameIgnoreCase`
+|`IsNull`, `IsNotNull` |`findByReturnDateIsNull()`
+|`In`, `NotIn` |`findByGenreIn(Collection<Genre> genres)`
+|`True`, `False` |`findByActiveTrue()`
+|`OrderBy...Asc/Desc` |`findByBranchOrderByTitleAsc`
+|`First`, `Top3` |`findTop3ByOrderByPriceDesc()`
+|===
+
+`Upper` ist *kein* Schlüsselwort (Fehler im Cheat Sheet) → `IgnoreCase`.
+
+== Rückgabetypen
+
+[cols="1,2",options="header"]
+|===
+|Rückgabe |Wann
+|`List<T>` |beliebig viele Treffer
+|`Optional<T>` |höchstens ein Treffer
+|`T` |genau ein Treffer — bei 0 Treffern `null`
+|`Page<T>` / `Slice<T>` |mit `Pageable`-Parameter
+|`Stream<T>` |große Ergebnisse, nur in Transaktion
+|`long`, `boolean` |`count...`, `exists...`
+|===
+
+[.highlight-box]
+--
+Einzelobjekt bei mehreren Treffern → `IncorrectResultSizeDataAccessException`.
+--
+
+== `@Query` mit JPQL
+
+[source,java]
+----
+@Query("""
+        select s from Student s
+        where s.lastName = :lastName
+        """)
+Optional<Student> fetchStudentByLastName(String lastName);
+
+@Query("select b from Book b join b.authors a where a.name = :name order by b.title")
+List<Book> findWrittenBy(@Param("name") String name);
+----
+
+[cols="1,1,1",options="header"]
+|===
+| |SQL |JPQL
+|nach `from` |Tabelle `books` |Entity `Book`
+|Spalten |`published_on` |Felder `publishedOn`
+|Join |`join branches br on ...` |`join b.branch br`
+|Value Object |Spalte `city` |Pfad `b.branch.address.city`
+|===
+
+== JPQL: Funktionen & `join fetch`
+
+[source,java]
+----
+@Query("""
+        select b from Book b
+        where lower(b.title) like lower(concat('%', :part, '%'))
+        """)
+List<Book> searchTitle(String part);
+
+@Query("select distinct br from Branch br join br.books b where b.price > :min")
+List<Branch> findBranchesWithBooksAbove(BigDecimal min);
+
+@Query("select b from Book b left join fetch b.authors where b.isbn = :isbn")
+Optional<Book> findWithAuthors(String isbn);
+----
+
+* `lower`, `upper`, `concat`, `length`, `between`, `in`, `is null` wie in SQL
+* `distinct`, wenn ein Join Zeilen vervielfacht
+* `join fetch` lädt Lazy-Listen mit → keine `LazyInitializationException`, kein N{plus}1
+
+== Native Queries
+
+[source,java]
+----
+@Query(value = "select * from books where price > :min", nativeQuery = true)
+List<Book> nativeExpensive(BigDecimal min);
+----
+
+* Echtes SQL mit Tabellen- und Spaltennamen
+* Wird *nicht* beim Start geprüft, hängt an der Datenbank
+* Nur verwenden, wenn JPQL nicht reicht
+
+== Modifizierende Queries
+
+[source,java]
+----
+@Modifying
+@Transactional
+@Query("update Book b set b.price = b.price * :factor where b.branch = :branch")
+int adjustPrices(Branch branch, BigDecimal factor);
+----
+
+* `@Modifying` für `update`/`delete`
+* Umgeht den Persistence Context → geladene Entities sind danach veraltet
+* `@Modifying(clearAutomatically = true)` leert den Cache danach
+
+== Projektionen
+
+„Eine Liste der Bücher mit Titel, Name der Filiale und Preis" → kein Entity, sondern ein Record:
+
+[source,java]
+----
+package spengergasse.persistence;
+public record BookOverview(String title, String branchName, BigDecimal price) {}
+
+// im Repository
+@Query("""
+        select new spengergasse.persistence.BookOverview(b.title, b.branch.name, b.price)
+        from Book b
+        order by b.title
+        """)
+List<BookOverview> findOverview();
+----
+
+* `select new` ruft pro Zeile den Konstruktor auf — Typen und Reihenfolge müssen passen
+* *Voll qualifizierter* Klassenname; Rückgabe `List<...>`, kein Einzelobjekt
+
+
+== Projektionen: weitere Varianten
+
+[source,java]
+----
+// Spring Data ergänzt das "new" selbst, wenn der Rückgabetyp ein Record ist
+@Query("select b.title, br.name, b.price from Book b join b.branch br")
+List<BookOverview> findOverviewShort();
+
+// abgeleitete Query mit Record: Komponentennamen → Felder
+List<BookOverview> findByTitleStartingWith(String prefix);
+
+// Interface-Projektion
+public interface BookTitleOnly {
+    String getTitle();
+    String getIsbn();
+}
+List<BookTitleOnly> findByPriceGreaterThan(BigDecimal min);
+----
+
+== Aggregate: `count`, `sum`, `avg`
+
+[source,java]
+----
+public record BranchStock(String branchName, long bookCount, BigDecimal totalValue) {}
+
+@Query("""
+        select new spengergasse.persistence.BranchStock(
+            br.name, count(b), sum(b.price))
+        from Branch br left join br.books b
+        group by br.name
+        order by br.name
+        """)
+List<BranchStock> findStock();
+----
+
+* Alles im `select`, das kein Aggregat ist, gehört in `group by`
+* `left join`: Filialen ohne Bücher bleiben drin (`count` = 0, aber `sum` = `null` — im Test berücksichtigen)
+
+== Ergebnistypen von Aggregaten
+
+[cols="1,1",options="header"]
+|===
+|Funktion |Java-Typ
+|`count(...)` |`Long` / `long`
+|`sum` über `BigDecimal` |`BigDecimal`
+|`sum` über `Integer` |`Long`
+|`avg(...)` |`Double`
+|===
+
+Die Record-Komponenten müssen zu diesen Typen passen (`long` statt `int` für `count`).
+
+== Queries testen
+
+[source,java]
+----
+@Test
+void verify_find_written_by() {
+    Author bachmann = authorRepository.save(new Author("Ingeborg Bachmann"));
+    Author celan    = authorRepository.save(new Author("Paul Celan"));
+    bookRepository.save(bookBy("Malina", bachmann));
+    bookRepository.save(bookBy("Herzzeit", bachmann, celan));
+    bookRepository.save(bookBy("Mohn und Gedächtnis", celan));   // darf NICHT kommen
+
+    assertThat(bookRepository.findWrittenBy("Ingeborg Bachmann"))
+            .extracting(Book::getTitle)
+            .containsExactly("Herzzeit", "Malina");
+}
+----
+
+* Testdaten, die Treffer auch *ausschließen*
+* `order by` in der Query → `containsExactly` prüft auch die Reihenfolge
+* Records haben `equals` → ganze Projektionen vergleichen. Achtung: `new BigDecimal("40.4")` ≠ `40.40`
+
+== Optimistic Locking: das Problem
+
+[cols="1,1",options="header"]
+|===
+|Anna |Ben
+|liest Konto (Stand 100) |liest Konto (Stand 100)
+|zahlt 30 ein → speichert 130 |
+| |hebt 50 ab → speichert 50
+|===
+
+*Lost Update*: Annas Einzahlung ist verloren.
+
+== Optimistic Locking: `@Version`
+
+[source,java]
+----
+@Entity
+public class Account {
+    private @Id @GeneratedValue Long id;
+    private @Version Integer version;
+    private BigDecimal balance;
+}
+----
+
+[source,sql]
+----
+update account set balance = 50, version = 2
+where id = 1 and version = 1     -- 0 Zeilen, wenn jemand schneller war
+----
+
+* Hibernate zählt `version` bei jedem Update hoch
+* Wurde zwischendurch geändert → `ObjectOptimisticLockingFailureException`
+* Im REST-Layer typischerweise `409 Conflict`
+* „Optimistisch": keine DB-Sperren, Konflikte werden erkannt statt verhindert
+
+== Auditing
+
+[source,java]
+----
+@Entity
+@EntityListeners(AuditingEntityListener.class)        // Pflicht!
+public class Book extends AbstractPersistable<Long> {
+    private @CreatedDate        ZonedDateTime createdTS;
+    private @LastModifiedDate   ZonedDateTime updatedTS;
+    private @CreatedBy          String createdBy;
+    private @LastModifiedBy     String updatedBy;
+}
+
+@Configuration
+@EnableJpaAuditing                                    // Pflicht!
+public class JpaConfig {
+    @Bean
+    AuditorAware<String> auditorAware() {             // nur für @CreatedBy/@LastModifiedBy
+        return () -> Optional.of("system");           // später: aus Spring Security
+    }
+}
+----
+
+Opt-in: Ohne `@EntityListeners` und `@EnableJpaAuditing` bleiben die Felder `null` (fehlt im Cheat Sheet).
+
+== Übung
+
+[.highlight-box]
+--
+Für das Bibliotheksmodell:
+
+. Alle Bücher, deren Titel ein Wort enthält (ohne Groß/Klein) — abgeleitet *und* mit JPQL
+. Alle offenen Ausleihen (`returnDate is null`) eines Mitglieds
+. Projektion `LoanOverview(memberName, bookTitle, dueDate)` sortiert nach `dueDate`
+. Pro Mitglied: Anzahl Ausleihen und Summe der Gebühren (auch Mitglieder ohne Ausleihen)
+. `@Version` für `Book` und ein Test, der den Konflikt provoziert
+--
+
+== Was wir heute gelernt haben
+
+* Abgeleitete Queries: Schlüsselwörter, Pfade, Rückgabetypen
+* JPQL: Entities statt Tabellen, Parameter, Joins, `join fetch`
+* Native und modifizierende Queries
+* Projektionen mit Records und `select new`, Aggregate mit `group by`
+* Optimistic Locking mit `@Version`
+* Auditing mit `@CreatedDate` & Co. — inkl. nötiger Konfiguration

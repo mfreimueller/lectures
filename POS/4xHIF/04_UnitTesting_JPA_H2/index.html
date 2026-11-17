@@ -625,11 +625,51 @@ void cascadePersist_shouldSaveLoans() {
 }
 
 @Test
-@Transactional
 void lazyLoading_shouldWorkInTransaction() {
-    Member member = memberRepo.findById(member1.getId()).get();
-    assertThat(member.getLoans()).hasSize(2); // no LazyInitException
+    // @DataJpaTest ist bereits @Transactional → Session ist offen
+    entityManager.flush();
+    entityManager.clear();
+    Member member = memberRepo.findById(member1.getId()).orElseThrow();
+    assertThat(member.getLoans()).hasSize(2); // keine LazyInitializationException
 }</code></pre></div></div></div></section>
+<section id="_spring_boot_4_neue_packages"><h2>Spring Boot 4: neue Packages</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;</code></pre></div></div>
+<div class="ulist"><ul><li><p>Die Test-Slices sind in eigene Module gewandert</p></li><li><p>Imports aus Boot-3-Tutorials (<code>org.springframework.boot.test.autoconfigure.orm.jpa&#8230;&#8203;</code>) kompilieren nicht mehr</p></li><li><p><code>@DataJpaTest(showSql = true)</code> zeigt die SQL-Statements im Log</p></li></ul></div></div></section>
+<section id="_der_lifecycle_test"><h2>Der Lifecycle-Test</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">@Test
+void verify_book_can_be_saved_and_read() {
+    Book book = new Book("9783161484100", "Dune", new BigDecimal("12.90"),
+                         LocalDate.of(1965, 8, 1));
+
+    bookRepo.save(book);
+    entityManager.flush();     // INSERT wirklich ausführen
+    entityManager.clear();     // First-Level-Cache leeren
+
+    Book reread = bookRepo.findById(book.getId()).orElseThrow();
+    assertThat(reread).isNotSameAs(book);                 // wirklich neu gelesen
+    assertThat(reread.getTitle()).isEqualTo("Dune");
+    assertThat(reread.getPrice()).isEqualByComparingTo("12.90");
+}</code></pre></div></div>
+<div class="paragraph"><p>Ohne <code>clear()</code> kommt dasselbe Objekt aus dem Cache zurück — Mapping-Fehler (fehlender No-Args-Konstruktor, falscher Converter) bleiben unentdeckt.</p></div></div></section>
+<section id="_save_vs_saveandflush"><h2><code>save</code> vs. <code>saveAndFlush</code></h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">@Test
+void verify_isbn_is_unique() {
+    bookRepo.saveAndFlush(book("9783161484100", "Erstes Buch"));
+
+    assertThatThrownBy(() -&gt; bookRepo.saveAndFlush(book("9783161484100", "Zweites Buch")))
+        .isInstanceOf(DataIntegrityViolationException.class);
+}
+
+@Test
+void verify_title_is_required() {
+    assertThatThrownBy(() -&gt; bookRepo.saveAndFlush(book("9783161484100", null)))
+        .isInstanceOf(ConstraintViolationException.class);   // jakarta.validation
+}</code></pre></div></div>
+<div class="ulist"><ul><li><p>Mit <code>@GeneratedValue</code> (Sequence) wird erst beim <strong>Flush</strong> eingefügt</p></li><li><p>Ein Test mit nur <code>save</code> sieht die Constraint-Verletzung <strong>nie</strong></p></li></ul></div></div></section>
+<section id="_testentitymanager"><h2>TestEntityManager</h2><div class="slide-content"><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:66.6667%"></colgroup><thead><tr><th class="tableblock halign-left valign-top">Methode</th><th class="tableblock halign-left valign-top">Macht</th></tr><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>persist(entity)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">speichert (wie <code>save</code>), Cascade gilt</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>persistAndFlush(entity)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">speichert und schreibt sofort</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>persistFlushFind(entity)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">speichert, schreibt, leert Cache, liest neu</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>find(Type.class, id)</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">liest über die Id</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>flush()</code> / <code>clear()</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">schreiben / Cache leeren</p></td></tr></table>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">Author author = entityManager.persistFlushFind(new Author("Paul Celan"));
+assertThat(author.getId()).isNotNull();</code></pre></div></div></div></section>
+<section id="_was_ein_vollständiger_testsatz_enthält"><h2>Was ein vollständiger Testsatz enthält</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p><strong>Entity</strong>: speichern und lesen (Lifecycle-Test)</p></li><li><p><strong>Constraints</strong>: ungültige Daten werden abgelehnt</p></li><li><p><strong>Value Object</strong>: Spalten und Validierung über das besitzende Entity</p></li><li><p><strong>Rich Type / Enum</strong>: Converter einzeln testen (auch <code>null</code>), gespeicherten Wert prüfen</p></li><li><p><strong>Beziehung</strong>: Graph speichern, neu lesen, beide Richtungen prüfen</p></li><li><p><strong>Abfrage</strong>: Testdaten, die Treffer auch <strong>ausschließen</strong></p></li></ol></div>
+<div class="openblock highlight-box"><div class="content"><div class="paragraph"><p>Ungetestete Klassen werden bei der Beurteilung nicht berücksichtigt.</p></div></div></div></div></section>
 <section id="_benutzerdefinierte_abfragen_testen"><h2>Benutzerdefinierte Abfragen testen</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-lang="java">@Test
 void searchByTitle_shouldFindMatches() {
     List&lt;Book&gt; result = bookRepo.searchByTitle("Java");
@@ -644,7 +684,7 @@ void searchByTitle_shouldReturnEmptyForNoMatch() {
     assertThat(bookRepo.searchByTitle("xyz"))
         .isEmpty();
 }</code></pre></div></div></div></section>
-<section id="_was_wir_heute_gelernt_haben"><h2>Was wir heute gelernt haben</h2><div class="slide-content"><div class="ulist"><ul><li><p>@DataJpaTest für Repository Slice Tests</p></li><li><p>H2 In-Memory Datenbank zum Testen</p></li><li><p>Testen von CRUD, Beziehungen und benutzerdefinierten Abfragen</p></li><li><p>Testisolation und @Transactional Rollback</p></li></ul></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_was_wir_heute_gelernt_haben"><h2>Was wir heute gelernt haben</h2><div class="slide-content"><div class="ulist"><ul><li><p>@DataJpaTest für Repository Slice Tests</p></li><li><p>H2 In-Memory Datenbank zum Testen</p></li><li><p>Testen von CRUD, Beziehungen und benutzerdefinierten Abfragen</p></li><li><p>Testisolation und @Transactional Rollback</p></li><li><p>Lifecycle-Test mit <code>flush</code>/<code>clear</code>, <code>saveAndFlush</code> für Constraints</p></li><li><p><code>TestEntityManager</code> und die Spring-Boot-4-Imports</p></li></ul></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.2/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;

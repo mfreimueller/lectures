@@ -1,0 +1,295 @@
+= 03b - JPA Beziehungen & Vererbung | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Beziehungen im Überblick
+
+[cols="2,2,3",options="header"]
+|===
+|UML |JPA |Datenbank
+|`+Book "*" --> "1" Branch+` |`@ManyToOne` |Fremdschlüssel `branch_id` in `books`
+|`+Branch "1" -- "*" Book+` (bidirektional) |`@OneToMany(mappedBy=...)` {plus} `@ManyToOne` |weiterhin nur `branch_id`
+|`+Employee "1" --> "1" ParkingSpot+` |`@OneToOne` |Fremdschlüssel {plus} `unique`
+|`+Book "*" -- "*" Author+` |`@ManyToMany` |Zwischentabelle
+|Entity → Liste von Werten |`@ElementCollection` |eigene Tabelle ohne Id
+|===
+
+Faustregel: der Fremdschlüssel liegt immer auf der *„viele"-Seite*.
+
+== `@ManyToOne` und `@JoinColumn`
+
+[source,java]
+----
+@Entity
+@Table(name = "books")
+public class Book extends AbstractPersistable<Long> {
+
+    @ManyToOne(optional = false)                     // {nn} am Assoziationsende
+    @JoinColumn(name = "branch_id",
+                foreignKey = @ForeignKey(name = "fk_books_branch"))
+    private Branch branch;
+}
+----
+
+* `@JoinColumn` ist optional, aber empfohlen: Spaltenname und benannter Fremdschlüssel
+* Ohne `@ForeignKey`-Name erzeugt Hibernate Namen wie `FK7x3k...` — schwer lesbar
+* `@ManyToOne` lädt standardmäßig *eager*
+
+== `@OneToMany` bidirektional: `mappedBy`
+
+[source,java]
+----
+@Entity
+@Table(name = "branches")
+public class Branch extends AbstractPersistable<Long> {
+
+    @OneToMany(mappedBy = "branch")      // = Feld "branch" in Book
+    private List<Book> books = new ArrayList<>();
+}
+----
+
+* *Besitzende Seite* (owning side): die mit `@ManyToOne` und dem Fremdschlüssel
+* *Gegenseite* (inverse side): die mit `mappedBy` — wird *nicht* gespeichert
+* Ohne `mappedBy`: zweite, unabhängige Beziehung mit Zwischentabelle `branches_books`!
+
+== Hilfsmethoden halten beide Seiten synchron
+
+[source,java]
+----
+public List<Book> getBooks() {
+    return Collections.unmodifiableList(books);
+}
+
+public void addBook(Book book) {
+    books.add(book);
+    book.setBranch(this);
+}
+
+public void removeBook(Book book) {
+    books.remove(book);
+    book.setBranch(null);
+}
+----
+
+[cols="1,2",options="header"]
+|===
+|Du setzt nur ... |Folge
+|`books.add(book)` |`branch_id` bleibt `null` — nach dem Neuladen keine Bücher
+|`book.setBranch(branch)` |DB stimmt, aber `branch.getBooks()` ist leer bis zum Neuladen
+|===
+
+== Cascade und `orphanRemoval`
+
+[source,java]
+----
+@OneToMany(mappedBy = "branch",
+           cascade = CascadeType.PERSIST,   // oder ALL
+           orphanRemoval = true)
+private List<Book> books = new ArrayList<>();
+----
+
+[cols="1,3",options="header"]
+|===
+|Option |Wirkung
+|`PERSIST` |`save(branch)` speichert neue Bücher mit
+|`MERGE` |Änderungen werden weitergegeben
+|`REMOVE` |Filiale löschen → Bücher löschen
+|`ALL` |alles davon
+|`orphanRemoval = true` |aus der Liste entferntes Buch wird gelöscht
+|===
+
+Fachlich fragen: Darf ein Buch ohne Filiale existieren? `CascadeType.ALL`/`REMOVE` *nie* bei `@ManyToMany`.
+
+== `@OneToMany` unidirektional
+
+Nur die Filiale kennt ihre Bücher (`+Branch --> "*" Book+`):
+
+[source,java]
+----
+@Entity
+public class Department {
+    @Id private Long id;
+
+    @OneToMany
+    @JoinColumn(name = "department_id")   // Fremdschlüssel in employees
+    private List<Employee> employees = new ArrayList<>();
+}
+----
+
+Ohne `@JoinColumn` legt Hibernate eine Zwischentabelle an.
+
+== `@OneToOne`
+
+[source,java]
+----
+@Entity
+public class Employee {
+    @Id @GeneratedValue private Long id;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "parking_spot_id", unique = true)
+    private ParkingSpot parkingSpot;
+}
+
+// optional bidirektional:
+@Entity
+public class ParkingSpot {
+    @Id @GeneratedValue private Long id;
+
+    @OneToOne(mappedBy = "parkingSpot")
+    private Employee employee;
+}
+----
+
+* Fremdschlüssel auf *einer* Seite, `unique = true` erzwingt 1:1
+* Gegenseite wieder mit `mappedBy`
+
+== `@ManyToMany` und `@JoinTable`
+
+[source,java]
+----
+@Entity
+public class Book {
+    @Id @GeneratedValue private Long id;
+
+    @ManyToMany
+    @JoinTable(name = "book_author",
+        joinColumns        = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
+
+    public void addAuthor(Author author) {
+        authors.add(author);          // Book ist die besitzende Seite
+    }
+}
+
+// Gegenseite (optional): @ManyToMany(mappedBy = "authors") private Set<Book> books;
+----
+
+* `Set` statt `List`: keine Duplikate, effizienteres Löschen
+* Hat die Verbindung *eigene Attribute* (z. B. `role`), wird sie ein eigenes Entity mit zwei `@ManyToOne`
+
+== Fetch-Typen
+
+[cols="1,1",options="header"]
+|===
+|Annotation |Default
+|`@ManyToOne`, `@OneToOne` |`EAGER`
+|`@OneToMany`, `@ManyToMany`, `@ElementCollection` |`LAZY`
+|===
+
+* Lazy-Listen brauchen eine offene Session/Transaktion
+* Sonst: `LazyInitializationException: ... could not initialize proxy - no Session`
+* Lösung: Zugriff im `@Transactional` Service oder Query mit `join fetch`
+* Viele Projekte setzen auch `@ManyToOne(fetch = FetchType.LAZY)` → weniger unnötige Joins
+
+== Vererbung: drei Strategien
+
+[source,java]
+----
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)    // Default
+@DiscriminatorColumn(name = "event_type", length = 1)
+public abstract class LibraryEvent extends AbstractPersistable<Long> {
+    @NotNull private String title;
+    @NotNull private LocalDate heldOn;
+}
+
+@Entity @DiscriminatorValue("R")
+public class Reading extends LibraryEvent { @NotNull private String authorName; }
+
+@Entity @DiscriminatorValue("W")
+public class Workshop extends LibraryEvent { private int maxParticipants; }
+----
+
+== Vererbung: Strategien im Vergleich
+
+[cols="1,2,2",options="header"]
+|===
+|Strategie |Tabellen |Abwägung
+|`SINGLE_TABLE` |eine für alle {plus} Diskriminator |schnell; Unterklassen-Spalten nullable
+|`JOINED` |eine pro Klasse, verbunden über `id` |sauberes Schema; Joins beim Lesen
+|`TABLE_PER_CLASS` |eine pro *konkreter* Klasse |kein Join; polymorphe Abfragen per `union`
+|===
+
+== Vererbung: Stolpersteine
+
+* In `SINGLE_TABLE` *kein* `@Column(nullable = false)` an Unterklassen-Feldern → sonst lässt sich kein `Workshop` speichern. `@NotNull` verwenden.
+* Unterklassen brauchen einen eigenen Konstruktor mit `super(...)` (`@AllArgsConstructor` kennt nur eigene Felder)
+* `libraryEventRepository.findAll()` liefert `Reading` *und* `Workshop` — jeweils mit richtigem Typ
+* `readingRepository.findAll()` liefert nur Lesungen
+
+== `@MappedSuperclass`
+
+[source,java]
+----
+@MappedSuperclass
+public abstract class Stamped extends AbstractPersistable<Long> {
+    private LocalDateTime createdAt;
+}
+
+@Entity
+public class Notice extends Stamped {
+    private String text;
+}
+----
+
+* Nur Felder erben — *keine* Tabelle, *kein* Repository, keine polymorphen Abfragen
+* `notice` bekommt `id`, `created_at`, `text`
+* `AbstractPersistable` ist selbst eine `@MappedSuperclass`
+
+== Objektgraph testen
+
+[source,java]
+----
+@Test
+void verify_branch_books_and_authors() {
+    Author bachmann = authorRepository.save(new Author("Ingeborg Bachmann"));
+    Branch branch = new Branch("Hauptbücherei", address);
+    Book malina = new Book("9783518365000", "Malina");
+    malina.addAuthor(bachmann);
+    branch.addBook(malina);
+
+    branchRepository.save(branch);           // speichern (Cascade!)
+    entityManager.flush();                   // in die DB schreiben
+    entityManager.clear();                   // Cache leeren — sonst beweist der Test nichts
+
+    Branch reread = branchRepository.findById(branch.getId()).orElseThrow();
+    assertThat(reread.getBooks()).singleElement().satisfies(book -> {
+        assertThat(book.getBranch()).isEqualTo(reread);
+        assertThat(book.getAuthors()).extracting(Author::getName)
+                                     .containsExactly("Ingeborg Bachmann");
+    });
+}
+----
+
+== Übung
+
+[.highlight-box]
+--
+Modelliere eine Kursverwaltung:
+
+* `+Course "1" -- "*" Lesson+` (bidirektional, Lessons gehören zum Kurs → Cascade {plus} orphanRemoval)
+* `+Course "*" -- "*" Student+` über `@JoinTable(name = "enrollments")`
+* `Person` (abstract) mit `Student` und `Teacher` — `SINGLE_TABLE` mit Diskriminator `S`/`T`
+* `+Teacher "1" --> "0..1" Office+` als `@OneToOne`
+
+Teste jede Beziehung in jede Richtung mit `flush`/`clear`.
+--
+
+== Was wir heute gelernt haben
+
+* `@ManyToOne` {plus} `@JoinColumn` {plus} `@ForeignKey`
+* Bidirektional: besitzende Seite vs. `mappedBy`, Hilfsmethoden
+* Cascade und `orphanRemoval`
+* `@OneToOne`, `@ManyToMany` mit `@JoinTable`
+* Vererbung: `SINGLE_TABLE`, `JOINED`, `TABLE_PER_CLASS`, `@MappedSuperclass`
+* Objektgraphen testen: bauen → speichern → flush → clear → lesen

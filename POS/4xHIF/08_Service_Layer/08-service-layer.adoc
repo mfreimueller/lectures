@@ -1,0 +1,371 @@
+= 08 - Service Layer | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Layered Architecture Recap
+
+image::mermaid/layered-architecture.svg[Layered Architecture: Controller, Service, Repository,width=750]
+
+* Jede Schicht hat eine klare Verantwortung
+* Service = die "Brain"-Schicht
+* Repository = nur Speicher, keine Logik
+* Controller = nur HTTP, keine Logik
+
+== Was gehört in den Service?
+
+* Geschäftslogik und Validierung
+* Orchestrierung mehrerer Repositories
+* Transaktionsgrenzen
+* Berechtigungsprüfungen
+* Mapping zwischen Domain und DTOs
+
+[.highlight-box]
+--
+NICHT im Service: HTTP-Details, Serialisierung, UI-Logik
+--
+
+== Ohne Service — Anemic Domain Model
+
+[source,java]
+----
+@RestController
+public class BookController {
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @PostMapping("/books")
+    public Book createBook(@RequestBody Book book) {
+        if (book.getIsbn() == null || book.getIsbn().isBlank()) {
+            throw new IllegalArgumentException("ISBN required");
+        }
+        return bookRepository.save(book);
+    }
+}
+----
+
+Geschäftslogik im Controller = nicht testbar, nicht wiederverwendbar.
+
+== Mit Service
+
+[source,java]
+----
+@Service
+public class BookService {
+
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public Book createBook(CreateBookCommand command) {
+        if (bookRepository.findByIsbn(command.isbn()).isPresent()) {
+            throw new DuplicateIsbnException(command.isbn());
+        }
+        Book book = new Book(command.isbn(), command.title(), command.year());
+        return bookRepository.save(book);
+    }
+}
+----
+
+== @Service — Stereotype
+
+* `@Service` ist ein Spezialfall von `@Component`
+* Wird vom Component-Scanning erkannt
+* Macht semantisch klar: "Hier ist die Business-Logik"
+* Ermöglicht AOP (z.B. @Transactional, @Cacheable)
+
+== Constructor Injection
+
+[source,java]
+----
+@Service
+public class LibraryService {
+
+    // Final = unveränderlich, klar erkennbare Abhängigkeiten
+    private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
+    private final LoanRepository loanRepository;
+
+    // Spring injiziert automatisch über den Konstruktor
+    public LibraryService(BookRepository bookRepository,
+                          MemberRepository memberRepository,
+                          LoanRepository loanRepository) {
+        this.bookRepository = bookRepository;
+        this.memberRepository = memberRepository;
+        this.loanRepository = loanRepository;
+    }
+}
+----
+
+Besser als `@Autowired` auf Feldern — testbar, final, explizit.
+
+== @Transactional — Warum?
+
+[source,java]
+----
+@Service
+public class LibraryService {
+
+    public Loan checkOutBook(Long memberId, Long bookId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        Book book = bookRepository.findById(bookId)
+            .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+
+        if (book.isBorrowed()) {
+            throw new BookAlreadyBorrowedException(bookId);
+        }
+
+        Loan loan = new Loan(book, member, LocalDate.now());
+        loanRepository.save(loan);
+        return loan;
+    }
+}
+----
+
+Was passiert, wenn `loanRepository.save()` fehlschlägt, aber `bookRepository.findById()` schon gelaufen ist?
+
+== @Transactional — Lösung
+
+[source,java]
+----
+@Service @Transactional
+public class LibraryService {
+    @Transactional(readOnly = true)
+    public List<Book> findAllBooks() { ... }
+    public Loan checkOutBook(Long memberId, Long bookId) { }
+}
+----
+
+* Entweder alles oder nichts — ACID
+* Default: rollback für RuntimeExceptions
+* `readOnly = true` optimiert Lese-Transaktionen
+
+== Command Objects
+
+[source,java]
+----
+// Statt vieler Parameter
+public record CreateBookCommand(
+    @NotBlank String isbn,
+    @NotBlank String title,
+    @Min(1900) int year,
+    String authorName
+) {}
+
+// Besser: 1 Parameter-Objekt statt 4+ Einzelparametern
+public Book createBook(CreateBookCommand command) {
+    // ...
+}
+
+// Aufruf
+bookService.createBook(
+    new CreateBookCommand("978-3-16-148410-0", "DDD", 2003, null)
+);
+----
+
+== Command Objects — Vorteile
+
+* Änderungen an Parametern = Änderungen am Record, nicht an der Signatur
+* Validierung direkt im Command möglich (`@NotBlank`, `@Email`, ...)
+* Bessere Lesbarkeit beim Aufruf
+* Leicht erweiterbar (neue Felder = neues Feld im Record)
+
+== Constructor Injection mit Lombok
+
+[source,java]
+----
+@Service
+@RequiredArgsConstructor          // Konstruktor für alle final-Felder
+@Transactional(readOnly = true)
+public class LibraryService {
+    private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
+}
+----
+
+* Gleicher Effekt wie der handgeschriebene Konstruktor
+* Bei *einem* Konstruktor braucht Spring kein `@Autowired`
+* Fehlt eine Bean: `Parameter 0 of constructor in LibraryService required a bean of type 'BookRepository' that could not be found` → Package/Scan prüfen
+
+== DTOs als Records
+
+[source,java]
+----
+public record PersonDto(
+        String firstName,
+        @NotNull String lastName,
+        @NotNull LocalDate dayOfBirth) {
+
+    public static PersonDto from(Person person) {          // Entity → DTO
+        return new PersonDto(person.getFirstName(),
+                             person.getLastName(),
+                             person.getDayOfBirth());
+    }
+}
+----
+
+* Der Service gibt *DTOs* hinaus, keine Entities
+* Mapping-Methode direkt im Record (oder MapStruct, siehe später)
+* Hereinkommende Daten: *Commands* (`CreatePersonCommand`), hinausgehende: *DTOs*
+
+== Service mit Paging
+
+[source,java]
+----
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class PersonService {
+    private final PersonRepository personRepository;
+
+    public Page<PersonDto> people(Pageable pageable) {
+        return personRepository.findAll(pageable)      // Repository liefert Page<Person>
+                               .map(PersonDto::from);  // Page.map → Page<PersonDto>
+    }
+
+    public PersonDto person(Long id) {
+        return personRepository.findById(id)
+                .map(PersonDto::from)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+    }
+}
+----
+
+== Eigene Exceptions
+
+[source,java]
+----
+public class PersonNotFoundException extends RuntimeException {
+    public PersonNotFoundException(Long id) {
+        super("Person %d not found".formatted(id));
+    }
+}
+
+public class DuplicateIsbnException extends RuntimeException {
+    public DuplicateIsbnException(String isbn) {
+        super("Book with ISBN %s already exists".formatted(isbn));
+    }
+}
+----
+
+* Fachliche Fehler → eigene `RuntimeException` mit sprechender Nachricht
+* Der Controller-Advice übersetzt sie später in HTTP-Statuscodes (404, 409, ...)
+* Ungültige Argumente: `IllegalArgumentException`, `Objects.requireNonNull`
+
+== Geschäftsregeln als eigene Methoden
+
+[source,java]
+----
+// "Ausleihen unter 5 Minuten werden verworfen, ab 85 % Akku wird voll abgerechnet"
+static boolean isRelevant(Session s) {
+    return s.duration().compareTo(Duration.ofMinutes(5)) >= 0;
+}
+
+static long priceInCents(Session s) {
+    return s.chargeLevel() >= 85 ? FULL_PRICE_CENTS
+                                 : s.chargeLevel() * FULL_PRICE_CENTS / 100;
+}
+
+public long revenue(List<Session> sessions) {
+    return sessions.stream()
+            .filter(ChargingService::isRelevant)
+            .mapToLong(ChargingService::priceInCents)
+            .sum();
+}
+----
+
+* Jede Regel aus der Angabe = eine benannte Methode → einzeln testbar
+* Geld in *Cent* (`long`) oder `BigDecimal` — nie `double`
+
+== Ergebnisse zusammenfassen
+
+[source,java]
+----
+public record CategoryStats(Category category, long count, long totalCents) {}
+
+public Map<Category, CategoryStats> statistics(List<Session> sessions) {
+    Map<Category, CategoryStats> result = new EnumMap<>(Category.class);
+    for (Category c : Category.values()) {                 // ALLE Schlüssel, auch leere
+        result.put(c, new CategoryStats(c, 0, 0));
+    }
+    sessions.stream()
+        .collect(Collectors.groupingBy(Session::category))
+        .forEach((c, list) -> result.put(c, new CategoryStats(c, list.size(),
+                list.stream().mapToLong(ChargingService::priceInCents).sum())));
+    return result;
+}
+----
+
+* Ergebnis-Typen als Records, Schlüssel als Enum
+* `EnumMap` mit *allen* Schlüsseln — fehlende Kategorien sind sonst nicht im Ergebnis
+
+== @Transactional — Stolpersteine
+
+* Wirkt nur bei Aufrufen *von außen* über den Spring-Proxy
+** `this.otherMethod()` innerhalb der Klasse → *keine* neue Transaktion
+* Rollback standardmäßig nur bei `RuntimeException` (und `Error`)
+** Checked Exceptions → Commit! Sonst `@Transactional(rollbackFor = Exception.class)`
+* Nur auf `public` Methoden zuverlässig
+* Innerhalb der Transaktion werden geänderte Entities *automatisch* gespeichert (Dirty Checking) — kein `save` nötig
+
+[source,java]
+----
+@Transactional
+public void rename(Long id, String newName) {
+    Person p = personRepository.findById(id).orElseThrow();
+    p.setName(newName);        // UPDATE beim Commit
+}
+----
+
+== Datenzugriff als Interface
+
+[source,java]
+----
+// Die Angabe liefert nur ein Interface — die Implementierung fehlt
+public interface ResultRepository {
+    List<Result> findByYear(int year);
+}
+
+@Service
+@RequiredArgsConstructor
+public class BadgeService {
+    private final ResultRepository resultRepository;
+    ...
+}
+----
+
+* Der Service hängt nur am *Interface*
+* Im Test: Mock (Mockito) oder handgeschriebener Stub mit einer `Map`
+* Gleiches Prinzip wie bei Spring Data Repositories
+
+== Projekt: Service Layer
+
+[.highlight-box]
+--
+. Erstelle `LibraryService` mit Constructor Injection
+. Implementiere CRUD-Methoden für Book, Member, Loan
+. Füge `@Transactional` hinzu
+. Erstelle Command-Objekte für komplexe Operationen
+--
+
+== What We Learned Today
+
+* Service Layer = Geschäftslogik-Schicht
+* @Service {plus} Constructor Injection
+* @Transactional für zusammengesetzte Operationen
+* Command Objects für komplexe Parameter
+* DTOs als Records, `Page.map`, eigene Exceptions
+* Geschäftsregeln als Methoden, Ergebnisse mit `EnumMap`/`groupingBy`
+* Stolpersteine von `@Transactional`

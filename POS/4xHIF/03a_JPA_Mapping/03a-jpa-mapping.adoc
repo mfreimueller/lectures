@@ -1,0 +1,415 @@
+= 03a - JPA Mapping: Entities, Enums, Value Objects | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Vom UML zum Code
+
+[cols="1,2,2",options="header"]
+|===
+|Stereotyp im UML |Bedeutung |JPA
+|`«Entity»` |hat Identität, eigene Tabelle |`@Entity` {plus} `@Id`
+|`«Value Object»` |keine Identität, mehrere Werte |`@Embeddable` / `@Embedded`
+|`«Rich Type»` |eigener Typ mit Regeln, *eine* Spalte |`AttributeConverter`
+|`«Enumeration»` |feste Menge von Werten |`AttributeConverter` (oder `@Enumerated`)
+|`{nn}` |not null |`@NotNull`
+|`[*]` |Liste |Beziehung oder `@ElementCollection`
+|===
+
+Technische Attribute wie `id` stehen meist *nicht* im Klassendiagramm — du ergänzt sie.
+
+== Das Minimum: `@Entity` und `@Id`
+
+[source,java]
+----
+@Entity
+@Table(name = "users")                 // optional, aber empfohlen
+public class User {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    protected User() {}                // für JPA
+    public User(String firstName, String lastName) { ... }   // fachlich
+}
+----
+
+`users` statt `user`: reserviertes Wort. Tabellennamen klein und im Plural.
+
+== Varianten für die Id
+
+[source,java]
+----
+// 1. Direkt definiert
+private @Id @GeneratedValue Long id;
+
+// 2. Spring Data: AbstractPersistable liefert id, equals, hashCode, isNew()
+@Entity
+public class User extends AbstractPersistable<Long> {
+    private String firstName;
+}
+
+----
+
+== Fachliche Id: `@EmbeddedId`
+
+[source,java]
+----
+@Entity
+public class Room {
+    @EmbeddedId
+    private RoomId id;                 // muss die Anwendung setzen!
+}
+
+@Embeddable
+public record RoomId(String building, String number) implements Serializable {}
+----
+
+[.highlight-box]
+--
+`@GeneratedValue` funktioniert *nicht* innerhalb einer `@EmbeddedId` (Fehler im Cheat Sheet, S. 9).
+--
+
+== GenerationType
+
+[cols="1,3",options="header"]
+|===
+|Strategie |Verhalten
+|`AUTO` (Default) |Hibernate wählt — meist `SEQUENCE`
+|`SEQUENCE` |eigene DB-Sequence, Ids können vorab reserviert werden (Batching)
+|`IDENTITY` |Auto-Increment-Spalte, Id erst nach `INSERT` bekannt
+|`UUID` |`UUID`-Id, wird in Java erzeugt
+|===
+
+* Mit `SEQUENCE`/`AUTO` wird bei `save` *noch nicht* eingefügt — erst beim *Flush*
+* Wichtig für Tests: Constraint-Verletzungen sieht man erst mit `saveAndFlush`
+
+== Regeln für Entity-Klassen
+
+* Konstruktor ohne Parameter, mindestens `protected` (JPA erzeugt Objekte damit)
+* Fachlicher Konstruktor *nur mit den Attributen*, nicht mit Beziehungen
+* Kein `record` — Hibernate muss die Id nach dem Speichern setzen
+* Nicht `final` (Klasse und Felder) — Hibernate braucht Proxies für Lazy Loading
+* Collections beim Feld initialisieren und *gekapselt* herausgeben
+* Kein Lombok `@Data` — ersetzt `equals`/`hashCode` über *alle* Felder
+
+[.highlight-box]
+--
+Fehlt der No-Args-Konstruktor, merkst du es erst beim *Lesen*: `InstantiationException: No default constructor for entity`.
+--
+
+== Entity mit Lombok
+
+[source,java]
+----
+@Entity
+@Table(name = "books")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Book extends AbstractPersistable<Long> {
+    @NotNull private String isbn;       // Reihenfolge wie im Diagramm!
+    @NotNull private String title;
+    private BigDecimal price;
+    private LocalDate publishedOn;
+}
+----
+
+* `@AllArgsConstructor` nimmt die Felder *in Code-Reihenfolge* → `new Book(isbn, title, price, publishedOn)`
+* Id gehört nicht dazu (Feld der Oberklasse)
+* Sobald Beziehungen dazukommen: Konstruktor selbst schreiben (nur Attribute)
+
+== Basisattribute: `@Column`
+
+[source,java]
+----
+@Column(length = 13, nullable = false, unique = true)
+private String isbn;
+
+@Column(length = 120, nullable = false)
+private String title;
+
+@Column(precision = 6, scale = 2)       // max. 9999.99
+private BigDecimal price;
+
+----
+
+[cols="1,2",options="header"]
+|===
+|Attribut |Spalte
+|`length = 120` |`varchar(120)` (Default: 255)
+|`nullable = false` |`not null`
+|`unique = true` |`unique`
+|`precision = 6, scale = 2` |`numeric(6,2)`
+|`name = "build_year"` |eigener Spaltenname
+|===
+
+`@Transient` am Feld → keine Spalte.
+
+== Bean Validation am Entity
+
+[source,java]
+----
+@NotNull                         private String firstName;  // not null
+@NotBlank                        private String lastName;   // not null + kein "" / "  "
+@Size(max = 30)                  private String nickName;   // varchar(30)
+@NotNull @Size(min = 2, max = 20) private String city;     // varchar(20) not null
+----
+
+[cols="1,1,2",options="header"]
+|===
+|Verstoß gegen |gemeldet von |Exception
+|`@NotNull`, `@Size`, ... |Bean Validation, vor dem SQL |`ConstraintViolationException`
+|`nullable`, `unique`, ... |Datenbank beim Insert |`DataIntegrityViolationException`
+|===
+
+Primitive (`int`, `boolean`) sind *immer* `not null` → ohne `{nn}` im Diagramm den Wrapper (`Integer`) nehmen.
+
+== Reservierte Wörter
+
+Feldnamen, die SQL-Schlüsselwörter sind, lassen das `create table` scheitern:
+
+`year`, `month`, `day`, `from`, `to`, `order`, `group`, `user`, `value`, `key`, `end`, `row`, `limit`, ...
+
+[source,java]
+----
+@NotNull
+@Column(name = "build_year")
+private Integer year;            // Feldname bleibt wie im Diagramm
+
+@Column(name = "valid_from")
+private LocalDateTime from;
+----
+
+== Enums: das Ordinal-Problem
+
+[source,java]
+----
+public enum Genre { FICTION, NON_FICTION, COMIC }
+
+private Genre genre;     // ohne Annotation → gespeichert wird 0, 1, 2
+----
+
+* Fügt jemand `BIOGRAPHY` vorne ein, sind alle gespeicherten Daten falsch
+* In der Tabelle ist `2` nicht lesbar
+
+[source,java]
+----
+@Enumerated(EnumType.STRING)     // speichert 'FICTION' — besser
+private Genre genre;
+----
+
+[.highlight-box]
+--
+Cheat Sheet: `@Enumerated(EnumType.STRING)` „loses some points" — die volle Punktzahl gibt es mit einem *null-sicheren Converter*.
+--
+
+== Enums: Converter mit Codes
+
+[source,java]
+----
+@Getter
+@AllArgsConstructor
+public enum Genre {
+    FICTION("F"), NON_FICTION("N"), COMIC("C");
+    private final String code;
+
+    public static Genre fromCode(String code) {
+        return Arrays.stream(values()).filter(g -> g.code.equals(code)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("unknown code: " + code));
+    }
+}
+----
+
+Im UML steht der Code in Klammern: `FICTION("F")`.
+
+== Enums: der Converter
+
+[source,java]
+----
+@Converter(autoApply = true)
+public class GenreConverter implements AttributeConverter<Genre, String> {
+    @Override
+    public String convertToDatabaseColumn(Genre genre) {
+        return genre == null ? null : genre.getCode();
+    }
+    @Override
+    public Genre convertToEntityAttribute(String code) {
+        return code == null ? null : Genre.fromCode(code);
+    }
+}
+----
+
+* `AttributeConverter<Java-Typ, DB-Typ>`
+* `autoApply = true` → gilt für *jedes* `Genre`-Feld; sonst `@Convert(converter = GenreConverter.class)` am Feld
+* *Null-sicher* in beide Richtungen ist Pflicht
+
+== Value Objects: `@Embeddable` / `@Embedded`
+
+[source,java]
+----
+@Embeddable
+public record Address(
+        @NotNull @Size(max = 64) String street,
+        @NotNull @Size(min = 4, max = 5) String zip,
+        @NotNull @Size(max = 64) String city) {}
+
+@Entity
+public class Branch extends AbstractPersistable<Long> {
+    private String name;
+
+    @Valid                 // Validierung (und @Size → Spaltenlänge) ins VO
+    @NotNull               // falls address {nn}
+    @Embedded
+    private Address address;
+}
+----
+
+* *Keine* Id, *kein* Repository, *keine* eigene Tabelle
+* Spalten `street`, `zip`, `city` landen in `branch`
+* Record ideal: `equals`/`hashCode` über alle Werte
+
+== Dasselbe Value Object zweimal
+
+[source,java]
+----
+@Embedded
+@EmbeddedColumnNaming("home_%s")           // Hibernate: home_street, home_zip, ...
+private Address homeAddress;
+
+@Embedded
+@AttributeOverrides({                       // Standard-JPA: jede Spalte einzeln
+    @AttributeOverride(name = "street", column = @Column(name = "billing_street")),
+    @AttributeOverride(name = "zip",    column = @Column(name = "billing_zip")),
+    @AttributeOverride(name = "city",   column = @Column(name = "billing_city"))
+})
+private Address billingAddress;
+----
+
+* Ohne Umbenennung: `MappingException: Column 'street' is duplicated`
+* `%s` ist Pflicht (fehlt im Cheat Sheet!) — `org.hibernate.annotations.EmbeddedColumnNaming`
+
+== Rich Types: ein Typ, eine Spalte
+
+[source,java]
+----
+public record Isbn(String value) {
+    public Isbn {
+        Objects.requireNonNull(value, "value");
+        if (!value.matches("\\d{13}"))
+            throw new IllegalArgumentException("ISBN must have 13 digits: " + value);
+    }
+}
+
+@Converter(autoApply = true)
+public class IsbnConverter implements AttributeConverter<Isbn, String> {
+    public String convertToDatabaseColumn(Isbn isbn) {
+        return isbn == null ? null : isbn.value();
+    }
+    public Isbn convertToEntityAttribute(String value) {
+        return value == null ? null : new Isbn(value);
+    }
+}
+----
+
+[source,java]
+----
+@NotNull @Column(length = 13, unique = true)
+private Isbn isbn;                // isbn varchar(13) not null unique
+----
+
+== Rich Type mit mehreren Teilen
+
+[source,java]
+----
+public record RoomName(String building, String floor, String roomNumber) {
+    public RoomName { /* Regeln für jeden Teil prüfen */ }
+
+    public String shortName() { return building + floor + roomNumber; }   // "B307"
+
+    public static RoomName fromShortName(String s) {
+        if (s == null || s.length() != 4) throw new IllegalArgumentException(s);
+        return new RoomName(s.substring(0, 1), s.substring(1, 2), s.substring(2));
+    }
+}
+----
+
+Converter: `shortName()` → Datenbank, `fromShortName(...)` → Java.
+
+[.highlight-box]
+--
+Rich Type = *eine* Spalte (Converter). Mit `@Embeddable` wären es drei Spalten — das wäre ein Value Object.
+--
+
+== `@ElementCollection` — Listen von Werten
+
+[source,java]
+----
+@ElementCollection
+@CollectionTable(name = "book_keywords",
+                 joinColumns = @JoinColumn(name = "book_id"))
+@Column(name = "keyword", length = 30)
+private Set<String> keywords = new HashSet<>();
+
+@ElementCollection
+@CollectionTable(name = "opening_hours",
+                 joinColumns = @JoinColumn(name = "branch_id"))
+private List<OpeningHours> openingHours = new ArrayList<>();   // @Embeddable
+----
+
+* Eigene Tabelle, aber *kein* Entity, *kein* Repository, *keine* Id
+* Elemente werden immer mit dem Besitzer gespeichert und gelöscht
+* Bei Änderung einer `List` löscht Hibernate *alle* Zeilen und schreibt neu
+* Brauchen die Elemente Identität → `@OneToMany` zu einem Entity
+
+== Spring Data Repositories
+
+[source,java]
+----
+public interface BookRepository extends JpaRepository<Book, Long> {}
+----
+
+[cols="1,2",options="header"]
+|===
+|Interface |Bietet
+|`CrudRepository<T, ID>` |`save`, `findById`, `findAll` (`Iterable`!), `delete`, `count`, ...
+|`ListCrudRepository<T, ID>` |wie oben, aber `List` statt `Iterable`
+|`JpaRepository<T, ID>` |{plus} `flush`, `saveAndFlush`, Paging & Sorting, `List`-Rückgaben
+|===
+
+* Value Objects, Rich Types, Enums bekommen *kein* Repository
+* `JpaRepository` ist meist die bequemste Wahl
+
+== Übung: Matura-Stil
+
+[.highlight-box]
+--
+Setze folgendes Modell um und schreibe je einen Lifecycle-Test:
+
+* `«Entity» Member`: `name : String {nn}`, `email : Email {nn}`, `homeAddress : Address {nn}`, `billingAddress : Address`, `level : MembershipLevel {nn}`, `interests : Set<String>`
+* `«Rich Type» Email`: ein Wert, muss `@` enthalten
+* `«Value Object» Address`: `street`, `zip`, `city` (alle `{nn}`)
+* `«Enumeration» MembershipLevel`: `BASIC("B")`, `PREMIUM("P")`, `VIP("V")`
+--
+
+== Was wir heute gelernt haben
+
+* UML-Stereotypen → JPA-Annotationen
+* Id-Varianten: `@GeneratedValue`, `AbstractPersistable`, `@EmbeddedId`
+* `@Column`, Bean Validation, reservierte Wörter
+* Enums: Ordinal-Problem, null-sicherer `AttributeConverter`
+* Value Objects mit `@Embeddable`, `@EmbeddedColumnNaming`, `@AttributeOverrides`
+* Rich Types mit Converter, `@ElementCollection`

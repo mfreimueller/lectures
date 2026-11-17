@@ -1,0 +1,370 @@
+= 04a - JUnit Jupiter & AssertJ für Fortgeschrittene | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Rückblick 3. Klasse
+
+* Arrange — Act — Assert
+* `@Test`, `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`
+* AssertJ: `assertThat(...).isEqualTo(...)`
+* `@ParameterizedTest` mit `@ValueSource`, `@CsvSource`, `@MethodSource`
+
+Heute: alles, was das Cheat Sheet darüber hinaus auflistet.
+
+== Achtung: die richtigen Imports
+
+[source,java]
+----
+import org.junit.jupiter.api.Test;              // RICHTIG — JUnit Jupiter
+import org.junit.Test;                          // FALSCH — JUnit 4!
+
+import static org.assertj.core.api.Assertions.assertThat;      // AssertJ
+import static org.junit.jupiter.api.Assertions.assertEquals;   // JUnit-Assertions
+----
+
+[.highlight-box]
+--
+Mit `org.junit.Test` läuft der Test ohne Spring-/Mockito-Extension: `@Autowired`/`@Mock`-Felder bleiben `null` → `NullPointerException`.
+--
+
+Regel: alle Test-Annotationen aus `org.junit.jupiter.api` bzw. `org.junit.jupiter.params`.
+
+== Tests lesbar machen
+
+[source,java]
+----
+@DisplayName("Ausleihe")
+class LoanTest {
+
+    @Nested
+    @DisplayName("wenn das Buch verfügbar ist")
+    class BookAvailable {
+        @Test
+        @DisplayName("wird die Ausleihe angelegt")
+        void creates_loan() { ... }
+    }
+
+    @Nested
+    class BookBorrowed {
+        @Test @Disabled("Mahnwesen fehlt noch")
+        void sends_reminder() { ... }
+    }
+}
+----
+
+`@Nested` = innere Klasse gruppiert Tests; `@BeforeEach` der äußeren Klasse läuft auch für innere Tests.
+
+== AssertJ: Grundlagen auffrischen
+
+[source,java]
+----
+assertThat(book.getTitle()).isEqualTo("Malina");
+assertThat(book.getTitle()).startsWith("Mal").hasSize(6);
+assertThat(book.getId()).isNotNull();
+assertThat(loan.isOverdue()).isTrue();
+assertThat(price).isEqualByComparingTo("12.40");        // BigDecimal: Scale egal
+assertThat(average).isCloseTo(2.5, within(0.01));       // double
+assertThat(dueDate).isAfter(LocalDate.of(2026, 1, 1));
+----
+
+* Immer `assertThat(actual)` — der *tatsächliche* Wert kommt hinein
+* `BigDecimal`: `isEqualTo` vergleicht auch die Scale (`12.4` ≠ `12.40`)
+
+== AssertJ: Collections
+
+[source,java]
+----
+assertThat(books).hasSize(3);
+assertThat(books).isEmpty();
+assertThat(titles).contains("Malina");
+assertThat(titles).containsExactly("Herzzeit", "Malina");          // Reihenfolge!
+assertThat(titles).containsExactlyInAnyOrder("Malina", "Herzzeit");
+assertThat(titles).doesNotContain("Ulysses");
+
+assertThat(books)
+    .extracting(Book::getTitle)                                     // Feld herausziehen
+    .containsExactly("Herzzeit", "Malina");
+
+assertThat(books)
+    .extracting(Book::getTitle, Book::getPrice)                     // mehrere Felder
+    .containsExactly(tuple("Herzzeit", new BigDecimal("28.00")),
+                     tuple("Malina",   new BigDecimal("12.40")));
+
+assertThat(books).filteredOn(b -> b.getPrice().signum() > 0).hasSize(2);
+----
+
+== AssertJ: Assertions verketten
+
+[source,java]
+----
+// mehrere Prüfungen auf einem Objekt
+assertThat(loan).satisfies(l -> {
+    assertThat(l.getMember().getName()).isEqualTo("Alice");
+    assertThat(l.getDueDate()).isEqualTo(LocalDate.of(2026, 12, 1));
+});
+
+// genau ein Element und dieses prüfen
+assertThat(branch.getBooks()).singleElement()
+    .satisfies(b -> assertThat(b.getTitle()).isEqualTo("Malina"));
+
+// alle Elemente
+assertThat(books).allSatisfy(b -> assertThat(b.getBranch()).isNotNull());
+
+// Optional: vorhanden UND Inhalt prüfen
+assertThat(bookRepository.findByIsbn("9783518365000"))
+    .hasValueSatisfying(b -> assertThat(b.getTitle()).isEqualTo("Malina"));
+----
+
+== Exceptions testen
+
+[source,java]
+----
+// AssertJ
+assertThatThrownBy(() -> service.checkOut(memberId, bookId))
+    .isInstanceOf(BookAlreadyBorrowedException.class)
+    .hasMessageContaining("already borrowed");
+
+assertThatExceptionOfType(IllegalArgumentException.class)
+    .isThrownBy(() -> new Isbn("123"))
+    .withMessageContaining("13 digits");
+
+assertThatNoException().isThrownBy(() -> new Isbn("9783161484100"));
+
+// JUnit
+var ex = assertThrows(BookNotFoundException.class, () -> service.findById(99L));
+assertEquals("Book 99 not found", ex.getMessage());
+----
+
+== Parametrisierte Tests: Überblick
+
+[cols="1,3",options="header"]
+|===
+|Quelle |Liefert
+|`@ValueSource` |einfache Werte (`strings`, `ints`, `longs`, ...)
+|`@NullSource` / `@EmptySource` |`null` bzw. `""`, leere Liste, ...
+|`@NullAndEmptySource` |beides
+|`@EnumSource` |Werte eines Enums (alle oder gefiltert)
+|`@CsvSource` / `@CsvFileSource` |Zeilen mit mehreren Werten (inline / aus Datei)
+|`@MethodSource` |`Stream<Arguments>` aus einer statischen Methode
+|`@FieldSource` |aus einem statischen Feld
+|`@ArgumentsSource` |eigene `ArgumentsProvider`-Klasse
+|===
+
+== `@ValueSource`, `@NullSource`, `@EnumSource`
+
+[source,java]
+----
+@ParameterizedTest
+@NullAndEmptySource
+@ValueSource(strings = {" ", "\t", "abc"})
+void invalid_isbn_is_rejected(String input) {
+    assertThatThrownBy(() -> new Isbn(input))
+        .isInstanceOfAny(IllegalArgumentException.class, NullPointerException.class);
+}
+
+@ParameterizedTest
+@EnumSource(Genre.class)                               // alle Werte
+void converter_roundtrip(Genre genre) {
+    var converter = new GenreConverter();
+    assertThat(converter.convertToEntityAttribute(
+            converter.convertToDatabaseColumn(genre))).isEqualTo(genre);
+}
+
+@ParameterizedTest
+@EnumSource(value = Genre.class, names = {"COMIC"}, mode = EnumSource.Mode.EXCLUDE)
+void non_comics_need_isbn(Genre genre) { ... }
+----
+
+== `@CsvSource` — Fall-Tabellen
+
+[source,java]
+----
+@ParameterizedTest(name = "{0} Tage zu spät → {1} Euro")
+@CsvSource(textBlock = """
+        # daysLate, expectedFee
+          0,        0.00
+          1,        0.50
+         19,        9.50
+        # ab 20 Tagen gedeckelt
+         20,       10.00
+         30,       10.00
+        """)
+void late_fee(int daysLate, BigDecimal expectedFee) {
+    assertThat(feeCalculator.fee(daysLate)).isEqualByComparingTo(expectedFee);
+}
+----
+
+* `name = ...` mit `{0}`, `{1}` → lesbare Testnamen im Report
+* Ideal, um die Fall-Tabelle einer Angabe 1:1 abzubilden — inkl. Grenzwerten
+* `@CsvFileSource(resources = "/fees.csv", numLinesToSkip = 1)` liest aus Datei
+
+== `@MethodSource` & `@FieldSource`
+
+[source,java]
+----
+@ParameterizedTest
+@MethodSource("mappingData")
+void can_convert_to_db_value_and_back(String arg1, Integer arg2) { ... }
+
+private static Stream<Arguments> mappingData() {
+    return Stream.of(
+        Arguments.of("Hello", 42),
+        Arguments.of("Another value", 12));
+}
+----
+
+`@MethodSource` ohne Namen sucht eine Methode mit *gleichem Namen* wie der Test.
+
+== `@FieldSource` — Testdaten aus einem Feld
+
+[source,java]
+----
+// komplexe Objekte als Parameter
+static List<Book> invalidBooks = List.of(
+    new Book(null, "Titel"),
+    new Book("9783161484100", ""));
+
+@ParameterizedTest
+@FieldSource("invalidBooks")
+void invalid_books_are_rejected(Book book) {
+    assertThat(validator.validate(book)).isNotEmpty();
+}
+----
+
+Das Feld muss `static` sein (außer mit `@TestInstance(PER_CLASS)`).
+
+== `@ParameterizedClass` — ganze Klasse parametrisieren
+
+[source,java]
+----
+@ParameterizedClass
+@ValueSource(strings = {"FICTION", "COMIC"})
+class GenreDependentTest {
+
+    @Parameter
+    String genreName;                  // wird pro Durchlauf gesetzt
+
+    @Test
+    void book_can_be_created() { ... }
+
+    @Test
+    void book_can_be_found_by_genre() { ... }
+}
+----
+
+* Jeder Test der Klasse läuft *für jeden Parameter* einmal
+* Werte per `@Parameter`-Feld (oder Konstruktor) — `org.junit.jupiter.params.Parameter`
+* Alle Quellen (`@CsvSource`, `@MethodSource`, ...) funktionieren auch hier
+
+== Dynamische Tests: `@TestFactory`
+
+[source,java]
+----
+@TestFactory
+Stream<DynamicTest> every_valid_room_name_roundtrips() {
+    return Stream.of("A101", "BE07", "D512")
+        .map(name -> DynamicTest.dynamicTest(
+            "roundtrip " + name,
+            () -> assertThat(RoomName.fromShortName(name).shortName()).isEqualTo(name)));
+}
+----
+
+* Tests werden *zur Laufzeit* erzeugt
+* `@BeforeEach`/`@AfterEach` laufen *einmal* für die Factory, nicht pro dynamischem Test
+* Meist reicht `@ParameterizedTest` — `@TestFactory` für generierte Fälle
+
+== Testreihenfolge
+
+[source,java]
+----
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class WorkflowTest {
+    @Test @Order(1) void create() { ... }
+    @Test @Order(2) void update() { ... }
+    @Test @Order(3) void delete() { ... }
+}
+
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+class OuterTest {
+    @Nested @Order(1) class First { ... }
+    @Nested @Order(2) class Second { ... }
+}
+----
+
+[.highlight-box]
+--
+Gute Tests sind *unabhängig* (FIRST: Isolated). Reihenfolge nur, wenn es fachlich unvermeidbar ist.
+--
+
+== Testdaten: Fixtures & Fabrikmethoden
+
+[source,java]
+----
+class TestFixtures {
+    static final Address WIEN = new Address("Spengergasse 20", "1050", "Wien");
+
+    static Book book(String isbn, String title) {
+        return new Book(isbn, title, new BigDecimal("19.90"), LocalDate.of(2024, 5, 1));
+    }
+
+    static Member member(String name) {
+        return new Member(name, new Email(name.toLowerCase() + "@example.com"), WIEN);
+    }
+}
+
+// im Test
+import static spengergasse.TestFixtures.*;
+var b = book("9783161484100", "Dune");
+----
+
+* Jeder Test zeigt nur, was für *ihn* relevant ist
+* Ändert sich ein Konstruktor, ändert sich nur eine Stelle
+
+== Bean Validation testen
+
+[source,java]
+----
+@SpringBootTest   // oder: Validation.buildDefaultValidatorFactory().getValidator()
+class MemberValidationTest {
+
+    private @Autowired Validator validator;   // jakarta.validation.Validator
+
+    @Test
+    void blank_name_is_rejected() {
+        var member = new Member(" ", new Email("a@b.at"), WIEN);
+
+        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+
+        assertThat(violations)
+            .extracting(v -> v.getPropertyPath().toString())
+            .containsExactly("name");
+    }
+}
+----
+
+== Übung
+
+[.highlight-box]
+--
+. Schreibe für `RoomName` einen `@ParameterizedTest` mit gültigen und einen mit ungültigen Werten (inkl. `null` und `""`)
+. Bilde die Gebührentabelle einer Bibliothek mit `@CsvSource` ab — inklusive aller Grenzwerte
+. Teste den `GenreConverter` mit `@EnumSource` *und* mit `null` in beide Richtungen
+. Strukturiere die Tests für `LoanService` mit `@Nested` und `@DisplayName`
+--
+
+== Was wir heute gelernt haben
+
+* Richtige Imports: `org.junit.jupiter.api`
+* `@DisplayName`, `@Nested`, `@Disabled`
+* AssertJ: `extracting`, `tuple`, `satisfies`, `singleElement`, `hasValueSatisfying`
+* Exceptions mit `assertThatThrownBy`
+* Alle Parameterquellen, `@ParameterizedClass`, `@TestFactory`
+* Testreihenfolge, Fixtures, Validierung testen

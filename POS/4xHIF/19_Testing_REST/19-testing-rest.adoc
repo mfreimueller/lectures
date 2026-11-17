@@ -1,0 +1,256 @@
+= 19 - Testing REST APIs | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Testing-Strategien
+
+* *Unit-Tests* — Service-Layer (mit Mockito)
+* *Slice-Tests* — Nur ein Teil (z.B. Controller mit @WebMvcTest)
+* *Integrationstests* — Ganze Applikation (@SpringBootTest)
+
+Für REST APIs: @WebMvcTest {plus} @SpringBootTest kombinieren
+
+== @WebMvcTest — Controller Slice
+
+Die Imports (Spring Boot 4):
+
+[source,java]
+----
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import tools.jackson.databind.ObjectMapper;                     // Jackson 3!
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.*;                          // hasSize, endsWith, ...
+----
+
+== @WebMvcTest — der Test
+
+[source,java]
+----
+@WebMvcTest(BookController.class)
+class BookControllerTest {
+    private @Autowired MockMvc mockMvc;
+    private @Autowired ObjectMapper objectMapper;
+    private @MockitoBean BookService bookService;              // NICHT @MockBean / @Mock
+
+    @Test
+    void getAllBooks_shouldReturn200() throws Exception {
+        when(bookService.getAll()).thenReturn(List.of(CLEAN_CODE));
+
+        mockMvc.perform(get("/api/books"))
+            .andDo(print())                                     // Request/Response ins Log
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].title").value("Clean Code"));
+    }
+}
+----
+
+* Lädt nur Controller, Advices, Jackson, Validierung — der Service ist ein Mock
+* `@MockBean` gibt es in Spring Boot 4 nicht mehr; `@Mock` kennt Spring nicht → Kontext startet nicht
+
+== JSON-Path Assertions
+
+[source,java]
+----
+mockMvc.perform(get("/api/books/1"))
+    .andExpect(status().isOk())
+    .andExpect(jsonPath("$.id").value(1))
+    .andExpect(jsonPath("$.title").value("Clean Code"))
+    .andExpect(jsonPath("$.author").isString())
+    .andExpect(jsonPath("$.author").value("Robert C. Martin"))
+    .andExpect(jsonPath("$.publicationYear").value(2008));
+
+mockMvc.perform(get("/api/books"))
+    .andExpect(jsonPath("$.content").isArray())
+    .andExpect(jsonPath("$.content.length()").value(3))
+    .andExpect(jsonPath("$.content[0].title").value("Clean Code"))
+    .andExpect(jsonPath("$.totalElements").value(42));
+----
+
+== POST mit JSON-Body
+
+[source,java]
+----
+@Test
+void create_returns_201_with_location() throws Exception {
+    var cmd = new CreateBookCommand("9783161484100", "Clean Code", 2008);
+    when(bookService.create(any(CreateBookCommand.class)))
+        .thenReturn(new BookDto(42L, "9783161484100", "Clean Code", 2008));
+
+    mockMvc.perform(post("/api/books")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cmd)))
+        .andExpect(status().isCreated())
+        .andExpect(header().string("Location", endsWith("/api/books/42")))
+        .andExpect(jsonPath("$.id").value(42));
+
+    verify(bookService).create(cmd);       // Record-equals: genau dieses Command kam an
+}
+----
+
+== Fehlerfälle testen
+
+[source,java]
+----
+@Test
+void create_with_invalid_body_returns_400() throws Exception {
+    var cmd = new CreateBookCommand("", "Clean Code", 2008);        // ISBN leer
+
+    mockMvc.perform(post("/api/books")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cmd)))
+        .andExpect(status().isBadRequest());
+
+    verifyNoInteractions(bookService);                              // Service nie erreicht
+}
+----
+
+== Fehlerfälle: 404 und void-Methoden
+
+[source,java]
+----
+@Test
+void get_unknown_book_returns_404_problem_detail() throws Exception {
+    when(bookService.getById(99L)).thenThrow(new BookNotFoundException(99L));
+
+    mockMvc.perform(get("/api/books/99"))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+        .andExpect(jsonPath("$.detail").value("Book 99 not found"));
+}
+
+@Test
+void delete_unknown_book_returns_404() throws Exception {
+    doThrow(new BookNotFoundException(99L)).when(bookService).delete(99L);   // void!
+
+    mockMvc.perform(delete("/api/books/99")).andExpect(status().isNotFound());
+}
+----
+
+`when(...).thenThrow(...)` geht bei `void` nicht → `doThrow(...).when(mock).methode(...)`.
+
+== Teststrategie nach Beurteilung
+
+. *Good Cases* — jeder Endpoint mit gültigen Daten: Status, Body, Header
+. *Edge Cases* — leere Liste, optionale Parameter fehlen, erste/letzte Seite
+. *Exception Cases* — `400` (Validierung, kaputtes JSON), `404`, `409`
+
+[cols="1,1",options="header"]
+|===
+|Prüfen |Wie
+|Status |`status().isCreated()`
+|Header |`header().string("Location", ...)`
+|Body-Felder |`jsonPath("$.title").value(...)`
+|Listen |`jsonPath("$", hasSize(2))`
+|Feld fehlt |`jsonPath("$.password").doesNotExist()`
+|Service-Aufruf |`verify(service).create(cmd)`
+|===
+
+== @JsonTest — DTOs allein testen
+
+[source,java]
+----
+@JsonTest
+class BookDtoJsonTest {
+    private @Autowired JacksonTester<BookDto> json;
+
+    @Test
+    void serialize() throws Exception {
+        var content = json.write(new BookDto("9783518365000", "Malina", 1971,
+                                             LocalDate.of(2024, 3, 1)));
+        assertThat(content).extractingJsonPathNumberValue("$.published-year").isEqualTo(1971);
+        assertThat(content).extractingJsonPathStringValue("$.addedOn").isEqualTo("2024-03-01");
+        assertThat(content).doesNotHaveJsonPath("$.publishedYear");
+    }
+
+}
+----
+
+== @JsonTest — Lesen und Dateien
+
+[source,java]
+----
+@Test
+void deserialize() throws Exception {
+    String text = """
+        {"isbn":"9783518365000","title":"Malina","published-year":1971,"addedOn":"2024-03-01"}""";
+    assertThat(json.parseObject(text)).isEqualTo(
+        new BookDto("9783518365000", "Malina", 1971, LocalDate.of(2024, 3, 1)));
+}
+
+@Test
+void matches_json_from_assignment() throws Exception {
+    assertThat(json.write(MALINA)).isEqualToJson("book.json");   // src/test/resources, gleiches Package
+}
+----
+
+* Feldnamen, Datumsformate, Enums, `null` — ohne Controller
+* `isEqualToJson` ignoriert Reihenfolge und Leerzeichen
+* Ein `@JsonTest` pro JSON-Objekt der Angabe
+
+== MockMvcTester — AssertJ-Stil
+
+[source,java]
+----
+@WebMvcTest(BookController.class)
+class BookControllerAssertJTest {
+    private @Autowired MockMvcTester mvc;
+    private @MockitoBean BookService bookService;
+
+    @Test
+    void get_book() {
+        when(bookService.getById(1L)).thenReturn(CLEAN_CODE_DTO);
+
+        assertThat(mvc.get().uri("/api/books/{id}", 1L))
+            .hasStatusOk()
+            .bodyJson().extractingPath("$.title").isEqualTo("Clean Code");
+    }
+}
+----
+
+* Seit Spring Framework 6.2 — gleiche Tests, AssertJ statt `andExpect`
+* Keine `throws Exception` nötig
+
+== @SpringBootTest — Integrationstest
+
+[source,java]
+----
+@SpringBootTest            // ganzer Kontext bis zur DB — langsam, daher nur wenige
+@AutoConfigureMockMvc       // org.springframework.boot.webmvc.test.autoconfigure
+class BookApiIntegrationTest {
+    private @Autowired MockMvc mockMvc;
+    private @Autowired ObjectMapper objectMapper;
+
+    @Test
+    void create_and_retrieve_book() throws Exception {
+        var cmd = new CreateBookCommand("9783161484100", "Clean Code", 2008);
+        String location = mockMvc.perform(post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cmd)))
+            .andExpect(status().isCreated())
+            .andReturn().getResponse().getHeader("Location");
+        mockMvc.perform(get(location))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value("Clean Code"));
+    }
+}
+----
+
+== Was wir heute gelernt haben
+
+* `@WebMvcTest` {plus} `@MockitoBean` — Imports für Spring Boot 4 und Jackson 3
+* MockMvc: `perform`, `status`, `header`, `jsonPath`, JSON-Body mit `ObjectMapper`
+* Fehlerfälle: `400`, `404` als ProblemDetail, `doThrow` für void-Methoden
+* Teststrategie: Good Cases → Edge Cases → Exception Cases
+* `@JsonTest` mit `JacksonTester` für die JSON-Objekte der Angabe
+* `MockMvcTester` und `@SpringBootTest` mit `@AutoConfigureMockMvc`

@@ -1,0 +1,311 @@
+= 09 - Service Layer Testing | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Unit vs. Integration Tests
+
+[cols=",,",options="header",]
+|===
+| |Unit-Test |Integration-Test
+|Scope |Eine Klasse |Mehrere Schichten
+|Abhängigkeiten |Gemosst |Echt
+|Geschwindigkeit |Millisekunden |Sekunden
+|Datenbank |Nein |Ja
+|Fehlerort |Exakt |Indirekt
+|===
+
+Service-Tests = Unit-Tests mit gemockten Repositories.
+
+== Warum Repositories mocken?
+
+* Repository ist schon getestet (Decks 04 {plus} 06)
+* Service-Logik isoliert testen (nur die Business-Regeln)
+* Kein Testcontainers nötig → Tests sind schnell
+* Fehler im Service sind sofort sichtbar (nicht im DB-Layer versteckt)
+
+== Mockito Annotations
+
+[source,java]
+----
+@ExtendWith(MockitoExtension.class)
+class LibraryServiceTest {
+    @Mock BookRepository bookRepository;
+    @Mock LoanRepository loanRepository;
+    @InjectMocks LibraryService libraryService;
+}
+----
+
+* `@Mock` — erzeugt einen Mock
+* `@InjectMocks` — erzeugt das Service-Objekt und injiziert die Mocks
+
+== Stubbing — when/thenReturn
+
+[source,java]
+----
+@Test
+void findAllBooks_shouldReturnAllBooks() {
+    List<Book> expected = List.of(
+        new Book("978-3-16-148410-0", "DDD", 2003),
+        new Book("978-0-13-468599-1", "Clean Code", 2008)
+    );
+
+    when(bookRepository.findAll()).thenReturn(expected);
+
+    List<Book> actual = libraryService.findAllBooks();
+
+    assertEquals(2, actual.size());
+    assertEquals(expected, actual);
+}
+----
+
+== Exception-Szenarien
+
+[source,java]
+----
+@Test
+void createBook_withDuplicateIsbn_shouldThrow() {
+    CreateBookCommand command = new CreateBookCommand(
+        "978-3-16-148410-0", "DDD", 2003);
+
+    when(bookRepository.findByIsbn(command.isbn()))
+        .thenReturn(Optional.of(new Book()));
+
+    assertThatThrownBy(() -> libraryService.createBook(command))
+        .isInstanceOf(DuplicateIsbnException.class)
+        .hasMessageContaining("978-3-16-148410-0");
+
+    verify(bookRepository, never()).save(any());
+}
+----
+
+== verify — Interaktion prüfen
+
+[source,java]
+----
+@Test
+void deleteBook_shouldCallRepository() {
+    Long bookId = 1L;
+
+    when(bookRepository.existsById(bookId)).thenReturn(true);
+
+    libraryService.deleteBook(bookId);
+
+    // Prüfen, dass deleteById() aufgerufen wurde
+    verify(bookRepository).deleteById(bookId);
+}
+
+@Test
+void deleteBook_nonExistent_shouldNotCallDelete() {
+    Long bookId = 99L;
+
+    when(bookRepository.existsById(bookId)).thenReturn(false);
+
+    assertThrows(EntityNotFoundException.class,
+        () -> libraryService.deleteBook(bookId));
+
+    // Prüfen, dass deleteById() NIEMALS aufgerufen wurde
+    verify(bookRepository, never()).deleteById(any());
+}
+----
+
+== ArgumentCaptor
+
+[source,java]
+----
+@Test
+void createBook_shouldSaveCorrectEntity() {
+    CreateBookCommand command = new CreateBookCommand(
+        "978-3-16-148410-0", "Domain-Driven Design", 2003);
+
+    libraryService.createBook(command);
+
+    ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+    verify(bookRepository).save(captor.capture());
+
+    Book saved = captor.getValue();
+    assertEquals("978-3-16-148410-0", saved.getIsbn());
+    assertEquals("Domain-Driven Design", saved.getTitle());
+    assertEquals(2003, saved.getYear());
+}
+----
+
+Nützlich, um zu prüfen, WAS genau an das Repository übergeben wurde.
+
+== Was Mock-Tests *nicht* prüfen
+
+[source,java]
+----
+@Test
+void checkOutBook_whenSaveFails_propagatesException() {
+    when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+    when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+    when(loanRepository.save(any())).thenThrow(new RuntimeException("DB error"));
+
+    assertThatThrownBy(() -> libraryService.checkOutBook(1L, 1L))
+        .hasMessage("DB error");
+}
+----
+
+* Ohne Spring gibt es *keinen* Proxy → `@Transactional` wird ignoriert
+* Ein Rollback lässt sich mit Mocks nicht beweisen — nur, dass die Exception durchkommt
+* Transaktionsverhalten → Integrationstest mit `@SpringBootTest` {plus} echter DB
+
+== doThrow — void-Methoden
+
+[source,java]
+----
+// when(mock.deleteById(1L)).thenThrow(...)   → kompiliert nicht: void!
+doThrow(new BookNotFoundException(1L))
+    .when(bookRepository).deleteById(1L);
+
+doNothing().when(mailService).send(any());     // explizit (Default bei Mocks)
+----
+
+Reihenfolge umgedreht: zuerst die Antwort, dann `when(mock)`, dann der Aufruf.
+
+== Argument-Matcher
+
+[source,java]
+----
+when(bookRepository.findByIsbn(anyString())).thenReturn(Optional.empty());
+when(bookRepository.findById(eq(1L))).thenReturn(Optional.of(book));
+when(feeService.fee(any(Loan.class), anyInt())).thenReturn(BigDecimal.TEN);
+
+verify(bookRepository).save(argThat(b -> b.getTitle().equals("DDD")));
+----
+
+[.highlight-box]
+--
+Matcher: alle oder keiner. `when(service.fee(loan, anyInt()))` → `InvalidUseOfMatchersException`. Richtig: `fee(eq(loan), anyInt())`.
+--
+
+== thenAnswer & returnsFirstArg
+
+[source,java]
+----
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+
+// save gibt das übergebene Objekt zurück — wie das echte Repository
+when(bookRepository.save(any())).thenAnswer(returnsFirstArg());
+
+// Antwort aus den Argumenten berechnen
+when(bookRepository.save(any(Book.class))).thenAnswer(call -> {
+    Book b = call.getArgument(0);
+    ReflectionTestUtils.setField(b, "id", 42L);     // Id "vergeben"
+    return b;
+});
+
+// mehrere Aufrufe, verschiedene Antworten
+when(clock.now()).thenReturn(T1, T2, T3);
+----
+
+== verify im Detail
+
+[source,java]
+----
+verify(loanRepository).save(any());                    // genau 1×
+verify(loanRepository, times(2)).save(any());
+verify(loanRepository, never()).delete(any());
+verify(loanRepository, atLeastOnce()).findAll();
+verifyNoMoreInteractions(loanRepository);              // sonst nichts aufgerufen
+
+InOrder inOrder = inOrder(bookRepository, loanRepository);
+inOrder.verify(bookRepository).findById(1L);
+inOrder.verify(loanRepository).save(any());
+----
+
+* *State-based*: Rückgabewert prüfen (bevorzugt)
+* *Interaction-based*: `verify` — wenn der Effekt nur im Aufruf sichtbar ist (z. B. `void`)
+
+== @Spy — teilweise echt
+
+[source,java]
+----
+@ExtendWith(MockitoExtension.class)
+class InvoiceServiceTest {
+
+    @Spy  TaxCalculator taxCalculator = new TaxCalculator();   // echtes Objekt
+    @Mock InvoiceRepository invoiceRepository;
+    @InjectMocks InvoiceService invoiceService;
+
+    @Test
+    void uses_real_tax_calculation_but_overrides_rate() {
+        doReturn(new BigDecimal("0.10")).when(taxCalculator).rate();   // nur das ersetzen
+        ...
+        verify(taxCalculator).taxFor(any());                           // trotzdem verifizierbar
+    }
+}
+----
+
+Bei Spies immer `doReturn(...).when(spy)...` — `when(spy.rate())` ruft die echte Methode auf.
+
+== Strict Stubs
+
+[source,plaintext]
+----
+org.mockito.exceptions.misusing.UnnecessaryStubbingException:
+Unnecessary stubbings detected.
+  1. -> at LibraryServiceTest.findAll(LibraryServiceTest.java:42)
+----
+
+* `MockitoExtension` meldet Stubs, die der Test *nie* braucht
+* Meist ein Hinweis auf einen falschen Testaufbau oder einen falschen Parameter
+* Gemeinsame Stubs in `@BeforeEach`, die nicht jeder Test braucht → `lenient().when(...)`
+
+== Mocks: mit oder ohne Spring?
+
+[cols="1,1,1",options="header"]
+|===
+| |ohne Spring-Kontext |mit Spring-Kontext
+|Klasse |`@ExtendWith(MockitoExtension.class)` |`@WebMvcTest`, `@SpringBootTest`, ...
+|Mock |`@Mock` |`@MockitoBean`
+|Testobjekt |`@InjectMocks` |`@Autowired`
+|Dauer |Millisekunden |Sekunden
+|===
+
+* `@MockBean` gibt es in Spring Boot 4 *nicht mehr* → `@MockitoBean` (`org.springframework.test.context.bean.override.mockito`)
+* Service-Tests: immer *ohne* Spring
+
+== Teststrategie für die Service-Schicht
+
+. *Gute Fälle* — der normale Ablauf aus der Angabe
+. *Randfälle* — Grenzwerte parametrisiert (`@CsvSource`): 0, 1, genau an der Grenze
+. *Fehlerfälle* — ungültige Argumente, nicht gefunden, Duplikat
+. Jede Geschäftsregel *einzeln* und im Zusammenspiel
+
+[source,java]
+----
+@ParameterizedTest(name = "{0}% Akku → {1} Cent")
+@CsvSource({"0, 0", "84, 840", "85, 1000", "100, 1000"})
+void price_depends_on_charge_level(int level, long expectedCents) {
+    assertThat(ChargingService.priceInCents(session(level))).isEqualTo(expectedCents);
+}
+----
+
+== Projekt: Service Tests
+
+[.highlight-box]
+--
+. Erstelle `LibraryServiceTest` mit MockitoExtension
+. Teste alle CRUD-Methoden (State-Tests)
+. Teste `checkOutBook()` (Behavior-Tests mit verify)
+. Teste Exception-Szenarien (Buch nicht verfügbar, Member nicht gefunden)
+--
+
+== What We Learned Today
+
+* @Mock, @InjectMocks, @ExtendWith(MockitoExtension.class)
+* when/thenReturn und doThrow zum Stubbing
+* verify(), times(), never() für Behavior-Tests
+* ArgumentCaptor für detaillierte Prüfungen
+* Exception-Szenarien testen
+* Argument-Matcher, `thenAnswer`/`returnsFirstArg`, `@Spy`
+* `@Mock` vs. `@MockitoBean`, Strict Stubs, Teststrategie

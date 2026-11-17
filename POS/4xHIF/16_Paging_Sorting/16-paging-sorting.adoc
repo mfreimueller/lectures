@@ -1,0 +1,313 @@
+= 16 - Paging & Sorting | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Warum Pagination?
+
+* 10.000 Bücher auf einmal laden = langsam, speicherintensiv, schlechte UX
+* Mobile Clients brauchen kleine Antworten
+* Pagination = effizient, skalierbar, benutzerfreundlich
+* Spring Data bietet `Pageable` und `Page` out-of-the-box
+
+== Pageable — Das Interface
+
+[source,java]
+----
+public interface Pageable {
+    int getPageNumber();    // aktuelle Seite (0-indexed)
+    int getPageSize();      // Elemente pro Seite
+    Sort getSort();         // Sortierung
+    long getOffset();       // Berechneter Offset
+    Pageable next();        // Nächste Seite
+    Pageable previousOrFirst(); // Vorherige Seite
+}
+----
+
+Spring extrahiert `page`, `size`, `sort` aus Query-Parametern.
+
+== @PageableDefault — Standardwerte
+
+[source,java]
+----
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    @GetMapping
+    public Page<BookDTO> getAll(
+            @PageableDefault(
+                page = 0,
+                size = 20,
+                sort = "title",
+                direction = Sort.Direction.ASC)
+            Pageable pageable) {
+
+        return service.getAll(pageable);
+    }
+}
+----
+
+Wenn der Client keine Parameter schickt: Seite 0, 20 Einträge, sortiert nach title aufsteigend.
+
+== Page<T> — Response mit Metadaten
+
+[source,json]
+----
+{
+    "content": [
+        { "id": 1, "title": "Clean Code", ... },
+        { "id": 2, "title": "Pragmatic Programmer", ... }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 5,
+        "sort": { "sorted": true, "unsorted": false }
+    },
+    "totalElements": 42,
+    "totalPages": 9,
+    "first": true,
+    "last": false,
+    "number": 0,
+    "size": 5,
+    "numberOfElements": 5,
+    "empty": false
+}
+----
+
+== Sort — Sortierung definieren
+
+[source,java]
+----
+Sort sort = Sort.by("title").ascending();
+
+Sort sort = Sort.by("author").ascending()
+                .and(Sort.by("publicationYear").descending());
+
+Sort sort = Sort.by(
+    new Sort.Order(Sort.Direction.ASC, "author"),
+    new Sort.Order(Sort.Direction.DESC, "publicationYear")
+);
+----
+
+Client: `?sort=author,asc&sort=publicationYear,desc`
+
+== Sort Injection verhindern
+
+[source,java]
+----
+private Sort sanitize(Sort sort) {
+    return sort.stream()
+        .filter(o -> ALLOWED_SORT_FIELDS.contains(o.getProperty()))
+        .reduce(Sort::and)
+        .orElse(Sort.by("id"));
+}
+----
+
+Nie blind `sort` akzeptieren — whitelist erlaubte Felder!
+
+== Pagination im Service-Layer
+
+[source,java]
+----
+@Service
+@Transactional(readOnly = true)
+public class BookService {
+
+    private final BookRepository repository;
+    private final BookMapper mapper;
+
+    public Page<BookDTO> getAll(Pageable pageable) {
+        return repository.findAll(pageable)
+            .map(mapper::toDto);
+    }
+
+    public Page<BookDTO> search(
+            String author, Integer year, Pageable pageable) {
+        return repository.searchBooks(author, year, pageable)
+            .map(mapper::toDto);
+    }
+}
+----
+
+Service leitet Pageable an Repository weiter — Query wird mit LIMIT/OFFSET ausgeführt.
+
+== Custom Page DTO
+
+[source,java]
+----
+public record PagedResponse<T>(
+    List<T> content,
+    int page,
+    int size,
+    long totalElements,
+    int totalPages,
+    boolean first,
+    boolean last,
+    Map<String, String> links
+) {
+    public static <T> PagedResponse<T> of(Page<T> page) {
+        return new PagedResponse<>(
+            page.getContent(),
+            page.getNumber(),
+            page.getSize(),
+            page.getTotalElements(),
+            page.getTotalPages(),
+            page.isFirst(),
+            page.isLast(),
+            new HashMap<>()
+        );
+    }
+}
+----
+
+== Pagination + HATEOAS
+
+[source,java]
+----
+@GetMapping
+public PagedResponse<BookDTO> getAll(
+        @PageableDefault(size = 5) Pageable pageable,
+        UriComponentsBuilder uriBuilder) {
+
+    Page<BookDTO> page = service.getAll(pageable);
+    PagedResponse<BookDTO> response = PagedResponse.of(page);
+
+    String baseUri = uriBuilder.path("/api/books").toUriString();
+    response.links().put("self",
+        baseUri + "?page=" + pageable.getPageNumber()
+        + "&size=" + pageable.getPageSize());
+
+    if (!page.isFirst()) {
+        response.links().put("first",
+            baseUri + "?page=0&size=" + pageable.getPageSize());
+        response.links().put("prev",
+            baseUri + "?page=" + (pageable.getPageNumber() - 1)
+            + "&size=" + pageable.getPageSize());
+    }
+    if (!page.isLast()) {
+        response.links().put("next",
+            baseUri + "?page=" + (pageable.getPageNumber() + 1)
+            + "&size=" + pageable.getPageSize());
+        response.links().put("last",
+            baseUri + "?page=" + (page.getTotalPages() - 1)
+            + "&size=" + pageable.getPageSize());
+    }
+    return response;
+}
+----
+
+== Achtung: Page direkt zurückgeben
+
+[source,plaintext]
+----
+Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee
+about the stability of the resulting JSON structure!
+----
+
+* Das JSON von `PageImpl` (vorige Folie) enthält interne Felder, die sich mit jeder Version ändern können
+* Stabil: `org.springframework.data.web.PagedModel`
+
+[source,java]
+----
+@GetMapping
+public PagedModel<BookDto> findAll(@PageableDefault(size = 20, sort = "title") Pageable pageable) {
+    return new PagedModel<>(bookService.findPage(pageable));
+}
+----
+
+[source,json]
+----
+{ "content": [ { "isbn": "9783518365000", "title": "Malina" } ],
+  "page": { "size": 2, "number": 1, "totalElements": 11, "totalPages": 6 } }
+----
+
+Zwei Klassen heißen `PagedModel`: Spring Data (ohne Links) und Spring HATEOAS (mit Links) — auf den Import achten!
+
+== Paging im Repository
+
+[source,java]
+----
+public interface BookRepository extends JpaRepository<Book, Long> {
+
+    Page<Book> findByAuthorName(String authorName, Pageable pageable);
+
+    Slice<Book> findByGenre(Genre genre, Pageable pageable);
+
+    @Query("select b from Book b where b.price < :max")
+    Page<Book> findCheap(BigDecimal max, Pageable pageable);
+}
+
+PageRequest.of(0, 20, Sort.by("title"));      // Pageable selbst bauen (z. B. im Test)
+----
+
+[cols="1,2",options="header"]
+|===
+|Typ |Kosten
+|`Page<T>` |Daten-Query {plus} `count`-Query → kennt `totalElements`/`totalPages`
+|`Slice<T>` |nur Daten-Query (eine Zeile mehr) → kennt nur `hasNext()`
+|`List<T>` mit `Pageable` |nur die Daten
+|===
+
+== Pagination testen
+
+[source,java]
+----
+@Test
+void page_request_is_passed_on() throws Exception {
+    when(bookService.findPage(any(Pageable.class)))
+        .thenAnswer(call -> new PageImpl<>(List.of(MALINA), call.getArgument(0), 11));
+
+    mockMvc.perform(get("/api/books").param("page", "1").param("size", "2"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content", hasSize(1)))
+        .andExpect(jsonPath("$.page.number").value(1))
+        .andExpect(jsonPath("$.page.totalPages").value(6));
+
+    verify(bookService).findPage(PageRequest.of(1, 2));
+}
+----
+
+`PageRequest` hat `equals` → `verify` beweist, dass Query-Parameter richtig übersetzt wurden.
+
+== Pagination testen: Defaults
+
+[source,java]
+----
+@Test
+void page_defaults_are_used() throws Exception {
+    when(bookService.findPage(any())).thenAnswer(c -> Page.empty(c.getArgument(0)));
+    mockMvc.perform(get("/api/books"));
+    verify(bookService).findPage(PageRequest.of(0, 20, Sort.by("title")));
+}
+----
+
+Ohne Parameter muss `@PageableDefault` greifen.
+
+== Projekt: Paging für deine Endpoints
+
+[.highlight-box]
+--
+. Füge `Pageable` zu allen Listen-Endpoints hinzu
+. Konfiguriere sinnvolle Defaults (size=10 oder 20)
+. Erlaube Sortierung nur für whitelistete Felder
+. Erstelle einen Custom Page DTO für saubere API-Responses
+. Füge Navigation-Links (first/prev/next/last) hinzu
+--
+
+== What We Learned Today
+
+* Pageable und @PageableDefault
+* Page als standardisierte Response
+* Sort.by() und multiple Sortierkriterien
+* Sort Injection verhindern (Whitelist)
+* Pagination im Service-Layer
+* Stabile Antwort mit `PagedModel`, `Page` vs. `Slice`
+* Pagination mit MockMvc testen

@@ -1,0 +1,402 @@
+= 12 - REST Controllers | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Was ist REST?
+
+* **RE**presentational **S**tate **T**ransfer
+* Architekturstil für verteilte Systeme
+* Ressourcen werden über URIs identifiziert
+* HTTP-Methoden definieren Aktionen auf Ressourcen
+* Zustandslos: Jeder Request enthält alle nötigen Informationen
+
+== HTTP-Methoden im Überblick
+
+[cols=",,",options="header",]
+|===
+|Methode |Aktion |Erfolgsstatus
+|`GET` |Ressource lesen |`200 OK`
+|`POST` |Ressource erstellen |`201 Created`
+|`PUT` |Ressource ersetzen |`200 OK`
+|`PATCH` |Ressource teilweise aktualisieren |`200 OK`
+|`DELETE` |Ressource löschen |`204 No Content`
+|===
+
+* *Idempotent* (Mehrfachausführung = gleiches Ergebnis): GET, PUT, DELETE
+* *Nicht* idempotent: POST (legt jedes Mal neu an), PATCH (je nach Operation, z. B. „Bestand {plus}1")
+* *Safe* (ändert nichts): nur GET (und HEAD, OPTIONS)
+
+== @RestController vs @Controller
+
+[source,java]
+----
+// @Controller + @ResponseBody = @RestController
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+    // ...
+}
+----
+
+* `@Controller` — gibt View-Namen (Thymeleaf) zurück
+* `@RestController` — gibt Daten (JSON/XML) direkt zurück
+* `@RestController` ist *kurz* für `@Controller {plus} @ResponseBody`
+* Jackson serialisiert Rückgabewerte automatisch zu JSON
+
+== @GetMapping — Lesen von Ressourcen
+
+[source,java]
+----
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final BookRepository repository;
+
+    // GET /api/books — alle Bücher
+    @GetMapping
+    public List<Book> getAll() {
+        return repository.findAll();
+    }
+
+    // GET /api/books/42 — ein Buch
+    @GetMapping("/{id}")
+    public Book getById(@PathVariable Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Book not found"));
+    }
+}
+----
+
+== @PostMapping — Ressourcen erstellen
+
+[source,java]
+----
+// POST /api/books — neues Buch anlegen
+@PostMapping
+public Book create(@RequestBody Book book) {
+    return repository.save(book);
+}
+----
+
+[source,json]
+----
+// Request Body
+{
+    "isbn": "9783161484100",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "publicationYear": 2008
+}
+----
+
+Der Client sendet JSON → Jackson wandelt in `Book`-Record um.
+
+== @PutMapping / @DeleteMapping / @PatchMapping
+
+[source,java]
+----
+// PUT /api/books/42 — komplett ersetzen
+@PutMapping("/{id}")
+public Book update(@PathVariable Long id, @RequestBody Book book) {
+    return repository.update(id, book);
+}
+
+// DELETE /api/books/42 — löschen
+@DeleteMapping("/{id}")
+public void delete(@PathVariable Long id) {
+    repository.deleteById(id);
+}
+
+// PATCH /api/books/42 — teilweise aktualisieren
+@PatchMapping("/{id}")
+public Book partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    return repository.partialUpdate(id, fields);
+}
+----
+
+== @RequestParam — Query-Parameter
+
+[source,java]
+----
+@GetMapping List<Book> search(
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+    return repository.search(author, year, page, size); }
+----
+
+* `required = false` — Parameter ist optional
+* `defaultValue` — Standardwert falls nicht angegeben
+* Automatische Typkonvertierung (String → int, Integer, etc.)
+
+== @PathVariable — Pfadvariablen
+
+[source,java]
+----
+@GetMapping("/{bookId}/reviews/{reviewId}")
+public Review getReview(
+        @PathVariable Long bookId,
+        @PathVariable Long reviewId) {
+    return reviewService.findReview(bookId, reviewId);
+}
+----
+
+* Werte aus dem URI-Pfad (geschweifte Klammern)
+* Variablenname muss mit dem Pfadplatzhalter übereinstimmen
+* Oder explizit: `@PathVariable("book-id") Long bookId`
+
+== @RequestBody — JSON empfangen
+
+[source,java]
+----
+@PostMapping
+public ResponseEntity<Book> create(@Valid @RequestBody Book book) {
+    Book saved = repository.save(book);
+    URI location = URI.create("/api/books/" + saved.id());
+    return ResponseEntity.created(location).body(saved);
+}
+----
+
+* `@RequestBody` bindet JSON Payload an Java-Objekt
+* Jackson konfiguriert: Datumsformate, Ignorieren unbekannter Felder
+* `@Valid` aktiviert Bean-Validation
+
+== ResponseEntity — Volle Kontrolle
+
+[source,java]
+----
+@GetMapping("/{id}")
+public ResponseEntity<Book> getById(@PathVariable Long id) {
+    return repository.findById(id)
+        .map(book -> ResponseEntity.ok(book))
+        .orElse(ResponseEntity.notFound().build());
+}
+
+@PostMapping
+public ResponseEntity<Book> create(@Valid @RequestBody Book book) {
+    if (repository.existsByIsbn(book.isbn())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+    Book saved = repository.save(book);
+    return ResponseEntity
+        .created(URI.create("/api/books/" + saved.id()))
+        .body(saved);
+}
+----
+
+== Wichtige HTTP-Statuscodes
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Code |Bedeutung |Verwendung
+|`200` |OK |Erfolgreiche GET/PUT/PATCH-Requests
+|`201` |Created |Ressource wurde angelegt (POST)
+|`204` |No Content |Erfolgreich gelöscht (DELETE)
+|`400` |Bad Request |Validierungsfehler, ungültige Eingabe
+|`404` |Not Found |Ressource existiert nicht
+|`409` |Conflict |Duplicate, inkonsistenter Zustand
+|`500` |Internal Server Error |Unerwarteter Fehler (nie absichtlich!)
+|===
+
+== Jackson — JSON Serialisierung
+
+[source,java]
+----
+public record Book(
+    Long id,
+
+    @JsonProperty("isbn13")
+    @NotBlank String isbn,
+
+    String title,
+    String author,
+
+    @JsonProperty("year")
+    int publicationYear,
+
+    @JsonIgnore
+    String internalNotes
+) {}
+----
+
+== Jackson — JSON Serialisierung
+
+[source,json]
+----
+{
+    "id": 1,
+    "isbn13": "9783161484100",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "year": 2008
+    // internalNotes wird ignoriert
+}
+----
+
+== 201 Created mit Location-Header
+
+[source,java]
+----
+@PostMapping
+public ResponseEntity<BookDto> create(@Valid @RequestBody CreateBookCommand cmd) {
+    BookDto created = bookService.create(cmd);
+
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(created.id())
+            .toUri();                                   // http://host/api/books/42
+
+    // oder mit HATEOAS:
+    // URI location = linkTo(methodOn(BookController.class).getById(created.id())).toUri();
+
+    return ResponseEntity.created(location).body(created);
+}
+----
+
+* `URI.create("/api/books/" + id)` funktioniert, ist aber relativ und dupliziert den Pfad
+* Der Client findet die neue Ressource über den `Location`-Header
+
+== Statuscodes ohne ResponseEntity
+
+[source,java]
+----
+@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public BookDto create(@Valid @RequestBody CreateBookCommand cmd) {
+    return bookService.create(cmd);
+}
+
+@DeleteMapping("/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public void delete(@PathVariable Long id) {
+    bookService.delete(id);
+}
+----
+
+* `@ResponseStatus` für den *Erfolgsfall*, Fehler über Exceptions {plus} Advice
+* `ResponseEntity`, wenn Header (Location) oder der Status dynamisch ist
+
+== Was tun bei „existiert schon" / „existiert nicht"?
+
+[cols="1,2,2",options="header"]
+|===
+|Anfrage |Situation |Antwort
+|`GET /books/42` |nicht vorhanden |`404 Not Found`
+|`POST /books` |ISBN existiert schon |`409 Conflict`
+|`POST /books` |ungültige Daten |`400 Bad Request`
+|`PUT /books/42` |vorhanden → ersetzt |`200 OK` (mit Body) oder `204`
+|`PUT /books/42` |nicht vorhanden |`404` (oder `201`, wenn der Client Ids vergibt)
+|`PATCH /books/42` |nicht vorhanden |`404 Not Found`
+|`DELETE /books/42` |gelöscht |`204 No Content`
+|`DELETE /books/42` |nicht vorhanden |`404` (oder `204` — idempotent, Hauptsache konsistent)
+|===
+
+Die Angabe entscheidet — sonst eine Variante wählen und konsequent durchziehen.
+
+== Optionale Query-Parameter
+
+[source,java]
+----
+@GetMapping
+public List<UserDto> getUsers(@RequestParam Optional<String> countryCode) {
+    return countryCode
+            .map(userService::findByCountry)
+            .orElseGet(userService::findAll);
+}
+
+@GetMapping("/search")
+public List<BookDto> search(@RequestParam(required = false) String title,
+                            @RequestParam(defaultValue = "false") boolean available) { ... }
+----
+
+* `Optional<...>` oder `required = false` → Parameter darf fehlen
+* Fehlt ein Pflicht-Parameter: `400 Bad Request` (`MissingServletRequestParameterException`)
+
+== Unterressourcen
+
+[source,java]
+----
+@RestController
+@RequestMapping("/api/reservations/{reservationId}/rooms")
+public class ReservationRoomController {
+
+    @GetMapping
+    public List<RoomDto> rooms(@PathVariable Long reservationId) { ... }
+
+    @PostMapping
+    public ResponseEntity<RoomDto> addRoom(@PathVariable Long reservationId,
+                                           @Valid @RequestBody AddRoomCommand cmd) { ... }
+
+    @DeleteMapping("/{roomId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeRoom(@PathVariable Long reservationId, @PathVariable Long roomId) { ... }
+}
+----
+
+* Pfad spiegelt die Zugehörigkeit: Zimmer *einer* Reservierung
+* Existiert die Reservierung nicht → `404`, auch wenn nach Zimmern gefragt wird
+
+== Ein Record pro Zweck
+
+[cols="1,1,2",options="header"]
+|===
+|Record |Richtung |Inhalt
+|`BookDto` |hinaus |alles, inkl. Id/Referenz
+|`CreateBookCommand` |herein |ohne Id, mit Validierung
+|`ReplaceBookCommand` |herein |nur änderbare Attribute
+|`ChangePriceCommand` |herein |PATCH: nur das eine Feld
+|===
+
+* Nie Entities direkt über die API: Lazy-Loading, Zyklen, interne Felder, Mass Assignment
+* PATCH mit `Map<String, Object>` ist untypisiert — lieber ein eigenes Command
+
+== JSON mit Jackson 3
+
+[source,java]
+----
+public record BookDto(
+        String isbn,
+        String title,
+        @JsonProperty("published-year") int publishedYear,   // Name mit Bindestrich
+        LocalDate addedOn,                                   // "2024-03-01"
+        Genre genre,                                         // "FICTION"
+        List<AuthorDto> authors) {}                          // [] statt null!
+----
+
+* Spring Boot 4 verwendet *Jackson 3*
+* Annotationen wie `@JsonProperty` weiter aus `com.fasterxml.jackson.annotation`
+* `ObjectMapper` aber aus *`tools.jackson.databind`* — der alte Import kompiliert nicht mehr
+* Verschachtelte Objekte → eigener Record; Listen nie `null`, sondern `List.of()`
+
+== Projekt: REST-API für deine Domäne
+
+[.highlight-box]
+--
+. Wähle eine Entität aus deiner Domäne (z.B. Book, Customer, Product)
+. Erstelle einen `@RestController` mit vollem CRUD
+. Verwende `ResponseEntity` mit korrekten Statuscodes
+. Füge `@Valid` und Query-Parameter-Filter hinzu
+. Teste alle Endpoints mit curl, httpie oder Postman
+--
+
+== What We Learned Today
+
+* REST-Prinzipien und HTTP-Methoden
+* @RestController vs @Controller
+* Request Mapping (@GetMapping, @PostMapping, etc.)
+* @RequestParam, @PathVariable, @RequestBody
+* ResponseEntity und HTTP-Statuscodes
+* `201` mit Location-Header, `@ResponseStatus`
+* Randfälle für PUT/DELETE, Unterressourcen
+* Commands vs. DTOs, Jackson 3

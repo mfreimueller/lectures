@@ -1,0 +1,453 @@
+= 10 - Exception Handling & Validation | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Das Problem
+
+[source,json]
+----
+// Heute: unterschiedliche Fehlerformate
+{ "error": "not found" }
+
+// Morgen:
+{ "message": "Member with id 42 not found",
+  "timestamp": "2024-11-20T10:30:00" }
+----
+
+== Das Problem — Lösung
+
+Ziel: Einheitliches, standardisiertes Fehlerformat für die ganze API.
+
+== @ControllerAdvice
+
+[source,java]
+----
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleNotFound(
+            EntityNotFoundException ex) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setTitle("Entity not found");
+        problem.setDetail(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+}
+----
+
+`@ControllerAdvice` = globaler Exception-Handler für ALLE Controller.
+
+== @ControllerAdvice vs. @RestControllerAdvice
+
+[cols="1,2",options="header"]
+|===
+|Annotation |Rückgabe der Handler
+|`@ControllerAdvice` |View-Name (Thymeleaf) — außer bei `ResponseEntity`/`ProblemDetail`
+|`@RestControllerAdvice` |= `@ControllerAdvice` {plus} `@ResponseBody` → immer Response-Body (JSON)
+|===
+
+* Für REST-APIs: `@RestControllerAdvice`
+* Mit `ResponseEntity<ProblemDetail>` funktionieren beide
+* Eingrenzen: `@RestControllerAdvice(assignableTypes = BookController.class)` oder `basePackages = ...`
+
+== ProblemDetail (RFC 9457)
+
+[source,json]
+----
+{
+    "type": "about:blank",
+    "title": "Entity not found",
+    "status": 404,
+    "detail": "Member with id 42 not found"
+}
+----
+
+* Standardisiertes Fehlerformat (RFC 9457, Nachfolger von RFC 7807)
+* Wird von Spring ab Version 6 nativ unterstützt
+* Maschinenlesbar {plus} menschenlesbar
+
+== Exception-Handler — 404 + 400
+
+[source,java]
+----
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ProblemDetail handleNotFound(EntityNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleBadArgument(IllegalArgumentException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+}
+----
+
+== Exception-Handler — 409
+
+[source,java]
+----
+@ExceptionHandler(DataIntegrityViolationException.class)
+public ProblemDetail handleConstraintViolation(
+        DataIntegrityViolationException ex) {
+    ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+    problem.setTitle("Data integrity violation");
+    problem.setDetail("This operation would violate a database constraint");
+    return problem;
+}
+----
+
+== Bean Validation — Motivation
+
+[source,java]
+----
+// Ohne Validation: viel Boilerplate im Controller
+@PostMapping("/members")
+public Member createMember(@RequestBody Member member) {
+    if (member.getName() == null || member.getName().isBlank()) {
+        throw new IllegalArgumentException("Name is required");
+    }
+    if (member.getEmail() == null || !member.getEmail().contains("@")) {
+        throw new IllegalArgumentException("Invalid email");
+    }
+    return memberService.createMember(member);
+}
+----
+
+Mit Bean Validation: deklarativ statt imperativ.
+
+== Bean Validation — Annotations
+
+[source,java]
+----
+public record CreateMemberCommand(
+    @NotBlank(message = "Name is required") String name,
+    @NotBlank @Email String email,
+    @Pattern(regexp = "^\\+?[0-9\\s-]{6,20}$") String phone
+) {}
+----
+
+Wichtige Annotationen:
+
+* `@NotBlank`, `@NotEmpty`, `@NotNull`
+* `@Size(min, max)`, `@Min`, `@Max`
+* `@Email`, `@Pattern`
+* `@Past`, `@Future`, `@PastOrPresent`, `@FutureOrPresent`
+* `@Positive`, `@PositiveOrZero`, `@DecimalMin`, `@Digits`
+
+== NotNull vs. NotEmpty vs. NotBlank
+
+[cols="1,1,1,1",options="header"]
+|===
+|Wert |`@NotNull` |`@NotEmpty` |`@NotBlank`
+|`null` |✗ |✗ |✗
+|`""` |✓ |✗ |✗
+|`"  "` |✓ |✓ |✗
+|===
+
+== @Valid im Controller
+
+[source,java]
+----
+@RestController @RequestMapping("/api/members")
+public class MemberController {
+    private final MemberService memberService;
+    @PostMapping
+    public Member createMember(@Valid @RequestBody CreateMemberCommand cmd) {
+        return memberService.createMember(cmd);
+    }
+    @PutMapping("/{id}")
+    public Member updateMember(@PathVariable Long id,
+            @Valid @RequestBody UpdateMemberCommand cmd) {
+        return memberService.updateMember(id, cmd);
+    }
+}
+----
+
+== @Valid — Wirkung
+
+`@Valid` löst die Validierung aus. Bei Fehlern → `MethodArgumentNotValidException`.
+
+== Validation Errors — Handler
+
+[source,java]
+----
+@ExceptionHandler(MethodArgumentNotValidException.class)
+public ProblemDetail handleValidationErrors(
+        MethodArgumentNotValidException ex) {
+    ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+    problem.setTitle("Validation failed");
+    String errors = ex.getBindingResult()
+        .getFieldErrors().stream()
+        .map(e -> e.getField() + ": " + e.getDefaultMessage())
+        .collect(Collectors.joining(", "));
+    problem.setDetail(errors);
+    return problem;
+}
+----
+
+== Validation Errors — Response
+
+[source,json]
+----
+{
+    "title": "Validation failed",
+    "status": 400,
+    "detail": "email: Must be a valid email address, name: Name is required"
+}
+----
+
+== Custom Validator — Annotation
+
+[source,java]
+----
+@Target(FIELD)
+@Retention(RUNTIME)
+@Constraint(validatedBy = IsbnValidator.class)
+public @interface ValidIsbn {
+    String message() default "Invalid ISBN format";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+----
+
+== Custom Validator — Implementierung
+
+[source,java]
+----
+public class IsbnValidator implements
+        ConstraintValidator<ValidIsbn, String> {
+    @Override
+    public boolean isValid(String isbn, ConstraintValidatorContext ctx) {
+        if (isbn == null) return false;
+        return isbn.matches("^(\\d{13}|\\d{10})$");
+    }
+}
+----
+
+Verwendung: `@ValidIsbn String isbn`
+
+== Validierung im Service
+
+[source,java]
+----
+@Service
+@Validated  // Ermöglicht @Valid auf Methoden-Parametern
+public class LibraryService {
+
+    public Book createBook(@Valid CreateBookCommand command) {
+        // command ist hier bereits validiert
+        Book book = new Book(command.isbn(), command.title(), command.year());
+
+        if (bookRepository.findByIsbn(command.isbn()).isPresent()) {
+            throw new DuplicateIsbnException(command.isbn());
+        }
+
+        return bookRepository.save(book);
+    }
+}
+----
+
+Mit `@Validated` auf der Klasse und `@Valid` am Parameter.
+
+== Lokaler @ExceptionHandler
+
+[source,java]
+----
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    @GetMapping("/{id}")
+    public BookDto getBook(@PathVariable Long id) { ... }
+
+    @ExceptionHandler(BookNotFoundException.class)       // gilt nur für DIESEN Controller
+    public ResponseEntity<ProblemDetail> handleNotFound(BookNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+}
+----
+
+* Lokale Handler haben *Vorrang* vor dem globalen Advice
+* Sinnvoll für Fehler, die nur ein Controller kennt
+
+== Exceptions mit Status versehen
+
+[source,java]
+----
+// 1. Status direkt an der Exception
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class BookNotFoundException extends RuntimeException { ... }
+
+// 2. Ad hoc im Code
+throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book " + id + " not found");
+
+// 3. Exception, die selbst ein ProblemDetail ist
+public class BookNotFoundException extends ErrorResponseException {
+    public BookNotFoundException(Long id) {
+        super(HttpStatus.NOT_FOUND,
+              ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Book " + id + " not found"),
+              null);
+    }
+}
+----
+
+* Bequem, aber: HTTP-Wissen wandert in die Service-Schicht
+* Sauberer: fachliche Exception im Service, Übersetzung im Advice
+
+== BindingResult — Fehler selbst behandeln
+
+[source,java]
+----
+@PostMapping
+public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserCommand cmd,
+                                    BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        var problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setProperty("errors", bindingResult.getFieldErrors().stream()
+                .collect(Collectors.toMap(FieldError::getField,
+                                          FieldError::getDefaultMessage, (a, b) -> a)));
+        return ResponseEntity.badRequest().body(problem);
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(cmd));
+}
+----
+
+* Steht `BindingResult` *direkt nach* dem `@Valid`-Parameter, wirft Spring *keine* Exception
+* Ohne `BindingResult` → `MethodArgumentNotValidException` → Advice
+
+== Feldfehler strukturiert zurückgeben
+
+[source,java]
+----
+@ExceptionHandler(MethodArgumentNotValidException.class)
+public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+            HttpStatus.BAD_REQUEST, "Validation failed");
+    problem.setProperty("errors", ex.getBindingResult().getFieldErrors().stream()
+            .map(e -> Map.of("field", e.getField(), "message", e.getDefaultMessage()))
+            .toList());
+    return problem;
+}
+----
+
+[source,json]
+----
+{ "type": "about:blank", "title": "Bad Request", "status": 400,
+  "detail": "Validation failed",
+  "errors": [ { "field": "email", "message": "must be a well-formed email address" } ] }
+----
+
+`setProperty` → zusätzliche Felder im JSON. Maschinenlesbar für das Frontend.
+
+== Kaputtes JSON & Catch-All
+
+[source,java]
+----
+@ExceptionHandler(HttpMessageNotReadableException.class)       // JSON nicht lesbar
+public ProblemDetail handleUnreadable(HttpMessageNotReadableException ex) {
+    return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Malformed JSON request");
+}
+
+@ExceptionHandler(Throwable.class)                              // alles andere
+public ProblemDetail handleAll(Throwable t) {
+    log.error("Unexpected error", t);                           // Details ins Log ...
+    return ProblemDetail.forStatusAndDetail(
+            HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error"); // ... nicht zum Client!
+}
+----
+
+== Welcher Status für welche Exception?
+
+[cols="1,1",options="header"]
+|===
+|Exception |Status
+|`MethodArgumentNotValidException` |400
+|`HttpMessageNotReadableException` |400
+|`HttpMessageNotWritableException` |500
+|`ConstraintViolationException` (`@Validated`) |400
+|fachlich „nicht gefunden" |404
+|`DataIntegrityViolationException`, Optimistic Lock |409
+|===
+
+== Spring-Standardfehler als ProblemDetail
+
+[source,yaml]
+----
+spring:
+  mvc:
+    problemdetails:
+      enabled: true      # Spring-eigene Fehler (404, 405, 415, ...) als ProblemDetail
+----
+
+* Alternativ: Advice erbt von `ResponseEntityExceptionHandler`
+* Damit sehen *alle* Fehler der API gleich aus — auch die, die Spring selbst wirft
+
+== Verschachtelte Objekte validieren
+
+[source,java]
+----
+public record CreateOrderCommand(
+        @NotNull @Valid CustomerRef customer,        // @Valid → Felder darin prüfen
+        @NotEmpty List<@Valid OrderLineCommand> lines // auch jedes Listenelement
+) {}
+
+public record OrderLineCommand(@NotBlank String sku, @Positive int quantity) {}
+----
+
+Ohne `@Valid` am Feld werden verschachtelte Objekte *nicht* geprüft.
+
+== Validierung testen
+
+[source,java]
+----
+class CreateMemberCommandTest {
+    private final Validator validator =
+            Validation.buildDefaultValidatorFactory().getValidator();
+
+    @Test
+    void invalid_email_is_reported() {
+        var cmd = new CreateMemberCommand("Alice", "not-an-email", null);
+
+        assertThat(validator.validate(cmd))
+            .extracting(v -> v.getPropertyPath().toString())
+            .containsExactly("email");
+    }
+}
+----
+
+In Spring-Tests: `private @Autowired Validator validator;`
+
+== Projekt: Exception Handling
+
+[.highlight-box]
+--
+. Erstelle `GlobalExceptionHandler` mit @RestControllerAdvice
+. Behandle: 404, 400, 409, 500
+. Füge Bean-Validation zu Command-Objekten hinzu
+. Erstelle einen Custom Validator (z.B. @ValidIsbn)
+. Teste: Sende ungültige Daten via curl/Postman
+--
+
+== What We Learned Today
+
+* @ControllerAdvice {plus} @ExceptionHandler für globale Fehlerbehandlung
+* ProblemDetail (RFC 9457) für standardisierte Fehler
+* Bean Validation: @NotBlank, @Email, @Pattern, @Valid
+* Custom Validator mit @Constraint
+* @Validated im Service für Methoden-Parameter
+* Lokale Handler, `@ResponseStatus`, `BindingResult`, strukturierte Feldfehler
+* Catch-All ohne Details nach außen

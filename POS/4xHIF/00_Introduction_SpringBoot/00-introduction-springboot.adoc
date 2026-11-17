@@ -16,21 +16,19 @@
 * Schwerpunkt: Spring Boot Ökosystem
 * Ganzjähriges Gruppenprojekt in 2-3er Teams
 * Zwei zentrale Prüfungen (SA1, SA2)
-* Abschlusspräsentation am Jahresende
 
 == Bewertung
 
 * 2 SA (schriftliche Arbeiten) — zentral definiert
-* Gruppenprojekt — Meilensteine, Code Reviews, Abschlusspräsentation
-* Katas und Übungen — laufende Bewertung
-* Code Reviews — 3 Peer Reviews über das Jahr verteilt
+* Gruppenprojekt — Meilensteine über das Jahr verteilt
+* Übungen — laufende Bewertung
 
 == Das Gruppenprojekt
 
 * Eigenes Domain auswählen (Bibliothek, Fitnessstudio, Restaurant, Hotel, ...)
 * Über das Jahr eine vollständige Spring Boot Anwendung entwickeln
 * REST API {plus} Thymeleaf Frontend {plus} PostgreSQL {plus} Docker
-* Meilensteine alle 6-7 Wochen (Präsentationen {plus} Code Reviews)
+* Meilensteine alle 6-7 Wochen
 * Endergebnis: voll funktionsfähige Enterprise Anwendung
 
 == Von Jakarta Servlet zu Spring Boot

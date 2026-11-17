@@ -83,12 +83,103 @@ void cascadePersist_shouldSaveLoans() {
 }
 
 @Test
-@Transactional
 void lazyLoading_shouldWorkInTransaction() {
-    Member member = memberRepo.findById(member1.getId()).get();
-    assertThat(member.getLoans()).hasSize(2); // no LazyInitException
+    // @DataJpaTest ist bereits @Transactional → Session ist offen
+    entityManager.flush();
+    entityManager.clear();
+    Member member = memberRepo.findById(member1.getId()).orElseThrow();
+    assertThat(member.getLoans()).hasSize(2); // keine LazyInitializationException
 }
 ----
+
+== Spring Boot 4: neue Packages
+
+[source,java]
+----
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+----
+
+* Die Test-Slices sind in eigene Module gewandert
+* Imports aus Boot-3-Tutorials (`org.springframework.boot.test.autoconfigure.orm.jpa...`) kompilieren nicht mehr
+* `@DataJpaTest(showSql = true)` zeigt die SQL-Statements im Log
+
+== Der Lifecycle-Test
+
+[source,java]
+----
+@Test
+void verify_book_can_be_saved_and_read() {
+    Book book = new Book("9783161484100", "Dune", new BigDecimal("12.90"),
+                         LocalDate.of(1965, 8, 1));
+
+    bookRepo.save(book);
+    entityManager.flush();     // INSERT wirklich ausführen
+    entityManager.clear();     // First-Level-Cache leeren
+
+    Book reread = bookRepo.findById(book.getId()).orElseThrow();
+    assertThat(reread).isNotSameAs(book);                 // wirklich neu gelesen
+    assertThat(reread.getTitle()).isEqualTo("Dune");
+    assertThat(reread.getPrice()).isEqualByComparingTo("12.90");
+}
+----
+
+Ohne `clear()` kommt dasselbe Objekt aus dem Cache zurück — Mapping-Fehler (fehlender No-Args-Konstruktor, falscher Converter) bleiben unentdeckt.
+
+== `save` vs. `saveAndFlush`
+
+[source,java]
+----
+@Test
+void verify_isbn_is_unique() {
+    bookRepo.saveAndFlush(book("9783161484100", "Erstes Buch"));
+
+    assertThatThrownBy(() -> bookRepo.saveAndFlush(book("9783161484100", "Zweites Buch")))
+        .isInstanceOf(DataIntegrityViolationException.class);
+}
+
+@Test
+void verify_title_is_required() {
+    assertThatThrownBy(() -> bookRepo.saveAndFlush(book("9783161484100", null)))
+        .isInstanceOf(ConstraintViolationException.class);   // jakarta.validation
+}
+----
+
+* Mit `@GeneratedValue` (Sequence) wird erst beim *Flush* eingefügt
+* Ein Test mit nur `save` sieht die Constraint-Verletzung *nie*
+
+== TestEntityManager
+
+[cols="1,2",options="header"]
+|===
+|Methode |Macht
+|`persist(entity)` |speichert (wie `save`), Cascade gilt
+|`persistAndFlush(entity)` |speichert und schreibt sofort
+|`persistFlushFind(entity)` |speichert, schreibt, leert Cache, liest neu
+|`find(Type.class, id)` |liest über die Id
+|`flush()` / `clear()` |schreiben / Cache leeren
+|===
+
+[source,java]
+----
+Author author = entityManager.persistFlushFind(new Author("Paul Celan"));
+assertThat(author.getId()).isNotNull();
+----
+
+== Was ein vollständiger Testsatz enthält
+
+. *Entity*: speichern und lesen (Lifecycle-Test)
+. *Constraints*: ungültige Daten werden abgelehnt
+. *Value Object*: Spalten und Validierung über das besitzende Entity
+. *Rich Type / Enum*: Converter einzeln testen (auch `null`), gespeicherten Wert prüfen
+. *Beziehung*: Graph speichern, neu lesen, beide Richtungen prüfen
+. *Abfrage*: Testdaten, die Treffer auch *ausschließen*
+
+[.highlight-box]
+--
+Ungetestete Klassen werden bei der Beurteilung nicht berücksichtigt.
+--
 
 == Benutzerdefinierte Abfragen testen
 
@@ -116,3 +207,5 @@ void searchByTitle_shouldReturnEmptyForNoMatch() {
 * H2 In-Memory Datenbank zum Testen
 * Testen von CRUD, Beziehungen und benutzerdefinierten Abfragen
 * Testisolation und @Transactional Rollback
+* Lifecycle-Test mit `flush`/`clear`, `saveAndFlush` für Constraints
+* `TestEntityManager` und die Spring-Boot-4-Imports

@@ -1,0 +1,307 @@
+= 02a - Java Refresher: Typen & Datenklassen | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== Warum ein Refresher?
+
+* JPA, Service-Schicht und REST bauen auf *modernem Java* auf
+* Records, `sealed`, `switch`-Ausdrücke, `Optional` kommen in jeder Aufgabe vor
+* Das Cheat Sheet listet sie unter „Java language" — ohne sie zu erklären
+* Heute: die Werkzeuge, die wir das ganze Jahr verwenden
+
+== Die Java-Typen im Überblick
+
+[cols="1,2,3",options="header"]
+|===
+|Typ |Beispiel |Wofür
+|Klasse |`class Person {}` |Zustand {plus} Verhalten, veränderbar
+|Abstrakte Klasse |`abstract class PersonRole {}` |gemeinsame Basis, nicht instanziierbar
+|Sealed Klasse |`sealed class HtmlTag permits ...` |geschlossene Hierarchie
+|Enum |`enum Gender {}` |feste Menge von Werten
+|Interface |`interface PersonRepository {}` |Vertrag ohne Zustand
+|Record |`record PersonName(...) {}` |unveränderliche Datenklasse
+|===
+
+== Records — Datenklassen in einer Zeile
+
+[source,java]
+----
+public record PersonName(String firstName, String lastName) {}
+----
+
+Der Compiler erzeugt automatisch:
+
+* `private final` Felder `firstName`, `lastName`
+* den *kanonischen* Konstruktor `PersonName(String, String)`
+* Accessoren `firstName()` und `lastName()` — *ohne* `get`!
+* `equals`, `hashCode` und `toString` über *alle* Komponenten
+
+[source,java]
+----
+var a = new PersonName("Ada", "Lovelace");
+var b = new PersonName("Ada", "Lovelace");
+a.equals(b);       // true  — strukturelle Gleichheit
+a.firstName();     // "Ada"
+----
+
+== Records — kompakter Konstruktor
+
+Validierung gehört in den *kompakten Konstruktor* (ohne Parameterliste):
+
+[source,java]
+----
+public record Email(String value) {
+    public Email {                                   // kompakt
+        Objects.requireNonNull(value, "value");
+        if (!value.contains("@")) {
+            throw new IllegalArgumentException("invalid email: " + value);
+        }
+        value = value.toLowerCase();                 // normalisieren erlaubt
+    }
+
+    public String domain() {                          // eigene Methoden
+        return value.substring(value.indexOf('@') + 1);
+    }
+
+    public static Email of(String value) {            // Fabrikmethode
+        return new Email(value);
+    }
+}
+----
+
+Ein ungültiges `Email`-Objekt kann es gar nicht geben.
+
+== Records — Grenzen
+
+* Felder sind `final` → kein Setter, kein nachträgliches Ändern
+* Kann nicht von einer Klasse erben (erbt implizit von `java.lang.Record`)
+* Kann aber Interfaces implementieren
+* Achtung: `final` heißt *flach* unveränderlich
+
+[source,java]
+----
+public record Team(String name, List<String> members) {
+    public Team {
+        members = List.copyOf(members);   // Kopie → wirklich unveränderlich
+    }
+}
+----
+
+[.highlight-box]
+--
+Records eignen sich für DTOs, Commands, Value Objects, Rich Types, Projektionen — *nicht* für JPA-Entities.
+--
+
+== Sealed Klassen und Interfaces
+
+[source,java]
+----
+public sealed interface Shape permits Circle, Rectangle, Square {}
+
+public record Circle(double radius) implements Shape {}
+public record Rectangle(double width, double height) implements Shape {}
+public final class Square implements Shape { /* ... */ }
+----
+
+* `permits` zählt *alle* erlaubten Unterklassen auf
+* Jede Unterklasse muss `final`, `sealed` oder `non-sealed` sein
+* Der Compiler kennt damit alle Fälle → vollständige `switch`-Ausdrücke
+
+== Switch-Ausdrücke & Pattern Matching
+
+[source,java]
+----
+double area(Shape shape) {
+    return switch (shape) {
+        case Circle c          -> Math.PI * c.radius() * c.radius();
+        case Rectangle(double w, double h) -> w * h;   // Record-Pattern
+        case Square s          -> s.side() * s.side();
+    };   // kein default nötig: sealed → vollständig
+}
+----
+
+[source,java]
+----
+String label = switch (day) {
+    case SATURDAY, SUNDAY -> "Wochenende";
+    case MONDAY -> {
+        log.info("Wochenstart");
+        yield "Montag";          // yield bei Blöcken
+    }
+    default -> "Werktag";
+};
+----
+
+Pfeil-Syntax: kein `break`, kein Durchfallen.
+
+== Enums mit Feldern
+
+[source,java]
+----
+public enum Gender {
+    DIVERSE("D"), FEMALE("F"), MALE("M");
+
+    private final String code;
+
+    Gender(String code) { this.code = code; }
+
+    public String getCode() { return code; }
+
+    public static Gender fromCode(String code) {
+        return Arrays.stream(values())
+                .filter(g -> g.code.equals(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("unknown code: " + code));
+    }
+}
+----
+
+Im UML: `DIVERSE("D")` → der Code in Klammern ist das Feld. Wir brauchen das später für den JPA-Converter.
+
+== Optional — die Schachtel mit Deckel
+
+[source,java]
+----
+Optional<Book> found = bookRepository.findById(42L);
+
+Book b1 = found.orElseThrow();                                // NoSuchElementException
+Book b2 = found.orElseThrow(() -> new BookNotFoundException(42L));
+Book b3 = found.orElse(Book.EMPTY);                           // immer ausgewertet
+Book b4 = found.orElseGet(() -> createDefault());             // nur bei Bedarf
+
+String title = found.map(Book::getTitle).orElse("unbekannt");
+found.ifPresent(book -> log.info("found {}", book));
+----
+
+[cols="1,1",options="header"]
+|===
+|Gut |Schlecht
+|Rückgabetyp „vielleicht kein Ergebnis" |als Feld, Parameter oder in Collections
+|`map`, `orElseThrow`, `ifPresent` |`if (opt.isPresent()) opt.get()`
+|===
+
+== `var` — Typinferenz für lokale Variablen
+
+[source,java]
+----
+var books = new ArrayList<Book>();             // ArrayList<Book>
+var byAuthor = new HashMap<String, List<Book>>();
+for (var entry : byAuthor.entrySet()) { ... }
+
+var x = null;           // Fehler: Typ nicht ableitbar
+var list = new ArrayList<>();   // ArrayList<Object> — meist ungewollt!
+----
+
+* Nur für *lokale* Variablen (nicht Felder, Parameter, Rückgabetypen)
+* Regel: `var` dort, wo der Typ rechts *offensichtlich* ist
+
+== Datenklassen — Checkliste aus dem Cheat Sheet
+
+. Konstruktor mit allen (fachlichen) Attributen
+** evtl. `private` mit öffentlicher Fabrikmethode / Builder
+. JPA-Klassen: zusätzlich `protected` No-Args-Konstruktor
+. Getter für die Attribute — *Collections kapseln!*
+. `equals` und `hashCode` implementieren
+. `toString` — überlegen, welche Attribute (Sicherheit: kein Passwort!)
+. Unveränderlichkeit überlegen
+. Kann es ein `record` sein?
+
+== Collections kapseln
+
+[source,java]
+----
+public class Order {
+    private final List<OrderItem> items = new ArrayList<>();
+
+    // SCHLECHT: Aufrufer kann die interne Liste verändern
+    // public List<OrderItem> getItems() { return items; }
+
+    public List<OrderItem> getItems() {
+        return Collections.unmodifiableList(items);   // Sicht, nur lesbar
+    }
+
+    public void addItem(OrderItem item) {
+        Objects.requireNonNull(item);
+        items.add(item);                              // Änderung nur hier
+    }
+}
+----
+
+`order.getItems().add(...)` wirft jetzt `UnsupportedOperationException`.
+
+== equals & hashCode
+
+[source,java]
+----
+public final class Isbn {
+    private final String value;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Isbn other)) return false;   // Pattern Matching
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+}
+----
+
+* Vertrag: gleiche Objekte → gleicher `hashCode`
+* Ohne `hashCode` funktionieren `HashSet` und `HashMap` nicht korrekt
+* Records erledigen das automatisch
+
+== Lombok — Boilerplate generieren lassen
+
+[source,java]
+----
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Book {
+    private String isbn;
+    private String title;
+}
+----
+
+[cols="1,2",options="header"]
+|===
+|Annotation |Erzeugt
+|`@Getter` / `@Setter` |Getter/Setter pro Feld (bei `boolean`: `isX()`)
+|`@NoArgsConstructor` |Konstruktor ohne Parameter
+|`@AllArgsConstructor` |Konstruktor mit *allen* Feldern, in Reihenfolge im Code
+|`@RequiredArgsConstructor` |Konstruktor mit allen `final` Feldern (→ Services!)
+|===
+
+Selbst geschriebene Methoden ersetzt Lombok nicht. Finger weg von `@Data` bei Entities.
+
+== Übung
+
+[.highlight-box]
+--
+. Modelliere `Money(BigDecimal amount, Currency currency)` als Record mit Validierung (nicht negativ, nicht `null`)
+. Ergänze `add(Money)` und `multiply(int)` — beide liefern neue Instanzen
+. Baue `sealed interface Payment permits CashPayment, CardPayment` und eine Methode `fee(Payment)` mit `switch`
+. Schreibe eine Klasse `ShoppingCart` mit gekapselter Liste und `total()`
+--
+
+== Was wir heute gelernt haben
+
+* Java-Typen: Klasse, abstract, sealed, Enum, Interface, Record
+* Records: kompakter Konstruktor, Validierung, flache Unveränderlichkeit
+* `switch`-Ausdrücke mit Pattern Matching über `sealed`-Hierarchien
+* `Optional` richtig verwenden
+* Checkliste für Datenklassen, Collections kapseln, `equals`/`hashCode`
+* Lombok als Abkürzung

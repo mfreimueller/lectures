@@ -1,0 +1,191 @@
+= 06 - Testcontainers & Postgre SQL | POS - 4xHIF
+:title-separator: |
+:lang: de
+:revealjs_theme: white
+:revealjs_width: 1280
+:revealjs_height: 720
+:revealjs_transition: none
+:revealjs_hash: true
+:source-highlighter: highlightjs
+:title-slide-background-color: #ED1944
+:revealjs_slideNumber: c/t
+
+== The H2 Problem
+
+* H2 ist nicht 100% PostgreSQL-kompatibel
+* Unterschiede in: SQL-Dialekt, Datentypen, Constraints
+* Tests können grün sein — Produktion crasht trotzdem
+* "It works on my machine" — nur mit H2 im Test!
+
+== H2 vs PostgreSQL — Beispiele
+
+[cols=",,",options="header",]
+|===
+|Feature |H2 |PostgreSQL
+|Boolean |TINYINT (0/1) |BOOLEAN
+|JSON |VARCHAR |JSONB
+|UUID |VARCHAR |UUID native
+|Sequences |Simuliert |Native SEQUENCE
+|ARRAY |Nicht unterstützt |Native Arrays
+|===
+
+Fazit: Teste gegen die gleiche DB wie in Produktion!
+
+== Testcontainers — Idee
+
+* Startet Docker-Container programmatisch in JUnit-Tests
+* Unterstützt PostgreSQL, MySQL, Redis, Kafka, ...
+* Container wird vor den Tests gestartet, nach den Tests gestoppt
+* Benötigt nur eine laufende Docker-Umgebung
+
+== Testcontainers — Vorteile
+
+* Echte Datenbank, kein Simulator
+* Isolierte Tests — jeder Testlauf frischer Container
+* Konfigurierbar (Version, Port, Init-Script)
+* CI-kompatibel (Docker-in-Docker, Testcontainers Cloud)
+
+== Dependency
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-testcontainers</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.testcontainers</groupId>
+    <artifactId>testcontainers-postgresql</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.testcontainers</groupId>
+    <artifactId>testcontainers-junit-jupiter</artifactId>
+    <scope>test</scope>
+</dependency>
+----
+
+Ohne Version — wird via BOM von Spring Boot verwaltet.
+
+== Testcontainers 2
+
+* Spring Boot 4 bringt *Testcontainers 2*: Module heißen jetzt `testcontainers-...` (früher `postgresql`, `junit-jupiter`)
+* `PostgreSQLContainer` liegt in `org.testcontainers.postgresql` und ist nicht mehr generisch
+
+== PostgreSQLContainer — Setup
+
+[source,java]
+----
+@DataJpaTest @Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class BookRepositoryTest {
+    @Container static PostgreSQLContainer postgres =
+        new PostgreSQLContainer("postgres:16")
+            .withDatabaseName("testdb").withUsername("test").withPassword("test");
+}
+----
+
+* @Testcontainers aktiviert automatische Lifecycle-Verwaltung
+* @Container markiert das Container-Objekt
+* Static = Container wird einmal pro Testklasse gestartet
+
+== @DynamicPropertySource
+
+[source,java]
+----
+@DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class BookRepositoryTest {
+
+    @Container
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
+}
+----
+
+* Überschreibt die application.yml-Werte dynamisch zur Laufzeit
+* `Replace.NONE`: sonst ersetzt `@DataJpaTest` die DataSource durch eine eingebettete H2
+
+== Kürzer: @ServiceConnection
+
+[source,java]
+----
+@DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class BookRepositoryTest {
+
+    @Container
+    @ServiceConnection                       // ersetzt @DynamicPropertySource
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16");
+}
+----
+
+* Aus `spring-boot-testcontainers`
+* Spring Boot erkennt den Container-Typ und setzt URL, User und Passwort selbst
+* Funktioniert auch für MySQL, MongoDB, Redis, Kafka, ...
+
+== Ablauf im Detail
+
+[arabic]
+. JUnit startet die Testklasse
+. @Testcontainers erkennt @Container und startet PostgreSQL
+. Container meldet sich mit dynamischem Port; @ServiceConnection / @DynamicPropertySource liefert JDBC-URL {plus} Credentials
+. Spring konfiguriert DataSource; Tests laufen gegen echte PostgreSQL-Datenbank
+. Nach allen Tests: Container wird gestoppt
+
+== Abstract Test Base Class
+
+[source,java]
+----
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public abstract class RepositoryTest {
+
+    @ServiceConnection
+    static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16");
+
+    static {
+        postgres.start();      // einmal pro JVM, für alle Unterklassen
+    }
+}
+----
+
+* *Singleton-Container*: hier bewusst ohne `@Testcontainers`/`@Container` — die würden den Container nach *jeder* Testklasse stoppen
+* Ohne `start()` (und ohne `@Container`) läuft gar kein Container → Verbindungsfehler!
+* Spring cacht den Kontext → alle Testklassen teilen Container und Kontext
+
+== Mit Flyway
+
+* Liegt `flyway-core` am Classpath, läuft Flyway automatisch auch im Test
+* Das Schema wird aus `db/migration` frisch aufgebaut — genau wie in Produktion
+* In Kombination mit `spring.jpa.hibernate.ddl-auto=validate` prüft jeder Test auch, ob Entities und Schema zusammenpassen
+
+== Projekt: Tests migrieren
+
+[.highlight-box]
+--
+. Füge Testcontainers-Dependencies zu pom.xml hinzu
+. Erstelle eine abstrakte Basisklasse `RepositoryTest`
+. Migriere alle `@DataJpaTest`-Klassen von H2 auf Testcontainers
+. Stelle sicher, dass alle Tests grün sind
+. Optional: Füge einen Test hinzu, der einen PostgreSQL-spezifischen Feature testet
+--
+
+== What We Learned Today
+
+* Warum H2 für JPA-Tests nicht ausreicht
+* Testcontainers für PostgreSQL-Container in Tests
+* @Container, @Testcontainers, @DynamicPropertySource
+* Abstracte Test-Basisklasse für Wiederverwendung
+* Integration mit Flyway
